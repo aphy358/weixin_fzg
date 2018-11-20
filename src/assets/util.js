@@ -1,0 +1,41 @@
+
+/**
+ * 获取指定的url参数值
+ * @param {指定的url参数名} name
+ */
+export const queryString = function (name, targetStr) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+  var r;
+  if (!targetStr) {
+    if(window.location.search){
+      r = window.location.search.substr(1).match(reg);
+    }else if(window.location.hash){
+      if (window.location.hash.indexOf('?') !== -1){
+        r = window.location.hash.split('?')[1].match(reg);
+      }
+    }
+  } else {
+    r = targetStr.match(reg);
+  }
+  return r != null ? unescape(r[2]) : null;
+}
+
+// 在给定的日期基础上加上若干天，并格式化成 '2017-10-01' 的字符串返回
+export const addDays = function (d1, num, sep) {
+  sep = sep || '-';
+  num = num || 0;
+  if (typeof d1 === 'string') d1 = new Date(d1.replace(/-/g, '/'));
+  return new Date(+d1 + num * 24 * 60 * 60 * 1000).Format('yyyy' + sep + 'MM' + sep + 'dd');
+}
+
+// 设置状态的公共函数
+export const _setCommonState = (state, payload) => {
+  if(payload.k){
+    state[payload.k] = payload.v
+  }
+}
+
+// 对日期格式化
+export const formatDateOne = (dateStr) => {
+  return dateStr.replace(/-/g, '/')
+}
