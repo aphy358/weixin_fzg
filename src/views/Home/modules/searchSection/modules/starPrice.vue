@@ -184,7 +184,7 @@ export default {
       }
     },
     // 星级全选中，也相当于都不选中
-    checkNoStar(_this){
+    checkNoStar(){
       this.starArr.forEach(n => {
         n.checked = false
       });
