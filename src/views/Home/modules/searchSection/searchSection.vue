@@ -79,6 +79,7 @@
     <!-- 星级价格 popup -->
     <StarPrice @setStarPriceText="setStarPriceText" />
 
+    <!-- 入离日期弹框 -->
     <DatePicker :open="openPicker1" :dateBind="date1" :startDate="startDate1" :endDate="endDate1" @confirm="setNewDate($event, 1)" />
     <DatePicker :open="openPicker2" :dateBind="date2" :startDate="startDate2" :endDate="endDate2" @confirm="setNewDate($event, 2)" />
 

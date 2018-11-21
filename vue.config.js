@@ -71,7 +71,7 @@ module.exports = {
     https: false,
     hotOnly: false,
     // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
-    proxy: 'http://weixin.jlfzg.com/', // 'http://localhost:8083', 'http://weixin.jlfzg.com/' 
+    proxy: 'http://localhost:8081', // 'http://weixin.jlfzg.com/' , http://localhost:8081/
     before: app => {}
   },
 

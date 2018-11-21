@@ -1,8 +1,18 @@
 <template>
+  <div class="citySelect-page">
 
+    <!-- 顶部关键字输入区域 -->
+    <KeywordInput />
+
+    <!-- 城市列表 -->
+    <CityList />
+
+  </div>
 </template>
 
 <script>
+import KeywordInput from './modules/keywordInput'
+import CityList from './modules/cityList'
 
 export default {
   name: 'citySelect',
@@ -13,6 +23,8 @@ export default {
   props: {
   },
   components: {
+    KeywordInput,
+    CityList
   },
   created(){
   },

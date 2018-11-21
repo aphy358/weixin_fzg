@@ -1,0 +1,42 @@
+
+export const hotCity = [
+  // 境内热门城市
+  {cityId: '70082', cityName: '北京', cityType: '0'},
+  {cityId: '70058', cityName: '上海', cityType: '0'},
+  {cityId: '70011', cityName: '广州', cityType: '0'},
+  {cityId: '70002', cityName: '深圳', cityType: '0'},
+  {cityId: '70038', cityName: '成都', cityType: '0'},
+  {cityId: '70059', cityName: '杭州', cityType: '0'},
+  {cityId: '70021', cityName: '武汉', cityType: '0'},
+  {cityId: '70046', cityName: '西安', cityType: '0'},
+  {cityId: '70045', cityName: '重庆', cityType: '0'},
+  {cityId: '70096', cityName: '青岛', cityType: '0'},
+  {cityId: '70063', cityName: '南京', cityType: '0'},
+  {cityId: '70079', cityName: '厦门', cityType: '0'},
+  {cityId: '70120', cityName: '大连', cityType: '0'},
+  {cityId: '70083', cityName: '天津', cityType: '0'},
+  {cityId: '70030', cityName: '三亚', cityType: '0'},
+  {cityId: '70095', cityName: '济南', cityType: '0'},
+  {cityId: '70119', cityName: '沈阳', cityType: '0'},
+  {cityId: '30000898', cityName: '香港', cityType: '0'},
+  {cityId: '70139', cityName: '澳门', cityType: '0'},
+  {cityId: '30001017', cityName: '台北', cityType: '0'},
+
+
+  // 境外热门城市
+  {cityId: '30000908', cityName: '新加坡', cityType: '1'},
+  {cityId: '30001043', cityName: '首尔', cityType: '1'},
+  {cityId: '30001045', cityName: '曼谷', cityType: '1'},
+  {cityId: '30001047', cityName: '普吉岛', cityType: '1'},
+  {cityId: '30001050', cityName: '东京', cityType: '1'},
+  {cityId: '30001049', cityName: '吉隆坡', cityType: '1'},
+  {cityId: '30001051', cityName: '清迈', cityType: '1'},
+  {cityId: '30001055', cityName: '大阪', cityType: '1'},
+  {cityId: '30001058', cityName: '巴厘岛', cityType: '1'},
+  {cityId: '30001053', cityName: '兰卡威', cityType: '1'},
+  {cityId: '30001044', cityName: '济州岛', cityType: '1'},
+  {cityId: '30001065', cityName: '迪拜', cityType: '1'},
+  {cityId: '30001101', cityName: '巴黎', cityType: '1'},
+  {cityId: '30001361', cityName: '伦敦', cityType: '1'},
+  {cityId: '30001093', cityName: '温哥华', cityType: '1'},
+]
