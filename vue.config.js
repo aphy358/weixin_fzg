@@ -65,14 +65,14 @@ module.exports = {
   // configure webpack-dev-server behavior
   devServer: {
     open: process.platform === 'darwin',
-    disableHostCheck: false,
+    disableHostCheck: true,
     host: '0.0.0.0',
-    port: 3234,
+    port: 81,
     https: false,
     hotOnly: false,
     // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
-    proxy: 'http://localhost:8081', // 'http://weixin.jlfzg.com/' , http://localhost:8081/
-    before: app => {}
+    proxy: null, // 'http://weixin.jlfzg.com/' , http://localhost:8081/
+    //before: app => {}
   },
 
   // options for 3rd party plugins
