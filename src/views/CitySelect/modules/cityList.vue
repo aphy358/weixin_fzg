@@ -16,7 +16,7 @@
           <li v-for="n in hotCity0" :key="n.cityId">{{ n.cityName }}</li>
         </ul>
 
-        <div v-for="n in cityArr" :key="n">
+        <div v-for="n in cityArr" :key="n" :id="'城市0' + n" class="one-city-list-wrap">
           <label class="cui-city-t" :for="'radio_city_0' + n">{{ n }}</label>
           <input type="checkbox" class="radio-city" name="radio_city_0" :checked="n == 'A'" :id="'radio_city_0' + n" />
           <ul class="hotel-city-tags">
@@ -26,7 +26,8 @@
 
         <div class="nav-bar-wrap">
           <ul>
-            <li v-for="n in cityArr" :key="n">{{ n }}</li>
+            <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市0' + n)">{{ n }}</li>
+            <!-- <li v-for="n in cityArr" :key="n"><a :href="'#城市' + n">{{ n }}</a></li> -->
           </ul>
         </div>
       </div>
@@ -38,11 +39,17 @@
           <li v-for="n in hotCity1" :key="n.cityId">{{ n.cityName }}</li>
         </ul>
 
-        <div v-for="n in cityArr" :key="n">
+        <div v-for="n in cityArr" :key="n" :id="'城市1' + n" class="one-city-list-wrap">
           <label class="cui-city-t" :for="'radio_city_1' + n">{{ n }}</label>
           <input type="checkbox" class="radio-city" name="radio_city_1" :checked="n == 'A'" :id="'radio_city_1' + n" />
           <ul class="hotel-city-tags">
             <li v-for="(p, i) in cities.filter(o => o.t === '1' && o.w === n)" :key="i">{{ p.n }}</li>
+          </ul>
+        </div>
+
+        <div class="nav-bar-wrap">
+          <ul>
+            <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市1' + n)">{{ n }}</li>
           </ul>
         </div>
       </div>
@@ -52,6 +59,7 @@
 
 <script>
 import { hotCity } from './hotCity.js'
+import Velocity from 'velocity-animate';
 
 export default {
   name: 'cityList',
@@ -82,6 +90,15 @@ export default {
   mounted(){
   },
   methods:{
+    scrollIntoView(id){
+      let elem = document.getElementById(id)
+      let bodyWidth = document.body.clientWidth
+      let offsetWidth = -bodyWidth / 375 * 91
+
+      Velocity(elem, 'scroll', {offset: offsetWidth + 'px'})
+      Velocity(elem, 'finish')
+      elem.querySelector('input').checked = true
+    }
   }
 }
 </script>
@@ -210,6 +227,11 @@ export default {
         }
       }
     }
+
+    // @at-root .one-city-list-wrap{
+    //   padding-top: 0.91rem;
+    //   margin-top: -0.91rem;
+    // }
 
     .nav-bar-wrap{
       position: fixed;

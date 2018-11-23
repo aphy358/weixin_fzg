@@ -6,15 +6,17 @@
       </div>
       <i class="iconfont icon-search0 searchIcon"></i>
       <i class="iconfont icon-shanchu kw_del" v-if="keywords != ''" @click="keywords = ''"></i>
-      <input type="text" id="getCity" class="keyw-input has-city" placeholder="城市关键字" v-model="keywords" @input="inputKeyword" />
+      <input type="text" id="getCity" class="keyw-input has-city" placeholder="城市关键字" v-model="keywords" @keyup="inputKeyword" />
     </div>
         
     <div class="card" id="cityCard" v-show="keywords != ''">
 			<div class="card-content">
 				<div class="list-block">
-					<ul id="cityUl">
-            <li class="city-li" v-if="cities.length > 0" v-for="n in cities" :key="n.cityId" data-ctype="0">{{ n.cityName }}</li>
-            <li class="city-li no-data" v-if="cities.length <= 0">无相关城市</li>
+					<ul id="cityUl" v-if="cities.length > 0">
+            <li class="city-li" v-for="n in cities" :key="n.cityId" data-ctype="0">{{ n.cityName }}</li>
+          </ul>
+          <ul id="cityUl" v-if="cities.length <= 0">
+            <li class="city-li no-data" >无相关城市</li>
           </ul>
 				</div>
 			</div>
