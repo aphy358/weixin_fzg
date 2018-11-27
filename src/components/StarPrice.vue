@@ -92,7 +92,7 @@ export default {
       ]
     }
   },
-  props: ['starPopupVisible'],
+  props: ['page'],
   components: {
   },
   created(){
@@ -100,10 +100,10 @@ export default {
   computed: {
     getStarPopupVisible: {
       get: function () {
-        return this.$store.state.home.starPopupVisible
+        return this.$store.state[this.page].starPopupVisible
       },
       set: function (newValue) {
-        this.$store.commit(`home/setCommonState`, {k: 'starPopupVisible', v: newValue})
+        this.$store.commit(`${this.page}/setCommonState`, {k: 'starPopupVisible', v: newValue})
       }
     },
   },
@@ -132,7 +132,7 @@ export default {
   },
   methods:{
     initStarArr(){
-      let checkedStar = this.$store.state.home.checkedStar
+      let checkedStar = this.$store.state.checkedStar
 
       this.starArr.forEach(n => {
         checkedStar.indexOf(n.value) != -1
@@ -145,7 +145,7 @@ export default {
       }
     },
     initPrice(){
-      let priceRange = this.$store.state.home.priceRange
+      let priceRange = this.$store.state.priceRange
       if(priceRange == ''){
         this.priceRange1 = '0'
         this.priceRange2 = '999999'
@@ -197,7 +197,7 @@ export default {
           .join('，')
           .replace(/^，|，$/, '')
 
-      this.$emit('setStarPriceText', showText)
+      this.$emit('setStarPrice', showText)
       this.hidePopup()
     },
     // 设置星级
@@ -214,7 +214,7 @@ export default {
           .map(n => n.text)
           .join('，')
       
-      this.$store.commit(`home/setCommonState`, {k: 'checkedStar', v: resultStar})
+      this.$store.commit(`setCommonState`, {k: 'checkedStar', v: resultStar})
 
       return showResultStar
     },
@@ -233,13 +233,13 @@ export default {
         statePrice = ''
       }
 
-      this.$store.commit(`home/setCommonState`, {k: 'priceRange', v: statePrice})
+      this.$store.commit(`setCommonState`, {k: 'priceRange', v: statePrice})
 
       return showPrice
     },
     // 隐藏 popup
     hidePopup(){
-      this.$store.commit(`home/setCommonState`, {k: 'starPopupVisible', v: false})
+      this.$store.commit(`${this.page}/setCommonState`, {k: 'starPopupVisible', v: false})
     }
   }
 }

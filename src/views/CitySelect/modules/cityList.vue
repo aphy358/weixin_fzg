@@ -77,8 +77,10 @@ export default {
   components: {
   },
   created(){
-    this.hotCity0 = hotCity.filter(n => n.cityType === '0')
-    this.hotCity1 = hotCity.filter(n => n.cityType === '1')
+    if(hotCity){
+      this.hotCity0 = hotCity.filter(n => n.cityType === '0')
+      this.hotCity1 = hotCity.filter(n => n.cityType === '1')
+    }
 
     // 获取城市列表
     this.$api.citySelect.syncGetCities().then(res => {

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// 顶部关键字输入区域
+// 城市选择 顶部关键字输入区域
 
 export default {
   name: "keywordInput",
@@ -44,24 +44,20 @@ export default {
   mounted() {},
   methods: {
     inputKeyword($event){
-      // 当下面两句联合使用时，输入空格才不会闪烁
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
-      $event.srcElement.value = $event.srcElement.value.replace(/^\s+|\s+$/g, '')
-
-
     }
   }
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .nav-top {
   position: fixed;
   top: 0;
   width: 100%;
   background-color: #ff7625;
   color: white;
-  z-index: 4000;
+  z-index: 1000;
 
   .KWI_wrap {
     margin: 0.1rem 0.20rem 0.10rem 0.40rem;

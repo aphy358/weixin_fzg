@@ -77,7 +77,7 @@
     </div>
 
     <!-- 星级价格 popup -->
-    <StarPrice @setStarPriceText="setStarPriceText" />
+    <StarPrice @setStarPrice="setStarPriceText" page="home" />
 
     <!-- 入离日期弹框 -->
     <DatePicker :open="openPicker1" :dateBind="date1" :startDate="startDate1" :endDate="endDate1" @confirm="setNewDate($event, 1)" />
@@ -88,7 +88,7 @@
 
 <script>
 // 搜索区域组件
-import StarPrice from './modules/starPrice.vue'
+import StarPrice from '@/components/StarPrice.vue'
 import DatePicker from './modules/datePicker.vue'
 import { addDays, formatDateOne } from '@/assets/util'
 
@@ -155,8 +155,8 @@ export default {
     // 清空星级价格，同时要把 store 里的相关数据重置
     clearStarPrice(){
       this.starPriceText = ''
-      this.$store.commit(`home/setCommonState`, {k: 'priceRange', v: ''})
-      this.$store.commit(`home/setCommonState`, {k: 'checkedStar', v: ''})
+      this.$store.commit(`setCommonState`, {k: 'priceRange', v: ''})
+      this.$store.commit(`setCommonState`, {k: 'checkedStar', v: ''})
     },
     setStarPriceText(showText){
       this.starPriceText = showText

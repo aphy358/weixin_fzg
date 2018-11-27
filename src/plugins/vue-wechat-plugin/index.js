@@ -17,11 +17,7 @@ export default {
                     wechatPlugin.getCode()
                 }
             } else {
-                if (window.sessionStorage.getItem('user')) { // 判断是否已经登录
-                    next()
-                } else {
-                    // 进入登录页面
-                }
+                next()
             }
         })
     }

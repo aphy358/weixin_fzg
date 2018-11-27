@@ -4,6 +4,7 @@ import { addDays, _setCommonState } from "@/assets/util"
 
 // 引入各个子模块
 import home from './modules/home'
+import hotelList from './modules/hotelList'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,10 @@ export default new Vuex.Store({
     childrenStr: '',
     checkin: addDays(new Date),
     checkout: addDays(new Date, 1),
+
+    cityId: '',
+    priceRange: '',
+    checkedStar: '',
   },
 
   mutations: {
@@ -55,5 +60,6 @@ export default new Vuex.Store({
 
   modules: {
     home,
+    hotelList,
   },
 })
