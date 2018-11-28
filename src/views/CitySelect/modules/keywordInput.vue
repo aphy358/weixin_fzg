@@ -1,9 +1,10 @@
 <template>
   <div class="nav-top">
 		<div class="KWI_wrap">
-			<div class="nav-back" @click="gobackPage">
-        <i class="iconfont icon-left-thin"></i>
-      </div>
+			
+      <!-- 返回上一页 -->
+      <GoBack />
+      
       <i class="iconfont icon-search0 searchIcon"></i>
       <i class="iconfont icon-shanchu kw_del" v-if="keywords != ''" @click="keywords = ''"></i>
       <input type="text" id="getCity" class="keyw-input has-city" placeholder="城市关键字" v-model="keywords" @keyup="inputKeyword" />
@@ -26,6 +27,7 @@
 
 <script>
 // 城市选择 顶部关键字输入区域
+import GoBack from '@/components/GoBack.vue'
 
 export default {
   name: "keywordInput",
@@ -38,7 +40,9 @@ export default {
     }
   },
   props: {},
-  components: {},
+  components: {
+    GoBack
+  },
   created() {},
   computed: {},
   mounted() {},
@@ -46,11 +50,6 @@ export default {
     inputKeyword($event){
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
     },
-    // 返回上一页
-    gobackPage(){
-      window.historyObj.arr.pop()
-      this.$router.go(-1)
-    }
   }
 };
 </script>
@@ -66,20 +65,6 @@ export default {
 
   .KWI_wrap {
     margin: 0.1rem 0.20rem 0.10rem 0.40rem;
-
-    .nav-back {
-      position: fixed;
-      width: 0.40rem;
-      height: 0.36rem;
-      left: 0;
-      top: 0.10rem;
-      text-align: center;
-      font-size: 0.23rem;
-      font-weight: bold;
-      color: white;
-      z-index: 9999;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
 
     .searchIcon{
       position: fixed;

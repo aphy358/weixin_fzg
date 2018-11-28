@@ -2,9 +2,8 @@
   <div class="nav-top">
 		<div class="KWI_wrap">
 
-			<div class="nav-back" @click="gobackPage">
-        <i class="iconfont icon-left-thin"></i>
-      </div>
+      <!-- 返回上一页 -->
+      <GoBack />
 
       <div id="hlist-Fdate">
 				<div class="time-condition" @click="showKeywordInput">
@@ -23,6 +22,7 @@
 
 <script>
 // 酒店列表 顶部关键字输入区域
+import GoBack from '@/components/GoBack.vue'
 
 export default {
   name: "keywordInput",
@@ -31,7 +31,9 @@ export default {
     }
   },
   props: {},
-  components: {},
+  components: {
+    GoBack
+  },
   created() {},
   computed: {},
   mounted() {},
@@ -40,11 +42,7 @@ export default {
       console.log('showKeywordInput');
       
     },
-    // 返回上一页
-    gobackPage(){
-      window.historyObj.arr.pop()
-      this.$router.go(-1)
-    }
+    
   }
 };
 </script>
@@ -59,21 +57,7 @@ export default {
   z-index: 1000;
 
   .KWI_wrap {
-    margin: 0.1rem 0.20rem 0.10rem 0.40rem;
-
-    .nav-back {
-      position: fixed;
-      width: 0.40rem;
-      height: 0.36rem;
-      left: 0;
-      top: 0.10rem;
-      text-align: center;
-      font-size: 0.23rem;
-      font-weight: bold;
-      color: white;
-      z-index: 9999;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
+    margin: 0.1rem 0.20rem 0.10rem 0.40rem;  
 
     #hlist-Fdate {
       position: absolute;
@@ -118,7 +102,6 @@ export default {
       width: calc(100% - 1.3rem);
     }
   }
-
 
 }
 </style>
