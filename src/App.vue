@@ -25,7 +25,7 @@ export default {
       let o = window.historyObj
 
       // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键
-      this.transitionName = o.arr.length <= o.preLen ? "vux-pop-out" : "vux-pop-in";
+      this.transitionName = o.arr.length <= o.preLen && o.preLen > 1 ? "vux-pop-out" : "vux-pop-in";
 
       window.historyObj.preLen = window.historyObj.arr.length
     }
