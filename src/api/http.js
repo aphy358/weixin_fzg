@@ -16,7 +16,8 @@ NProgress.configure({ showSpinner: false });
 // https://github.com/mzabriskie/axios
 const http = axios.create({
   timeout: 1000 * 20,
-  headers: { "X-Requested-With": "XMLHttpRequest" }
+  headers: { "X-Requested-With": "XMLHttpRequest"}
+  // headers: { "Content-type": "application/x-www-form-urlencoded"}
 });
 
 function _h(verb) {
@@ -37,12 +38,12 @@ function _h(verb) {
     http.defaults.headers['X-Authorization'] = "user_token-" + token
   
     if (verb === 'get'){
-      params = {
+      _params = {
         params : params
       }
     }else{
       // 用 qs 插件将参数由 json 格式转为字符串参数格式，如 'type=2&key=深圳'
-      params = qs.stringify(params)
+      _params = qs.stringify(params)
     }
     
     // setting loading

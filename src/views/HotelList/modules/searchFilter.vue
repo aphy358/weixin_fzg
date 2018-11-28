@@ -9,7 +9,7 @@
 				<span>星级价格</span>
 				<i class="iconfont icon-down-thin"></i>
 			</div>
-			<div class="filter-btn">
+			<div class="filter-btn" @click="setAreaBizPopupVisible">
 				<span>位置区域</span>
 				<i class="iconfont icon-down-thin"></i>
 			</div>
@@ -36,9 +36,13 @@ export default {
   mounted(){
   },
   methods:{
-    // 设置星级价格弹出层状态
+    // 设置星级价格弹出层显示状态
     setStarPopupVisible(){
       this.$store.commit(`hotelList/setCommonState`, {k: 'starPopupVisible', v: true})
+    },
+    // 设置行政区、商圈弹出层显示状态
+    setAreaBizPopupVisible(){
+      this.$store.commit(`hotelList/setCommonState`, {k: 'areaBizPopupVisible', v: true})
     },
     // 跳转到城市选择页面
     gotoCitySelect(){

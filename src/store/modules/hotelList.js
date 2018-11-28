@@ -11,6 +11,9 @@ export default {
     // 星级价格 popup
     starPopupVisible: false,
 
+    // 行政区、商圈 popup
+    areaBizPopupVisible: false,
+
   },
 
   getters: {

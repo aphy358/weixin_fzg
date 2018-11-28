@@ -19,7 +19,7 @@
         <div v-for="n in cityArr" :key="n" :id="'城市0' + n" class="one-city-list-wrap">
           <label class="cui-city-t" :for="'radio_city_0' + n">{{ n }}</label>
           <input type="checkbox" class="radio-city" name="radio_city_0" :checked="n == 'A'" :id="'radio_city_0' + n" />
-          <ul class="hotel-city-tags">
+          <ul class="hotel-city-tags" v-if="cities && cities.length > 0">
             <li v-for="(p, i) in cities.filter(o => o.t === '0' && o.w === n)" :key="i">{{ p.n }}</li>
           </ul>
         </div>
@@ -42,7 +42,7 @@
         <div v-for="n in cityArr" :key="n" :id="'城市1' + n" class="one-city-list-wrap">
           <label class="cui-city-t" :for="'radio_city_1' + n">{{ n }}</label>
           <input type="checkbox" class="radio-city" name="radio_city_1" :checked="n == 'A'" :id="'radio_city_1' + n" />
-          <ul class="hotel-city-tags">
+          <ul class="hotel-city-tags" v-if="cities && cities.length > 0">
             <li v-for="(p, i) in cities.filter(o => o.t === '1' && o.w === n)" :key="i">{{ p.n }}</li>
           </ul>
         </div>

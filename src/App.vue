@@ -23,9 +23,9 @@ export default {
       // }
 
       let o = window.historyObj
-
-      // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键
-      this.transitionName = o.arr.length <= o.preLen && o.preLen > 1 ? "slide-right" : "slide-left";
+      
+      // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键 && o.preLen > 1
+      this.transitionName = o.arr.length <= o.preLen ? "slide-right" : "slide-left";
 
       window.historyObj.preLen = window.historyObj.arr.length
     }

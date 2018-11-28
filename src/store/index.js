@@ -18,7 +18,9 @@ export default new Vuex.Store({
     checkin: addDays(new Date),
     checkout: addDays(new Date, 1),
 
-    cityId: '',
+    // 默认深圳
+    cityId: '70002',
+    cityText: '深圳',
     priceRange: '',
     checkedStar: '',
   },
