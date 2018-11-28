@@ -11,7 +11,7 @@ export default {
   name: "",
   data() {
     return {
-      transitionName: "vux-pop-out"
+      transitionName: "slide-right"
     };
   },
   props: {},
@@ -25,7 +25,7 @@ export default {
       let o = window.historyObj
 
       // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键
-      this.transitionName = o.arr.length <= o.preLen && o.preLen > 1 ? "vux-pop-out" : "vux-pop-in";
+      this.transitionName = o.arr.length <= o.preLen && o.preLen > 1 ? "slide-right" : "slide-left";
 
       window.historyObj.preLen = window.historyObj.arr.length
     }
@@ -39,10 +39,10 @@ export default {
 </script>
 
 <style>
-.vux-pop-out-enter-active,
-.vux-pop-out-leave-active,
-.vux-pop-in-enter-active,
-.vux-pop-in-leave-active {
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
   will-change: transform;
   transition: all 260ms;
   height: 100%;
@@ -53,25 +53,25 @@ export default {
   box-shadow: 0 0 10px #ccc;
 }
 
-.vux-pop-out-enter {
+.slide-right-enter {
   transform: translate3d(-50%, 0, 0);
   height: 100vh;
 }
 
-.vux-pop-out-enter-active{
+.slide-right-enter-active{
   z-index: -1;
 }
 
-.vux-pop-out-leave-active {
+.slide-right-leave-active {
   transform: translate3d(100%, 0, 0);
 }
 
-.vux-pop-in-enter {
+.slide-left-enter {
   transform: translate3d(100%, 0, 0);
   height: 100vh;
 }
 
-.vux-pop-in-leave-active {
+.slide-left-leave-active {
   transform: translate3d(-50%, 0, 0);
 }
 
