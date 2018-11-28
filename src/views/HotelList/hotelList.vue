@@ -1,5 +1,5 @@
 <template>
-  <div class="hotelList-page">
+  <div class="page hotelList-page">
     <!-- 关键字搜索 -->
     <KeywordInput />
 

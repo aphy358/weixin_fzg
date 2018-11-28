@@ -1,7 +1,7 @@
 <template>
   <div class="search-filter-wrap">
     <div id="hlist-filter">
-			<div class="filter-btn">
+			<div class="filter-btn" @click="gotoCitySelect">
 				<span>深圳</span>
 				<i class="iconfont icon-down-thin"></i>
 			</div>
@@ -39,6 +39,11 @@ export default {
     // 设置星级价格弹出层状态
     setStarPopupVisible(){
       this.$store.commit(`hotelList/setCommonState`, {k: 'starPopupVisible', v: true})
+    },
+    // 跳转到城市选择页面
+    gotoCitySelect(){
+      window.historyObj.arr.push('citySelect')
+      this.$router.push('/citySelect')
     },
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="nav-top">
 		<div class="KWI_wrap">
-			<div class="nav-back">
+			<div class="nav-back" @click="gobackPage">
         <i class="iconfont icon-left-thin"></i>
       </div>
       <i class="iconfont icon-search0 searchIcon"></i>
@@ -45,6 +45,11 @@ export default {
   methods: {
     inputKeyword($event){
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
+    },
+    // 返回上一页
+    gobackPage(){
+      window.historyObj.arr.pop()
+      this.$router.go(-1)
     }
   }
 };

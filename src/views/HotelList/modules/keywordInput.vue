@@ -2,7 +2,7 @@
   <div class="nav-top">
 		<div class="KWI_wrap">
 
-			<div class="nav-back">
+			<div class="nav-back" @click="gobackPage">
         <i class="iconfont icon-left-thin"></i>
       </div>
 
@@ -39,6 +39,11 @@ export default {
     showKeywordInput(){
       console.log('showKeywordInput');
       
+    },
+    // 返回上一页
+    gobackPage(){
+      window.historyObj.arr.pop()
+      this.$router.go(-1)
     }
   }
 };
@@ -72,7 +77,9 @@ export default {
 
     #hlist-Fdate {
       position: absolute;
+      width: 0.8rem;
       padding: 0.05rem;
+      padding-right: 0;
       top: 0.1rem;
       left: 0.4rem;
       color: #666;

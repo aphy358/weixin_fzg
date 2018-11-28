@@ -76,6 +76,10 @@ export default {
 <style lang="scss">
 .home-page{
 
+  .mint-swipe{
+    height: auto;
+  }
+
   .mint-swipe-items-wrap{
     height: 2.5rem;
   }

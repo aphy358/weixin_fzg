@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="page home-page">
 
     <!-- 头部 -->
     <mt-header title="境内/境外酒店">

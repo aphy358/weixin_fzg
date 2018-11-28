@@ -6,7 +6,7 @@
       <div class="h-s-f-icon">
         <i class="iconfont icon-baofang"></i>
       </div>
-      <div class="h-s-f-row-content" style="width: calc(100% - 1.1rem);">深圳市</div>
+      <div class="h-s-f-row-content" style="width: calc(100% - 1.1rem);" @click="gotoCitySelect">深圳市</div>
       <div class="icon-right-wrap" style="right: 0.5rem;">
         <i class="iconfont icon-right-thin"></i>
       </div>
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <div id="search-index">
+    <div id="search-index" @click="gotoHotelList">
       <i class="iconfont icon-search0" style="font-size: 0.14rem;"></i>
       <span>搜索</span>
     </div>
@@ -213,7 +213,17 @@ export default {
       // 把新的 checkin、checkout 设置到 store 里去
       this.$store.commit(`setCommonState`, {k: 'checkin', v: addDays(this.date1)})
       this.$store.commit(`setCommonState`, {k: 'checkout', v: addDays(this.date2)})
-    }
+    },
+    // 跳转到酒店列表页
+    gotoHotelList(){
+      window.historyObj.arr.push('hotelList')
+      this.$router.push('hotelList')
+    },
+    // 跳转到城市选择页面
+    gotoCitySelect(){
+      window.historyObj.arr.push('citySelect')
+      this.$router.push('/citySelect')
+    },
   }
 }
 </script>

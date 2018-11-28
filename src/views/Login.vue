@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page">
+  <div class="page login-page">
     <div class="logo-wrap">
       <img :src="logo" alt="jl_logo">
     </div>

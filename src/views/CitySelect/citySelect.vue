@@ -1,5 +1,5 @@
 <template>
-  <div class="citySelect-page">
+  <div class="page citySelect-page">
 
     <!-- 顶部关键字输入区域 -->
     <KeywordInput />
