@@ -1,6 +1,6 @@
 <template>
   <mt-datetime-picker
-    v-model="pickerVisible"
+    v-model="datePicked"
     type="date"
     ref="picker"
     year-format="{value} 年"
@@ -20,7 +20,7 @@ export default {
   name: 'datePicker',
   data(){
     return {
-      pickerVisible: '',
+      datePicked: '',
       dateTime: '',
     }
   },
@@ -32,13 +32,13 @@ export default {
       }
     },
     dateBind(){
-      this.pickerVisible = this.dateBind
+      this.datePicked = this.dateBind
     }
   },
   components: {
   },
   created(){
-    this.pickerVisible = this.dateBind
+    this.datePicked = this.dateBind
   },
   computed: {
   },

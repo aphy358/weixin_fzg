@@ -120,14 +120,7 @@ export default {
   watch: {
   },
   created(){  
-    this.date1 = new Date( formatDateOne(this.getCheckin) )
-    this.date2 = new Date( formatDateOne(this.getCheckout) )
-
-    this.startDate1 = new Date( formatDateOne(this.getCheckin) )
-    this.startDate2 = new Date( formatDateOne(this.getCheckout) )
-
-    this.endDate1 = new Date( addDays(this.getCheckin, 60, '/') )
-    this.endDate2 = new Date( addDays(this.getCheckout, 60, '/') )
+    this.initCheckinCheckout()
   },
   computed: {
     // 获取关键字
@@ -151,7 +144,47 @@ export default {
   },
   mounted(){
   },
+  activated(){    
+    this.initStarPriceText()
+    this.initCheckinCheckout()
+  },
   methods:{
+    // 初始化入离日期的显示
+    initCheckinCheckout(){
+      this.date1 = new Date( formatDateOne(this.getCheckin) )
+      this.date2 = new Date( formatDateOne(this.getCheckout) )
+
+      this.startDate1 = new Date( formatDateOne(this.getCheckin) )
+      this.startDate2 = new Date( formatDateOne(this.getCheckout) )
+
+      this.endDate1 = new Date( addDays(new Date, 180, '/') )
+      this.endDate2 = new Date( addDays(new Date, 180, '/') )
+    },
+    // 初始化星级价格的显示
+    initStarPriceText(){
+      let checkedStar 
+        = this.$store.state.checkedStar
+          .replace(/10,15,20,25/, '经济型')
+          .replace(/30,35/, '舒适型')
+          .replace(/40,45/, '高档型')
+          .replace(/50,55/, '豪华型')
+
+      let priceRange = this.$store.state.priceRange
+      if(priceRange != ''){
+        if(/^0-/.test(priceRange)){
+          priceRange = '<' + priceRange.replace(/^0-/, '')
+        }else if(/-999999$/.test(priceRange)){
+          priceRange = '>' + priceRange.replace(/-999999$/, '')
+        }
+      }
+
+      let showText = 
+        [checkedStar, priceRange]
+          .join('，')
+          .replace(/^，|，$/, '')
+
+      this.starPriceText = showText
+    },
     // 清空星级价格，同时要把 store 里的相关数据重置
     clearStarPrice(){
       this.starPriceText = ''
