@@ -23,6 +23,10 @@ export default {
     // 选中的商圈
     checkedBiz: [],
 
+    // 分别表示入离日期选择弹出 pop 的显示状态
+    openPicker1: false,
+    openPicker2: false,
+
   },
 
   getters: {
