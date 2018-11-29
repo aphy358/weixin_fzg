@@ -14,10 +14,19 @@
 				<i class="iconfont icon-down-thin"></i>
 			</div>
 		</div>
+
+    <!-- 星级价格 popup -->
+    <StarPrice @setStarPrice="setStarPrice" page="hotelList" />
+
+    <!-- 行政区、商圈 popup -->
+    <AreaBizSelect />
+    
   </div>
 </template>
 
 <script>
+import StarPrice from '@/components/StarPrice.vue'
+import AreaBizSelect from './areaBizSelect'
 
 export default {
   name: 'searchFilter',
@@ -28,6 +37,8 @@ export default {
   props: {
   },
   components: {
+    StarPrice,
+    AreaBizSelect,
   },
   created(){
   },
@@ -49,6 +60,9 @@ export default {
       window.historyObj.arr.push('citySelect')
       this.$router.push('/citySelect')
     },
+    setStarPrice(){
+
+    }
   }
 }
 </script>
