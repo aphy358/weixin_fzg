@@ -14,6 +14,12 @@ export default {
     // 行政区、商圈 popup
     areaBizPopupVisible: false,
 
+    // 选中的行政区
+    checkedArea: [],
+
+    // 选中的商圈
+    checkedBiz: [],
+
   },
 
   getters: {

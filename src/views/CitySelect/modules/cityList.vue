@@ -124,7 +124,7 @@ export default {
     margin: 0 auto;
 
     li{
-      font-size: 0.14rem;
+      font-size: 0.15rem;
       text-align: center;
       flex: 1;
 

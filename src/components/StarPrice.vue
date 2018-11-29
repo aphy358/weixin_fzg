@@ -314,7 +314,7 @@ export default {
       background: #e2e2e2;
       color: #666666;
       height: 0.4rem;
-      font-size: 0.18rem;
+      font-size: 0.16rem;
 
       &:last-child{
         color: white;

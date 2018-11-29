@@ -81,15 +81,15 @@ export default {
 
     .filter-btn {
       position: relative;
-      font-size: 0.14rem;
+      font-size: 0.15rem;
       text-align: center;
       line-height: 0.37rem;
       height: 0.37rem;
       color: #444;
       flex: 1;
       white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &:after{
         position: absolute;

@@ -71,7 +71,7 @@ module.exports = {
     https: false,
     hotOnly: false,
     // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
-    proxy: 'http://weixin.jlfzg.com', // 'http://weixin.jlfzg.com/' , http://localhost:8081/ , http://192.168.101.93:8686
+    proxy: 'http://weixin.jlfzg.com', // 'http://weixin.jlfzg.com' , http://localhost:8081 , http://192.168.101.93:8686
     // proxy: {
     //   '/api/*': {
     //     target: 'http://192.168.101.93:8686'

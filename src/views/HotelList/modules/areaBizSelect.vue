@@ -9,28 +9,23 @@
         <div class="area-biz-tab-bar" :class="{'current': !showArea}" @click="showArea = false">商业圈</div>
       </div>
       <div class="area-biz-list-wrap">
-        <ul class="area-list area-biz-wrap" v-show="showArea">
-          <li v-for="n in areaArr" :key="n.zoneid">
-            <label>
-              <input type="checkbox" class="area-biz-checkbox area" @click="checkArea(n.zoneid)">
-              <span>{{ n.name }}</span>
-            </label>
-          </li>
-        </ul>
-        <ul class="biz-list area-biz-wrap" v-show="!showArea">
-          <li v-for="n in bizArr" :key="n.bizzoneid">
-            <label>
-              <input type="checkbox" class="area-biz-checkbox biz" @click="checkBiz(n.bizzoneid)">
-              <span>{{ n.description }}</span>
-            </label>
-          </li>
-        </ul>
+        <mt-checklist
+          v-model="checkedArea"
+          :options="areaArr"
+          v-show="showArea">
+        </mt-checklist>
+
+        <mt-checklist
+          v-model="checkedBiz"
+          :options="bizArr"
+          v-show="!showArea">
+        </mt-checklist>
       </div>
     </div>
     
-    <div class="operation-btn" style="margin: 10px 0;">
-      <button class="area-empty">清空</button>
-      <button class="area-submit">确定</button>
+    <div class="operation-btn">
+      <button class="area-empty" @click="clearAreaBiz">清空</button>
+      <button class="area-submit" @click="confirmAreaBiz">确定</button>
     </div>
 
   </mt-popup>
@@ -49,11 +44,26 @@ export default {
       // 行政区
       areaArr: [],
 
+      // 选中的行政区
+      checkedArea: [],
+
       // 商圈
       bizArr: [],
+
+      // 选中的商圈
+      checkedBiz: [],
     }
   },
   props: {
+  },
+  watch: {
+    // 监视行政区、商圈弹出框的状态，弹出的时候初始化选择项
+    getAreaBizPopupVisible(){
+      if(this.getAreaBizPopupVisible){
+        this.checkedArea = this.$store.state.hotelList.checkedArea
+        this.checkedBiz = this.$store.state.hotelList.checkedBiz
+      }
+    }
   },
   components: {
   },
@@ -81,19 +91,35 @@ export default {
       this.$api.hotelList.syncGetAreaBiz(param).then(res => {
         if(res.returnCode === 1 && res.data){
           this.areaArr = res.data.zoneList || []
+          this.areaArr.forEach(n => {
+            n.label = n.name
+            n.value = n.zoneid
+          });
+
           this.bizArr = res.data.bizzoneList || []
+          this.bizArr.forEach(n => {
+            n.label = n.description
+            n.value = n.bizzoneid
+          });
         }else if(res.errcode == 'notLogin'){
         }
       })
     },
-    // 点击某个行政区
-    checkArea(zoneid){
-
+    // 点击 '清空'
+    clearAreaBiz(){
+      this.checkedArea = []
+      this.checkedBiz = []
     },
-    // 点击某个商圈
-    checkBiz(bizzoneid){
-
+    // 点击 '确定'
+    confirmAreaBiz(){
+      this.$store.commit(`hotelList/setCommonState`, {k: 'checkedArea', v: this.checkedArea})
+      this.$store.commit(`hotelList/setCommonState`, {k: 'checkedBiz', v: this.checkedBiz})
+      this.hidePopup()
     },
+    // 隐藏 popup
+    hidePopup(){
+      this.$store.commit(`hotelList/setCommonState`, {k: 'areaBizPopupVisible', v: false})
+    }
   }
 }
 </script>
@@ -101,7 +127,7 @@ export default {
 <style lang="scss">
 
 .area-biz-outer {
-    font-size: 0.14rem;
+    font-size: 0.15rem;
     overflow: hidden;
     border-bottom: 0.01rem solid #eee;
 
@@ -115,7 +141,7 @@ export default {
             border-bottom: 0.01rem solid #eee;
 
             &.current{
-                color: #099FDE;
+                color: #ff7625;
             }
 
             &:last-child{
@@ -128,6 +154,8 @@ export default {
         float: left;
         width: calc(100% - 1.3rem);
         min-height: 1.5rem;
+        max-height: 3rem;
+        overflow-y: scroll;
         border-left: 0.01rem solid #eee;
 
         @at-root .area-biz-wrap {
@@ -142,7 +170,7 @@ export default {
                 padding: 0.1rem;
 
                 .area-biz-checkbox:checked+span {
-                    color: #099FDE;
+                    color: #ff7625;
                 }
             }
         }
@@ -150,30 +178,49 @@ export default {
 }
 
 .operation-btn {
-    text-align: center;
 
     button {
-        display: inline-block;
         border: none;
-        border-radius: 0.03rem;
-        background: none;
-        height: 0.3rem;
-        line-height: 0.3rem;
-        outline: none;
-        font-size: 0.14rem;
-
-        &.area-empty {
-            width: 1rem;
-            color: #ff531a;
-        }
+        width: 50%;
+        background: #e2e2e2;
+        color: #666666;
+        height: 0.4rem;
+        font-size: 0.16rem;
 
         &.area-submit {
-            width: 1.75rem;
-            flex: 1;
-            background-color: #099FDE;
-            color: #fff;
+            color: white;
+            background: #ff7625;
         }
     }
-    
 }
+
+.mint-checkbox-core{
+  width: 0.14rem;
+  height: 0.14rem;
+
+  &:after{
+    top: 0.015rem;
+    left: 0.045rem;
+    width: 0.03rem;
+    height: 0.07rem;
+  }
+}
+
+.mint-checkbox-label{
+  color: #333333;
+  margin-left: 0.03rem;
+}
+.mint-cell-wrapper{
+  font-size: 0.15rem;
+  background-image: none;
+}
+.mint-cell{
+  min-height: 0.35rem;
+}
+
+.mint-checkbox-input:checked + .mint-checkbox-core {
+  background-color: #ff7625;
+  border-color: #ff7625;
+}
+
 </style>
