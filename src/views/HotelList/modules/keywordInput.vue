@@ -7,8 +7,8 @@
 
       <div id="hlist-Fdate">
 				<div class="time-condition" @click="showCheckinCheckout">
-					<p>入<span class="qt-ml5">11-27</span></p>
-					<p>离<span class="qt-ml5">11-28</span></p>
+					<p>入<span class="qt-ml5">{{ getCheckin.substring(5) }}</span></p>
+					<p>离<span class="qt-ml5">{{ getCheckout.substring(5) }}</span></p>
 				</div>
 				<i class="iconfont icon-down-thin" style="position: relative;font-size: 0.1rem;margin-left: 0.05rem;top: -0.06rem;"></i>
 			</div>
@@ -36,7 +36,14 @@ export default {
     GoBack,
   },
   created() {},
-  computed: {},
+  computed: {
+    getCheckin(){
+      return this.$store.state.checkin
+    },
+    getCheckout(){
+      return this.$store.state.checkout
+    },
+  },
   mounted() {},
   methods: {
     // 设置入离日期弹出层显示状态
