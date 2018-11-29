@@ -17,6 +17,12 @@
 
       <input type="text" class="keyw-input" placeholder="酒店名/地名" readonly />
     </div>
+
+    <mt-popup
+      v-model="popupVisible"
+      >
+      ...
+    </mt-popup>
 	</div>
 </template>
 
@@ -28,6 +34,7 @@ export default {
   name: "keywordInput",
   data() {
     return {
+      popupVisible: true,
     }
   },
   props: {},

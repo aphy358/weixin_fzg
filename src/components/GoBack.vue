@@ -43,7 +43,7 @@ export default {
   font-size: 0.23rem;
   font-weight: bold;
   color: white;
-  z-index: 9999;
+  z-index: 1001;
   transform: translate3d(0, 0, 0) scale(1);
 }
 </style>
