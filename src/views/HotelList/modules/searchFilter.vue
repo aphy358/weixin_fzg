@@ -63,7 +63,7 @@ export default {
     position: relative;
     background-color: white;
     width: 100%;
-    height: 0.37rem;
+    height: 0.35rem;
     box-sizing: border-box;
     font-size: 0;
     display: flex;
@@ -83,8 +83,8 @@ export default {
       position: relative;
       font-size: 0.15rem;
       text-align: center;
-      line-height: 0.37rem;
-      height: 0.37rem;
+      line-height: 0.35rem;
+      height: 0.35rem;
       color: #444;
       flex: 1;
       white-space: nowrap;
@@ -99,7 +99,7 @@ export default {
         transform-origin: 100% 50%;
         width: 0.01rem;
         height: 0.27rem;
-        top: 0.05rem;
+        top: 0.04rem;
         right: 0;
       }
 
@@ -110,11 +110,14 @@ export default {
       span{
         display: inline-block;
         max-width: 1rem;
+        color: #666666;
       }
     }
 
     .iconfont {
-      display: inline-block;
+      // display: inline-block;
+      position: relative;
+      top: -0.01rem;
       font-size: 0.1rem;
       color: #333;
     }
