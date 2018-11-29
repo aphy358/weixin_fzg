@@ -147,8 +147,17 @@ export default {
   activated(){    
     this.initStarPriceText()
     this.initCheckinCheckout()
+    this.resetNights()
   },
   methods:{
+    // 重新设置晚数
+    resetNights(){
+      let day1 = new Date( formatDateOne(addDays(this.date1) + ' 00:00:00') )
+      let day2 = new Date( formatDateOne(addDays(this.date2) + ' 00:00:00') )
+
+      // 计算出晚数
+      this.nights = ( (+day2) - (+day1) ) / (24*60*60*1000)
+    },
     // 初始化入离日期的显示
     initCheckinCheckout(){
       this.date1 = new Date( formatDateOne(this.getCheckin) )
