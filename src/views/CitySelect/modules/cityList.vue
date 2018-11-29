@@ -82,10 +82,16 @@ export default {
       this.hotCity1 = hotCity.filter(n => n.cityType === '1')
     }
 
-    // 获取城市列表
-    this.$api.citySelect.syncGetCities().then(res => {
-      this.cities = res
-    })
+    let citySelectList = sessionStorage.getItem('citySelectList')
+    if(citySelectList){
+      this.cities = JSON.parse(citySelectList)
+    }else{
+      // 获取城市列表
+      this.$api.citySelect.syncGetCities().then(res => {
+        this.cities = res
+        sessionStorage.setItem('citySelectList', JSON.stringify(res))
+      })
+    }
   },
   computed: {
   },
