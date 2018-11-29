@@ -6,7 +6,7 @@
       <GoBack />
 
       <div id="hlist-Fdate">
-				<div class="time-condition" @click="showKeywordInput">
+				<div class="time-condition" @click="showCheckinCheckout">
 					<p>入<span class="qt-ml5">11-27</span></p>
 					<p>离<span class="qt-ml5">11-28</span></p>
 				</div>
@@ -18,36 +18,35 @@
       <input type="text" class="keyw-input" placeholder="酒店名/地名" readonly />
     </div>
 
-    <mt-popup
-      v-model="popupVisible"
-      >
-      ...
-    </mt-popup>
+    <!-- 入离日期选择弹出框 -->
+    <CheckinCheckout v-if="checkinCheckoutVisible" @closePopup="checkinCheckoutVisible = false" />
+
 	</div>
 </template>
 
 <script>
 // 酒店列表 顶部关键字输入区域
 import GoBack from '@/components/GoBack.vue'
+import CheckinCheckout from './checkinCheckout'
 
 export default {
   name: "keywordInput",
   data() {
     return {
-      popupVisible: true,
+      checkinCheckoutVisible: false,
     }
   },
   props: {},
   components: {
-    GoBack
+    GoBack,
+    CheckinCheckout
   },
   created() {},
   computed: {},
   mounted() {},
   methods: {
-    showKeywordInput(){
-      console.log('showKeywordInput');
-      
+    showCheckinCheckout(){
+      this.checkinCheckoutVisible = true
     },
     
   }
