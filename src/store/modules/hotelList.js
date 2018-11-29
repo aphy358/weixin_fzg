@@ -14,6 +14,9 @@ export default {
     // 行政区、商圈 popup
     areaBizPopupVisible: false,
 
+    // 入离日期选择框 popup
+    checkincheckoutPopupVisible: false,
+
     // 选中的行政区
     checkedArea: [],
 

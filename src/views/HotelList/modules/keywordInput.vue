@@ -18,35 +18,30 @@
       <input type="text" class="keyw-input" placeholder="酒店名/地名" readonly />
     </div>
 
-    <!-- 入离日期选择弹出框 -->
-    <CheckinCheckout v-if="checkinCheckoutVisible" @closePopup="checkinCheckoutVisible = false" />
-
 	</div>
 </template>
 
 <script>
 // 酒店列表 顶部关键字输入区域
 import GoBack from '@/components/GoBack.vue'
-import CheckinCheckout from './checkinCheckout'
 
 export default {
   name: "keywordInput",
   data() {
     return {
-      checkinCheckoutVisible: false,
     }
   },
   props: {},
   components: {
     GoBack,
-    CheckinCheckout
   },
   created() {},
   computed: {},
   mounted() {},
   methods: {
+    // 设置入离日期弹出层显示状态
     showCheckinCheckout(){
-      this.checkinCheckoutVisible = true
+      this.$store.commit(`hotelList/setCommonState`, {k: 'checkincheckoutPopupVisible', v: true})
     },
     
   }

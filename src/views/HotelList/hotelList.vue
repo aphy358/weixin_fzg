@@ -6,12 +6,24 @@
     <!-- 搜索条件过滤 -->
     <SearchFilter />
 
+    <!-- 入离日期选择弹出框 -->
+    <CheckinCheckout />
+
+    <!-- 星级价格 popup -->
+    <StarPrice @setStarPrice="setStarPrice" page="hotelList" />
+
+    <!-- 行政区、商圈 popup -->
+    <AreaBizSelect />
+
   </div>
 </template>
 
 <script>
 import KeywordInput from './modules/keywordInput'
 import SearchFilter from './modules/searchFilter'
+import StarPrice from '@/components/StarPrice.vue'
+import AreaBizSelect from './modules/areaBizSelect'
+import CheckinCheckout from './modules/checkinCheckout'
 
 export default {
   name: 'hotelList',
@@ -24,6 +36,9 @@ export default {
   components: {
     KeywordInput,
     SearchFilter,
+    StarPrice,
+    AreaBizSelect,
+    CheckinCheckout
   },
   created(){
   },
@@ -32,6 +47,9 @@ export default {
   mounted(){
   },
   methods:{
+    setStarPrice(){
+
+    }
   }
 }
 </script>

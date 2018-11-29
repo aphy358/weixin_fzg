@@ -1,6 +1,6 @@
 <template>
   <mt-popup
-    v-model="popupVisible"
+    v-model="getPopupVisible"
     >
     ...
   </mt-popup>
@@ -12,7 +12,6 @@ export default {
   name: 'checkinCheckout',
   data(){
     return {
-      popupVisible: true
     }
   },
   props: [],
@@ -21,13 +20,16 @@ export default {
   created(){
   },
   watch: {
-    popupVisible(){
-      if(!this.popupVisible){
-        this.$emit('closePopup')
-      }
-    }
   },
   computed: {
+    getPopupVisible: {
+      get: function () {
+        return this.$store.state.hotelList.checkincheckoutPopupVisible
+      },
+      set: function (newValue) {
+        this.$store.commit(`hotelList/setCommonState`, {k: 'checkincheckoutPopupVisible', v: newValue})
+      }
+    },
   },
   mounted(){
   },
