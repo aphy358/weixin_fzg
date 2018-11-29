@@ -89,7 +89,7 @@
 <script>
 // 搜索区域组件
 import StarPrice from '@/components/StarPrice.vue'
-import DatePicker from './modules/datePicker.vue'
+import DatePicker from '@/components/DatePicker.vue'
 import { addDays, formatDateOne } from '@/assets/util'
 
 export default {
