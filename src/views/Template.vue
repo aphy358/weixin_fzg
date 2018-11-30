@@ -7,21 +7,15 @@
 export default {
   name: '',
   data(){
-    return {
-    }
+    return {}
   },
-  props: {
-  },
-  components: {
-  },
-  created(){
-  },
-  computed: {
-  },
-  mounted(){
-  },
-  methods:{
-  }
+  props: {},
+  components: {},
+  watch: {},
+  created(){},
+  computed: {},
+  mounted(){},
+  methods:{}
 }
 </script>
 

@@ -14,10 +14,14 @@
 				<i class="iconfont icon-down-thin"></i>
 			</div>
 		</div>
+
+    <!-- 分割符 -->
+    <GAP />
   </div>
 </template>
 
 <script>
+import GAP from '@/components/GAP.vue'
 
 export default {
   name: 'searchFilter',
@@ -28,6 +32,7 @@ export default {
   props: {
   },
   components: {
+    GAP,
   },
   created(){
   },
@@ -58,6 +63,7 @@ export default {
   position: fixed;
   margin-top: 0.56rem;
   width: 100%;
+  z-index: 1000;
 
   #hlist-filter {
     position: relative;

@@ -15,7 +15,7 @@
 
       <i class="iconfont icon-search0 searchIcon"></i>
 
-      <input type="text" class="keyw-input" placeholder="酒店名/地名" readonly />
+      <input type="text" class="keyw-input" placeholder="酒店名/地名" readonly @click="$emit('showKeywordBoard')" />
     </div>
 
 	</div>

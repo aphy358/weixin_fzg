@@ -5,16 +5,18 @@ import http from './http'
 export const syncGetAreaBiz = (args, loading = false) => http.post("/hotel/getZone.do", args, loading)
 
 
-// // 根据关键字查酒店列表
-// export const syncGetHotels = (args, loading = false) => http.post("/suggest/searchHotel.do", args, loading)
+// 根据关键字查酒店列表
+export const syncGetHotels = (args, loading = false) => http.post("/hotel/suggest.do", args, loading)
+
+
+// 查询酒店列表
+export const syncGetHotelList = (args, loading = true) => http.post("/hotel/query.do", args, loading)
+
 
 
 // // 根据城市 id 查对应的 '行政区' 、'商业圈'
 // export const syncGetZone = (args, loading = false) => http.post("/hotel/getZone.do", args, loading)
 
-
-// // 查询酒店列表
-// export const syncGetHotelList = (args, loading = true) => http.post("/hotel/searchHotelList.do", args, loading)
 
 
 // // 查询酒店价格，(缓存价格)

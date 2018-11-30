@@ -1,34 +1,44 @@
 <template>
   <div class="page hotelList-page">
-    <!-- 关键字搜索 -->
-    <KeywordInput />
+    <div v-show="!showKeywordBoard">
+      <!-- 关键字搜索 -->
+      <KeywordInput @showKeywordBoard="showKeywordBoard = true" />
 
-    <!-- 搜索条件过滤 -->
-    <SearchFilter />
+      <!-- 搜索条件过滤 -->
+      <SearchFilter />     
 
-    <!-- 入离日期选择弹出框 -->
-    <CheckinCheckout />
+      <!-- 酒店列表组件 -->
+      <HotelListInfinite />
 
-    <!-- 星级价格 popup -->
-    <StarPrice @setStarPrice="setStarPrice" page="hotelList" />
+      <!-- 入离日期选择弹出框 -->
+      <CheckinCheckout />
 
-    <!-- 行政区、商圈 popup -->
-    <AreaBizSelect />
+      <!-- 星级价格 popup -->
+      <StarPrice @setStarPrice="setStarPrice" page="hotelList" />
+
+      <!-- 行政区、商圈 popup -->
+      <AreaBizSelect />
 
 
-    <!-- 入离日期弹框 -->
-    <DatePicker :open="getOpenPicker1" :dateBind="date1" :startDate="startDate1" :endDate="endDate1" @confirm="setNewDate($event, 1)" />
-    <DatePicker :open="getOpenPicker2" :dateBind="date2" :startDate="startDate2" :endDate="endDate2" @confirm="setNewDate($event, 2)" />
+      <!-- 入离日期弹框 -->
+      <DatePicker :open="getOpenPicker1" :dateBind="date1" :startDate="startDate1" :endDate="endDate1" @confirm="setNewDate($event, 1)" />
+      <DatePicker :open="getOpenPicker2" :dateBind="date2" :startDate="startDate2" :endDate="endDate2" @confirm="setNewDate($event, 2)" />
+    </div>
+
+    <KeywordBoard v-show="showKeywordBoard" @hideKeywordBoard="showKeywordBoard = false" :showBoard="showKeywordBoard" />
 
   </div>
 </template>
 
 <script>
+import KeywordBoard from './modules/keywordBoard'
+
 import KeywordInput from './modules/keywordInput'
 import SearchFilter from './modules/searchFilter'
 import StarPrice from '@/components/StarPrice.vue'
 import AreaBizSelect from './modules/areaBizSelect'
 import CheckinCheckout from './modules/checkinCheckout'
+import HotelListInfinite from './modules/hotelListInfinite'
 
 import DatePicker from '@/components/DatePicker.vue'
 import { addDays, formatDateOne } from '@/assets/util'
@@ -37,6 +47,8 @@ export default {
   name: 'hotelList',
   data(){
     return {
+      showKeywordBoard: false,
+
       date1: '',
       date2: '',
 
@@ -52,11 +64,13 @@ export default {
   props: {
   },
   components: {
+    KeywordBoard,
     KeywordInput,
-    SearchFilter,
+    SearchFilter,    
     StarPrice,
     AreaBizSelect,
     CheckinCheckout,
+    HotelListInfinite,
     DatePicker
   },
   created(){

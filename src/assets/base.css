@@ -69,6 +69,7 @@ input[type='checkbox']{width: 12px;height: 12px;float: left;border-radius: 2px;b
 .page{ /* 设置页面的全局宽高 */
     min-height: 100vh;
     width: 100vw;
+    background: white;
 }
 
 /* 公共样式 end */

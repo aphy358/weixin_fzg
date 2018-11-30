@@ -4,6 +4,9 @@ export default {
   namespaced: true,
 
   state: {
+    // 当前分页为第几页
+    pageNow: '1',
+
     keyword: '',
 
     hotelId: '',
