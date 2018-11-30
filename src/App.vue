@@ -50,7 +50,6 @@ export default {
     // --------
 
     beforeEnter: function (el) {
-      
     },
     // 当与 CSS 结合使用时
     // 回调函数 done 是可选的
@@ -72,7 +71,6 @@ export default {
     // --------
 
     beforeLeave: function (el) {
-      
     },
     // 当与 CSS 结合使用时
     // 回调函数 done 是可选的
@@ -110,21 +108,8 @@ export default {
   transform: none!important;
 }
 
-.slide-right-enter {
-}
-
 .slide-right-enter-active{
   z-index: -1;
 }
-
-.slide-right-leave-active {
-}
-
-.slide-left-enter {
-}
-
-.slide-left-leave-active {
-}
-
 
 </style>
