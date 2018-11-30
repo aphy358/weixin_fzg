@@ -44,7 +44,7 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all 26000ms;
+  transition: all 260ms;
   height: 100%;
   top: 0;
   position: absolute;
@@ -55,7 +55,6 @@ export default {
 
 .slide-right-enter {
   transform: translate3d(-50%, 0, 0);
-  height: 100vh;
 }
 
 .slide-right-enter-active{
