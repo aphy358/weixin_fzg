@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss">
 .nav-back {
-  position: fixed;
+  position: absolute;
   width: 0.40rem;
   height: 0.36rem;
   left: 0;

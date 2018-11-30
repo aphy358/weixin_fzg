@@ -94,7 +94,7 @@ export default {
     }
 
     .searchIcon{
-      position: fixed;
+      position: absolute;
       color: #c1c1c1;
       top: 0.17rem;
       left: 1.15rem;

@@ -112,4 +112,8 @@ export default {
   z-index: -1;
 }
 
+.slide-left-enter-active{
+  z-index: 2000;
+}
+
 </style>

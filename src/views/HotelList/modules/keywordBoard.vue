@@ -125,7 +125,7 @@ export default {
     margin: 0.1rem 0.20rem 0.10rem 0.40rem;
 
     .searchIcon{
-      position: fixed;
+      position: absolute;
       color: #c1c1c1;
       top: 0.17rem;
       left: 0.47rem;
