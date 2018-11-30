@@ -45,7 +45,7 @@ export default {
 .slide-left-leave-active {
   will-change: transform;
   transition: all 260ms;
-  height: 100%;
+  height: 1000%;
   top: 0;
   position: absolute;
   backface-visibility: hidden;
