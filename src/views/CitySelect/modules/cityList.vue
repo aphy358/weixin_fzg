@@ -6,6 +6,18 @@
         <li data-key="1" :class="{'current': cityType == '1'}" @click="cityType='1'">境外城市</li>
         <i class="cui-tab-scrollbar"></i>
       </ul>
+
+      <div v-if="cityType == '0'" class="nav-bar-wrap">
+        <ul>
+          <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市0' + n)">{{ n }}</li>
+          <!-- <li v-for="n in cityArr" :key="n"><a :href="'#城市' + n">{{ n }}</a></li> -->
+        </ul>
+      </div>
+      <div v-if="cityType == '1'" class="nav-bar-wrap">
+        <ul>
+          <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市1' + n)">{{ n }}</li>
+        </ul>
+      </div>
     </div>
 
     <div class="city-list-wrap">
@@ -23,13 +35,6 @@
             <li v-for="(p, i) in cities.filter(o => o.t === '0' && o.w === n)" :key="i">{{ p.n }}</li>
           </ul>
         </div>
-
-        <div class="nav-bar-wrap">
-          <ul>
-            <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市0' + n)">{{ n }}</li>
-            <!-- <li v-for="n in cityArr" :key="n"><a :href="'#城市' + n">{{ n }}</a></li> -->
-          </ul>
-        </div>
       </div>
 
       <!-- 境外城市 -->
@@ -45,13 +50,7 @@
           <ul class="hotel-city-tags" v-if="cities && cities.length > 0">
             <li v-for="(p, i) in cities.filter(o => o.t === '1' && o.w === n)" :key="i">{{ p.n }}</li>
           </ul>
-        </div>
-
-        <div class="nav-bar-wrap">
-          <ul>
-            <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市1' + n)">{{ n }}</li>
-          </ul>
-        </div>
+        </div>        
       </div>
     </div>
   </div>
@@ -167,6 +166,26 @@ export default {
     }
 
   }
+
+  .nav-bar-wrap{
+    position: absolute;
+    width: 0.25rem;
+    top: 0.35rem;
+    right: 0;
+    z-index: 3001;
+
+    ul{
+      background-color: rgba(255, 255, 255, .5);
+      text-transform: uppercase;
+      color: #ff7625;
+      font-size: 0.12rem;
+
+      li{
+        line-height: 0.19rem;
+        text-align: center;
+      }
+    }
+  }
 }
 
 .city-list-wrap{
@@ -239,27 +258,7 @@ export default {
     // @at-root .one-city-list-wrap{
     //   padding-top: 0.91rem;
     //   margin-top: -0.91rem;
-    // }
-
-    .nav-bar-wrap{
-      position: fixed;
-      width: 0.25rem;
-      top: 0.91rem;
-      right: 0;
-      z-index: 3001;
-
-      ul{
-        background-color: rgba(255, 255, 255, .5);
-        text-transform: uppercase;
-        color: #ff7625;
-        font-size: 0.12rem;
-
-        li{
-          line-height: 0.19rem;
-          text-align: center;
-        }
-      }
-    }
+    // }    
   }
 
 }
