@@ -58,15 +58,9 @@ export default {
       if( el.classList.contains('slide-left-enter') ){
         el.style.left = '100%'
         Velocity(el, {left: '0%'}, {duration: 300, complete: done})
-        // $('.slide-left-enter').animate({left: "0%"}, 300, 'linear', function(){
-        //   done()
-        // })
       }else{
         el.style.left = '-50%'
         Velocity(el, {left: '0%'}, {duration: 300, complete: done})
-        // $('.slide-right-enter').animate({left: "0%"}, 300, 'linear', function(){
-        //   done()
-        // })
       }
     },
     afterEnter: function (el) {
@@ -86,15 +80,9 @@ export default {
       if( el.classList.contains('slide-left-leave') ){
         el.style.left = '0%'
         Velocity(el, {left: '-50%'}, {duration: 300, complete: done})
-        // $('.slide-left-leave').animate({left: "-50%"}, 300, 'linear', function(){
-        //   done()
-        // })
       }else{
         el.style.left = '0%'
         Velocity(el, {left: '100%'}, {duration: 300, complete: done})
-        // $('.slide-right-leave').animate({left: "100%"}, 300, 'linear', function(){
-        //   done()
-        // })
       }
     },
     afterLeave: function (el) {
