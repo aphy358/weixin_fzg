@@ -1,5 +1,13 @@
 <template>
-  <transition :name="transitionName" id="app">
+  <transition :name="transitionName" id="app" 
+    @before-enter="beforeEnter"
+    @enter="enter"
+    @after-enter="afterEnter"
+
+    @before-leave="beforeLeave"
+    @leave="leave"
+    @after-leave="afterLeave"
+    >
     <keep-alive>
       <router-view/>
     </keep-alive>
@@ -7,6 +15,8 @@
 </template>
 
 <script>
+import Velocity from 'velocity-animate'
+
 export default {
   name: "",
   data() {
@@ -34,7 +44,63 @@ export default {
   created() {},
   computed: {},
   mounted() {},
-  methods: {}
+  methods: {
+    // --------
+    // 进入中
+    // --------
+
+    beforeEnter: function (el) {
+      
+    },
+    // 当与 CSS 结合使用时
+    // 回调函数 done 是可选的
+    enter: function (el, done) {
+      if( el.classList.contains('slide-left-enter') ){
+        el.style.left = '100%'
+        Velocity(el, {left: '0%'}, {duration: 300, complete: done})
+        // $('.slide-left-enter').animate({left: "0%"}, 300, 'linear', function(){
+        //   done()
+        // })
+      }else{
+        el.style.left = '-50%'
+        Velocity(el, {left: '0%'}, {duration: 300, complete: done})
+        // $('.slide-right-enter').animate({left: "0%"}, 300, 'linear', function(){
+        //   done()
+        // })
+      }
+    },
+    afterEnter: function (el) {
+      el.removeAttribute('style')
+    },
+
+    // --------
+    // 离开时
+    // --------
+
+    beforeLeave: function (el) {
+      
+    },
+    // 当与 CSS 结合使用时
+    // 回调函数 done 是可选的
+    leave: function (el, done) {
+      if( el.classList.contains('slide-left-leave') ){
+        el.style.left = '0%'
+        Velocity(el, {left: '-50%'}, {duration: 300, complete: done})
+        // $('.slide-left-leave').animate({left: "-50%"}, 300, 'linear', function(){
+        //   done()
+        // })
+      }else{
+        el.style.left = '0%'
+        Velocity(el, {left: '100%'}, {duration: 300, complete: done})
+        // $('.slide-right-leave').animate({left: "100%"}, 300, 'linear', function(){
+        //   done()
+        // })
+      }
+    },
+    afterLeave: function (el) {
+      el.removeAttribute('style')
+    },
+  }
 };
 </script>
 
@@ -43,18 +109,20 @@ export default {
 .slide-right-leave-active,
 .slide-left-enter-active,
 .slide-left-leave-active {
-  will-change: transform;
-  transition: all 260ms;
   height: 1000%;
   top: 0;
   position: absolute;
+  /* perspective: 1000; 这个属性会导致页面切换时，顶部 fixed 的元素无法固定在预想位置 */
   backface-visibility: hidden;
-  perspective: 1000;
   box-shadow: 0 0 10px #ccc;
 }
 
+/* 这里是为了去除 transform 样式，使页面切换时，不会影响 fixed 元素的正常固定 */
+.velocity-animating{
+  transform: none!important;
+}
+
 .slide-right-enter {
-  transform: translate3d(-50%, 0, 0);
 }
 
 .slide-right-enter-active{
@@ -62,16 +130,12 @@ export default {
 }
 
 .slide-right-leave-active {
-  transform: translate3d(100%, 0, 0);
 }
 
 .slide-left-enter {
-  transform: translate3d(100%, 0, 0);
-  height: 100vh;
 }
 
 .slide-left-leave-active {
-  transform: translate3d(-50%, 0, 0);
 }
 
 
