@@ -3,7 +3,7 @@
     <ul
       class="hotel-list-result-ul"
       v-infinite-scroll="queryHotel"
-      infinite-scroll-disabled="loading"
+      infinite-scroll-disabled="infiniteLoad"
       infinite-scroll-distance="10">
 
       <li v-for="n in hotelList" :key="n.infoId" class="item-content">
@@ -47,7 +47,8 @@ export default {
   data(){
     return {
       hotelList: [],
-      loading: true,
+      loading: false,
+      infiniteLoad: false,
       pageNow: 1,
     }
   },
@@ -61,11 +62,16 @@ export default {
   mounted(){},
   methods:{
     queryHotel(){
-      let _state = this.$store.state
+      let _this = this
+      // 如果已经在查询酒店列表，则暂时不允许再查询
+      if(_this.loading)   return false
+      _this.loading = true
+
+      let _state = _this.$store.state
       let param = {
         cityId: _state.cityId,
         type: _state.cityType,
-        pageNow: this.pageNow,
+        pageNow: _this.pageNow,
         startDate: _state.checkin,
         endDate: _state.checkout,
         keyWords: _state.hotelList.keyword,
@@ -76,16 +82,18 @@ export default {
       }
 
       console.log(param);
-      
 
       this.$api.hotelList.syncGetHotelList(param).then(res => {
+        // 将这个变量设置为 false，表示允许再次查询酒店列表
+        _this.loading = false
+
         if(res.success && res.content){
           let content = res.content
-          if(content.pageCount <= this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
-            this.loading = false
+          if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
+            _this.infiniteLoad = true
           }else{
-            this.loading = true
-            this.pageNow++
+            _this.infiniteLoad = false
+            _this.pageNow++
 
             for (let i = 0; i < content.data.length; i++) {
               const n = content.data[i];
@@ -95,7 +103,10 @@ export default {
                 n.star <= 45 ? '高档型' : '豪华型'
             }
 
-            this.hotelList = this.hotelList.concat(content.data)
+            _this.hotelList = _this.hotelList.concat(content.data)
+            console.log(_this.hotelList);
+            
+            
           }
         }
       })

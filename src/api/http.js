@@ -4,14 +4,11 @@ import axios from "axios"
 import qs from 'qs'
 
 // https://github.com/rstacruz/nprogress
-// import "nprogress/nprogress.css"
-import NProgress from "nprogress"
+import { Indicator } from 'mint-ui'
 
 const printErrorInfo = info => {
   alert(info)
 };
-
-NProgress.configure({ showSpinner: false });
 
 // https://github.com/mzabriskie/axios
 const http = axios.create({
@@ -48,14 +45,14 @@ function _h(verb) {
     
     // setting loading
     if (loading !== false) {
-      loading = NProgress
-      loading.start()
+      loading = Indicator
+      loading.open();
     }
 
     return http[verb](_restPath, _params)
       .then(response => {
         // close loading
-        loading && loading.done();
+        loading && loading.close();
 
         // api拦截
         if (response.data && (
@@ -88,7 +85,7 @@ function _h(verb) {
       })
       .catch(error => {
         // close loading
-        loading && loading.done();
+        loading && loading.close();
 
         result.error = error || new Error("请求出错,请检查网络!");
         result.data = {};

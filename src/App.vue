@@ -1,10 +1,8 @@
 <template>
   <transition :name="transitionName" id="app" 
-    @before-enter="beforeEnter"
     @enter="enter"
     @after-enter="afterEnter"
 
-    @before-leave="beforeLeave"
     @leave="leave"
     @after-leave="afterLeave"
     >
@@ -49,8 +47,8 @@ export default {
     // 进入中
     // --------
 
-    beforeEnter: function (el) {
-    },
+    // beforeEnter: function (el) {
+    // },
     // 当与 CSS 结合使用时
     // 回调函数 done 是可选的
     enter: function (el, done) {
@@ -70,8 +68,8 @@ export default {
     // 离开时
     // --------
 
-    beforeLeave: function (el) {
-    },
+    // beforeLeave: function (el) {
+    // },
     // 当与 CSS 结合使用时
     // 回调函数 done 是可选的
     leave: function (el, done) {
@@ -104,7 +102,7 @@ export default {
 }
 
 /* 这里是为了去除 transform 样式，使页面切换时，不会影响 fixed 元素的正常固定 */
-.velocity-animating{
+.page.velocity-animating{
   transform: none!important;
 }
 
