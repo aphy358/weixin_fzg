@@ -8,7 +8,7 @@
         
         <i class="iconfont icon-search0 searchIcon"></i>
         <i class="iconfont icon-shanchu kw_del" v-if="keywords != ''" @click="clearKeyword"></i>
-        <input ref="keywordInput" type="text" class="keyw-input" placeholder="酒店名/地名" v-model="keywords" @keyup="inputKeyword" />
+        <input ref="keywordInput" type="text" class="keyw-input" placeholder="酒店名/地名" v-model="keywords" @keyup="inputKeyword" @input="inputKeyword" />
 
         <div class="kw-cancel" @click="hideKeywordBoard">取消</div>
       </div>
@@ -49,6 +49,7 @@
 <script>
 // 城市选择 顶部关键字输入区域
 import GoBack from '@/components/GoBack.vue'
+import { debounce } from 'lodash'
 
 export default {
   name: 'keywordBoard',
@@ -76,7 +77,7 @@ export default {
   mounted(){
   },
   methods:{
-    inputKeyword($event){
+    inputKeyword: debounce(function(){
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
 
       if(this.keywords == ''){
@@ -98,8 +99,7 @@ export default {
           // }
         })
       }
-
-    },
+    }, 300),
     hideKeywordBoard(){
       this.keywords = ''
       this.$emit('hideKeywordBoard')

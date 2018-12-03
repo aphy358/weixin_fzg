@@ -63,6 +63,9 @@ export default {
   },
   props: {
   },
+  activated(){
+    this.showKeywordBoard = false
+  },
   components: {
     KeywordBoard,
     KeywordInput,

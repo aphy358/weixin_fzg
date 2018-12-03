@@ -1,6 +1,12 @@
 <template>
   <div class="hotel-list-result-wrap">
+    <div class="hotellist-nodata" v-if="hotelList.length == 0 && infiniteLoad">
+      <img :src="noHotel">
+      <div>暂无相关酒店</div>
+      <div>建议更换关键字进行搜索</div>
+    </div>
     <ul
+      v-else
       class="hotel-list-result-ul"
       v-infinite-scroll="queryHotel"
       infinite-scroll-disabled="infiniteLoad"
@@ -37,15 +43,21 @@
       </li>
 
     </ul>
+
+    <END v-if="hotelList.length > 0 && infiniteLoad" />
+
   </div>
 </template>
 
 <script>
+import noHotel from '@/assets/img/no-hotel.png'
+import END from '@/components/END.vue'
 
 export default {
   name: 'hotelListInfinite',
   data(){
     return {
+      noHotel: '',
       hotelList: [],
       loading: false,
       infiniteLoad: false,
@@ -54,14 +66,22 @@ export default {
     }
   },
   props: {},
-  components: {},
+  components: {
+    END,
+  },
   watch: {},
   created(){
     this.queryHotel()
+    this.noHotel = noHotel
   },
   computed: {},
   activated(){
     this.infiniteLoad = this._infiniteLoad
+    
+    if(sessionStorage.getItem('queryHotelList')){
+      this.queryHotel(1)
+      sessionStorage.removeItem('queryHotelList')
+    }
   },
   deactivated(){
     // 当跳转到其他页面时，先将该组件的无限滚动禁用。
@@ -69,11 +89,15 @@ export default {
   },
   mounted(){},
   methods:{
-    queryHotel(){
+    queryHotel(flag){
       let _this = this
       // 如果已经在查询酒店列表，则暂时不允许再查询
       if(_this.loading)   return false
       _this.loading = true
+
+      if(flag){ // 如果是根据新的查询条件重新查询，则重置相关变量
+        _this.resetData()
+      }
 
       let _state = _this.$store.state
       let param = {
@@ -82,7 +106,7 @@ export default {
         pageNow: _this.pageNow,
         startDate: _state.checkin,
         endDate: _state.checkout,
-        keyWords: _state.hotelList.keyword,
+        keyWords: _state.keyword,
         star: _state.checkedStar,
         priceRange: _state.priceRange,
         bizCircleId: _state.hotelList.checkedBiz.join(','),
@@ -102,20 +126,26 @@ export default {
             _this.infiniteLoad = false
             _this._infiniteLoad = false
             _this.pageNow++
-
-            for (let i = 0; i < content.data.length; i++) {
-              const n = content.data[i];
-              n.starText = 
-                n.star <= 25 ? '经济型' : 
-                n.star <= 35 ? '舒适型' : 
-                n.star <= 45 ? '高档型' : '豪华型'
-            }
-
-            _this.hotelList = _this.hotelList.concat(content.data)
-            
           }
+
+          for (let i = 0; i < content.data.length; i++) {
+            const n = content.data[i];
+            n.starText = 
+              n.star <= 25 ? '经济型' : 
+              n.star <= 35 ? '舒适型' : 
+              n.star <= 45 ? '高档型' : '豪华型'
+          }
+
+          _this.hotelList = _this.hotelList.concat(content.data)
+            
         }
       })
+    },
+    resetData(){
+      this.hotelList = []
+      this.pageNow = 1
+      this.infiniteLoad = false
+      this._infiniteLoad = false
     }
   }
 }
@@ -125,6 +155,22 @@ export default {
 .hotel-list-result-wrap{
   padding-top: 1rem;
   min-height: calc(100vh - 1rem);
+
+  .hotellist-nodata {
+    text-align: center;
+    padding: 0.8rem 0;
+    color: gray;
+    font-size: 0.12rem;
+
+    img{
+      width: 1.5rem;
+      margin-bottom: 0.1rem;
+    }
+
+    div{
+      margin-top: 0.05rem;
+    }
+  }
 
   ul{
     position: relative;
@@ -283,6 +329,12 @@ export default {
             border-width: 0.01rem 0;
             max-width: 1.2rem;
           }
+        }
+      }
+
+      &:last-child{
+        .item-inner:after{
+          content: none;
         }
       }
     }

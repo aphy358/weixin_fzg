@@ -10,6 +10,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    keyword: '',
     cityType: '0',
     roomNum: '1',
     adultNum: '2',

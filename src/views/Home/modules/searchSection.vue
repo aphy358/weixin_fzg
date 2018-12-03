@@ -126,10 +126,10 @@ export default {
     // 获取关键字
     getKeyword: {
       get: function () {
-        return this.$store.state.home.keyword
+        return this.$store.state.keyword
       },
       set: function (newValue) {
-        this.$store.commit(`home/setCommonState`, {k: 'keyword', v: newValue})
+        this.$store.commit(`setCommonState`, {k: 'keyword', v: newValue})
       }
     },
     getCityType(){
@@ -205,7 +205,7 @@ export default {
     },
     // 清空关键字
     resetKeyword(){
-      this.$store.commit(`home/setCommonState`, {k: 'keyword', v: ''})
+      this.$store.commit(`setCommonState`, {k: 'keyword', v: ''})
     },
     // 设置星级价格弹出层状态
     setStarPopupVisible(){
@@ -260,6 +260,8 @@ export default {
     gotoHotelList(){
       window.historyObj.arr.push('hotelList')
       this.$router.push('hotelList')
+
+      sessionStorage.setItem('queryHotelList', 'query')
     },
     // 跳转到城市选择页面
     gotoCitySelect(){

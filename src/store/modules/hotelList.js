@@ -7,8 +7,6 @@ export default {
     // 当前分页为第几页
     pageNow: '1',
 
-    keyword: '',
-
     hotelId: '',
 
     // 星级价格 popup

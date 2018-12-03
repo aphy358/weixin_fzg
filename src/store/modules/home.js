@@ -4,8 +4,7 @@ export default {
   namespaced: true,
 
   state: {
-    keyword: '',
-
+    
     hotelId: '',
 
     // 星级价格 popup
