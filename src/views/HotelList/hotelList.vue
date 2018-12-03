@@ -8,7 +8,7 @@
       <SearchFilter />     
 
       <!-- 酒店列表组件 -->
-      <HotelListInfinite />
+      <HotelListInfinite :showKeywordBoard="showKeywordBoard" />
 
       <!-- 入离日期选择弹出框 -->
       <CheckinCheckout />

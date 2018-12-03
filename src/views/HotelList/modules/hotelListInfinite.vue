@@ -1,10 +1,12 @@
 <template>
   <div class="hotel-list-result-wrap">
+
     <div class="hotellist-nodata" v-if="hotelList.length == 0 && infiniteLoad">
       <img :src="noHotel">
       <div>暂无相关酒店</div>
       <div>建议更换关键字进行搜索</div>
     </div>
+
     <ul
       v-else
       class="hotel-list-result-ul"
@@ -52,6 +54,7 @@
 <script>
 import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
+import { debounce } from 'lodash'
 
 export default {
   name: 'hotelListInfinite',
@@ -65,16 +68,63 @@ export default {
       pageNow: 1,
     }
   },
-  props: {},
+  props: ['showKeywordBoard'],
   components: {
     END,
   },
-  watch: {},
+  watch: {
+    showKeywordBoard(){
+      if(this.showKeywordBoard){
+        // 当显示关键字输入组件时，先将该组件的无限滚动禁用。
+        this.infiniteLoad = true
+      }else{
+        // 当隐藏关键字输入组件时，恢复之前的无限滚动状态
+        this.infiniteLoad = this._infiniteLoad
+      }
+    },
+    getCheckedArea(){
+      this.queryHotel(1)
+    },
+    getCheckedBiz(){
+      this.queryHotel(1)
+    },
+    getCheckin(){
+      this.queryHotel(1)
+    },
+    getCheckout(){
+      this.queryHotel(1)
+    },
+    getPriceRange(){
+      this.queryHotel(1)
+    },
+    getCheckedStar(){
+      this.queryHotel(1)
+    },
+  },
   created(){
     this.queryHotel()
     this.noHotel = noHotel
   },
-  computed: {},
+  computed: {
+    getCheckedArea(){
+      return this.$store.state.hotelList.checkedArea
+    },
+    getCheckedBiz(){
+      return this.$store.state.hotelList.checkedBiz
+    },
+    getCheckin(){
+      return this.$store.state.checkin
+    },
+    getCheckout(){
+      return this.$store.state.checkout
+    },
+    getPriceRange(){
+      return this.$store.state.priceRange
+    },
+    getCheckedStar(){
+      return this.$store.state.checkedStar
+    },
+  },
   activated(){
     this.infiniteLoad = this._infiniteLoad
     
@@ -89,7 +139,7 @@ export default {
   },
   mounted(){},
   methods:{
-    queryHotel(flag){
+    queryHotel: debounce(function(flag){
       let _this = this
       // 如果已经在查询酒店列表，则暂时不允许再查询
       if(_this.loading)   return false
@@ -112,6 +162,8 @@ export default {
         bizCircleId: _state.hotelList.checkedBiz.join(','),
         zoneId: _state.hotelList.checkedArea.join(','),
       }
+
+console.log(param);
 
       this.$api.hotelList.syncGetHotelList(param).then(res => {
         // 将这个变量设置为 false，表示允许再次查询酒店列表
@@ -140,7 +192,7 @@ export default {
             
         }
       })
-    },
+    }, 300),
     resetData(){
       this.hotelList = []
       this.pageNow = 1

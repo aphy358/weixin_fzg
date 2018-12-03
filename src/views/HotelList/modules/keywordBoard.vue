@@ -102,6 +102,7 @@ export default {
     }, 300),
     hideKeywordBoard(){
       this.keywords = ''
+      this.resultList = []
       this.$emit('hideKeywordBoard')
     },
     clearKeyword(){
