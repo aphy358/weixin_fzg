@@ -2,7 +2,7 @@
   <div class="search-filter-wrap">
     <div id="hlist-filter">
 			<div class="filter-btn" @click="gotoCitySelect">
-				<span>深圳</span>
+				<span>{{ getCityText }}</span>
 				<i class="iconfont icon-down-thin"></i>
 			</div>
 			<div class="filter-btn" @click="setStarPopupVisible">
@@ -37,6 +37,9 @@ export default {
   created(){
   },
   computed: {
+    getCityText(){
+      return this.$store.state.cityText
+    }
   },
   mounted(){
   },

@@ -25,14 +25,14 @@
       <div v-if="cityType == '0'" class="city-list-inner-wrap">
         <span class="cui-city-t">热门城市</span>
         <ul class="hotel-city-tags">
-          <li v-for="n in hotCity0" :key="n.cityId">{{ n.cityName }}</li>
+          <li v-for="n in hotCity0" :key="n.cityId" @click="selectOneCity(n.cityType, n.cityId, n.cityName)">{{ n.cityName }}</li>
         </ul>
 
         <div v-for="n in cityArr" :key="n" :id="'城市0' + n" class="one-city-list-wrap">
           <label class="cui-city-t" :for="'radio_city_0' + n">{{ n }}</label>
           <input type="checkbox" class="radio-city" name="radio_city_0" :checked="n == 'A'" :id="'radio_city_0' + n" />
           <ul class="hotel-city-tags" v-if="cities && cities.length > 0">
-            <li v-for="(p, i) in cities.filter(o => o.t === '0' && o.w === n)" :key="i">{{ p.n }}</li>
+            <li v-for="(p, i) in cities.filter(o => o.t === '0' && o.w === n)" :key="i" @click="selectOneCity(p.t, p.i, p.n)">{{ p.n }}</li>
           </ul>
         </div>
       </div>
@@ -41,14 +41,14 @@
       <div v-else class="city-list-inner-wrap">
         <span class="cui-city-t">热门城市</span>
         <ul class="hotel-city-tags">
-          <li v-for="n in hotCity1" :key="n.cityId">{{ n.cityName }}</li>
+          <li v-for="n in hotCity1" :key="n.cityId" @click="selectOneCity(n.cityType, n.cityId, n.cityName)">{{ n.cityName }}</li>
         </ul>
 
         <div v-for="n in cityArr" :key="n" :id="'城市1' + n" class="one-city-list-wrap">
           <label class="cui-city-t" :for="'radio_city_1' + n">{{ n }}</label>
           <input type="checkbox" class="radio-city" name="radio_city_1" :checked="n == 'A'" :id="'radio_city_1' + n" />
           <ul class="hotel-city-tags" v-if="cities && cities.length > 0">
-            <li v-for="(p, i) in cities.filter(o => o.t === '1' && o.w === n)" :key="i">{{ p.n }}</li>
+            <li v-for="(p, i) in cities.filter(o => o.t === '1' && o.w === n)" :key="i" @click="selectOneCity(p.t, p.i, p.n)">{{ p.n }}</li>
           </ul>
         </div>        
       </div>
@@ -105,7 +105,14 @@ export default {
       Velocity(elem, 'scroll', {offset: offsetWidth + 'px'})
       Velocity(elem, 'finish')
       elem.querySelector('input').checked = true
-    }
+    },
+    selectOneCity(type, id, name){
+      this.$store.commit(`setCommonState`, {k: 'cityType', v: type})
+      this.$store.commit(`setCommonState`, {k: 'cityId', v: id})
+      this.$store.commit(`setCommonState`, {k: 'cityText', v: name})
+      sessionStorage.setItem('queryHotelList', 'query')
+      this.$router.go(-1)
+    },
   }
 }
 </script>

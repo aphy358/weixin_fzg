@@ -54,7 +54,6 @@
 <script>
 import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
-import { debounce } from 'lodash'
 
 export default {
   name: 'hotelListInfinite',
@@ -127,6 +126,7 @@ export default {
   },
   activated(){
     this.infiniteLoad = this._infiniteLoad
+    // console.log(sessionStorage.getItem('queryHotelList'));
     
     if(sessionStorage.getItem('queryHotelList')){
       this.queryHotel(1)
@@ -139,7 +139,7 @@ export default {
   },
   mounted(){},
   methods:{
-    queryHotel: debounce(function(flag){
+    queryHotel(flag){
       let _this = this
       // 如果已经在查询酒店列表，则暂时不允许再查询
       if(_this.loading)   return false
@@ -162,8 +162,6 @@ export default {
         bizCircleId: _state.hotelList.checkedBiz.join(','),
         zoneId: _state.hotelList.checkedArea.join(','),
       }
-
-console.log(param);
 
       this.$api.hotelList.syncGetHotelList(param).then(res => {
         // 将这个变量设置为 false，表示允许再次查询酒店列表
@@ -192,7 +190,7 @@ console.log(param);
             
         }
       })
-    }, 300),
+    },
     resetData(){
       this.hotelList = []
       this.pageNow = 1

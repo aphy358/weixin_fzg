@@ -6,7 +6,7 @@
       <div class="h-s-f-icon">
         <i class="iconfont icon-baofang"></i>
       </div>
-      <div class="h-s-f-row-content" style="width: calc(100% - 1.1rem);" @click="gotoCitySelect">深圳市</div>
+      <div class="h-s-f-row-content" style="width: calc(100% - 1.1rem);" @click="gotoCitySelect">{{ getCityText }}</div>
       <div class="icon-right-wrap" style="right: 0.5rem;">
         <i class="iconfont icon-right-thin"></i>
       </div>
@@ -140,6 +140,9 @@ export default {
     },
     getCheckout(){
       return this.$store.state.checkout
+    },
+    getCityText(){
+      return this.$store.state.cityText
     }
   },
   mounted(){
