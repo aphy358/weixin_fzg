@@ -6,7 +6,7 @@
     @leave="leave"
     @after-leave="afterLeave"
     >
-    <keep-alive>
+    <keep-alive :max="5">
       <router-view/>
     </keep-alive>
   </transition>
@@ -99,6 +99,10 @@ export default {
   /* perspective: 1000; 这个属性会导致页面切换时，顶部 fixed 的元素无法固定在预想位置 */
   backface-visibility: hidden;
   box-shadow: 0 0 10px #ccc;
+}
+
+.slide-right-leave-active{
+  position: fixed;
 }
 
 /* 这里是为了去除 transform 样式，使页面切换时，不会影响 fixed 元素的正常固定 */

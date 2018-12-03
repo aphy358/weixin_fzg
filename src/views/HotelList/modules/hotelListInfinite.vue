@@ -49,6 +49,7 @@ export default {
       hotelList: [],
       loading: false,
       infiniteLoad: false,
+      _infiniteLoad: false,
       pageNow: 1,
     }
   },
@@ -59,6 +60,13 @@ export default {
     this.queryHotel()
   },
   computed: {},
+  activated(){
+    this.infiniteLoad = this._infiniteLoad
+  },
+  deactivated(){
+    // 当跳转到其他页面时，先将该组件的无限滚动禁用。
+    this.infiniteLoad = true
+  },
   mounted(){},
   methods:{
     queryHotel(){
@@ -81,8 +89,6 @@ export default {
         zoneId: _state.hotelList.checkedArea.join(','),
       }
 
-      console.log(param);
-
       this.$api.hotelList.syncGetHotelList(param).then(res => {
         // 将这个变量设置为 false，表示允许再次查询酒店列表
         _this.loading = false
@@ -91,8 +97,10 @@ export default {
           let content = res.content
           if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
+            _this._infiniteLoad = true
           }else{
             _this.infiniteLoad = false
+            _this._infiniteLoad = false
             _this.pageNow++
 
             for (let i = 0; i < content.data.length; i++) {
@@ -104,8 +112,6 @@ export default {
             }
 
             _this.hotelList = _this.hotelList.concat(content.data)
-            console.log(_this.hotelList);
-            
             
           }
         }
