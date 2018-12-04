@@ -40,7 +40,7 @@ export const formatDateOne = (dateStr) => {
   return dateStr.replace(/-/g, '/')
 }
 
-// 对日期格式化
+// 前进到某个页面
 export const gotoPage = (router, pageStr) => {
   window.historyObj.arr.push(pageStr)
   router.push(pageStr)

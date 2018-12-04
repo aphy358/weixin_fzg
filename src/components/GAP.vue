@@ -13,7 +13,7 @@ export default {
 <style lang="scss">
 .index-gap {
   position: relative;
-  height: 0.1rem;
+  height: 0.05rem;
   background-color: #efeff4;
 
   &:before,
