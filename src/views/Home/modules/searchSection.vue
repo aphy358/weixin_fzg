@@ -90,7 +90,7 @@
 // 搜索区域组件
 import StarPrice from '@/components/StarPrice.vue'
 import DatePicker from '@/components/DatePicker.vue'
-import { addDays, formatDateOne } from '@/assets/util'
+import { addDays, formatDateOne, gotoPage } from '@/assets/util'
 
 export default {
   name: 'searchSection',
@@ -261,15 +261,12 @@ export default {
     },
     // 跳转到酒店列表页
     gotoHotelList(){
-      window.historyObj.arr.push('hotelList')
-      this.$router.push('hotelList')
-
+      gotoPage(this.$router, 'hotelList')
       sessionStorage.setItem('queryHotelList', 'query')
     },
     // 跳转到城市选择页面
     gotoCitySelect(){
-      window.historyObj.arr.push('citySelect')
-      this.$router.push('/citySelect')
+      gotoPage(this.$router, 'citySelect')
     },
   }
 }

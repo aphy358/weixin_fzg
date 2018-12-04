@@ -22,6 +22,7 @@
 
 <script>
 import GAP from '@/components/GAP.vue'
+import { gotoPage } from '@/assets/util'
 
 export default {
   name: 'searchFilter',
@@ -54,8 +55,7 @@ export default {
     },
     // 跳转到城市选择页面
     gotoCitySelect(){
-      window.historyObj.arr.push('citySelect')
-      this.$router.push('/citySelect')
+      gotoPage(this.$router, 'citySelect')
     },
   }
 }

@@ -39,3 +39,9 @@ export const _setCommonState = (state, payload) => {
 export const formatDateOne = (dateStr) => {
   return dateStr.replace(/-/g, '/')
 }
+
+// 对日期格式化
+export const gotoPage = (router, pageStr) => {
+  window.historyObj.arr.push(pageStr)
+  router.push(pageStr)
+}
