@@ -12,7 +12,7 @@
       </div>
       <div id="nearby">
         <i class="iconfont icon-location"></i>
-        <span style="position: relative;top: -0.02rem;cursor: pointer">附近</span>
+        <span style="position: relative;top: -0.02rem;color: #000;">附近</span>
       </div>
     </div>
     <!--入住、离店日期-->
