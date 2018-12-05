@@ -40,6 +40,14 @@ let router = new Router({
         wechatAuth: false
       },
     },
+    {
+      path: '/checkinCheckout',
+      name: 'checkinCheckout',
+      component: () => import('./views/CheckinCheckout/CheckinCheckout.vue'),
+      meta: {
+        wechatAuth: false
+      },
+    },
   ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {

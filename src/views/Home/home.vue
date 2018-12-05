@@ -52,7 +52,7 @@ export default {
 .home-page{
 
   .icon-user{
-    font-size: 0.24rem;
+    font-size: 0.22rem;
   }
 }
 </style>

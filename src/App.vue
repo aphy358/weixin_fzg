@@ -102,7 +102,7 @@ export default {
 }
 
 .slide-right-leave-active{
-  position: fixed;
+  /* position: fixed; */
 }
 
 /* 这里是为了去除 transform 样式，使页面切换时，不会影响 fixed 元素的正常固定 */
