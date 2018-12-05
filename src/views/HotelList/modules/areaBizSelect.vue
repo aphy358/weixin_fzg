@@ -2,6 +2,12 @@
   <mt-popup
     v-model="getAreaBizPopupVisible"
     position="bottom">
+  
+  
+    <div class="operation-btn">
+      <button class="area-empty" @click="clearAreaBiz">清空</button>
+      <button class="area-submit" @click="confirmAreaBiz">确定</button>
+    </div>
 
     <div class="area-biz-outer">
       <div class="area-biz-tab-wrap">
@@ -23,10 +29,6 @@
       </div>
     </div>
     
-    <div class="operation-btn">
-      <button class="area-empty" @click="clearAreaBiz">清空</button>
-      <button class="area-submit" @click="confirmAreaBiz">确定</button>
-    </div>
 
   </mt-popup>
 </template>
@@ -182,14 +184,14 @@ export default {
     button {
         border: none;
         width: 50%;
-        background: #e2e2e2;
+        background: #f0f0f0;
         color: #666666;
         height: 0.4rem;
         font-size: 0.16rem;
 
         &.area-submit {
             color: white;
-            background: #ff7625;
+            background: #099FDE;
         }
     }
 }
