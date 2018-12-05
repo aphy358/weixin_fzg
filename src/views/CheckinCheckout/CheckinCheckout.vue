@@ -40,27 +40,27 @@
             <tr v-for="(week, j) in m.days.length / 7" :key="j">
               <td v-for="(day, k) in m.days.slice(j * 7, (j + 1) * 7)" :key="k" 
                 :class="{
-                  'disable': day.disable, 
+                  'disable': ifDisable(day), 
                   'festival': day.festival, 
-                  'text-white': checkDayStr(day.dayStr) || day.today, 
+                  'text-white': checkDayStr(day), 
                   'weekend': k % 7 == 0 || k % 7 == 6
                 }"
-                @click="clickOneDay(m, day)"
+                @click="clickOneDay(ifDisable(day), m, day)"
                 :data-dayStr="day.dayStr">
 
                 <p :class="{'small-text': day.festival || day.today}">{{ day.festival || day.today || day.day }}</p>
 
-                <span v-if="checkDayStr(day.dayStr) || day.today" 
+                <span v-if="checkDayStr(day)" 
                   :class="{
-                    'checkin': checkDayStr(day.dayStr) == 1, 
-                    'checkout': checkDayStr(day.dayStr) == 2, 
-                    'bg-circle': checkDayStr(day.dayStr) || day.today, 
+                    'checkin': checkDayStr(day) == 1, 
+                    'checkout': checkDayStr(day) == 2, 
+                    'bg-circle': checkDayStr(day), 
                     'today': day.today
                   }"
                 ></span>
 
-                <span v-if="checkDayStr(day.dayStr) == 1" class="checkin-text">入住</span>
-                <span v-if="checkDayStr(day.dayStr) == 2" class="checkout-text">离店</span>
+                <span v-if="checkDayStr(day) == 1" class="checkin-text">入住</span>
+                <span v-if="checkDayStr(day) == 2" class="checkout-text">离店</span>
 
               </td>
             </tr>
@@ -69,6 +69,8 @@
       </div>
 
     </div>
+
+    <!-- <div v-if="!checkout" class="please-check-out">请选择离店日期</div> -->
 
     <END />
 
@@ -79,8 +81,7 @@
 import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
 import { _showMonths } from './showMonths.js'
-import { formatDateOne } from '@/assets/util'
-import { MessageBox } from 'mint-ui'
+import { addDays, formatDateOne } from '@/assets/util'
 
 export default {
   name: 'CheckinCheckout',
@@ -130,8 +131,8 @@ export default {
   mounted(){},
   methods:{
     // 点击某一天
-    clickOneDay(m, _day){
-      if(_day.disable || !_day.day) return false;
+    clickOneDay(disable, m, _day){
+      if(disable) return false;
 
       let dayStr = m.year + '-' + m.month + '-' + _day.day
 
@@ -163,14 +164,40 @@ export default {
               _this.$router.go(-1)
             }, 100)
           }else{
-            MessageBox.alert('入离日期间隔请保持在15天以内！', '')
+            return false
           }
         }
       }
+    },
+    // 检查这一天是否不可点，有两种情况不可点：1、日期小于今天（境外是小于明天） 2、当离店日期还没选的时，比入住日期大15天以上的日期
+    ifDisable(day){
+      let dayStr = day.dayStr
+      let today =  addDays(new Date)
 
+      if(dayStr){
+        let d1 = +new Date( formatDateOne(dayStr) + ' 00:00:00' )
+        let d2 = +new Date( formatDateOne(today) + ' 00:00:00' )
+
+        if(d1 < d2) return true
+
+        if(!this.checkout){
+          let d3 = +new Date( formatDateOne(this.checkin) + ' 00:00:00' )
+          if(d1 - d3 > 15 * 24 * 60 * 60 * 1000){
+            return true
+          }
+
+          return false
+        }
+
+        return false
+      }
+
+      return true
     },
     // 检查 dayStr，如果其日期值等于 getCheckin 则返回1，如等于 getCheckout 则返回2，否则返回0
-    checkDayStr(dayStr){
+    checkDayStr(day){
+      let dayStr = day.dayStr
+
       if(dayStr){
         let d1 = +new Date( formatDateOne(dayStr) + ' 00:00:00' )
         let d2 = +new Date( formatDateOne(this.checkin || '') + ' 00:00:00' )
@@ -178,6 +205,7 @@ export default {
 
         if(d1 == d2)  return 1
         if(d1 == d3)  return 2
+        if(day.today) return 3
         return 0
       }
 
@@ -323,4 +351,18 @@ export default {
     }
   }
 }
+
+// .please-check-out{
+//   position: fixed;
+//   bottom: 0.2rem;
+//   font-size: 0.14rem;
+//   text-align: center;
+//   background: rgba(4, 4, 4, 0.5);
+//   color: white;
+//   padding: 0.1rem 0;
+//   width: 1.2rem;
+//   left: 50%;
+//   margin-left: -0.6rem;
+//   border-radius: 0.03rem;
+// }
 </style>

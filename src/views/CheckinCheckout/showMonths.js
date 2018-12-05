@@ -24,7 +24,6 @@ export const _showMonths = [
       },
       {
         day: '1',
-        festival: '重阳',
         disable: true
       },
       {
@@ -41,6 +40,7 @@ export const _showMonths = [
       },
       {
         day: '5',
+        festival: '重阳',
         today: '今天'
       },
       {
