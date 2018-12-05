@@ -81,7 +81,7 @@
 import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
 import { _showMonths } from './showMonths.js'
-import { addDays, formatDateOne } from '@/assets/util'
+import { addDays, formatDateTwo } from '@/assets/util'
 
 export default {
   name: 'CheckinCheckout',
@@ -142,30 +142,25 @@ export default {
         this.checkout = ''
       }else{
         // 当目前只有入住日期的时候，如果被点击的日期比入住日期小，则将被点击日期设置为入住日期；
-        // 如果被点击日期大于入住日期，且日期间隔小于16天，则将被点击日期设置为离店日期，然后跳转到上一个页面；
-        // 如果被点击日期大于入住日期，且日期间隔大于等于16天，则弹出提示框告知用户将选择的日期间隔缩小至16天以内；
-        let checkin = +new Date( formatDateOne(this.checkin) + ' 00:00:00' )
-        let dayClicked = +new Date( formatDateOne(dayStr) + ' 00:00:00' )
+        // 如果被点击日期大于入住日期，则将被点击日期设置为离店日期，然后跳转到上一个页面；
+        let checkin = +new Date( formatDateTwo(this.checkin) )
+        let dayClicked = +new Date( formatDateTwo(dayStr) )
 
         if(dayClicked <= checkin){
           this.checkin = dayStr
         }else{
-          if(dayClicked - checkin <= 15 * 24 * 60 * 60 * 1000){
-            this.checkout = dayStr
+          this.checkout = dayStr
 
-            // 将入离日期设置到 store
-            this.$store.commit(`setCommonState`, {k: 'checkin', v: this.checkin})
-            this.$store.commit(`setCommonState`, {k: 'checkout', v: this.checkout})
-            
-            // 延迟返回上一个页面
-            let _this = this
-            setTimeout(function(){
-              window.historyObj.arr.pop()
-              _this.$router.go(-1)
-            }, 100)
-          }else{
-            return false
-          }
+          // 将入离日期设置到 store
+          this.$store.commit(`setCommonState`, {k: 'checkin', v: this.checkin})
+          this.$store.commit(`setCommonState`, {k: 'checkout', v: this.checkout})
+          
+          // 延迟返回上一个页面
+          let _this = this
+          setTimeout(function(){
+            window.historyObj.arr.pop()
+            _this.$router.go(-1)
+          }, 100)
         }
       }
     },
@@ -175,13 +170,13 @@ export default {
       let today =  addDays(new Date)
 
       if(dayStr){
-        let d1 = +new Date( formatDateOne(dayStr) + ' 00:00:00' )
-        let d2 = +new Date( formatDateOne(today) + ' 00:00:00' )
+        let d1 = +new Date( formatDateTwo(dayStr) )
+        let d2 = +new Date( formatDateTwo(today) )
 
         if(d1 < d2) return true
 
         if(!this.checkout){
-          let d3 = +new Date( formatDateOne(this.checkin) + ' 00:00:00' )
+          let d3 = +new Date( formatDateTwo(this.checkin) )
           if(d1 - d3 > 15 * 24 * 60 * 60 * 1000){
             return true
           }
@@ -199,9 +194,9 @@ export default {
       let dayStr = day.dayStr
 
       if(dayStr){
-        let d1 = +new Date( formatDateOne(dayStr) + ' 00:00:00' )
-        let d2 = +new Date( formatDateOne(this.checkin || '') + ' 00:00:00' )
-        let d3 = +new Date( formatDateOne(this.checkout || '') + ' 00:00:00' )
+        let d1 = +new Date( formatDateTwo(dayStr) )
+        let d2 = +new Date( formatDateTwo(this.checkin || '') )
+        let d3 = +new Date( formatDateTwo(this.checkout || '') )
 
         if(d1 == d2)  return 1
         if(d1 == d3)  return 2
