@@ -5,22 +5,16 @@ export const _showMonths = [
     month: '12',
     days: [
       {
-        day: '',
       },
       {
-        day: '',
       },
       {
-        day: '',
       },
       {
-        day: '',
       },
       {
-        day: '',
       },
       {
-        day: '',
       },
       {
         day: '1',

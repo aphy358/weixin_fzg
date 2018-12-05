@@ -12,7 +12,7 @@
       </div>
       <div id="nearby">
         <i class="iconfont icon-location"></i>
-        <span style="position: relative;top: -0.02rem;">附近</span>
+        <span style="position: relative;top: -0.02rem;" @click="gotoCheckinCheckout">附近</span>
       </div>
     </div>
     <!--入住、离店日期-->
@@ -90,7 +90,7 @@
 // 搜索区域组件
 import StarPrice from '@/components/StarPrice.vue'
 import DatePicker from '@/components/DatePicker.vue'
-import { addDays, formatDateOne, gotoPage } from '@/assets/util'
+import { addDays, formatDateOne, formatDateTwo, gotoPage } from '@/assets/util'
 
 export default {
   name: 'searchSection',
@@ -155,8 +155,8 @@ export default {
   methods:{
     // 重新设置晚数
     resetNights(){
-      let day1 = new Date( formatDateOne(addDays(this.date1) + ' 00:00:00') )
-      let day2 = new Date( formatDateOne(addDays(this.date2) + ' 00:00:00') )
+      let day1 = new Date( formatDateTwo(addDays(this.date1)) )
+      let day2 = new Date( formatDateTwo(addDays(this.date2)) )
 
       // 计算出晚数
       this.nights = ( (+day2) - (+day1) ) / (24*60*60*1000)
@@ -229,25 +229,25 @@ export default {
     },
     // 当其中一个日期控件设置了日期后，需要重新计算晚数、保证第一个日期比第二个日期小、以及重新设置第二个日期的 endDate
     setNewDate(e, flag){
-      let day1 = new Date( formatDateOne(addDays(this.date1) + ' 00:00:00') )
-      let day2 = new Date( formatDateOne(addDays(this.date2) + ' 00:00:00') )
+      let day1 = new Date( formatDateTwo(addDays(this.date1)) )
+      let day2 = new Date( formatDateTwo(addDays(this.date2)) )
 
       if(flag == 1){
         this.date1 = e
-        day1 = new Date( formatDateOne(addDays(this.date1) + ' 00:00:00') )
+        day1 = new Date( formatDateTwo(addDays(this.date1)) )
 
         if( (+day1) >= (+day2) ){ // 需要重置第二个日期控件的 startDate 和 endDate
           this.date2 = new Date( addDays(this.date1, 1, '/') )
-          day2 = new Date( formatDateOne(addDays(this.date2) + ' 00:00:00') )
+          day2 = new Date( formatDateTwo(addDays(this.date2)) )
           this.endDate2 = new Date( addDays(this.date1, 16, '/') )
         }
       }else{
         this.date2 = e
-        day2 = new Date( formatDateOne(addDays(this.date2) + ' 00:00:00') )
+        day2 = new Date( formatDateTwo(addDays(this.date2)) )
 
         if( (+day1) >= (+day2) ){
           this.date1 = new Date( addDays(this.date2, -1, '/') )
-          day1 = new Date( formatDateOne(addDays(this.date1) + ' 00:00:00') )
+          day1 = new Date( formatDateTwo(addDays(this.date1)) )
           this.endDate2 = new Date( addDays(this.date1, 16, '/') )
         }
       }
@@ -268,6 +268,10 @@ export default {
     gotoCitySelect(){
       gotoPage(this.$router, 'citySelect')
     },
+    //*** 测试 */
+    gotoCheckinCheckout(){
+      gotoPage(this.$router, 'checkinCheckout')
+    }
   }
 }
 </script>
