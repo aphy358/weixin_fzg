@@ -21,7 +21,7 @@
 				<mt-popup
 						v-model="specialVisible"
 						position="bottom">
-					<operationBtn @clear="clear" @confirm="confirm"/>
+					<OperationBtn @clear="clear" @confirm="confirm"/>
 					<mt-checklist
 							v-model="specialReq"
 							:options="specialReqList">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import operationBtn from '@/components/operationBtn.vue'
+  import OperationBtn from '@/components/OperationBtn.vue';
   export default {
     name: '',
     
@@ -57,7 +57,7 @@
     props: {},
     
     components: {
-      operationBtn
+      OperationBtn
     },
     
     computed: {},
