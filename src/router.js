@@ -41,9 +41,9 @@ let router = new Router({
       },
     },
     {
-      path: '/orderWrite',
-      name: 'orderWrite',
-      component: () => import('./views/orderWrite/orderWrite.vue'),
+      path: '/checkinCheckout',
+      name: 'checkinCheckout',
+      component: () => import('./views/CheckinCheckout/CheckinCheckout.vue'),
       meta: {
         wechatAuth: false
       },

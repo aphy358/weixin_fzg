@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-back" @click="gobackPage">
+  <div class="nav-back" :style="_style" @click="gobackPage">
     <i class="iconfont icon-left-thin"></i>
   </div>
 </template>
@@ -12,8 +12,7 @@ export default {
     return {
     }
   },
-  props: {
-  },
+  props: ['_style'],
   components: {
   },
   created(){

@@ -35,9 +35,14 @@ export const _setCommonState = (state, payload) => {
   }
 }
 
-// 对日期格式化
+// 对日期格式化1
 export const formatDateOne = (dateStr) => {
   return dateStr.replace(/-/g, '/')
+}
+
+// 对日期格式化2
+export const formatDateTwo = (dateStr) => {
+  return dateStr.replace(/-/g, '/') + ' 00:00:00'
 }
 
 // 前进到某个页面
