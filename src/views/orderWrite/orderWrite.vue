@@ -5,7 +5,7 @@
 		<!-- 头部 -->
 		<mt-header title="订单填写">
 		</mt-header>
-		<GoBack />
+		<GoBack _style="top: 0.02rem" />
 		
 		<GAP/>
 		<hotelInfo/>
@@ -48,9 +48,5 @@
 <style scoped lang="scss">
 	.order-write-box{
 		background-color: #efeff4;
-	}
-	
-	.order-write-box .nav-back{
-		top: 0rem;
 	}
 </style>
