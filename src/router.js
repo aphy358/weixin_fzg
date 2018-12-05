@@ -40,6 +40,14 @@ let router = new Router({
         wechatAuth: false
       },
     },
+    {
+      path: '/orderWrite',
+      name: 'orderWrite',
+      component: () => import('./views/orderWrite/orderWrite.vue'),
+      meta: {
+        wechatAuth: false
+      },
+    },
   ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
