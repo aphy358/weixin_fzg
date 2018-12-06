@@ -87,8 +87,10 @@ export default {
     }else{
       // 获取城市列表
       this.$api.citySelect.syncGetCities().then(res => {
-        this.cities = res
-        sessionStorage.setItem('citySelectList', JSON.stringify(res))
+        if(res.returnCode === 1){
+          this.cities = res.dataList
+          sessionStorage.setItem('citySelectList', JSON.stringify(res.dataList))
+        }
       })
     }
   },

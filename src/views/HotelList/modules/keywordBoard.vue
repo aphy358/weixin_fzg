@@ -86,17 +86,14 @@ export default {
         let param = {'cityId': this.$store.state.cityId, 'k': this.keywords}
   
         this.$api.hotelList.syncGetHotels(param).then(res => {
-          if(res.success && res.content){
-            this.resultList = res.content || []
+          if(res.returnCode === 1){
+            this.resultList = res.dataList || []
             let v = this.keywords
   
             this.resultList.forEach(element => {
               element.html = element.n.replace(eval('/' + v + '/g'), '<span class="kw-hlight">' + v + '</span>')
             });
           }
-          // if(res.returnCode === 1){
-          // }else if(res.errcode == 'notLogin'){
-          // }
         })
       }
     }, 300),
