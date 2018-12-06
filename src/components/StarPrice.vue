@@ -5,6 +5,10 @@
 
     <div class="star-price-pop-wrap">
       <div class="s-p-p-row">
+        <OperationBtn @clear="clearStarPrice" @confirm="setStarPrice" />
+      </div>
+
+      <div class="s-p-p-row">
         <ul>
           <li v-for="(n, i) in starArr" :key="n.value" 
             :class="{'checked': n.checked}"
@@ -40,11 +44,6 @@
         </div>
       </div>
 
-      <div class="s-p-p-row">
-        <button @click="hidePopup">取消</button>
-        <button @click="setStarPrice">确定</button>
-      </div>
-
     </div>
 
   </mt-popup>
@@ -52,6 +51,7 @@
 
 <script>
 // 星级价格
+import OperationBtn from '@/components/OperationBtn.vue'
 
 export default {
   name: 'starPrice',
@@ -94,6 +94,7 @@ export default {
   },
   props: ['page'],
   components: {
+    OperationBtn
   },
   created(){
   },
@@ -240,6 +241,11 @@ export default {
     // 隐藏 popup
     hidePopup(){
       this.$store.commit(`${this.page}/setCommonState`, {k: 'starPopupVisible', v: false})
+    },
+    clearStarPrice(){
+      this.priceRange1 = '0'
+      this.priceRange2 = '999999'
+      this.checkNoStar()
     }
   }
 }
@@ -254,11 +260,7 @@ export default {
 
   @at-root .s-p-p-row{
     overflow: hidden;
-    padding: 0.4rem 0.1rem 0;
-
-    &:last-child{
-      padding: 0.4rem 0 0;
-    }
+    padding-bottom: 0.3rem;
 
     ul{
       margin: auto;
@@ -307,20 +309,7 @@ export default {
         border: 0.01rem solid #e2e2e2;
       }
     }
-
-    button{
-      border: none;
-      width: 50%;
-      background: #e2e2e2;
-      color: #666666;
-      height: 0.4rem;
-      font-size: 0.16rem;
-
-      &:last-child{
-        color: white;
-        background: #ff7625;
-      }
-    }
+    
   }
 }
 </style>
