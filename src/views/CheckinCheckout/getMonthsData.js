@@ -250,7 +250,7 @@ const getOneMonthData = (y, m) => {
   return _this
 }
 
-// 获取六个月的数据（从当前日期算起）
+// 获取七个月的数据（从当前日期算起）
 export const getMonthsData = () => {
   let resultArr = []
   let ttY = tY

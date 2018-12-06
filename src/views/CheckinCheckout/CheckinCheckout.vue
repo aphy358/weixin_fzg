@@ -45,8 +45,7 @@
                   'text-white': checkDayStr(day), 
                   'weekend': k % 7 == 0 || k % 7 == 6
                 }"
-                @click="clickOneDay(ifDisable(day), m, day)"
-                :data-dayStr="day.dayStr">
+                @click="clickOneDay(ifDisable(day), m, day)">
 
                 <p :class="{'small-text': day.festText || day.today, 'circle': checkDayStr(day)}">{{ day.festText || day.today || day.day }}</p>
 
