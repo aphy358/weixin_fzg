@@ -182,16 +182,17 @@ export default {
             _this.pageNow++
           }
 
-          for (let i = 0; i < content.data.length; i++) {
-            const n = content.data[i];
-            n.starText = 
-              n.star <= 25 ? '经济型' : 
-              n.star <= 35 ? '舒适型' : 
-              n.star <= 45 ? '高档型' : '豪华型'
+          if(content.data){
+            for (let i = 0; i < content.data.length; i++) {
+              const n = content.data[i];
+              n.starText = 
+                n.star <= 25 ? '经济型' : 
+                n.star <= 35 ? '舒适型' : 
+                n.star <= 45 ? '高档型' : '豪华型'
+            }
+  
+            _this.hotelList = _this.hotelList.concat(content.data)
           }
-
-          _this.hotelList = _this.hotelList.concat(content.data)
-            
         }
       })
     },
