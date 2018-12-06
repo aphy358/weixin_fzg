@@ -46,6 +46,8 @@
 
     </ul>
 
+    <LoadMore v-if="hotelList.length > 0 && !infiniteLoad" />
+
     <END v-if="hotelList.length > 0 && infiniteLoad" />
 
   </div>
@@ -54,6 +56,7 @@
 <script>
 import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
+import LoadMore from '@/components/LoadMore.vue'
 
 export default {
   name: 'hotelListInfinite',
@@ -70,6 +73,7 @@ export default {
   props: ['showKeywordBoard'],
   components: {
     END,
+    LoadMore,
   },
   watch: {
     showKeywordBoard(){
