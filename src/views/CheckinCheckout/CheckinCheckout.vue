@@ -99,8 +99,7 @@ export default {
   },
   watch: {},
   created(){
-    this.checkin = this.getCheckin
-    this.checkout = this.getCheckout
+    this.initData()
     this.showMonths = getMonthsData()
   },
   computed: {
@@ -112,7 +111,15 @@ export default {
     },
   },
   mounted(){},
+  activated(){
+    this.initData()
+  },
   methods:{
+    // 初始化数据
+    initData(){
+      this.checkin = this.getCheckin
+      this.checkout = this.getCheckout
+    },
     // 点击某一天
     clickOneDay(disable, m, _day){
       if(disable) return false;
