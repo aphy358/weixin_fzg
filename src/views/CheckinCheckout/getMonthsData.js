@@ -48,9 +48,10 @@ var lFtv = new Array(
   "0815 中秋节",
   "0909 重阳节",
   "1208 腊八节",
-  "1224 小年")
+  "1223 小年")
 var solarMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-var fat = mat = 9;
+var fat = 9;
+var mat = 9
 var eve = 0;
 //用自定义变量保存当前系统中的年月日
 var Today = new Date();
@@ -58,45 +59,6 @@ var tY = Today.getFullYear();
 var tM = Today.getMonth();
 var tD = Today.getDate();
 
-// 获取 y 年 m+1 月的数据
-function getOneMonthData(y, m) {
-  var sDObj, lDObj, lY, lM, lD = 1,
-    lL, lX = 0;
-  var n = 0;
-
-  sDObj = new Date(y, m, 1); //当月第一天的日期
-
-  this.length = solarDays(y, m); //公历当月天数
-  this.firstWeek = sDObj.getDay(); //公历当月1日星期几
-  this.year = y
-  this.month = m + 1
-  this.days = []
-
-  if ((m + 1) == 5) {
-    fat = sDObj.getDay()
-  }
-  if ((m + 1) == 6) {
-    mat = sDObj.getDay()
-  }
-
-  for (var i = 0; i < this.length; i++) {
-    if (lD > lX) {
-      sDObj = new Date(y, m, i + 1); //当月第一天的日期
-      lDObj = new Dianaday(sDObj); //农历
-      lY = lDObj.year; //农历年
-      lM = lDObj.month; //农历月
-      lD = lDObj.day; //农历日
-      lL = lDObj.isLeap; //农历是否闰月
-      lX = lL ? leapDays(lY) : monthDays(lY, lM); //农历当月最後一天
-      if (lM == 12) {
-        eve = lX
-      }
-    }
-    this.days[i] = new getOneDayData(y, m + 1, i + 1, lY, lM, lD++);
-  }
-
-  if (y == tY && m == tM) this.days[tD - 1].today = '今日'; //今日
-}
 
 //返回公历y年m+1月的天数
 function solarDays(y, m) {
@@ -185,7 +147,9 @@ function monthDays(y, m) {
 function getOneDayData(sYear, sMonth, sDay, lYear, lMonth, lDay) {
   var _this = {}
   _this.dayStr = sYear + '/' + sMonth + '/' + sDay
+  _this.day = sDay
   _this.festival = []
+  lDay = Math.round(lDay)
 
   for (var i = 0; i < lFtv.length; i++) { //农历节日
     if (parseInt(lFtv[i].substr(0, 2)) == lMonth) {
@@ -193,17 +157,9 @@ function getOneDayData(sYear, sMonth, sDay, lYear, lMonth, lDay) {
         _this.festival.push(lFtv[i].substr(5))
       }
     }
-    if (12 == lMonth && eve == lDay) { //判断是否为除夕
-      _this.festival.push('除夕')
-    }
   }
-
-  for (var i = 0; i < sFtv.length; i++) { //公历节日
-    if (parseInt(sFtv[i].substr(0, 2)) == sMonth) {
-      if (parseInt(sFtv[i].substr(2, 4)) == sDay) {
-        _this.festival.push(sFtv[i].substr(5))
-      }
-    }
+  if (12 == lMonth && eve == lDay) { //判断是否为除夕
+    _this.festival.push('除夕')
   }
 
   if (sMonth == 5) { //母亲节
@@ -229,5 +185,85 @@ function getOneDayData(sYear, sMonth, sDay, lYear, lMonth, lDay) {
     }
   }
 
+  for (var i = 0; i < sFtv.length; i++) { //公历节日
+    if (parseInt(sFtv[i].substr(0, 2)) == sMonth) {
+      if (parseInt(sFtv[i].substr(2, 4)) == sDay) {
+        _this.festival.push(sFtv[i].substr(5))
+      }
+    }
+  }
+
+  _this.festText = _this.festival[0]
+
   return _this
+}
+
+// 获取 y 年 m+1 月的数据
+const getOneMonthData = (y, m) => {
+  var sDObj, lDObj, lY, lM, lD = 1,
+    lL, lX = 0;
+  var n = 0;
+
+  sDObj = new Date(y, m, 1); //当月第一天的日期
+
+  var _this = {
+    length: solarDays(y, m), //公历当月天数
+    firstWeek: sDObj.getDay(), //公历当月1日星期几
+    year: y,
+    month: m + 1,
+    days: []
+  }
+
+  if ((m + 1) == 5) {
+    fat = sDObj.getDay()
+  }
+  if ((m + 1) == 6) {
+    mat = sDObj.getDay()
+  }
+
+  for (var i = 0; i < _this.length; i++) {
+    if (lD > lX) {
+      sDObj = new Date(y, m, i + 1); //当月第一天的日期
+      lDObj = new Dianaday(sDObj); //农历
+      lY = lDObj.year; //农历年
+      lM = lDObj.month; //农历月
+      lD = lDObj.day; //农历日
+      lL = lDObj.isLeap; //农历是否闰月
+      lX = lL ? leapDays(lY) : monthDays(lY, lM); //农历当月最後一天
+      if (lM == 12) {
+        eve = lX
+      }
+    }
+    _this.days[i] = getOneDayData(y, m + 1, i + 1, lY, lM, lD++);
+  }
+
+  if (y == tY && m == tM) _this.days[tD - 1].today = '今日'; //今日
+
+  let arrBehind =  7 - (_this.firstWeek + _this.length) % 7
+  let tmpArr = []
+  for (let i = 0; i < _this.firstWeek; i++) tmpArr.push({})
+  tmpArr = tmpArr.concat(_this.days)
+  for (let i = 0; i < arrBehind; i++) tmpArr.push({})
+
+  _this.days = tmpArr
+
+  return _this
+}
+
+// 获取六个月的数据（从当前日期算起）
+export const getMonthsData = () => {
+  let resultArr = []
+  let ttY = tY
+  let ttM = tM
+
+  for (let i = 0; i < 7; i++) {
+    resultArr.push( getOneMonthData(ttY, ttM++) )
+
+    if(ttM > 11){
+      ttY++
+      ttM = 0
+    }
+  }
+
+  return resultArr
 }
