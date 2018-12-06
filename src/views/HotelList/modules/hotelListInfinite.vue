@@ -46,7 +46,7 @@
 
     </ul>
 
-    <LoadMore v-if="hotelList.length > 0 && !infiniteLoad" />
+    <LoadMore v-if="!infiniteLoad" />
 
     <END v-if="hotelList.length > 0 && infiniteLoad" />
 
@@ -171,8 +171,8 @@ export default {
         // 将这个变量设置为 false，表示允许再次查询酒店列表
         _this.loading = false
 
-        if(res.success && res.content){
-          let content = res.content
+        if(res.returnCode === 1 && res.data){
+          let content = res.data
           if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
             _this._infiniteLoad = true
@@ -182,16 +182,17 @@ export default {
             _this.pageNow++
           }
 
-          for (let i = 0; i < content.data.length; i++) {
-            const n = content.data[i];
-            n.starText = 
-              n.star <= 25 ? '经济型' : 
-              n.star <= 35 ? '舒适型' : 
-              n.star <= 45 ? '高档型' : '豪华型'
+          if(content.data){
+            for (let i = 0; i < content.data.length; i++) {
+              const n = content.data[i];
+              n.starText = 
+                n.star <= 25 ? '经济型' : 
+                n.star <= 35 ? '舒适型' : 
+                n.star <= 45 ? '高档型' : '豪华型'
+            }
+  
+            _this.hotelList = _this.hotelList.concat(content.data)
           }
-
-          _this.hotelList = _this.hotelList.concat(content.data)
-            
         }
       })
     },
@@ -207,7 +208,7 @@ export default {
 
 <style lang="scss">
 .hotel-list-result-wrap{
-  padding-top: 1rem;
+  padding-top: 0.96rem;
   min-height: calc(100vh - 1rem);
 
   .hotellist-nodata {

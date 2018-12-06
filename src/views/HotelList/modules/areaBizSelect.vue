@@ -103,7 +103,6 @@ export default {
             n.label = n.description
             n.value = n.bizzoneid
           });
-        }else if(res.errcode == 'notLogin'){
         }
       })
     },

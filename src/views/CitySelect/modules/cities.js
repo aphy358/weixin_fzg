@@ -1,0 +1,3067 @@
+export const HotCity = [
+  // 境内热门城市
+  {
+    cityId: '70082',
+    cityName: '北京',
+    cityType: '0'
+  },
+  {
+    cityId: '70058',
+    cityName: '上海',
+    cityType: '0'
+  },
+  {
+    cityId: '70011',
+    cityName: '广州',
+    cityType: '0'
+  },
+  {
+    cityId: '70002',
+    cityName: '深圳',
+    cityType: '0'
+  },
+  {
+    cityId: '70038',
+    cityName: '成都',
+    cityType: '0'
+  },
+  {
+    cityId: '70059',
+    cityName: '杭州',
+    cityType: '0'
+  },
+  {
+    cityId: '70021',
+    cityName: '武汉',
+    cityType: '0'
+  },
+  {
+    cityId: '70046',
+    cityName: '西安',
+    cityType: '0'
+  },
+  {
+    cityId: '70045',
+    cityName: '重庆',
+    cityType: '0'
+  },
+  {
+    cityId: '70096',
+    cityName: '青岛',
+    cityType: '0'
+  },
+  {
+    cityId: '70063',
+    cityName: '南京',
+    cityType: '0'
+  },
+  {
+    cityId: '70079',
+    cityName: '厦门',
+    cityType: '0'
+  },
+  {
+    cityId: '70120',
+    cityName: '大连',
+    cityType: '0'
+  },
+  {
+    cityId: '70083',
+    cityName: '天津',
+    cityType: '0'
+  },
+  {
+    cityId: '70030',
+    cityName: '三亚',
+    cityType: '0'
+  },
+  {
+    cityId: '70095',
+    cityName: '济南',
+    cityType: '0'
+  },
+  {
+    cityId: '70119',
+    cityName: '沈阳',
+    cityType: '0'
+  },
+  {
+    cityId: '30000898',
+    cityName: '香港',
+    cityType: '0'
+  },
+  {
+    cityId: '70139',
+    cityName: '澳门',
+    cityType: '0'
+  },
+  {
+    cityId: '30001017',
+    cityName: '台北',
+    cityType: '0'
+  },
+
+
+  // 境外热门城市
+  {
+    countryId: '70229',
+    cityName: '新加坡',
+    cityType: '1'
+  },
+  {
+    countryId: '70096',
+    stateId: '83397',
+    cityName: '首尔',
+    cityType: '1'
+  },
+  {
+    countryId: '70205',
+    stateId: '83378',
+    cityName: '曼谷',
+    cityType: '1'
+  },
+  {
+    cityId: '30155957',
+    cityName: '普吉岛',
+    cityType: '1'
+  },
+  {
+    countryId: '70176',
+    stateId: '83429',
+    cityName: '东京',
+    cityType: '1'
+  },
+  {
+    cityId: '30155991',
+    cityName: '吉隆坡',
+    cityType: '1'
+  },
+  {
+    cityId: '30155972',
+    cityName: '清迈',
+    cityType: '1'
+  },
+  {
+    cityId: '30155970',
+    cityName: '大阪',
+    cityType: '1'
+  },
+  {
+    countryId: '70242',
+    stateId: '83376',
+    cityName: '巴厘岛',
+    cityType: '1'
+  },
+  {
+    cityId: '30155973',
+    cityName: '兰卡威',
+    cityType: '1'
+  },
+  {
+    cityId: '30156019',
+    cityName: '济州岛',
+    cityType: '1'
+  },
+  {
+    cityId: '30155901',
+    cityName: '迪拜',
+    cityType: '1'
+  },
+  {
+    cityId: '30155956',
+    cityName: '巴黎',
+    cityType: '1'
+  },
+  {
+    cityId: '30155838',
+    cityName: '伦敦',
+    cityType: '1'
+  },
+  {
+    cityId: '30156283',
+    cityName: '温哥华',
+    cityType: '1'
+  },
+]
+
+export const Cities = [{
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿坝州",
+  "cityId": "30001304"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿尔山",
+  "cityId": "30001189"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿合奇县",
+  "cityId": "30001334"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "安吉",
+  "cityId": "30000164"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "安康",
+  "cityId": "30001314"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿克苏",
+  "cityId": "30001308"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿里",
+  "cityId": "30000585"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿拉善盟",
+  "cityId": "30001001"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "阿勒泰",
+  "cityId": "161"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "安龙县",
+  "cityId": "30001218"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "安庆",
+  "cityId": "70072"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "安顺",
+  "cityId": "30000068"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "鞍山",
+  "cityId": "70125"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "安图",
+  "cityId": "30000457"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "安阳",
+  "cityId": "30000188"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "博鳌",
+  "cityId": "70031"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "蚌埠",
+  "cityId": "70133"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "白城",
+  "cityId": "30001394"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "保定",
+  "cityId": "70092"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "北戴河",
+  "cityId": "70090"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "布尔津县",
+  "cityId": "30001309"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "布尔津",
+  "cityId": "30000581"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "博尔塔拉",
+  "cityId": "30001310"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "白沟",
+  "cityId": "30001389"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "北海",
+  "cityId": "70134"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "毕节",
+  "cityId": "30000887"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "宝鸡",
+  "cityId": "70048"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "北京",
+  "cityId": "70082"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "博乐",
+  "cityId": "30001339"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "巴马",
+  "cityId": "30001335"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "百色",
+  "cityId": "30000838"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "白沙",
+  "cityId": "30000981"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "保山",
+  "cityId": "30001283"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "坝上",
+  "cityId": "30001388"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "白山",
+  "cityId": "30001243"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "保亭",
+  "cityId": "30000199"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "北屯市",
+  "cityId": "30001338"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "包头",
+  "cityId": "70107"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "本溪",
+  "cityId": "30000178"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "白银",
+  "cityId": "30001205"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "巴音郭楞",
+  "cityId": "30001336"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "巴彦淖尔",
+  "cityId": "30001262"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "巴中",
+  "cityId": "30001337"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "霸州",
+  "cityId": "30001197"
+}, {
+  "w": "B",
+  "cityType": "0",
+  "cityName": "滨州",
+  "cityId": "30000657"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "赤壁",
+  "cityId": "30001005"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长白山",
+  "cityId": "30000973"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长白山池北",
+  "cityId": "30001241"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长白山池西",
+  "cityId": "30001242"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长春",
+  "cityId": "70114"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "常德",
+  "cityId": "30000698"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "成都",
+  "cityId": "70038"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "昌都",
+  "cityId": "30001319"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "承德",
+  "cityId": "70091"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "赤峰",
+  "cityId": "30000777"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "澄海",
+  "cityId": "70148"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "巢湖",
+  "cityId": "30000156"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "昌江",
+  "cityId": "30000982"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "昌吉",
+  "cityId": "30001307"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "查济",
+  "cityId": "30001384"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "昌黎",
+  "cityId": "30000420"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "澄迈县",
+  "cityId": "30000978"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长沙",
+  "cityId": "70025"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "赤水",
+  "cityId": "30000991"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "常熟",
+  "cityId": "30000149"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "楚雄",
+  "cityId": "30000194"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "慈溪",
+  "cityId": "30000240"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长兴",
+  "cityId": "30001273"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "潮阳",
+  "cityId": "30000075"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "朝阳",
+  "cityId": "30000964"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "潮州",
+  "cityId": "70135"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "郴州",
+  "cityId": "30000697"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "常州",
+  "cityId": "70154"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "滁州",
+  "cityId": "30000158"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "池州",
+  "cityId": "30000992"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "沧州",
+  "cityId": "30000990"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "长治",
+  "cityId": "30001145"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "川主寺",
+  "cityId": "30001306"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "定安县",
+  "cityId": "30000897"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "德保县",
+  "cityId": "30001340"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "丹巴县",
+  "cityId": "30001301"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "东莞",
+  "cityId": "70007"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "丹东",
+  "cityId": "70126"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "登封",
+  "cityId": "30000778"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "东方",
+  "cityId": "30000976"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "东港",
+  "cityId": "30001259"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "敦煌",
+  "cityId": "70057"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "敦化",
+  "cityId": "30001244"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "德宏州",
+  "cityId": "30001278"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "都江堰",
+  "cityId": "30000337"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大理",
+  "cityId": "70034"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大连",
+  "cityId": "70120"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "德令哈",
+  "cityId": "30001323"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "德清",
+  "cityId": "30000165"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大庆",
+  "cityId": "70111"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "迪庆州",
+  "cityId": "30001276"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大石桥",
+  "cityId": "30001257"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "独山县",
+  "cityId": "30001220"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大同",
+  "cityId": "70104"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "定西市",
+  "cityId": "30001207"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大兴安岭",
+  "cityId": "30000994"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "都匀",
+  "cityId": "30000890"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "大邑",
+  "cityId": "30001344"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "德阳",
+  "cityId": "30000577"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "东阳",
+  "cityId": "30001272"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "东营",
+  "cityId": "30000498"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "儋州",
+  "cityId": "30000977"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "达州",
+  "cityId": "30000989"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "邓州",
+  "cityId": "30001226"
+}, {
+  "w": "D",
+  "cityType": "0",
+  "cityName": "德州",
+  "cityId": "30000185"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "鄂尔多斯",
+  "cityId": "30000237"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "额济纳旗",
+  "cityId": "30001263"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "二连浩特",
+  "cityId": "30001264"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "峨眉山",
+  "cityId": "30000141"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "恩平",
+  "cityId": "70017"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "恩施",
+  "cityId": "30000542"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "鄂州",
+  "cityId": "30001232"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "丰城",
+  "cityId": "30001254"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "凤城",
+  "cityId": "30001258"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "防城港",
+  "cityId": "30000840"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "福鼎",
+  "cityId": "30000231"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "奉化",
+  "cityId": "30000071"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "凤凰县",
+  "cityId": "30000438"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "阜康市",
+  "cityId": "30001311"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "佛山",
+  "cityId": "70004"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "凤山县",
+  "cityId": "30001387"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "抚顺",
+  "cityId": "70124"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "富藴县",
+  "cityId": "30001312"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "阜新",
+  "cityId": "70123"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "富阳",
+  "cityId": "30000152"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "阜阳",
+  "cityId": "30000157"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "抚州",
+  "cityId": "30000797"
+}, {
+  "w": "F",
+  "cityType": "0",
+  "cityName": "福州",
+  "cityId": "70078"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "广安",
+  "cityId": "30000319"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "贵德县",
+  "cityId": "30001325"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "格尔木",
+  "cityId": "30000974"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "贵港",
+  "cityId": "30000699"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "共和县",
+  "cityId": "30001322"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "桂林",
+  "cityId": "70020"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "果洛藏族自治州",
+  "cityId": "30001341"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "甘南",
+  "cityId": "30001206"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "贵阳",
+  "cityId": "70036"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "广元",
+  "cityId": "30000322"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "固原",
+  "cityId": "30001284"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "广州",
+  "cityId": "70011"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "赣州",
+  "cityId": "70077"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "甘孜州",
+  "cityId": "30001302"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "淮安",
+  "cityId": "30000221"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "淮北",
+  "cityId": "30000159"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "鹤壁",
+  "cityId": "30000540"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海北",
+  "cityId": "30001326"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "河池",
+  "cityId": "30000892"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "韩城",
+  "cityId": "30000618"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "珲春",
+  "cityId": "30001246"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海城",
+  "cityId": "70128"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "横店",
+  "cityId": "30001271"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "邯郸",
+  "cityId": "70094"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海东市",
+  "cityId": "30001324"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "洪洞县",
+  "cityId": "30001313"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "哈尔滨",
+  "cityId": "70108"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "合肥",
+  "cityId": "70070"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "黄冈",
+  "cityId": "30001233"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "鹤岗",
+  "cityId": "30000183"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "怀化",
+  "cityId": "30000883"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "黑河",
+  "cityId": "30000659"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "呼和浩特",
+  "cityId": "70106"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "红河州",
+  "cityId": "30001275"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "和静县",
+  "cityId": "30001342"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "杭锦后旗",
+  "cityId": "30001393"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海口",
+  "cityId": "70029"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "贺兰县",
+  "cityId": "30001343"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海林",
+  "cityId": "30001249"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "和龙",
+  "cityId": "30001247"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "呼伦贝尔",
+  "cityId": "30000999"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "葫芦岛",
+  "cityId": "70122"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海拉尔",
+  "cityId": "30000557"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海螺沟",
+  "cityId": "30000323"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "和林格尔",
+  "cityId": "30001390"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "乌拉特中旗",
+  "cityId": "30001391"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "哈密",
+  "cityId": "30001300"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海宁",
+  "cityId": "30000248"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "淮南",
+  "cityId": "30000160"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "黄南藏族自治州",
+  "cityId": "30001327"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海南藏族自治州",
+  "cityId": "30001328"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "鹤山",
+  "cityId": "30000074"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "黄石",
+  "cityId": "30000962"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "黄山",
+  "cityId": "70071"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "衡水",
+  "cityId": "30000537"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "和田",
+  "cityId": "30001299"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "呼图壁县",
+  "cityId": "30001298"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海西蒙古族自治州",
+  "cityId": "30001329"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "河源",
+  "cityId": "70137"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "衡阳",
+  "cityId": "70027"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海晏",
+  "cityId": "30001330"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海盐",
+  "cityId": "30000249"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "海阳",
+  "cityId": "30001196"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "惠州",
+  "cityId": "70136"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "贺州",
+  "cityId": "30000839"
+}, {
+  "w": "h",
+  "cityType": "0",
+  "cityName": "汉中",
+  "cityId": "30000640"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "湖州",
+  "cityId": "30000146"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "杭州",
+  "cityId": "70059"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "亳州",
+  "cityId": "30000975"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "菏泽",
+  "cityId": "30000968"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "吉安",
+  "cityId": "30000519"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "集安",
+  "cityId": "30001245"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "金昌",
+  "cityId": "30001209"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "晋城",
+  "cityId": "30000480"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "建德",
+  "cityId": "30000229"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "江都",
+  "cityId": "30000238"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "景德镇",
+  "cityId": "70075"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "井冈山",
+  "cityId": "30000218"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "金华",
+  "cityId": "30000145"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "九华山",
+  "cityId": "70073"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "九江",
+  "cityId": "70076"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "晋江",
+  "cityId": "30000153"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "吉林",
+  "cityId": "70115"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "江门",
+  "cityId": "70009"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "荆门",
+  "cityId": "30000278"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "即墨",
+  "cityId": "30000658"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "佳木斯",
+  "cityId": "70112"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "济南",
+  "cityId": "70095"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "济宁",
+  "cityId": "30000638"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "镜泊湖",
+  "cityId": "30001250"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "酒泉",
+  "cityId": "30001212"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "吉首",
+  "cityId": "30001185"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "嘉善",
+  "cityId": "30000167"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "金坛",
+  "cityId": "30000222"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "嘉兴",
+  "cityId": "30000143"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "鸡西",
+  "cityId": "30000996"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "揭阳",
+  "cityId": "30000966"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "江油",
+  "cityId": "30000341"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "缙云",
+  "cityId": "30000588"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "江阴",
+  "cityId": "30000148"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "济源",
+  "cityId": "30001229"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "嘉峪关",
+  "cityId": "30001208"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临夏",
+  "cityId": "30001210"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "陇南",
+  "cityId": "30001211"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "荆州",
+  "cityId": "30000477"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "焦作",
+  "cityId": "30000639"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "晋中",
+  "cityId": "30000478"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "锦州",
+  "cityId": "70129"
+}, {
+  "w": "J",
+  "cityType": "0",
+  "cityName": "九寨沟",
+  "cityId": "70044"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "库尔勒",
+  "cityId": "30000578"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "开封",
+  "cityId": "70086"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "凯里",
+  "cityId": "30000841"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "克拉玛依",
+  "cityId": "30000583"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "昆明",
+  "cityId": "70032"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "喀纳斯",
+  "cityId": "30000582"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "开平",
+  "cityId": "70016"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "喀什",
+  "cityId": "30000580"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "昆山",
+  "cityId": "30000138"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "奎屯",
+  "cityId": "30001297"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "开元",
+  "cityId": "30000195"
+}, {
+  "w": "K",
+  "cityType": "0",
+  "cityName": "克孜勒苏柯尔克孜",
+  "cityId": "30001296"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临安",
+  "cityId": "30000677"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "六安",
+  "cityId": "30001007"
+}, {
+  "w": "H",
+  "cityType": "0",
+  "cityName": "来宾",
+  "cityId": "30001240"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临沧",
+  "cityId": "30001281"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "连城",
+  "cityId": "30000232"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "聊城",
+  "cityId": "30000970"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "娄底",
+  "cityId": "30000880"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "乐东",
+  "cityId": "30000983"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "廊坊",
+  "cityId": "30000418"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临汾",
+  "cityId": "30000190"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "泸沽湖",
+  "cityId": "30001282"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临高县",
+  "cityId": "30000980"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临海",
+  "cityId": "30000239"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "漯河",
+  "cityId": "30000397"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "丽江",
+  "cityId": "70033"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "吕梁",
+  "cityId": "30001147"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "乐平",
+  "cityId": "30001255"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "滦平",
+  "cityId": "30000421"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "六盘水",
+  "cityId": "30000888"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "乐清",
+  "cityId": "30000250"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "陵水",
+  "cityId": "30000197"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "乐山",
+  "cityId": "70043"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "拉萨",
+  "cityId": "70052"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "丽水",
+  "cityId": "30000163"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "庐山",
+  "cityId": "30000220"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "凉山州",
+  "cityId": "30001305"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "轮台县",
+  "cityId": "30001295"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "灵武",
+  "cityId": "30001285"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "莱芜",
+  "cityId": "30001041"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "兰溪",
+  "cityId": "30000258"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "龙游",
+  "cityId": "30000251"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "溧阳",
+  "cityId": "30000223"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "龙岩",
+  "cityId": "30000154"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "洛阳",
+  "cityId": "70085"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "临沂",
+  "cityId": "30000497"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "辽源",
+  "cityId": "30000180"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "辽阳",
+  "cityId": "30000179"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "连云港",
+  "cityId": "70066"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "柳州",
+  "cityId": "70019"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "泸州",
+  "cityId": "30000324"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "林芝",
+  "cityId": "30001190"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "兰州",
+  "cityId": "70056"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "马鞍山",
+  "cityId": "30000965"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "牡丹江",
+  "cityId": "70110"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "漠河",
+  "cityId": "30001251"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "梅河口",
+  "cityId": "30000986"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "麻江县",
+  "cityId": "30001222"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "木垒县",
+  "cityId": "30001346"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "茂名",
+  "cityId": "30000957"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "米泉",
+  "cityId": "30001345"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "芒市",
+  "cityId": "30001595"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "眉山市",
+  "cityId": "30001156"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "绵阳",
+  "cityId": "70039"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "梅州",
+  "cityId": "30000899"
+}, {
+  "w": "M",
+  "cityType": "0",
+  "cityName": "满洲里",
+  "cityId": "30000757"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "宁波",
+  "cityId": "70060"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南充",
+  "cityId": "30000325"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南昌",
+  "cityId": "70074"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "宁城",
+  "cityId": "30001265"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "宁德",
+  "cityId": "30000233"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南戴河",
+  "cityId": "30000419"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "宁海",
+  "cityId": "30000252"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "怒江",
+  "cityId": "30001279"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "内江",
+  "cityId": "30000340"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南京",
+  "cityId": "70063"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "尼勒克县",
+  "cityId": "30001347"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南宁",
+  "cityId": "70018"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南平",
+  "cityId": "30000877"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "那曲",
+  "cityId": "30001320"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南通",
+  "cityId": "70141"
+}, {
+  "w": "N",
+  "cityType": "0",
+  "cityName": "南阳",
+  "cityId": "30000539"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "磐安",
+  "cityId": "30001270"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "平顶山",
+  "cityId": "30001228"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "普洱",
+  "cityId": "30001280"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "平湖",
+  "cityId": "30000253"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "浦江",
+  "cityId": "30001269"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "盘锦",
+  "cityId": "70121"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "平凉",
+  "cityId": "30001214"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "蓬莱",
+  "cityId": "70100"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "普宁",
+  "cityId": "70142"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "平山县",
+  "cityId": "30000717"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "莆田",
+  "cityId": "30000236"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "萍乡",
+  "cityId": "30000518"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "濮阳",
+  "cityId": "30000597"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "平遥",
+  "cityId": "70105"
+}, {
+  "w": "P",
+  "cityType": "0",
+  "cityName": "攀枝花",
+  "cityId": "70042"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "丘北",
+  "cityId": "30001348"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "启东",
+  "cityId": "30000586"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "青岛",
+  "cityId": "70096"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "千岛湖",
+  "cityId": "30000230"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "黔东南",
+  "cityId": "30001221"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "曲阜",
+  "cityId": "261"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "琼海",
+  "cityId": "30000196"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "秦皇岛",
+  "cityId": "70089"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "青海湖",
+  "cityId": "30001331"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "千户苗寨",
+  "cityId": "30001224"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "潜江",
+  "cityId": "30001234"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "曲靖",
+  "cityId": "30000191"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "祁连县",
+  "cityId": "30001332"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "黔南州",
+  "cityId": "30001219"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "齐齐哈尔",
+  "cityId": "70109"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "七台河",
+  "cityId": "30001396"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "奇台县",
+  "cityId": "30001294"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "七仙岭",
+  "cityId": "30001349"
+}, {
+  "w": "G",
+  "cityType": "0",
+  "cityName": "黔西南州",
+  "cityId": "30001223"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "清远",
+  "cityId": "70145"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "庆阳",
+  "cityId": "30001213"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "钦州",
+  "cityId": "30000891"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "琼中",
+  "cityId": "30000984"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "衢州",
+  "cityId": "30000589"
+}, {
+  "w": "Q",
+  "cityType": "0",
+  "cityName": "泉州",
+  "cityId": "70081"
+}, {
+  "w": "R",
+  "cityType": "0",
+  "cityName": "瑞安",
+  "cityId": "30000144"
+}, {
+  "w": "R",
+  "cityType": "0",
+  "cityName": "瑞金",
+  "cityId": "30001256"
+}, {
+  "w": "R",
+  "cityType": "0",
+  "cityName": "日喀则",
+  "cityId": "30000584"
+}, {
+  "w": "R",
+  "cityType": "0",
+  "cityName": "瑞丽",
+  "cityId": "30001183"
+}, {
+  "w": "R",
+  "cityType": "0",
+  "cityName": "任丘",
+  "cityId": "30000538"
+}, {
+  "w": "R",
+  "cityType": "0",
+  "cityName": "日照",
+  "cityId": "70102"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "顺德",
+  "cityId": "30001352"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "绥芬河",
+  "cityId": "70113"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "韶关",
+  "cityId": "70013"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "寿光",
+  "cityId": "30000737"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "上海",
+  "cityId": "70058"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "三河",
+  "cityId": "30000422"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "绥化",
+  "cityId": "30000184"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "双辽",
+  "cityId": "30000972"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "宿州",
+  "cityId": "30001204"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "石家庄",
+  "cityId": "70087"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "商洛",
+  "cityId": "30001316"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "神农架",
+  "cityId": "30001238"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "神木",
+  "cityId": "30000617"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "三明",
+  "cityId": "30000878"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "三门峡",
+  "cityId": "30000619"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "遂宁",
+  "cityId": "30000326"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "山南",
+  "cityId": "30001321"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "松潘",
+  "cityId": "30000339"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "四平",
+  "cityId": "30000181"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "宿迁",
+  "cityId": "30000225"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "商丘",
+  "cityId": "30000959"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "上饶",
+  "cityId": "30000517"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "韶山",
+  "cityId": "30000437"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "三沙市",
+  "cityId": "30001350"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "石狮",
+  "cityId": "30000234"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "鄯善县",
+  "cityId": "30001293"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "汕头",
+  "cityId": "70001"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "汕尾",
+  "cityId": "30000961"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "沙湾县",
+  "cityId": "30001351"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "绍兴",
+  "cityId": "70062"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "十堰",
+  "cityId": "70024"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "邵阳",
+  "cityId": "30000881"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "三亚",
+  "cityId": "70030"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "上虞",
+  "cityId": "30000254"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "松原",
+  "cityId": "30001003"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "沈阳",
+  "cityId": "70119"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "双鸭山",
+  "cityId": "30001395"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "深圳",
+  "cityId": "70002"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "随州",
+  "cityId": "30001184"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "嵊州",
+  "cityId": "30000255"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "苏州",
+  "cityId": "70068"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "朔州",
+  "cityId": "30001146"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "绥中",
+  "cityId": "30001260"
+}, {
+  "w": "S",
+  "cityType": "0",
+  "cityName": "石嘴山",
+  "cityId": "30001286"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "泰安",
+  "cityId": "70101"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "腾冲",
+  "cityId": "30000967"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "铜川",
+  "cityId": "30001317"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "塔城",
+  "cityId": "30001292"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "太仓",
+  "cityId": "70069"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "屯昌县",
+  "cityId": "30000979"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "通化",
+  "cityId": "30000971"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "天津",
+  "cityId": "70083"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "特克斯县",
+  "cityId": "30001353"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "桐庐",
+  "cityId": "30000241"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "同里",
+  "cityId": "30000224"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "铜陵",
+  "cityId": "30000993"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "通辽",
+  "cityId": "30001040"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "铁岭",
+  "cityId": "70131"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "台山",
+  "cityId": "70015"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "通什",
+  "cityId": "30000198"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "天水",
+  "cityId": "30001215"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "泰顺",
+  "cityId": "30000256"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "唐山",
+  "cityId": "70088"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "天台",
+  "cityId": "30000257"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "吐鲁番",
+  "cityId": "30000277"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "铜仁",
+  "cityId": "30000886"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "桐乡",
+  "cityId": "30000242"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "太原",
+  "cityId": "70103"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "台州",
+  "cityId": "30000096"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "泰州",
+  "cityId": "30000137"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "通州",
+  "cityId": "30000587"
+}, {
+  "w": "T",
+  "cityType": "0",
+  "cityName": "天柱山",
+  "cityId": "30000217"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "文昌",
+  "cityId": "30000958"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "五大连池",
+  "cityId": "30001252"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "潍坊",
+  "cityId": "70127"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "武汉",
+  "cityId": "70021"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "芜湖",
+  "cityId": "30000155"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "威海",
+  "cityId": "70098"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "乌海",
+  "cityId": "30001191"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "吴江",
+  "cityId": "30000147"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "五家渠",
+  "cityId": "30001291"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "卧龙",
+  "cityId": "30001354"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "温岭",
+  "cityId": "30000166"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "乌兰浩特",
+  "cityId": "30001002"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "乌鲁木齐",
+  "cityId": "70051"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "万宁",
+  "cityId": "30000073"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "渭南",
+  "cityId": "30001318"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "乌兰察布",
+  "cityId": "30001266"
+}, {
+  "w": "A",
+  "cityType": "0",
+  "cityName": "渭南华阴市",
+  "cityId": "30001315"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "汪清县",
+  "cityId": "30000759"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "文山",
+  "cityId": "30001277"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "乌苏市",
+  "cityId": "30001355"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "五台山",
+  "cityId": "101"
+}, {
+  "w": "L",
+  "cityType": "0",
+  "cityName": "武威",
+  "cityId": "30001216"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "无锡",
+  "cityId": "70065"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "武义",
+  "cityId": "30000243"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "婺源",
+  "cityId": "30001188"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "武夷山",
+  "cityId": "70080"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "梧州",
+  "cityId": "283"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "吴忠",
+  "cityId": "30001287"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "乌镇",
+  "cityId": "30001186"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "温州",
+  "cityId": "70061"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "五指山",
+  "cityId": "30000963"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "西安",
+  "cityId": "70046"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "兴安盟",
+  "cityId": "30001267"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "西昌",
+  "cityId": "30000321"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "新昌",
+  "cityId": "30000245"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "宣城",
+  "cityId": "30001006"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "许昌",
+  "cityId": "30000541"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "兴城",
+  "cityId": "30001261"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "襄樊",
+  "cityId": "70023"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "孝感",
+  "cityId": "30001236"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "香格里拉",
+  "cityId": "30000192"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "新会",
+  "cityId": "70149"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "兴隆",
+  "cityId": "30001356"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "锡林郭勒盟",
+  "cityId": "30001268"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "锡林浩特",
+  "cityId": "30001000"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "厦门",
+  "cityId": "70079"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "咸宁",
+  "cityId": "30001004"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "西宁",
+  "cityId": "70055"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "象山",
+  "cityId": "30000244"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "西双版纳",
+  "cityId": "70035"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "仙桃",
+  "cityId": "30001237"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "湘潭",
+  "cityId": "30000140"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "西塘",
+  "cityId": "30001187"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "邢台",
+  "cityId": "30000758"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "修武",
+  "cityId": "30001231"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "湘西",
+  "cityId": "30000882"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "新乡",
+  "cityId": "30000187"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "雪乡",
+  "cityId": "30001253"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "襄阳",
+  "cityId": "30001235"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "兴义",
+  "cityId": "30000889"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "咸阳",
+  "cityId": "70049"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "新余",
+  "cityId": "30000799"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "信阳",
+  "cityId": "30001225"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "徐州",
+  "cityId": "30000116"
+}, {
+  "w": "X",
+  "cityType": "0",
+  "cityName": "忻州",
+  "cityId": "30000479"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "雅安",
+  "cityId": "30000338"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "延安",
+  "cityId": "70047"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "永安",
+  "cityId": "30000760"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "宜宾",
+  "cityId": "30000320"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "亚布力",
+  "cityId": "30000182"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "宜昌",
+  "cityId": "70022"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "银川",
+  "cityId": "70155"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "盐城",
+  "cityId": "30000226"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "宜春",
+  "cityId": "30000219"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "运城",
+  "cityId": "30000189"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "伊春",
+  "cityId": "30000995"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "雁荡山",
+  "cityId": "30000246"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "云浮",
+  "cityId": "30000142"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "阳江",
+  "cityId": "70014"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "永嘉",
+  "cityId": "30000247"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "延吉",
+  "cityId": "30000458"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "永康",
+  "cityId": "30000162"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "营口",
+  "cityId": "70132"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "玉林",
+  "cityId": "30000837"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "榆林",
+  "cityId": "70050"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "伊犁",
+  "cityId": "30001290"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "伊宁",
+  "cityId": "30000579"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "洋浦",
+  "cityId": "30000985"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "阳泉",
+  "cityId": "30001144"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "阳朔",
+  "cityId": "30000161"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "榆树",
+  "cityId": "30001248"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "玉树藏族自治州",
+  "cityId": "30001333"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "鹰潭",
+  "cityId": "30000798"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "烟台",
+  "cityId": "70097"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "义乌",
+  "cityId": "30000072"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "玉溪",
+  "cityId": "30000193"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "宜兴",
+  "cityId": "30000150"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "岳阳",
+  "cityId": "70151"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "益阳",
+  "cityId": "30000879"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "元阳",
+  "cityId": "30001157"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "余姚",
+  "cityId": "30000069"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "永州",
+  "cityId": "30000884"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "扬州",
+  "cityId": "70150"
+}, {
+  "w": "Y",
+  "cityType": "0",
+  "cityName": "仪征",
+  "cityId": "30000227"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "淄博",
+  "cityId": "30000186"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "中甸",
+  "cityId": "70153"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "自贡",
+  "cityId": "70041"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "珠海",
+  "cityId": "70003"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "湛江",
+  "cityId": "70005"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "诸暨",
+  "cityId": "30000168"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "镇江",
+  "cityId": "70064"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "张家界",
+  "cityId": "70028"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "张家港",
+  "cityId": "30000117"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "张家口",
+  "cityId": "70093"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "周口",
+  "cityId": "30001227"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "扎鲁特旗",
+  "cityId": "30001392"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "驻马店",
+  "cityId": "30001230"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "中宁县",
+  "cityId": "30001289"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "肇庆",
+  "cityId": "70006"
+}, {
+  "w": "C",
+  "cityType": "0",
+  "cityName": "重庆",
+  "cityId": "70045"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "中山",
+  "cityId": "70008"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "舟山",
+  "cityId": "70143"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "昭通",
+  "cityId": "30001274"
+}, {
+  "w": "W",
+  "cityType": "0",
+  "cityName": "中卫",
+  "cityId": "30001288"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "遵义",
+  "cityId": "70037"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "资阳",
+  "cityId": "30001303"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "张掖",
+  "cityId": "30000637"
+}, {
+  "w": "E",
+  "cityType": "0",
+  "cityName": "崇左",
+  "cityId": "30001239"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "株洲",
+  "cityId": "70026"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "周庄",
+  "cityId": "30000228"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "漳州",
+  "cityId": "30000235"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "郑州",
+  "cityId": "70116"
+}, {
+  "w": "Z",
+  "cityType": "0",
+  "cityName": "枣庄",
+  "cityId": "30000969"
+}]
