@@ -10,7 +10,7 @@ export const syncGetHotels = (args, loading = false) => http.post("/hotel/sugges
 
 
 // 查询酒店列表
-export const syncGetHotelList = (args, loading = true) => http.post("/hotel/query.do", args, loading)
+export const syncGetHotelList = (args, loading = false) => http.post("/hotel/query.do", args, loading)
 
 
 
