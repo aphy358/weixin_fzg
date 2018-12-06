@@ -134,7 +134,6 @@ export default {
   },
   activated(){
     this.infiniteLoad = this._infiniteLoad
-    // console.log(sessionStorage.getItem('queryHotelList'));
     
     if(sessionStorage.getItem('queryHotelList')){
       this.queryHotel(1)
