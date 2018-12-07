@@ -10,7 +10,7 @@
 					<p>入<span class="qt-ml5">{{ formatDate(getCheckin) }}</span></p>
 					<p>离<span class="qt-ml5">{{ formatDate(getCheckout) }}</span></p>
 				</div>
-				<i class="iconfont icon-down-thin" style="position: relative;font-size: 0.1rem;margin-left: 0.05rem;top: -0.06rem;"></i>
+				<i class="iconfont icon-down-thin" style="position: relative;font-size: 0.1rem;margin-left: 0.05rem;top: -0.06rem;color: #aaa;"></i>
 			</div>
 
       <i class="iconfont icon-search0 searchIcon"></i>
@@ -81,7 +81,7 @@ export default {
       padding-right: 0;
       top: 0.1rem;
       left: 0.4rem;
-      color: #666;
+      color: #999;
 
       .time-condition {
         display: inline-block;

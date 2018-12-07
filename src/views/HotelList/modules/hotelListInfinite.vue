@@ -287,14 +287,11 @@ export default {
           position: absolute;
           left: 0;
           bottom: 0;
-          right: auto;
-          top: auto;
-          height: 0.01rem;
+          border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
           width: 100%;
-          background-color: #c8c7cc;
-          display: block;
-          z-index: 15;
+          transform: scaleY(0.5);
           transform-origin: 50% 100%;
+          z-index: 15;
         }
 
         .item-title-row{
