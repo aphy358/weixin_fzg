@@ -41,14 +41,13 @@
               <td v-for="(day, k) in m.days.slice(j * 7, (j + 1) * 7)" :key="k" 
                 :class="{
                   'disable': ifDisable(day), 
-                  'festival': day.festival, 
+                  'festival': day.festText, 
                   'text-white': checkDayStr(day), 
                   'weekend': k % 7 == 0 || k % 7 == 6
                 }"
-                @click="clickOneDay(ifDisable(day), m, day)"
-                :data-dayStr="day.dayStr">
+                @click="clickOneDay(ifDisable(day), m, day)">
 
-                <p :class="{'small-text': day.festival || day.today}">{{ day.festival || day.today || day.day }}</p>
+                <p :class="{'small-text': day.festText || day.today, 'circle': checkDayStr(day)}">{{ day.festText || day.today || day.day }}</p>
 
                 <span v-if="checkDayStr(day)" 
                   :class="{
@@ -70,8 +69,6 @@
 
     </div>
 
-    <!-- <div v-if="!checkout" class="please-check-out">请选择离店日期</div> -->
-
     <END />
 
   </div>
@@ -80,7 +77,7 @@
 <script>
 import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
-import { _showMonths } from './showMonths.js'
+import { getMonthsData } from './getMonthsData.js'
 import { addDays, formatDateTwo } from '@/assets/util'
 
 export default {
@@ -100,25 +97,8 @@ export default {
   },
   watch: {},
   created(){
-    if(_showMonths){
-      for (let i = 0; i < _showMonths.length; i++) {
-        const m = _showMonths[i]
-        const days = m.days;
-        
-        for (let j = 0; j < days.length; j++) {
-          const dayObj = days[j];
-          const day = dayObj.day;
-
-          if(day){
-            dayObj.dayStr = m.year + '/' + m.month + '/' + day
-          }
-        }
-      }
-      this.showMonths = _showMonths
-    }
-
-    this.checkin = this.getCheckin
-    this.checkout = this.getCheckout
+    this.initData()
+    this.showMonths = getMonthsData()
   },
   computed: {
     getCheckin(){
@@ -129,7 +109,15 @@ export default {
     },
   },
   mounted(){},
+  activated(){
+    this.initData()
+  },
   methods:{
+    // 初始化数据
+    initData(){
+      this.checkin = this.getCheckin
+      this.checkout = this.getCheckout
+    },
     // 点击某一天
     clickOneDay(disable, m, _day){
       if(disable) return false;
@@ -164,7 +152,7 @@ export default {
         }
       }
     },
-    // 检查这一天是否不可点，有两种情况不可点：1、日期小于今天（境外是小于明天） 2、当离店日期还没选的时，比入住日期大15天以上的日期
+    // 检查这一天是否不可点，有两三种情况不可点：1、日期小于今天（境外是小于明天） 2、当离店日期还没选的时，比入住日期大15天以上的日期  3、日期比今天大180天以上
     ifDisable(day){
       let dayStr = day.dayStr
       let today =  addDays(new Date)
@@ -173,7 +161,7 @@ export default {
         let d1 = +new Date( formatDateTwo(dayStr) )
         let d2 = +new Date( formatDateTwo(today) )
 
-        if(d1 < d2) return true
+        if(d1 < d2 || d1 - d2 > 180 * 24 * 60 * 60 * 1000) return true
 
         if(!this.checkout){
           let d3 = +new Date( formatDateTwo(this.checkin) )
@@ -290,10 +278,16 @@ export default {
               font-size: 0.14rem;
               height: 0.28rem;
               line-height: 0.28rem;
+              overflow: hidden;
               z-index: 9;
 
               &.small-text{
                 font-size: 0.12rem;
+              }
+
+              &.circle{
+                width: 0.28rem;
+                margin: auto;
               }
             }
 
@@ -347,17 +341,4 @@ export default {
   }
 }
 
-// .please-check-out{
-//   position: fixed;
-//   bottom: 0.2rem;
-//   font-size: 0.14rem;
-//   text-align: center;
-//   background: rgba(4, 4, 4, 0.5);
-//   color: white;
-//   padding: 0.1rem 0;
-//   width: 1.2rem;
-//   left: 50%;
-//   margin-left: -0.6rem;
-//   border-radius: 0.03rem;
-// }
 </style>

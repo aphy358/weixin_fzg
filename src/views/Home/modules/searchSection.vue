@@ -12,7 +12,7 @@
       </div>
       <div id="nearby">
         <i class="iconfont icon-location"></i>
-        <span style="position: relative;top: -0.02rem;" @click="gotoCheckinCheckout">附近</span>
+        <span style="position: relative;top: -0.02rem;">附近</span>
       </div>
     </div>
     <!--入住、离店日期-->
@@ -20,15 +20,15 @@
       <div class="h-s-f-icon">
         <i class="iconfont icon-rili"></i>
       </div>
-      <div class="h-s-f-row-content" style="width: calc(100% - 0.6rem);">
+      <div class="h-s-f-row-content" style="width: calc(100% - 0.6rem);" @click="gotoCheckinCheckout">
         <div style="display: flex;">
-          <div class="s-f-date-wrap" @click="openPicker('openPicker1')">
-            <span id="checkin_index">{{ formatMonthDate(date1) }}</span>
+          <div class="s-f-date-wrap">
+            <span id="checkin_index">{{ formatMonthDate(getCheckin) }}</span>
             <span class="date-top-text">入住</span>
             <div class="gap-line-i"></div>
           </div>
-          <div class="s-f-date-wrap" @click="openPicker('openPicker2')">
-            <span id="checkout_index">{{ formatMonthDate(date2) }}</span>
+          <div class="s-f-date-wrap">
+            <span id="checkout_index">{{ formatMonthDate(getCheckout) }}</span>
             <span class="date-top-text">离店</span>
           </div>
           <div class="s-f-date-wrap" style="flex: inherit;font-size: 0.1rem;color: #999;padding-top: 0;line-height: 0.65rem;">
@@ -79,48 +79,28 @@
     <!-- 星级价格 popup -->
     <StarPrice @setStarPrice="setStarPriceText" page="home" />
 
-    <!-- 入离日期弹框 -->
-    <DatePicker :open="openPicker1" :dateBind="date1" :startDate="startDate1" :endDate="endDate1" @confirm="setNewDate($event, 1)" />
-    <DatePicker :open="openPicker2" :dateBind="date2" :startDate="startDate2" :endDate="endDate2" @confirm="setNewDate($event, 2)" />
-
   </div>
 </template>
 
 <script>
 // 搜索区域组件
 import StarPrice from '@/components/StarPrice.vue'
-import DatePicker from '@/components/DatePicker.vue'
-import { addDays, formatDateOne, formatDateTwo, gotoPage } from '@/assets/util'
+import { addDays, formatDateTwo, gotoPage } from '@/assets/util'
 
 export default {
   name: 'searchSection',
   data(){
     return {
       starPriceText: '',
-
-      openPicker1: false,
-      openPicker2: false,
-
-      date1: '',
-      date2: '',
-
       nights: '1',
-
-      startDate1: '',
-      startDate2: '',
-
-      endDate1: new Date('3999/01/01'),
-      endDate2: new Date('3999/01/01'),
     }
   },
   components: {
     StarPrice,
-    DatePicker
   },
   watch: {
   },
   created(){  
-    this.initCheckinCheckout()
   },
   computed: {
     // 获取关键字
@@ -149,28 +129,16 @@ export default {
   },
   activated(){    
     this.initStarPriceText()
-    this.initCheckinCheckout()
     this.resetNights()
   },
   methods:{
     // 重新设置晚数
     resetNights(){
-      let day1 = new Date( formatDateTwo(addDays(this.date1)) )
-      let day2 = new Date( formatDateTwo(addDays(this.date2)) )
+      let day1 = new Date( formatDateTwo(addDays(this.getCheckin)) )
+      let day2 = new Date( formatDateTwo(addDays(this.getCheckout)) )
 
       // 计算出晚数
       this.nights = ( (+day2) - (+day1) ) / (24*60*60*1000)
-    },
-    // 初始化入离日期的显示
-    initCheckinCheckout(){
-      this.date1 = new Date( formatDateOne(this.getCheckin) )
-      this.date2 = new Date( formatDateOne(this.getCheckout) )
-
-      this.startDate1 = new Date( formatDateOne(this.getCheckin) )
-      this.startDate2 = new Date( formatDateOne(this.getCheckout) )
-
-      this.endDate1 = new Date( addDays(new Date, 180, '/') )
-      this.endDate2 = new Date( addDays(new Date, 180, '/') )
     },
     // 初始化星级价格的显示
     initStarPriceText(){
@@ -214,50 +182,10 @@ export default {
     setStarPopupVisible(){
       this.$store.commit(`home/setCommonState`, {k: 'starPopupVisible', v: true})
     },
-    openPicker(picker){
-      var _this = this
-      _this[picker] = true
-
-      setTimeout(function(){
-        _this[picker] = false
-      }, 10)
-    },
     formatMonthDate(date){
       date = addDays(date, 0)
       var tmpArr = date.split(/[-/]/)
       return tmpArr[1] + '月' + tmpArr[2] + '日'
-    },
-    // 当其中一个日期控件设置了日期后，需要重新计算晚数、保证第一个日期比第二个日期小、以及重新设置第二个日期的 endDate
-    setNewDate(e, flag){
-      let day1 = new Date( formatDateTwo(addDays(this.date1)) )
-      let day2 = new Date( formatDateTwo(addDays(this.date2)) )
-
-      if(flag == 1){
-        this.date1 = e
-        day1 = new Date( formatDateTwo(addDays(this.date1)) )
-
-        if( (+day1) >= (+day2) ){ // 需要重置第二个日期控件的 startDate 和 endDate
-          this.date2 = new Date( addDays(this.date1, 1, '/') )
-          day2 = new Date( formatDateTwo(addDays(this.date2)) )
-          this.endDate2 = new Date( addDays(this.date1, 16, '/') )
-        }
-      }else{
-        this.date2 = e
-        day2 = new Date( formatDateTwo(addDays(this.date2)) )
-
-        if( (+day1) >= (+day2) ){
-          this.date1 = new Date( addDays(this.date2, -1, '/') )
-          day1 = new Date( formatDateTwo(addDays(this.date1)) )
-          this.endDate2 = new Date( addDays(this.date1, 16, '/') )
-        }
-      }
-
-      // 计算出晚数
-      this.nights = ( (+day2) - (+day1) ) / (24*60*60*1000)
-
-      // 把新的 checkin、checkout 设置到 store 里去
-      this.$store.commit(`setCommonState`, {k: 'checkin', v: addDays(this.date1)})
-      this.$store.commit(`setCommonState`, {k: 'checkout', v: addDays(this.date2)})
     },
     // 跳转到酒店列表页
     gotoHotelList(){
@@ -268,7 +196,7 @@ export default {
     gotoCitySelect(){
       gotoPage(this.$router, 'citySelect')
     },
-    //*** 测试 */
+    // 跳转到入离日期选择页面
     gotoCheckinCheckout(){
       gotoPage(this.$router, 'checkinCheckout')
     }

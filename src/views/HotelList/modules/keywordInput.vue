@@ -6,9 +6,9 @@
       <GoBack />
 
       <div id="hlist-Fdate">
-				<div class="time-condition" @click="showCheckinCheckout">
-					<p>入<span class="qt-ml5">{{ getCheckin.substring(5) }}</span></p>
-					<p>离<span class="qt-ml5">{{ getCheckout.substring(5) }}</span></p>
+				<div class="time-condition" @click="gotoCheckinCheckout">
+					<p>入<span class="qt-ml5">{{ formatDate(getCheckin) }}</span></p>
+					<p>离<span class="qt-ml5">{{ formatDate(getCheckout) }}</span></p>
 				</div>
 				<i class="iconfont icon-down-thin" style="position: relative;font-size: 0.1rem;margin-left: 0.05rem;top: -0.06rem;"></i>
 			</div>
@@ -24,6 +24,7 @@
 <script>
 // 酒店列表 顶部关键字输入区域
 import GoBack from '@/components/GoBack.vue'
+import { gotoPage, addDays } from "@/assets/util"
 
 export default {
   name: "keywordInput",
@@ -49,11 +50,14 @@ export default {
   },
   mounted() {},
   methods: {
-    // 设置入离日期弹出层显示状态
-    showCheckinCheckout(){
-      this.$store.commit(`hotelList/setCommonState`, {k: 'checkincheckoutPopupVisible', v: true})
+    // 跳转到入离日期选择页面
+    gotoCheckinCheckout(){
+      gotoPage(this.$router, 'checkinCheckout')
     },
-    
+    // 将日期格式化为 '**-**' 的格式，如 '12-12'
+    formatDate(dateStr){
+      return addDays(dateStr).substring(5)
+    }
   }
 };
 </script>

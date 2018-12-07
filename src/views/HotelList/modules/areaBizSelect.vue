@@ -3,11 +3,7 @@
     v-model="getAreaBizPopupVisible"
     position="bottom">
   
-  
-    <div class="operation-btn">
-      <button class="area-empty" @click="clearAreaBiz">清空</button>
-      <button class="area-submit" @click="confirmAreaBiz">确定</button>
-    </div>
+    <OperationBtn @clear="clearAreaBiz" @confirm="confirmAreaBiz" />
 
     <div class="area-biz-outer">
       <div class="area-biz-tab-wrap">
@@ -35,6 +31,7 @@
 
 <script>
 // 行政区、商圈
+import OperationBtn from '@/components/OperationBtn.vue'
 
 export default {
   name: 'areaBizSelect',
@@ -68,6 +65,7 @@ export default {
     }
   },
   components: {
+    OperationBtn
   },
   created(){
     // 查询行政区、商圈
@@ -103,7 +101,6 @@ export default {
             n.label = n.description
             n.value = n.bizzoneid
           });
-        }else if(res.errcode == 'notLogin'){
         }
       })
     },
@@ -175,23 +172,6 @@ export default {
                     color: #ff7625;
                 }
             }
-        }
-    }
-}
-
-.operation-btn {
-
-    button {
-        border: none;
-        width: 50%;
-        background: #f0f0f0;
-        color: #666666;
-        height: 0.4rem;
-        font-size: 0.16rem;
-
-        &.area-submit {
-            color: white;
-            background: #099FDE;
         }
     }
 }
