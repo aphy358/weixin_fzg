@@ -14,7 +14,7 @@
       infinite-scroll-disabled="infiniteLoad"
       infinite-scroll-distance="10">
 
-      <li v-for="n in hotelList" :key="n.infoId" class="item-content">
+      <li v-for="n in hotelList" :key="n.infoId" class="item-content" @click="gotoHotelDetail(n)">
           <div class="item-media">
             <img :src="n.picSrc" :class="{'nopic': n.picSrc.indexOf('nopic') != -1}">
           </div>
@@ -60,6 +60,7 @@ import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
 import LoadMore from '@/components/LoadMore.vue'
 import Loading from '@/components/Loading.vue'
+import { gotoPage } from '@/assets/util'
 
 export default {
   name: 'hotelListInfinite',
@@ -204,6 +205,11 @@ export default {
       this.pageNow = 1
       this.infiniteLoad = false
       this._infiniteLoad = false
+    },
+    // 跳转到酒店详情页（或分销页？）
+    gotoHotelDetail(hotel){
+      this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
+      gotoPage(this.$router, 'hotelDetail')
     }
   }
 }
