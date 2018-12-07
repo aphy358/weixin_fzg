@@ -314,7 +314,7 @@ export default {
       height: 0.5rem;
 
       .iconfont{
-        color: rgba(200, 199, 204, 0.8);
+        color: #ccc;
         font-size: 0.12rem;
       }
     }

@@ -77,17 +77,6 @@ export default {
     font-size: 0;
     display: flex;
 
-    &:after{
-      position: absolute;
-      content: '';
-      transform: scaleY(.5);
-      border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
-      transform-origin: 50% 100%;
-      width: 100%;
-      left: 0;
-      bottom: 0;
-    }
-
     .filter-btn {
       position: relative;
       font-size: 0.15rem;
@@ -124,11 +113,10 @@ export default {
     }
 
     .iconfont {
-      // display: inline-block;
       position: relative;
       top: -0.01rem;
       font-size: 0.1rem;
-      color: #333;
+      color: #aaa;
     }
 
   }
