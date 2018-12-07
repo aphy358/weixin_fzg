@@ -7,9 +7,7 @@
 		</mt-header>
 		<GoBack _style="top: 0.02rem" />
 		
-		<GAP/>
 		<hotelInfo/>
-		<GAP/>
 		
 		<writeInfo/>
 	</div>
@@ -18,7 +16,7 @@
 
 <script>
   import hotelInfo from './modules/hotelInfo.vue';
-  import GAP from '@/components/GAP.vue';
+//  import GAP from '@/components/GAP.vue';
   import writeInfo from './modules/writeInfo.vue';
   import GoBack from '@/components/GoBack.vue';
 	
@@ -33,7 +31,7 @@
     props: {},
     
     components: {
-      GAP,
+//      GAP,
       hotelInfo,
       writeInfo,
       GoBack
