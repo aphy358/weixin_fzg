@@ -46,7 +46,9 @@
 
     </ul>
 
-    <LoadMore v-if="!infiniteLoad" />
+    <Loading v-if="hotelList.length == 0 && !infiniteLoad" />
+
+    <LoadMore v-if="hotelList.length > 0 && !infiniteLoad" />
 
     <END v-if="hotelList.length > 0 && infiniteLoad" />
 
@@ -57,6 +59,7 @@
 import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
 import LoadMore from '@/components/LoadMore.vue'
+import Loading from '@/components/Loading.vue'
 
 export default {
   name: 'hotelListInfinite',
@@ -74,6 +77,7 @@ export default {
   components: {
     END,
     LoadMore,
+    Loading
   },
   watch: {
     showKeywordBoard(){
@@ -130,7 +134,6 @@ export default {
   },
   activated(){
     this.infiniteLoad = this._infiniteLoad
-    // console.log(sessionStorage.getItem('queryHotelList'));
     
     if(sessionStorage.getItem('queryHotelList')){
       this.queryHotel(1)

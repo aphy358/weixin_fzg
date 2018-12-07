@@ -69,8 +69,6 @@
 
     </div>
 
-    <!-- <div v-if="!checkout" class="please-check-out">请选择离店日期</div> -->
-
     <END />
 
   </div>
@@ -343,17 +341,4 @@ export default {
   }
 }
 
-// .please-check-out{
-//   position: fixed;
-//   bottom: 0.2rem;
-//   font-size: 0.14rem;
-//   text-align: center;
-//   background: rgba(4, 4, 4, 0.5);
-//   color: white;
-//   padding: 0.1rem 0;
-//   width: 1.2rem;
-//   left: 50%;
-//   margin-left: -0.6rem;
-//   border-radius: 0.03rem;
-// }
 </style>

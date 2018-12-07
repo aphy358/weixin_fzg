@@ -44,7 +44,7 @@
 			
 			&.area-submit {
 				color: white;
-				background: #099FDE;
+				background: #ff7625;
 			}
 		}
 	}
