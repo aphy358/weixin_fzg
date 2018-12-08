@@ -1,79 +1,57 @@
 <template>
   <div class="search-filter-outer">
-    <div class="s-f-inner">
-      <div class="filter-item">
-        <label class="s-f-label" for="selRoomNum">预定</label>
-        <select id="selRoomNum" class="search-select-item" v-model="getRoomNum">
-          <option v-for="n in 7" :key="n" :value="n">{{ n }}间</option>
-        </select>
+    <div class="s-f-inner" @click="gotoCheckinCheckout">
+      <div class="s-f-item">
+        <span class="s-f-label">入住</span>
+        <span class="s-f-date">{{ formatDate(getCheckin) }}</span>
+        <span class="s-f-week">{{ week1 }}</span>
       </div>
-      <div class="filter-item" style="text-align: center;min-width: 1.5rem;">
-        <label class="s-f-label" for="adultNum">每间住客</label>
-				<select id="adultNum" name="adultNum" class="search-select-item" @change="selectAdultChild" v-model="adultChildValue" :v="getAdultChildValue">
-					<option value="1">1成人</option>
-          <option value="2">2成人</option>
-          <option v-if="getAdultNum > 2 || getChildrenNum > 0" value="3">{{ getAdultNum + '成人' + getChildrenNum > 0 ? '，' + getChildrenNum + '小孩' : '' }}</option>
-          <option value="more">更多选项</option>
-				</select>
-      </div>
-      <div class="filter-item" style="text-align: right;">
-        <div class="s-f-time-condition" @click="gotoCheckinCheckout">
-          <p><label class="s-f-label">入住</label><span>{{ formatDate(getCheckin) }}</span></p>
-          <p><label class="s-f-label">离店</label><span>{{ formatDate(getCheckout) }}</span></p>
+      <div class="s-f-item" style="max-width: 0.6rem;display: flex; justify-content: center; align-items: center">
+        <div class="s-f-nights">
+          共{{ nights }}晚
         </div>
+      </div>
+      <div class="s-f-item" style="text-align: right;">
+        <span class="s-f-label">离店</span>
+        <span class="s-f-date">{{ formatDate(getCheckout) }}</span>
+        <span class="s-f-week">{{ week2 }}</span>
+        <i class="iconfont icon-right-thin" style="font-size: 0.12rem;"></i>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { gotoPage, addDays } from "@/assets/util"
+import { gotoPage, addDays, formatDateTwo } from "@/assets/util"
 
 export default {
   name: 'searchFilter',
   data(){
     return {
-      adultChildValue: '1'
+      nights: '1',
+      week1: '今天',
+      week2: '明天',
+      weekArr: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
     }
   },
   props: {},
   components: {},
-  watch: {},
+  watch: {
+    getCheckin(){
+      this.resetCheckinCheckout()
+    },
+    getCheckout(){
+      this.resetCheckinCheckout()
+    }
+  },
   created(){},
   computed: {
-    getAdultChildValue(){
-      let adultNum = parseInt(this.$store.state.adultNum)
-      let childrenNum = parseInt(this.$store.state.childrenNum)
-      
-      if(adultNum > 2 || childrenNum > 0){
-        this.adultChildValue = '3'
-      }else{
-        this.adultChildValue = adultNum + ''
-      }
-    },
-    getAdultNum(){
-      return parseInt(this.$store.state.adultNum)
-    },
-    getChildrenNum(){
-      return parseInt(this.$store.state.childrenNum)
-    },
-    getChildrenStr(){
-      return this.$store.state.childrenStr
-    },
     getCheckin(){
       return this.$store.state.checkin
     },
     getCheckout(){
       return this.$store.state.checkout
     },
-    getRoomNum: {
-      get(){
-        return this.$store.state.roomNum
-      },
-      set(newValue){
-        this.$store.commit(`setCommonState`, {k: 'roomNum', v: newValue})
-      }
-    }
   },
   mounted(){},
   methods:{
@@ -84,57 +62,89 @@ export default {
     formatDate(date){
       return addDays(date).substring(5)
     },
-    // 选择成人小孩
-    selectAdultChild(){
-      if(this.adultChildValue == 'more'){
-        this.$store.commit(`hotelDetail/setCommonState`, {k: 'adultChildPopupVisible', v: true})
+    resetCheckinCheckout(){
+      let checkin = new Date( formatDateTwo(this.getCheckin) )
+      let checkout = new Date( formatDateTwo(this.getCheckout) )
+      let today = new Date( formatDateTwo(addDays(new Date)) )
+
+      // 计算出晚数
+      this.nights = ( (+checkout) - (+checkin) ) / (24*60*60*1000)
+
+      if(+checkin == +today){
+        this.week1 = '今天'
+      }else if(+checkin - +today == 24*60*60*1000){
+        this.week1 = '明天'
+      }else{
+        this.week1 = this.weekArr[checkin.getDay()]
+      }
+
+      if(+checkout - +today == 24*60*60*1000){
+        this.week2 = '明天'
+      }else{
+        this.week2 = this.weekArr[checkout.getDay()]
       }
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .hotelDetail-page{
-  .search-filter-outer{
+  @at-root .search-filter-outer{
     padding: 0 0.1rem;
 
-    .s-f-inner{
+    @at-root .s-f-inner{
       display: flex;
       position: relative;
-      height: 0.4rem;
-      line-height: 0.4rem;
+      height: 0.44rem;
+      line-height: 0.44rem;
 
-      .filter-item{
+      @at-root .s-f-item{
         flex: 1;
 
-        &:last-child{
-          text-align: right
+        @at-root .s-f-label{
+          font-size: 0.12rem;
+          color: #A9AAB0;
         }
 
-        .s-f-label{
-          display: inline-block;
-          padding-right: 0.05rem;
-          color: #999999;
+        @at-root .s-f-date{
+          font-size: 0.16rem;
+          color: #576690;
+          font-weight: bold;
+          margin: 0 0.1rem;
         }
 
-        select{
-          display: inline-block;
-          line-height: 0.4rem;
-          border: none;
+        @at-root .s-f-week{
+          font-size: 0.12rem;
+          color: #576690;
         }
 
-        @at-root .s-f-time-condition{
-          padding: 0.07rem 0;
+        @at-root .s-f-nights{
+          position: relative;
+          font-size: 0.1rem;
+          color: #A9AAB0;
+          width: 0.5rem;
+          right: 0.07rem;
+          text-align: center;
+          height: 0.2rem;
+          line-height: 0.2rem;
 
-          p{
-            font-size: 0.12rem;
-            height: 0.13rem;
-            line-height: 0.13rem;
+          &:after{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            border: 0.01rem #eee solid;
+            border-radius: 0.03rem;
+            box-sizing: border-box;
+            transform: scale(0.49);
+            transform-origin: left top;
           }
-
         }
       }
+      
     }
   }
 }

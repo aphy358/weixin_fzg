@@ -294,7 +294,7 @@ export default {
           position: absolute;
           left: 0;
           bottom: 0;
-          border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
+          border-bottom: 0.01rem solid #EFEEEC;
           width: 100%;
           transform: scaleY(0.5);
           transform-origin: 50% 100%;

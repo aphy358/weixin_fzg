@@ -101,7 +101,7 @@ export default {
         left: 0;
         bottom: 0;
         width: 100%;
-        border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
+        border-bottom: 0.01rem solid #EFEEEC;
         transform-origin: 50% 100%;
         transform: scaleY(.5);
       }

@@ -5,6 +5,10 @@
   
     <OperationBtn @clear="clearAdultChild" @confirm="setAdultChild" />
 
+    <div class="adult-child-select-wrap">
+      
+    </div>
+
 
   </mt-popup>
 </template>

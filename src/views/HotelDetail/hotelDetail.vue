@@ -9,16 +9,12 @@
 
     <GAP />
 
-    <!-- 成人小孩选择 popup -->
-    <AdultChildPopup />
-
   </div>
 </template>
 
 <script>
 import Banner from './modules/banner.vue'
 import SearchFilter from './modules/searchFilter.vue'
-import AdultChildPopup from './modules/adultChildPopup.vue'
 import GAP from '@/components/GAP.vue'
 
 
@@ -31,7 +27,6 @@ export default {
   components: {
     Banner,
     SearchFilter,
-    AdultChildPopup,
     GAP,
 
   },
