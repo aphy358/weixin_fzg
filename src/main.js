@@ -9,7 +9,7 @@ import api from "./api"
 
 import 'mint-ui/lib/style.css'
 import '@/assets/fonts/iconfont.css'
-import '@/assets/base.css'
+import '@/assets/base.scss'
 import '@/assets/resetMintUI.scss'
 
 Vue.use(Mint)

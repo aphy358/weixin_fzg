@@ -77,14 +77,14 @@
     </div>
 
     <!-- 星级价格 popup -->
-    <StarPrice @setStarPrice="setStarPriceText" page="home" />
+    <StarPricePopup @setStarPrice="setStarPriceText" page="home" />
 
   </div>
 </template>
 
 <script>
 // 搜索区域组件
-import StarPrice from '@/components/StarPrice.vue'
+import StarPricePopup from '@/components/StarPricePopup.vue'
 import { addDays, formatDateTwo, gotoPage } from '@/assets/util'
 
 export default {
@@ -96,7 +96,7 @@ export default {
     }
   },
   components: {
-    StarPrice,
+    StarPricePopup,
   },
   watch: {
   },

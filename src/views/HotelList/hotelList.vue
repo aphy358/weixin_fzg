@@ -11,10 +11,10 @@
       <HotelListInfinite :showKeywordBoard="showKeywordBoard" />
 
       <!-- 星级价格 popup -->
-      <StarPrice page="hotelList" />
+      <StarPricePopup page="hotelList" />
 
       <!-- 行政区、商圈 popup -->
-      <AreaBizSelect />
+      <AreaBizPopup />
 
     </div>
 
@@ -28,8 +28,8 @@ import KeywordBoard from './modules/keywordBoard'
 
 import KeywordInput from './modules/keywordInput'
 import SearchFilter from './modules/searchFilter'
-import StarPrice from '@/components/StarPrice.vue'
-import AreaBizSelect from './modules/areaBizSelect'
+import StarPricePopup from '@/components/StarPricePopup.vue'
+import AreaBizPopup from './modules/areaBizPopup'
 import HotelListInfinite from './modules/hotelListInfinite'
 
 import { addDays, formatDateOne, formatDateTwo } from '@/assets/util'
@@ -50,8 +50,8 @@ export default {
     KeywordBoard,
     KeywordInput,
     SearchFilter,    
-    StarPrice,
-    AreaBizSelect,
+    StarPricePopup,
+    AreaBizPopup,
     HotelListInfinite,
   },
   created(){

@@ -19,7 +19,7 @@ input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0;}
 input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;}
 input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}
 input:focus{outline:none;}
-select[size],select[multiple],select[size][multiple]{border:1px solid #AAA;padding:0;}
+select,select[size],select[multiple],select[size][multiple]{border:1px solid #AAA;padding:0;}
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block;}
 audio,canvas,video,progress{display:inline-block;}
 body{background:#fff;}
@@ -67,9 +67,25 @@ input[type='checkbox']{width: 12px;height: 12px;float: left;border-radius: 2px;b
     display: none;
 }
 .page{ /* 设置页面的全局宽高 */
+    font-size: 0.14rem;
     min-height: 100vh;
     width: 100vw;
     background: white;
 }
 
+.line-after{
+    position: relative;
+    
+    &:after{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
+        width: 100%;
+        transform: scaleY(0.5);
+        transform-origin: 50% 100%;
+        z-index: 15;
+    }
+}
 /* 公共样式 end */

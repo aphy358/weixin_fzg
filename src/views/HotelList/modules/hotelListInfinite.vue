@@ -70,7 +70,7 @@ export default {
       hotelList: [],
       loading: false,
       infiniteLoad: false,
-      _infiniteLoad: false,
+      infiniteLoadCopy: false,
       pageNow: 1,
     }
   },
@@ -87,7 +87,7 @@ export default {
         this.infiniteLoad = true
       }else{
         // 当隐藏关键字输入组件时，恢复之前的无限滚动状态
-        this.infiniteLoad = this._infiniteLoad
+        this.infiniteLoad = this.infiniteLoadCopy
       }
     },
     getCheckedArea(){
@@ -134,7 +134,7 @@ export default {
     },
   },
   activated(){
-    this.infiniteLoad = this._infiniteLoad
+    this.infiniteLoad = this.infiniteLoadCopy
     
     if(sessionStorage.getItem('queryHotelList')){
       this.queryHotel(1)
@@ -179,10 +179,10 @@ export default {
           let content = res.data
           if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
-            _this._infiniteLoad = true
+            _this.infiniteLoadCopy = true
           }else{
             _this.infiniteLoad = false
-            _this._infiniteLoad = false
+            _this.infiniteLoadCopy = false
             _this.pageNow++
           }
 
@@ -204,11 +204,12 @@ export default {
       this.hotelList = []
       this.pageNow = 1
       this.infiniteLoad = false
-      this._infiniteLoad = false
+      this.infiniteLoadCopy = false
     },
     // 跳转到酒店详情页（或分销页？）
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
+      sessionStorage.setItem('curHotel', JSON.stringify(hotel))
       gotoPage(this.$router, 'hotelDetail')
     }
   }
@@ -369,9 +370,6 @@ export default {
 
         .item-text {
           position: relative;
-          -webkit-box-orient: vertical;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
           font-size: 0.12rem;
           color: #b2b2b2;
           white-space: nowrap;
