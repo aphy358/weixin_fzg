@@ -114,6 +114,7 @@ export default {
 .nav-top {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   background-color: #ff7625;
   color: white;
