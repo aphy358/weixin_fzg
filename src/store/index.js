@@ -24,6 +24,9 @@ export default new Vuex.Store({
     cityText: '深圳',
     priceRange: '',
     checkedStar: '',
+  
+    //订单填写页
+    maxPersonNum: 3,
   },
 
   mutations: {
