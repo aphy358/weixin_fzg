@@ -34,7 +34,7 @@
 import OperationBtn from '@/components/OperationBtn.vue'
 
 export default {
-  name: 'areaBizSelect',
+  name: 'areaBizPopup',
   data(){
     return {
       // 为 true 时，当前显示的是行政区选择面板，为 false 时，显示的是商圈选择面板

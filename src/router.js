@@ -41,6 +41,14 @@ let router = new Router({
       },
     },
     {
+      path: '/hotelDetail',
+      name: 'hotelDetail',
+      component: () => import('./views/HotelDetail/hotelDetail.vue'),
+      meta: {
+        wechatAuth: false
+      },
+    },
+    {
       path: '/checkinCheckout',
       name: 'checkinCheckout',
       component: () => import('./views/CheckinCheckout/CheckinCheckout.vue'),

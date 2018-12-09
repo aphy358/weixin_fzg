@@ -14,7 +14,7 @@
       infinite-scroll-disabled="infiniteLoad"
       infinite-scroll-distance="10">
 
-      <li v-for="n in hotelList" :key="n.infoId" class="item-content">
+      <li v-for="n in hotelList" :key="n.infoId" class="item-content" @click="gotoHotelDetail(n)">
           <div class="item-media">
             <img :src="n.picSrc" :class="{'nopic': n.picSrc.indexOf('nopic') != -1}">
           </div>
@@ -60,6 +60,7 @@ import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
 import LoadMore from '@/components/LoadMore.vue'
 import Loading from '@/components/Loading.vue'
+import { gotoPage } from '@/assets/util'
 
 export default {
   name: 'hotelListInfinite',
@@ -69,7 +70,7 @@ export default {
       hotelList: [],
       loading: false,
       infiniteLoad: false,
-      _infiniteLoad: false,
+      infiniteLoadCopy: false,
       pageNow: 1,
     }
   },
@@ -86,7 +87,7 @@ export default {
         this.infiniteLoad = true
       }else{
         // 当隐藏关键字输入组件时，恢复之前的无限滚动状态
-        this.infiniteLoad = this._infiniteLoad
+        this.infiniteLoad = this.infiniteLoadCopy
       }
     },
     getCheckedArea(){
@@ -133,7 +134,7 @@ export default {
     },
   },
   activated(){
-    this.infiniteLoad = this._infiniteLoad
+    this.infiniteLoad = this.infiniteLoadCopy
     
     if(sessionStorage.getItem('queryHotelList')){
       this.queryHotel(1)
@@ -178,10 +179,10 @@ export default {
           let content = res.data
           if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
-            _this._infiniteLoad = true
+            _this.infiniteLoadCopy = true
           }else{
             _this.infiniteLoad = false
-            _this._infiniteLoad = false
+            _this.infiniteLoadCopy = false
             _this.pageNow++
           }
 
@@ -203,7 +204,13 @@ export default {
       this.hotelList = []
       this.pageNow = 1
       this.infiniteLoad = false
-      this._infiniteLoad = false
+      this.infiniteLoadCopy = false
+    },
+    // 跳转到酒店详情页（或分销页？）
+    gotoHotelDetail(hotel){
+      this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
+      sessionStorage.setItem('curHotel', JSON.stringify(hotel))
+      gotoPage(this.$router, 'hotelDetail')
     }
   }
 }
@@ -287,7 +294,7 @@ export default {
           position: absolute;
           left: 0;
           bottom: 0;
-          border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
+          border-bottom: 0.01rem solid #EFEEEC;
           width: 100%;
           transform: scaleY(0.5);
           transform-origin: 50% 100%;
@@ -363,9 +370,6 @@ export default {
 
         .item-text {
           position: relative;
-          -webkit-box-orient: vertical;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
           font-size: 0.12rem;
           color: #b2b2b2;
           white-space: nowrap;

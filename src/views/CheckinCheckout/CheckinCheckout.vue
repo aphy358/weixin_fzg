@@ -1,7 +1,7 @@
 <template>
   <div class="page checkinCheckout-page">
 
-    <div class="calendar-head-wrap">
+    <div class="calendar-head-wrap nav-top">
 
       <!-- 头部 -->
       <mt-header title="入离日期选择"></mt-header>
@@ -199,11 +199,15 @@ export default {
 </script>
 
 <style lang="scss">
-.calendar-head-wrap{
+.nav-top{
   position: fixed;
   width: 100%;
   top: 0;
+  left: 0;
   z-index: 1000;
+}
+
+.calendar-head-wrap{
 
   @at-root .calendar-week-title{
     line-height: 0.25rem;
