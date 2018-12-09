@@ -55,14 +55,6 @@
             tid = setTimeout(refreshRem, 300);
           }
         }, false);
-
-        if (doc.readyState === "complete") {
-          doc.body.style.fontSize = "12px";
-        } else {
-          doc.addEventListener("DOMContentLoaded", function(e) {
-            doc.body.style.fontSize = "12px";
-          }, false);
-        }
       })(375, 750);
       
 

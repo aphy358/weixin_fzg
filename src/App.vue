@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .slide-right-enter-active,
 .slide-right-leave-active,
 .slide-left-enter-active,
@@ -108,6 +108,10 @@ export default {
 /* 这里是为了去除 transform 样式，使页面切换时，不会影响 fixed 元素的正常固定 */
 .page.velocity-animating{
   transform: none!important;
+
+  .nav-top{
+    left: auto!important;
+  }
 }
 
 .slide-right-enter-active{

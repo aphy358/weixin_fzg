@@ -5,25 +5,30 @@ import { addDays, _setCommonState } from "@/assets/util"
 // 引入各个子模块
 import home from './modules/home'
 import hotelList from './modules/hotelList'
+import hotelDetail from './modules/hotelDetail'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    keyword: '',
+    // 默认深圳
+    cityId: '70002',
+    cityText: '深圳',
     cityType: '0',
+
+    keyword: '',
     roomNum: '1',
     adultNum: '2',
     childrenNum: '0',
     childrenStr: '',
     checkin: addDays(new Date),
     checkout: addDays(new Date, 1),
-
-    // 默认深圳
-    cityId: '70002',
-    cityText: '深圳',
+    
     priceRange: '',
     checkedStar: '',
+
+    // 最近一次被点击的酒店信息，用于酒店详情页的展示
+    curHotel: null,
   },
 
   mutations: {
@@ -64,5 +69,6 @@ export default new Vuex.Store({
   modules: {
     home,
     hotelList,
+    hotelDetail,
   },
 })
