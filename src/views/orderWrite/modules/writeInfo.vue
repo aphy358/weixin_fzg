@@ -27,11 +27,13 @@
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">手机号</span>
-				<input type="tel" class="per-info-input" placeholder="用于接收通知"/>
+				<input v-validate="{required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/}" name="tel" type="tel" class="per-info-input" placeholder="用于接收通知" v-model="tel"/>
+				<i v-show="telIconVisible" :class="errors.has('tel')?'validate-identifier mintui mintui-field-error':'validate-identifier mintui mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">Email</span>
-				<input type="email" class="per-info-input" placeholder="用于接收通知"/>
+				<input v-validate="'required|email'" type="text" name="email" class="per-info-input" placeholder="用于接收通知" v-model="email">
+				<i v-show="emailIconVisible" :class="errors.has('email')?'validate-identifier mintui mintui-field-error':'validate-identifier mintui mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">结算方式</span>
@@ -45,24 +47,15 @@
 				</mt-popup>
 			</div>
 		</div>
-		<div class="per-module">
+		<div class="per-module" :max="maxPersonNum">
 			<div class="per-line">
 				<span class="per-info-title green"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
-			<div class="per-line">
-				<input type="text" class="username-input last-name" placeholder="姓 Last name"/>/
-				<input type="text" class="username-input first-name" placeholder="名 First name"/>
-				<i class="iconfont icon-plus2 username-icon" @click="nextVisible"></i>
-			</div>
-			<div class="per-line" v-if="secondVisible">
-				<input type="text" class="username-input last-name" placeholder="姓 Last name"/>/
-				<input type="text" class="username-input first-name" placeholder="名 First name"/>
-				<i class="iconfont icon-minus2 username-icon" @click="hideSecond"></i>
-			</div>
-			<div class="per-line" v-if="thirdVisible">
-				<input type="text" class="username-input last-name" placeholder="姓 Last name"/>/
-				<input type="text" class="username-input first-name" placeholder="名 First name"/>
-				<i class="iconfont icon-minus2 username-icon" @click="hideThird"></i>
+			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]">
+				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
+				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>
+				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon" @click="nextVisible(item)"></i>
+				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon" @click="hideName(item)"></i>
 			</div>
 		</div>
 		<div class="rules">
@@ -71,11 +64,23 @@
 			<h6 class="rule-title">入住须知</h6>
 			<p class="rule-txt">酒店入住时间最早为14:00，入住最晚时间为24:00。</p>
 		</div>
+		
+		
+		
+		<div class="total-pay clearfix" :class="payVisible ? 'show-animate' : 'hide-animated'">
+			<span class="fl orange">订单总额：￥</span>
+			<span class="fl orange total-money">843.15</span>
+			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
+		</div>
+		
+		<confirmInfo @close="closeConfirmMask" v-show="confirmVisible"/>
+		<div class="confirmMask" v-show="confirmVisible"/>
 	</div>
 </template>
 
 <script>
   import OperationBtn from '@/components/OperationBtn.vue';
+  import confirmInfo from '../modules/confirmInfo.vue';
   import { MessageBox } from 'mint-ui';
   
   export default {
@@ -87,8 +92,13 @@
         roomNumVisible: false,
         specialVisible: false,
         paymentVisible: false,
-        secondVisible: false,
-        thirdVisible: false,
+        nameVisibleArr: [],
+        nameRegArr: [],
+        payVisible: false,
+        telIconVisible: false,
+        emailIconVisible: false,
+        email: '',
+        tel: '',
         roomNumSlots: [
           {
             flex: 1,
@@ -104,19 +114,113 @@
             values: ['单结'],
             className: 'slot1',
           }
-        ]
+        ],
+        nameArr: [
+          {
+            l: '',
+            f: ''
+          },
+          {
+            l: '',
+            f: ''
+          },
+          {
+            l: '',
+            f: ''
+          },
+        ],
+        nameRank: [],
+        country: 70007,
+        confirmVisible: false
       }
     },
     
     props: {},
     
     components: {
-      OperationBtn
+      OperationBtn,
+      confirmInfo
     },
     
-    computed: {},
+    computed: {
+      maxPersonNum(){
+        return this.$store.state.maxPersonNum;
+      },
+    },
+    
+    created(){
+      //入住人显示与否、验证规则
+      let maxPersonNum = this.$store.state.maxPersonNum;
+      let roomNum = this.$store.state.roomNum;
+      for (let i = 0; i < maxPersonNum * roomNum; i++) {
+        this.$set(this.nameRank, i, i);
+        if (i === 0 || i%maxPersonNum === 0){
+          this.$set(this.nameVisibleArr, i, true);
+          if(this.country === 70007){
+//            this.$set(this.nameRegArr, i, { required: true, regex: /^([\u4e00-\u9fa5a-zA-Z]+)$/ });
+            this.$set(this.nameRegArr, i, 'required|inner');
+          }else{
+            this.$set(this.nameRegArr, i, { required: true, regex: /^[a-zA-Z]*$/ });
+            this.$set(this.nameRegArr, i, 'required|outer');
+          }
+        }else{
+          this.$set(this.nameVisibleArr, i, false);
+          if(this.country === 70007){
+//            this.$set(this.nameRegArr, i, { regex: /^([\u4e00-\u9fa5a-zA-Z]+)$/ });
+            this.$set(this.nameRegArr, i, 'inner');
+          }else{
+//            this.$set(this.nameRegArr, i, { regex: /^[a-zA-Z]*$/ });
+            this.$set(this.nameRegArr, i, 'outer');
+          }
+          
+        }
+      }
+      
+      //新增验证规则
+      this.$validator.extend('inner', {
+        //中文或拼音
+        getMessage: field => field + '只能输入中文或拼音',
+        validate: value => /^([\u4e00-\u9fa5a-zA-Z]+)$/.test(value)
+      });
+  
+      this.$validator.extend('outer', {
+        //英文
+        getMessage: field => field + '只能输入英文或拼音',
+        validate: value => /^[a-zA-Z]*$/.test(value)
+      });
+      
+      //错误提示
+      const dictionary = {
+        en: {
+          messages:{
+            required: () => '该项为必填项',
+            tel: ()=> '手机号格式错误',
+            email: ()=> '邮箱格式错误'
+          }
+        },
+        ar: {
+          messages: {
+            required: () => '该项为必填项',
+            tel: ()=> '手机号格式错误',
+            email: ()=> '邮箱格式错误'
+          }
+        }
+      };
+      this.$validator.localize(dictionary);
+    },
+  
+    mounted () {
+      window.addEventListener('scroll', this.handleScroll)
+    },
     
     methods: {
+      handleScroll () {
+        if(window.scrollY >= 20){
+          this.payVisible = true;
+        }else{
+          this.payVisible = false;
+        }
+      },
       openRoomNum() {
         this.roomNumVisible = true;
       },
@@ -141,22 +245,87 @@
       confirmPayment(){
       
       },
-      nextVisible(){
-        if (this.secondVisible){
-          if (this.thirdVisible){
+      nextVisible(index){
+        let maxPersonNum = this.maxPersonNum;
+        for (let i = 1; i <= this.nameVisibleArr.length; i++){
+          if (i > ((index + 1) * maxPersonNum - 1)){
             MessageBox('提示', '无法继续增加入住人信息');
-          }else{
-            this.thirdVisible = true;
+            return;
           }
-        }else{
-          this.secondVisible = true;
+  
+          if (i%maxPersonNum === 1 && i !== 0 && i%maxPersonNum !== 0 && !this.nameVisibleArr[i] && this.nameVisibleArr[i + 1]){
+            //以最大入住人为3为例，如果用户删掉了第二个入住人的数据，再次点增加时则将第三个入住人的数据挪到第二个入住人中，从而保持新增的入住人为空
+            this.$set(this.nameArr, i, {l: this.nameArr[i + 1].l, f: this.nameArr[i + 1].f});
+            this.$set(this.nameArr, i + 1, {l: '', f: ''});
+          }
+  
+          if (i%maxPersonNum !== 0 && !this.nameVisibleArr[i]){
+            this.$set(this.nameVisibleArr, i, true);
+            break;
+          }
+  
         }
       },
-      hideSecond(){
-        this.secondVisible = false;
+      hideName(index){
+        this.$set(this.nameVisibleArr, index, false);
+        this.$set(this.nameArr, index, {l: '', f: ''});
       },
-      hideThird(){
-        this.thirdVisible = false;
+      onSubmit(){
+        this.$validator.validateAll().then((result) => {
+          this.telIconVisible = true;
+          this.emailIconVisible = true;
+          if (result) {
+            //弹出确认框
+            let params = {
+              hotelName: '深圳海燕大酒店',
+              roomType: '豪华双床房[双床]',
+              date: '2018-12-09/2018-12-10',
+              roomNum: 1,
+              name: '测试',
+              confirmWay: '手机号：13537820062',
+              payWay: '单结',
+              specialReq: '',
+              cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
+              totalPay: 'RMB417.90元',
+            };
+            
+            this.confirmVisible = true;
+          }else{
+            if (!this.tel){
+              MessageBox('提示', '请输入手机号');
+            }else if (!this.email){
+              MessageBox('提示', '请输入邮箱');
+            }else{
+              //判断入住人
+              for (let i = 0; i < 3; i++) {
+                if (i === 0 || i%3 === 0){
+                  //主入住人
+                  if (!(this.nameArr[i].l && this.nameArr[i].f)){
+                    MessageBox('提示', '主入住人的姓和名均为必填');
+                    break;
+                  }
+                }else{
+                  //附加入住人
+                  if (this.nameVisibleArr[i]){
+                    if (this.nameArr[i].l || this.nameArr[i].f){
+                      if (!(this.nameArr[i].l && this.nameArr[i].f)){
+                        MessageBox('提示', '附加入住人填了姓或名其中一个，则另一个也必填');
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+    
+              MessageBox('提示', this.errors.first('tel') || this.errors.first('email') || this.errors.first('lastName') || this.errors.first('firstName'));
+            }
+          }
+  
+          
+        });
+      },
+      closeConfirmMask(){
+        this.confirmVisible = false;
       }
     }
   }
@@ -192,7 +361,7 @@
 				}
 				
 				.per-info-input{
-					flex: 1;
+					width: 2rem;
 					padding-left: 0.2rem;
 				}
 				
@@ -251,6 +420,16 @@
 			}
 		}
 		
+		@at-root .confirmMask{
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 1999;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0 , 0, .4);
+		}
+		
 		input{
 			border: none;
 		}
@@ -258,75 +437,55 @@
 	}
 	
 	
-	.operation-btn {
-		
-		button {
-			border: none;
-			width: 50%;
-			background: #f0f0f0;
-			color: #666666;
-			height: 0.4rem;
-			font-size: 0.16rem;
-			
-			&.area-submit {
-				color: white;
-				background: #099FDE;
-			}
-		}
+	.total-pay{
+		display: block;
+		width: 100%;
+		height: 0.5rem;
+		line-height: 0.5rem;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		/*background-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,.8), rgba(255,255,255,0) 70%);*/
+		background-color: #fff;
+		padding: 0 0.2rem;
+		box-sizing: border-box;
+		transition: all .5s;
 	}
+	
+	.hide-animated{
+		bottom: -0.5rem;
+	}
+	
+	.show-animate{
+		bottom: 0;
+	}
+	
+	.total-money{
+		font-size: 0.16rem;
+		font-weight: bold;
+	}
+	
+	.next-step{
+		height: 0.32rem;
+		line-height: 0.32rem;
+		border: none;
+		border-radius: 4px;
+		background-color: #ff7625;
+		color: #ffffff;
+		margin: 0.09rem 0;
+		padding: 0 0.1rem;
+	}
+	
+	.mintui-field-success{
+		color: #0bc16f;
+	}
+	
+	.mintui-field-error{
+		color: #f44336;
+	}
+	
 	
 	.green{
 		color: #0bc16f;
-	}
-</style>
-
-<style lang="scss">
-	.mint-checklist{
-		margin: 0.4rem 0;
-		zoom: 1
-	}
-	
-	.mint-checklist:after {
-		content: '';
-		display: block;
-		width: 0;
-		height: 0;
-		clear: both;
-	}
-	
-	.mint-checkbox-core{
-		width: 0.14rem;
-		height: 0.14rem;
-		
-		&:after{
-			top: 0.015rem;
-			left: 0.045rem;
-			width: 0.03rem;
-			height: 0.07rem;
-		}
-	}
-	
-	.mint-checkbox-label{
-		color: #333333;
-		margin-left: 0.03rem;
-	}
-	.mint-cell-wrapper{
-		font-size: 0.15rem;
-		background-image: none;
-	}
-	.mint-cell{
-		min-height: 0.35rem;
-		display: inline-block;
-		width: 50%;
-		float: left;
-	}
-	
-	.mint-checkbox-input:checked + .mint-checkbox-core {
-		background-color: #ff7625;
-		border-color: #ff7625;
-	}
-	
-	.mint-cell:last-child{
-		background-image: none;
 	}
 </style>

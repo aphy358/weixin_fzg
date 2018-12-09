@@ -10,12 +10,6 @@
 		<hotelInfo/>
 		
 		<writeInfo/>
-		
-		<div class="total-pay clearfix" :class="payVisible ? 'show-animate' : 'hide-animated'">
-			<span class="fl orange">订单总额：￥</span>
-			<span class="fl orange total-money">843.15</span>
-			<button class="fr next-step">下一步</button>
-		</div>
 	</div>
 
 </template>
@@ -26,14 +20,13 @@
   import writeInfo from './modules/writeInfo.vue';
   import GoBack from '@/components/GoBack.vue';
 	
-	
   export default {
     name: '',
     
     data() {
       return {
         scrollTop: 0,
-        payVisible: false
+        validate: false
       }
     },
     
@@ -47,18 +40,10 @@
     },
     
     computed: {},
-  
-    mounted () {
-      window.addEventListener('scroll', this.handleScroll)
-    },
     
     methods: {
-      handleScroll () {
-        if(window.scrollY >= 20){
-          this.payVisible = true;
-        }else{
-          this.payVisible = false;
-        }
+      onSubmit () {
+        this.validate = true;
       }
     }
   }
@@ -69,6 +54,10 @@
 		background-color: #efeff4;
 	}
 	
+	
+</style>
+
+<style lang="scss">
 	.fl{
 		float: left;
 	}
@@ -77,46 +66,56 @@
 		float: right;
 	}
 	
-	.total-pay{
-		display: block;
-		width: 100%;
-		height: 0.5rem;
-		line-height: 0.5rem;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		/*background-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,.8), rgba(255,255,255,0) 70%);*/
-		background-color: #fff;
-		padding: 0 0.2rem;
-		box-sizing: border-box;
-		transition: all .5s;
-	}
-	
-	.hide-animated{
-		bottom: -0.5rem;
-	}
-	
-	.show-animate{
-		bottom: 0;
-	}
-	
-	.total-money{
-		font-size: 0.16rem;
-		font-weight: bold;
-	}
-	
-	.next-step{
-		height: 0.32rem;
-		line-height: 0.32rem;
-		border: none;
-		border-radius: 4px;
-		background-color: #ff7625;
-		color: #ffffff;
-		margin: 0.09rem 0;
-		padding: 0 0.1rem;
-	}
-	
 	.orange{
 		color: #ff7625;
+	}
+	
+	.mint-checklist{
+		margin: 0.4rem 0;
+		zoom: 1
+	}
+	
+	.mint-checklist:after {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		clear: both;
+	}
+	
+	.mint-checkbox-core{
+		width: 0.14rem;
+		height: 0.14rem;
+		
+		&:after{
+			top: 0.015rem;
+			left: 0.045rem;
+			width: 0.03rem;
+			height: 0.07rem;
+		}
+	}
+	
+	.mint-checkbox-label{
+		color: #333333;
+		margin-left: 0.03rem;
+	}
+	.mint-cell-wrapper{
+		font-size: 0.15rem;
+		background-image: none;
+	}
+	.mint-cell{
+		min-height: 0.35rem;
+		display: inline-block;
+		width: 50%;
+		float: left;
+	}
+	
+	.mint-checkbox-input:checked + .mint-checkbox-core {
+		background-color: #ff7625;
+		border-color: #ff7625;
+	}
+	
+	.mint-cell:last-child{
+		background-image: none;
 	}
 </style>

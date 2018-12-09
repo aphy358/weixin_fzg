@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Mint from 'mint-ui'
 import api from "./api"
+import VeeValidate from 'vee-validate';
 
 // import wx from 'weixin-js-sdk'
 
@@ -15,6 +16,8 @@ import '@/assets/resetMintUI.scss'
 Vue.use(Mint)
 Vue.use(api)
 Vue.config.productionTip = false
+
+Vue.use(VeeValidate, { validity: true });
 
 // 全局变量 historyObj，用于保存页面状态
 // historyObj.arr 存的是当前 history 对象里存在的所有页面路径

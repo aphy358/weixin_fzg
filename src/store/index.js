@@ -26,6 +26,9 @@ export default new Vuex.Store({
     
     priceRange: '',
     checkedStar: '',
+  
+    //订单填写页
+    maxPersonNum: 3,
 
     // 最近一次被点击的酒店信息，用于酒店详情页的展示
     curHotel: null,
