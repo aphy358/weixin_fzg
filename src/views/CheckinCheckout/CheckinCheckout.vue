@@ -148,7 +148,7 @@ export default {
           setTimeout(function(){
             window.historyObj.arr.pop()
             _this.$router.go(-1)
-          }, 100)
+          }, 200)
         }
       }
     },

@@ -210,7 +210,7 @@ export default {
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
       sessionStorage.setItem('curHotel', JSON.stringify(hotel))
-      gotoPage(this.$router, 'hotelDetail')
+      gotoPage(this.$router, 'hotelDetail', {id: hotel.infoId})
     }
   }
 }

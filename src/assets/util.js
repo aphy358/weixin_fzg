@@ -46,7 +46,11 @@ export const formatDateTwo = (dateStr) => {
 }
 
 // 前进到某个页面
-export const gotoPage = (router, pageStr) => {
+export const gotoPage = (router, pageStr, query) => {
   window.historyObj.arr.push(pageStr)
-  router.push(pageStr)
+  query
+    ? router.push({ path: pageStr, query: query})
+    : router.push(pageStr)
+
+  // 参考： router.push({ path: 'register', query: { plan: 'private' }})
 }
