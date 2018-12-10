@@ -98,7 +98,7 @@ export default {
       elem.querySelector('input').checked = true
     },
     selectOneCity(city){
-      this.$store.commit(`setCommonState`, {k: 'cityType', v: city.cityType})
+      this.$store.commit(`setCityType`, city.cityType)
       this.$store.commit(`setCommonState`, {k: 'cityId', v: city.cityId})
       this.$store.commit(`setCommonState`, {k: 'cityText', v: city.cityName})
       sessionStorage.setItem('queryHotelList', 'query')
