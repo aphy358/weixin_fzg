@@ -73,8 +73,8 @@ export default {
   created(){
   },
   activated(){
-    this.resetData()
     this.initQueryString()
+    this.resetData()
     this.queryHotelPrice()
   },
   computed: {
@@ -273,7 +273,7 @@ export default {
 
           @at-root .hotel-roomtype-price-item{
             position: relative;
-            padding: 0.12rem 0.1rem;
+            padding: 0.12rem 0.15rem;
             box-sizing: border-box;
 
             &:before{
@@ -310,7 +310,7 @@ export default {
             .right-outer{
               position: absolute;
               top: 0.3rem;
-              right: 0.1rem;
+              right: 0.15rem;
               text-align: right;
 
               .price-wrap{
