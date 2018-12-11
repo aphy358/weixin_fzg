@@ -5,9 +5,7 @@
 			<div class="per-line">
 				<span class="per-info-title">房间数</span>
 				<span class="per-info-txt" @click="openRoomNum">1</span>
-				<mt-popup
-						v-model="roomNumVisible"
-						position="bottom">
+				<mt-popup v-model="roomNumVisible" position="bottom">
 					<button class="confirm" @click="confirmRoomNum">确定</button>
 					<mt-picker :slots="roomNumSlots" @change="onValuesChange"></mt-picker>
 				</mt-popup>
@@ -15,25 +13,20 @@
 			<div class="per-line">
 				<span class="per-info-title">个性化需求</span>
 				<span class="per-info-txt" @click="openSpecial">添加个性化需求</span>
-				<mt-popup
-						v-model="specialVisible"
-						position="bottom">
+				<mt-popup v-model="specialVisible" position="bottom">
 					<OperationBtn @clear="clearSpecial" @confirm="confirmSpecial"/>
-					<mt-checklist
-							v-model="specialReq"
-							:options="specialReqList">
-					</mt-checklist>
+					<mt-checklist v-model="specialReq" :options="specialReqList"></mt-checklist>
 				</mt-popup>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">手机号</span>
 				<input v-validate="{required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/}" name="tel" type="tel" class="per-info-input" placeholder="用于接收通知" v-model="tel"/>
-				<i v-show="telIconVisible" :class="errors.has('tel')?'validate-identifier mintui mintui-field-error':'validate-identifier mintui mintui-field-success'"></i>
+				<i v-show="telIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">Email</span>
 				<input v-validate="'required|email'" type="text" name="email" class="per-info-input" placeholder="用于接收通知" v-model="email">
-				<i v-show="emailIconVisible" :class="errors.has('email')?'validate-identifier mintui mintui-field-error':'validate-identifier mintui mintui-field-success'"></i>
+				<i v-show="emailIconVisible" class="validate-identifier mintui" :class="errors.has('email')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">结算方式</span>
@@ -51,9 +44,10 @@
 			<div class="per-line">
 				<span class="per-info-title green"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
-			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]">
+			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="item">
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
-				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>
+				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
+				<span class="username-input nationality" v-model="nameArr[item].n" @click.prevent.stop="selectNationality">国籍</span>
 				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon" @click="nextVisible(item)"></i>
 				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon" @click="hideName(item)"></i>
 			</div>
@@ -63,9 +57,13 @@
 			<p class="rule-txt">此房即订即保，一旦预订，不可修改或取消。</p>
 			<h6 class="rule-title">入住须知</h6>
 			<p class="rule-txt">酒店入住时间最早为14:00，入住最晚时间为24:00。</p>
+			<h6 class="rule-title">温馨提示</h6>
+			<p class="rule-txt">应马来西亚政府要求，所有星级的住宿场所和酒店将征收旅游税，外国游客需缴付MYR 10/房/晚，在客人办理离店时支付酒店前台！</p>
+			<h6 class="rule-title">预订提示</h6>
+			<p class="rule-txt">此房价为2人入住价格，若多人入住，则需在酒店前台支付相应费用</p>
+			<h6 class="rule-title">特殊入住提示</h6>
+			<p class="rule-txt"></p>
 		</div>
-		
-		
 		
 		<div class="total-pay clearfix" :class="payVisible ? 'show-animate' : 'hide-animated'">
 			<span class="fl orange">订单总额：￥</span>
@@ -73,14 +71,22 @@
 			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
 		</div>
 		
-		<confirmInfo @close="closeConfirmMask" v-show="confirmVisible"/>
-		<div class="confirmMask" v-show="confirmVisible"/>
+		<mt-popup v-model="confirmVisible" popup-transition="popup-fade">
+			<confirmInfo @close="closeConfirmMask"/>
+		</mt-popup>
+		<!--<div class="confirmMask" v-show="confirmVisible"/>-->
+		
+		<mt-popup class="nationality-popup" v-model="nationalityVisible" position="right" catchtouchmove="true">
+			<nationality  @hideNationality="hideNationality"/>
+		</mt-popup>
+		
 	</div>
 </template>
 
 <script>
   import OperationBtn from '@/components/OperationBtn.vue';
   import confirmInfo from '../modules/confirmInfo.vue';
+  import nationality from '../modules/nationality.vue';
   import { MessageBox } from 'mint-ui';
   
   export default {
@@ -131,7 +137,8 @@
         ],
         nameRank: [],
         country: 70007,
-        confirmVisible: false
+        confirmVisible: false,
+        nationalityVisible: false
       }
     },
     
@@ -139,7 +146,8 @@
     
     components: {
       OperationBtn,
-      confirmInfo
+      confirmInfo,
+      nationality
     },
     
     computed: {
@@ -157,7 +165,6 @@
         if (i === 0 || i%maxPersonNum === 0){
           this.$set(this.nameVisibleArr, i, true);
           if(this.country === 70007){
-//            this.$set(this.nameRegArr, i, { required: true, regex: /^([\u4e00-\u9fa5a-zA-Z]+)$/ });
             this.$set(this.nameRegArr, i, 'required|inner');
           }else{
             this.$set(this.nameRegArr, i, { required: true, regex: /^[a-zA-Z]*$/ });
@@ -166,10 +173,8 @@
         }else{
           this.$set(this.nameVisibleArr, i, false);
           if(this.country === 70007){
-//            this.$set(this.nameRegArr, i, { regex: /^([\u4e00-\u9fa5a-zA-Z]+)$/ });
             this.$set(this.nameRegArr, i, 'inner');
           }else{
-//            this.$set(this.nameRegArr, i, { regex: /^[a-zA-Z]*$/ });
             this.$set(this.nameRegArr, i, 'outer');
           }
           
@@ -255,8 +260,8 @@
   
           if (i%maxPersonNum === 1 && i !== 0 && i%maxPersonNum !== 0 && !this.nameVisibleArr[i] && this.nameVisibleArr[i + 1]){
             //以最大入住人为3为例，如果用户删掉了第二个入住人的数据，再次点增加时则将第三个入住人的数据挪到第二个入住人中，从而保持新增的入住人为空
-            this.$set(this.nameArr, i, {l: this.nameArr[i + 1].l, f: this.nameArr[i + 1].f});
-            this.$set(this.nameArr, i + 1, {l: '', f: ''});
+            this.$set(this.nameArr, i, {l: this.nameArr[i + 1].l, f: this.nameArr[i + 1].f, n: this.nameArr[i + 1].n});
+            this.$set(this.nameArr, i + 1, {l: '', f: '', n: ''});
           }
   
           if (i%maxPersonNum !== 0 && !this.nameVisibleArr[i]){
@@ -268,7 +273,7 @@
       },
       hideName(index){
         this.$set(this.nameVisibleArr, index, false);
-        this.$set(this.nameArr, index, {l: '', f: ''});
+        this.$set(this.nameArr, index, {l: '', f: '', n: ''});
       },
       onSubmit(){
         this.$validator.validateAll().then((result) => {
@@ -300,16 +305,16 @@
               for (let i = 0; i < 3; i++) {
                 if (i === 0 || i%3 === 0){
                   //主入住人
-                  if (!(this.nameArr[i].l && this.nameArr[i].f)){
-                    MessageBox('提示', '主入住人的姓和名均为必填');
+                  if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
+                    MessageBox('提示', '主入住人的姓、名和国籍均为必填');
                     break;
                   }
                 }else{
                   //附加入住人
                   if (this.nameVisibleArr[i]){
-                    if (this.nameArr[i].l || this.nameArr[i].f){
-                      if (!(this.nameArr[i].l && this.nameArr[i].f)){
-                        MessageBox('提示', '附加入住人填了姓或名其中一个，则另一个也必填');
+                    if (this.nameArr[i].l || this.nameArr[i].f || this.nameArr[i].n){
+                      if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
+                        MessageBox('提示', '附加入住人填了姓、名或国籍其中一个，则另一个也必填');
                         break;
                       }
                     }
@@ -326,6 +331,12 @@
       },
       closeConfirmMask(){
         this.confirmVisible = false;
+      },
+      selectNationality(){
+        this.nationalityVisible = true;
+      },
+      hideNationality(){
+        this.nationalityVisible = false;
       }
     }
   }
@@ -389,7 +400,16 @@
 				
 				.username-input{
 					padding-left: 0.2rem;
-					width: 1.2rem;
+					width: 1rem;
+					/*box-sizing: border-box;*/
+					
+					&.nationality{
+						width: 0.4rem;
+						height: 0.14rem;
+						padding-left: 0;
+						display: inline-block;
+						color: #d8d8dc;
+					}
 				}
 				
 				.username-icon{
@@ -409,17 +429,27 @@
 				color: #050505;
 				font-weight: bold;
 				font-size: 0.12rem;
-				height: 0.3rem;
+				/*height: 0.3rem;*/
 				line-height: 0.3rem;
 			}
 			
 			.rule-txt{
 				color: #777a7c;
-				height: 0.3rem;
+				/*height: 0.3rem;*/
 				line-height: 0.3rem;
 			}
 		}
 		
+		.mint-popup{
+			background: none;
+			
+			&.nationality-popup{
+				background-color: #fff;
+				height: 100%;
+			}
+		}
+		
+		/*
 		@at-root .confirmMask{
 			position: fixed;
 			top: 0;
@@ -429,6 +459,7 @@
 			height: 100%;
 			background-color: rgba(0, 0 , 0, .4);
 		}
+		*/
 		
 		input{
 			border: none;
