@@ -8,28 +8,36 @@
           <div class="hotel-roomtype-name-head" @click="switchPriceShow(i)">
             <p class="roomtype-name">{{ n.roomName }}</p>
             <div class="roomtype-price-wrap">
-              日均<span class="red">￥</span><span class="red price">200</span>起
+              日均<span class="red">￥</span><span class="red price">{{ n.lowestAverage }}</span>起
               <i class="iconfont" :class="[n.ifShow ? 'icon-up-thin' : 'icon-down-thin']"></i>
             </div>
           </div>
 
-          <div class="hotel-roomtype-price-wrap" v-show="n.ifShow">
-            <ul class="hotel-roomtype-price-list">
-              <li v-for="(m, j) in n.roomTypePrices" :key="j" class="hotel-roomtype-price-item">
-                <div class="breakfast-bedtype">{{ m.rateTypeName }} {{ m.bedTypeName }}</div>
-                <div class="rate-type">{{ m.roomName }}</div>
-                <div class="cancel-type">不可取消</div>
-                <div class="room-status">剩余 [1]</div>
-                <div class="right-outer">
-                  <div class="price-wrap">
-                    日均<span class="red">￥</span>
-                    <span class="red price">{{ m.totalPriceRMB }}</span>
+          <transition name="slide-fade"
+            @enter="enter"
+            @after-enter="afterEnter"
+            @leave="leave"
+            @after-leave="afterLeave"
+            >
+            <div class="hotel-roomtype-price-wrap" v-show="n.ifShow">
+              <ul class="hotel-roomtype-price-list">
+                <li v-for="(m, j) in n.roomTypePrices" :key="j" class="hotel-roomtype-price-item">
+                  <div class="breakfast-bedtype">{{ m.rateTypeName }} {{ m.bedTypeName }}</div>
+                  <div class="order-clause">{{ m.orderClauseText }}</div>
+                  <div class="cancel-type">{{ m.cancellationText }}</div>
+                  <div class="room-status">{{ m.roomStatusText || '占位' }}</div>
+                  <div class="right-outer">
+                    <div class="price-wrap">
+                      日均<span class="red">￥</span>
+                      <span class="red price">{{ m.averagePriceRMB }}</span>
+                    </div>
+                    <div v-if="m.isBook" class="book-btn">预订</div>
+                    <div v-else class="book-btn disable">满房</div>
                   </div>
-                  <div class="book-btn">预订</div>
-                </div>
-              </li>
-            </ul>
-          </div>
+                </li>
+              </ul>
+            </div>
+          </transition>
 
         </li>
       </ul>
@@ -44,6 +52,7 @@
 import Loading from '@/components/Loading.vue'
 import END from '@/components/END.vue'
 import { queryString } from '@/assets/util'
+import Velocity from 'velocity-animate'
 
 export default {
   name: 'hotelPriceList',
@@ -109,20 +118,25 @@ export default {
         if(res.returnCode === 1){
           this.roomTypeBases = res.data.roomTypeBases || []
           this.processRoomTypeBases()
-          console.log(this.roomTypeBases);
         }
       })
     },
+    // 将返回的价格列表数据进一步的加工，以适用于 html 模板
     processRoomTypeBases(){
       console.log(this.roomTypeBases);
       
       for (let i = 0; i < this.roomTypeBases.length; i++) {
         const roomTypeBase = this.roomTypeBases[i];
 
-        if(i == 0){
-          roomTypeBase.ifShow = true
-        }else{
-          roomTypeBase.ifShow = false
+        roomTypeBase.ifShow = i == 0 ? true : false
+        roomTypeBase.lowestAverage = Math.min.apply(null, roomTypeBase.roomTypePrices.map(n => n.averagePriceRMB))
+
+        for (let j = 0; j < roomTypeBase.roomTypePrices.length; j++) {
+          const p = roomTypeBase.roomTypePrices[j]
+          p.cancellationText = p.cancellationType ? '可取消' : '不可取消'
+          this.setRoomStatusText(p)
+          this.setOrderClause(p)
+          
         }
       }
     },
@@ -130,7 +144,82 @@ export default {
       const roomTypeBase = this.roomTypeBases[i]
       roomTypeBase.ifShow = !roomTypeBase.ifShow
       this.roomTypeBases.splice(0, 0)
-    }
+    },
+    // 设置预订条款的显示
+    setOrderClause(roomTypePrice) {
+      // 预定条款不区分每一天，所有只拿第一天的数据进行计算
+      let reserveShowArr = roomTypePrice.nightlyPriceList[0].reserveShow.split(/[|;]/)
+      let clauses = []
+      
+      for (var j = 0; j < reserveShowArr.length; j++) {
+        var o = reserveShowArr[j];
+        ~o.indexOf('限住') ? clauses.push({name: '限制晚数', tip: o}) :
+          ~o.indexOf('提前') ? clauses.push({name: '提前预订', tip: o}) :
+            ~o.indexOf('连住') ? clauses.push({name: '连住多晚', tip: o}) :
+              ~o.indexOf('时间') ? clauses.push({name: '限时预订', tip: o}) :
+                ~o.indexOf('间数') ? clauses.push({name: '限制间数', tip: o}) :
+                  ~o.indexOf('没有') ? clauses.push({name: '无预订条款', tip: o}) : ''
+      }
+
+      roomTypePrice.orderClauses = clauses
+      roomTypePrice.orderClauseText = clauses.map(n => n.name).join('/')
+    },
+    // 设置房态的显示，如：'60秒确认'、'满房'、'畅订' 等...
+    setRoomStatusText(p) {
+      // 设置房态显示    0：剩余库存  1畅订  2：待查  3：满房 5不可超售
+      if (p.roomStatus === 3) {
+        p.roomStatusText = '<span class="red">满房</span>';
+      } else if (p.roomStatus === 2) {
+        p.roomStatusText = '<span class="purple">待查</span>';
+      } else if (p.roomStatus === 0 || p.roomStatus === 5) {
+        p.roomStatusText =
+          p.isTimeLimitConfirSupplier === 1
+            ? '<span class="blue">60秒确认</span>'
+            : '剩余库存';
+      } else if (p.roomStatus === 1) {
+        p.roomStatusText =
+          p.isTimeLimitConfirSupplier === 1
+            ? '<span class="blue">60秒确认</span>'
+            : '<span class="green">畅订</span>';
+      }
+      
+      if (p.roomStatusText === '剩余库存') {
+        let stockArr = [];
+        for (var k = 0; k < p.nightlyPriceList.length; k++) {
+          var q = p.nightlyPriceList[k];
+          if (q.status === 1) {
+            q.stock = 999;
+          }	// 畅订情况下库存为 0 ！
+          stockArr.push(q.stock - q.sellStock);
+        }
+        
+        let minStock = Math.min.apply(this, stockArr);
+        p.roomStatusText =
+          minStock < 1
+            ? '<span class="red">满房</span>'
+            : '<span class="green">剩余 [' + Math.min.apply(this, stockArr) + ']</span>';
+      }
+    },
+
+
+    enter: function (el, done) {
+      let liCount = el.querySelectorAll('.hotel-roomtype-price-item').length
+      el.style.height = '0rem'
+      Velocity(el, {height: liCount * 1.18 + 'rem'}, {duration: 300, complete: done})
+    },
+    afterEnter: function (el) {
+      el.removeAttribute('style')
+      el.style.display = 'block'
+    },
+    leave: function (el, done) {
+      let liCount = el.querySelectorAll('.hotel-roomtype-price-item').length
+      el.style.height = liCount * 1.18 + 'rem'
+      Velocity(el, {height: '0rem'}, {duration: 300, complete: done})
+    },
+    afterLeave: function (el) {
+      el.removeAttribute('style')
+      el.style.display = 'none'
+    },
   }
 }
 </script>
@@ -178,12 +267,14 @@ export default {
 
       @at-root .hotel-roomtype-price-wrap{
         background: #FAFAFA;
+        overflow: hidden;
 
         @at-root .hotel-roomtype-price-list{
 
           @at-root .hotel-roomtype-price-item{
             position: relative;
             padding: 0.12rem 0.1rem;
+            box-sizing: border-box;
 
             &:before{
               content: '';
@@ -202,7 +293,7 @@ export default {
               margin-bottom: 0.05rem;
             }
 
-            .rate-type{
+            .order-clause{
               color: #999;
               margin-bottom: 0.02rem;
             }
@@ -231,7 +322,7 @@ export default {
                 }
 
                 .price{
-                  font-size: 0.18rem;
+                  font-size: 0.16rem;
                 }
 
               }
@@ -246,6 +337,10 @@ export default {
                 text-align: center;
                 border-radius: 0.02rem;
                 font-size: 0.14rem;
+
+                &.disable{
+                  background: #ccc;
+                }
               }
             }
 
