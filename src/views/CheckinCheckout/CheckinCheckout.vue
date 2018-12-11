@@ -107,6 +107,9 @@ export default {
     getCheckout(){
       return this.$store.state.checkout
     },
+    getCityType(){
+      return this.$store.state.cityType
+    }
   },
   mounted(){},
   activated(){
@@ -148,18 +151,21 @@ export default {
           setTimeout(function(){
             window.historyObj.arr.pop()
             _this.$router.go(-1)
-          }, 100)
+          }, 200)
         }
       }
     },
     // 检查这一天是否不可点，有两三种情况不可点：1、日期小于今天（境外是小于明天） 2、当离店日期还没选的时，比入住日期大15天以上的日期  3、日期比今天大180天以上
     ifDisable(day){
       let dayStr = day.dayStr
-      let today =  addDays(new Date)
+      let minDate =  
+        this.getCityType == 1
+          ? addDays(new Date, 1)
+          : addDays(new Date)
 
       if(dayStr){
         let d1 = +new Date( formatDateTwo(dayStr) )
-        let d2 = +new Date( formatDateTwo(today) )
+        let d2 = +new Date( formatDateTwo(minDate) )
 
         if(d1 < d2 || d1 - d2 > 180 * 24 * 60 * 60 * 1000) return true
 

@@ -5,8 +5,6 @@ export default {
 
   state: {
     
-    hotelId: '',
-
     // 星级价格 popup
     starPopupVisible: false,
 

@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { queryString, getStarText } from '@/assets/util'
 
 export default {
   name: 'banner',
@@ -51,17 +52,25 @@ export default {
     this.initHotelInfo()
   },
   computed: {
-    getCurHotel(){
-      return this.$store.state.curHotel
-    }
   },
   mounted(){},
   methods:{
     // 初始化酒店基本信息的显示
     initHotelInfo(){
-      let _curHotel = sessionStorage.getItem('curHotel')
-      if(_curHotel){ this.curHotel = JSON.parse(_curHotel) }
-      console.log(this.curHotel);
+      let _curHotel = this.$store.state.curHotel
+      if(_curHotel){
+        this.curHotel = _curHotel
+      }else{
+        let hotelId = queryString('hotelId')
+
+        this.$api.hotelDetail.syncGetHotelInfo({infoIds: hotelId}).then(res => {
+          if(res.returnCode === 1){
+            getStarText(res.dataList[0])
+            this.curHotel = res.dataList[0]
+            this.$store.commit(`setCommonState`, {k: 'curHotel', v: res.dataList[0]})
+          }
+        })
+      }
       
     }
   }
