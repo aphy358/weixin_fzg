@@ -45,8 +45,20 @@ export const formatDateTwo = (dateStr) => {
   return dateStr.replace(/-/g, '/') + ' 00:00:00'
 }
 
+// 获取星级的字面表示
+export const getStarText = (n) => {
+  n.starText = 
+    n.star <= 25 ? '经济型' : 
+    n.star <= 35 ? '舒适型' : 
+    n.star <= 45 ? '高档型' : '豪华型'
+}
+
 // 前进到某个页面
-export const gotoPage = (router, pageStr) => {
+export const gotoPage = (router, pageStr, query) => {
   window.historyObj.arr.push(pageStr)
-  router.push(pageStr)
+  query
+    ? router.push({ path: pageStr, query: query})
+    : router.push(pageStr)
+
+  // 参考： router.push({ path: 'register', query: { plan: 'private' }})
 }

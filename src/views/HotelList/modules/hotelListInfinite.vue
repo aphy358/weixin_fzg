@@ -60,7 +60,7 @@ import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
 import LoadMore from '@/components/LoadMore.vue'
 import Loading from '@/components/Loading.vue'
-import { gotoPage } from '@/assets/util'
+import { gotoPage, getStarText } from '@/assets/util'
 
 export default {
   name: 'hotelListInfinite',
@@ -189,10 +189,7 @@ export default {
           if(content.data){
             for (let i = 0; i < content.data.length; i++) {
               const n = content.data[i];
-              n.starText = 
-                n.star <= 25 ? '经济型' : 
-                n.star <= 35 ? '舒适型' : 
-                n.star <= 45 ? '高档型' : '豪华型'
+              getStarText(n)
             }
   
             _this.hotelList = _this.hotelList.concat(content.data)
@@ -209,8 +206,7 @@ export default {
     // 跳转到酒店详情页（或分销页？）
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
-      sessionStorage.setItem('curHotel', JSON.stringify(hotel))
-      gotoPage(this.$router, 'hotelDetail')
+      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: hotel.type})
     }
   }
 }

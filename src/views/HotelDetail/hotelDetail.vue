@@ -8,6 +8,10 @@
     <SearchFilter />
 
     <GAP />
+    
+    <!-- 酒店价格列表 -->
+    <HotelPriceList />
+
 
   </div>
 </template>
@@ -15,6 +19,7 @@
 <script>
 import Banner from './modules/banner.vue'
 import SearchFilter from './modules/searchFilter.vue'
+import HotelPriceList from './modules/hotelPriceList.vue'
 import GAP from '@/components/GAP.vue'
 
 
@@ -27,8 +32,8 @@ export default {
   components: {
     Banner,
     SearchFilter,
+    HotelPriceList,
     GAP,
-
   },
   watch: {},
   created(){},
