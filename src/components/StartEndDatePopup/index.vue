@@ -1,74 +1,79 @@
 <template>
-  <mt-popup
-    v-model="popupVisible"
-    class="calendar-popup"
-    :class="[popupVisible ? 'pop-show' : 'pop-hide']"
-    ref="calendarPopup"
-    position="right">
-     <div class="calendar-head-wrap nav-top">
-       <!-- 头部 -->
-      <mt-header title="起止日期选择"></mt-header>
-       <!-- 返回上一页 -->
-      <GoBack _style="top: 0.02rem" :onClick="clickGoBack" />
-       <div class="calendar-week-title">
-        <table>
-          <tbody>
-            <tr>
-              <td>日</td>
-              <td>一</td>
-              <td>二</td>
-              <td>三</td>
-              <td>四</td>
-              <td>五</td>
-              <td>六</td>
-            </tr>
-          </tbody>
-        </table>
+  <transition
+    @enter="enter"
+    @leave="leave" >
+    
+    <div class="start-end-wrap">
+
+      <div class="calendar-head-wrap">
+        <!-- 头部 -->
+        <mt-header title="起止日期选择"></mt-header>
+        <!-- 返回上一页 -->
+        <GoBack _style="top: 0.02rem" :onClick="clickGoBack" />
+        <div class="calendar-week-title">
+          <table>
+            <tbody>
+              <tr>
+                <td>日</td>
+                <td>一</td>
+                <td>二</td>
+                <td>三</td>
+                <td>四</td>
+                <td>五</td>
+                <td>六</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-     </div>
-     <div class="calendar-body-wrap">
-       <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
-        <table>
-          <thead>
-            <tr>
-              <th colspan="7"><h5 id="first-month">{{ m.year }}年{{ m.month }}月</h5></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(week, j) in m.days.length / 7" :key="j">
-              <td v-for="(day, k) in m.days.slice(j * 7, (j + 1) * 7)" :key="k" 
-                :class="{
-                  'disable': ifDisable(day), 
-                  'festival': day.festText, 
-                  'text-white': checkDayStr(day), 
-                  'weekend': k % 7 == 0 || k % 7 == 6
-                }"
-                @click="clickOneDay(ifDisable(day), m, day)">
-                 <p :class="{'small-text': day.festText || day.today, 'circle': checkDayStr(day)}">{{ day.festText || day.today || day.day }}</p>
-                 <span v-if="checkDayStr(day)" 
+      <div class="calendar-body-wrap">
+        <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
+          <table>
+            <thead>
+              <tr>
+                <th colspan="7"><h5 id="first-month">{{ m.year }}年{{ m.month }}月</h5></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(week, j) in m.days.length / 7" :key="j">
+                <td v-for="(day, k) in m.days.slice(j * 7, (j + 1) * 7)" :key="k" 
                   :class="{
-                    'checkin': checkDayStr(day) == 1, 
-                    'checkout': checkDayStr(day) == 2, 
-                    'bg-circle': checkDayStr(day), 
-                    'today': day.today
+                    'disable': ifDisable(day), 
+                    'festival': day.festText, 
+                    'text-white': checkDayStr(day), 
+                    'weekend': k % 7 == 0 || k % 7 == 6
                   }"
-                ></span>
-                 <span v-if="checkDayStr(day) == 1" class="checkin-text">起始</span>
-                <span v-if="checkDayStr(day) == 2" class="checkout-text">终止</span>
-               </td>
-            </tr>
-          </tbody>
-        </table>
+                  @click="clickOneDay(ifDisable(day), m, day)">
+                  <p :class="{'small-text': day.festText || day.today, 'circle': checkDayStr(day)}">{{ day.festText || day.today || day.day }}</p>
+                  <span v-if="checkDayStr(day)" 
+                    :class="{
+                      'checkin': checkDayStr(day) == 1, 
+                      'checkout': checkDayStr(day) == 2, 
+                      'bg-circle': checkDayStr(day), 
+                      'today': day.today
+                    }"
+                  ></span>
+                  <span v-if="checkDayStr(day) == 1" class="checkin-text">起始</span>
+                  <span v-if="checkDayStr(day) == 2" class="checkout-text">终止</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-     </div>
-     <END />
-   </mt-popup>
+      <END />
+
+    </div>
+
+  </transition>
+
 </template>
  <script>
 import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
 import { getMonthsData } from './getMonthsData.js'
 import { addDays, formatDateTwo } from '@/assets/util'
+import Velocity from 'velocity-animate'
 
 export default {
   name: 'startEndDatePopup',
@@ -80,18 +85,14 @@ export default {
       checkin: null,
       // 终止日期
       checkout: null,
-      popupVisible: false,
     }
   },
-  props: ['minDate', 'maxDate', 'startDate', 'endDate', 'popVisible'],
+  props: ['minDate', 'maxDate', 'startDate', 'endDate'],
   components: {
     GoBack,
     END
   },
   watch: {
-    popVisible(){
-      this.popupVisible = this.popVisible
-    }
   },
   created(){
     this.checkin = this.startDate
@@ -160,174 +161,164 @@ export default {
     },
     clickGoBack(){
       this.$emit('goback')
-    }
+    },
+
+
+
+    enter: function (el, done) {
+      el.style.left = '100%'
+      Velocity(el, {left: '0%'}, {duration: 300, complete: done})
+    },
+    leave: function (el, done) {
+      el.style.left = '0%'
+      Velocity(el, {left: '100%'}, {duration: 300, complete: done})
+    },
   }
 }
 </script>
+
 <style lang="scss">
-.calendar-popup{
-  
-  &.mint-popup{
-    position: absolute;
-    display: block!important;
-    top: 0;
-    transform: none!important;
-
-    &.popup-slide-right-enter-active,
-    &.popup-slide-right-leave-active{
-      backface-visibility: hidden;
-      box-shadow: 0 0 10px #ccc;
-
-      .nav-top{
-        left: auto!important;
-      }
-
-      &.pop-hide{
-        left: 100%;
-
-        .nav-top{
-          left: auto!important;
-        }
-      }
-    }
-
-    &.pop-show{
-      left: 0;
-    }
-
-    &.pop-hide{
-      left: 100%;
-
-      .nav-top{
-        left: 100%;
-      }
-    }
-  }
-
-}
-
-.nav-top{
-  position: fixed;
+.start-end-wrap{
+  position: absolute;
   width: 100%;
   top: 0;
-  left: 0;
-  z-index: 1000;
-}
-.calendar-head-wrap{
-   @at-root .calendar-week-title{
-    line-height: 0.25rem;
-    font-size: 0.12rem;
-    background-color: #ff7625;
-  
-    table{
-      width: 100%;
-      text-align: center;
-  
-      td{
-        color: white;
-        padding: 0;
-        border: none;
+  background: white;
+  z-index: 9000;
+
+  &.velocity-animating{
+    transform: none!important;
+    box-shadow: 0 0 10px #ccc;
+
+    .calendar-head-wrap{
+      left: auto!important;
+    }
+  }
+
+  .calendar-head-wrap{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    @at-root .calendar-week-title{
+      line-height: 0.25rem;
+      font-size: 0.12rem;
+      background-color: #ff7625;
+    
+      table{
+        width: 100%;
+        text-align: center;
+    
+        td{
+          color: white;
+          padding: 0;
+          border: none;
+        }
       }
     }
   }
-}
- .calendar-body-wrap{
-  margin-top: 0.65rem;
-   .calendar-body{
-     table{
-      width: 100%;
-       thead{
-        tr{
-          th{
-            padding: 0;
-            border: none;
-             h5{
-              margin: 0;
-              font-size: 0.16rem;
-              line-height: 0.56rem;
-              text-align: center;
-              font-weight: bold;
+
+  .calendar-body-wrap{
+    margin-top: 0.65rem;
+    .calendar-body{
+      table{
+        width: 100%;
+        thead{
+          tr{
+            th{
+              padding: 0;
+              border: none;
+              h5{
+                margin: 0;
+                font-size: 0.16rem;
+                line-height: 0.56rem;
+                text-align: center;
+                font-weight: bold;
+              }
             }
           }
         }
-      }
-       tbody{
-        tr{
-          height: 0.56rem;
-           td{
-            position: relative;
-            width: 14.2857%;
-            text-align: center;
-            border: none;
-            padding-top: 0.05rem;
-            vertical-align: top;
-             &.weekend,
-            &.festival{
-              color: #ff7625;
-            }
-             &.text-white{
-              color: white;
-            }
-             &.disable{
-              color: #999;
-            }
-             p{
+        tbody{
+          tr{
+            height: 0.56rem;
+            td{
               position: relative;
-              font-size: 0.14rem;
-              height: 0.28rem;
-              line-height: 0.28rem;
-              overflow: hidden;
-              z-index: 9;
-               &.small-text{
-                font-size: 0.12rem;
+              width: 14.2857%;
+              text-align: center;
+              border: none;
+              padding-top: 0.05rem;
+              vertical-align: top;
+              &.weekend,
+              &.festival{
+                color: #ff7625;
               }
-               &.circle{
+              &.text-white{
+                color: white;
+              }
+              &.disable{
+                color: #999;
+              }
+              p{
+                position: relative;
+                font-size: 0.14rem;
+                height: 0.28rem;
+                line-height: 0.28rem;
+                overflow: hidden;
+                z-index: 9;
+                &.small-text{
+                  font-size: 0.12rem;
+                }
+                &.circle{
+                  width: 0.28rem;
+                  margin: auto;
+                }
+              }
+              .bg-circle{
+                position: absolute;
+                top: 0.05rem;
+                left: 50%;
+                margin-left: -0.14rem;
                 width: 0.28rem;
-                margin: auto;
+                height: 0.28rem;              
+                border-radius: 50%;
+                &.today{
+                  background: #ccc;
+                }
+                &.checkin{
+                  background: rgb(67, 178, 224);
+                }
+                &.checkout{
+                  background: #fb6c85;
+                }
               }
-            }
-             .bg-circle{
-              position: absolute;
-              top: 0.05rem;
-              left: 50%;
-              margin-left: -0.14rem;
-              width: 0.28rem;
-              height: 0.28rem;              
-              border-radius: 50%;
-               &.today{
-                background: #ccc;
+              .checkin-text{
+                position: absolute;
+                bottom: 0.03rem;
+                left: 50%;
+                margin-left: -0.15rem;
+                width: 0.3rem;
+                text-align: center;
+                font-size: 0.12rem;
+                color: rgb(67, 178, 224);
               }
-               &.checkin{
-                background: rgb(67, 178, 224);
+              .checkout-text{
+                position: absolute;
+                bottom: 0.03rem;
+                left: 50%;
+                margin-left: -0.15rem;
+                width: 0.3rem;
+                text-align: center;
+                font-size: 0.12rem;
+                color: #fb6c85;
               }
-               &.checkout{
-                background: #fb6c85;
-              }
-            }
-             .checkin-text{
-              position: absolute;
-              bottom: 0.03rem;
-              left: 50%;
-              margin-left: -0.15rem;
-              width: 0.3rem;
-              text-align: center;
-              font-size: 0.12rem;
-              color: rgb(67, 178, 224);
-            }
-             .checkout-text{
-              position: absolute;
-              bottom: 0.03rem;
-              left: 50%;
-              margin-left: -0.15rem;
-              width: 0.3rem;
-              text-align: center;
-              font-size: 0.12rem;
-              color: #fb6c85;
             }
           }
         }
       }
     }
   }
+
 }
+
  </style> 
