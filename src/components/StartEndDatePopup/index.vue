@@ -1,6 +1,9 @@
 <template>
   <mt-popup
     v-model="popupVisible"
+    class="calendar-popup"
+    :class="[popupVisible ? 'pop-show' : 'pop-hide']"
+    ref="calendarPopup"
     position="right">
      <div class="calendar-head-wrap nav-top">
        <!-- 头部 -->
@@ -66,7 +69,8 @@ import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
 import { getMonthsData } from './getMonthsData.js'
 import { addDays, formatDateTwo } from '@/assets/util'
- export default {
+
+export default {
   name: 'startEndDatePopup',
   data(){
     return {
@@ -146,7 +150,7 @@ import { addDays, formatDateTwo } from '@/assets/util'
         let d1 = +new Date( formatDateTwo(dayStr) )
         let d2 = +new Date( formatDateTwo(this.checkin || '') )
         let d3 = +new Date( formatDateTwo(this.checkout || '') )
-        
+
         if(d1 == d2)  return 1
         if(d1 == d3)  return 2
         if(day.today) return 3
@@ -160,7 +164,48 @@ import { addDays, formatDateTwo } from '@/assets/util'
   }
 }
 </script>
- <style lang="scss">
+<style lang="scss">
+.calendar-popup{
+  
+  &.mint-popup{
+    position: absolute;
+    display: block!important;
+    top: 0;
+    transform: none!important;
+
+    &.popup-slide-right-enter-active,
+    &.popup-slide-right-leave-active{
+      backface-visibility: hidden;
+      box-shadow: 0 0 10px #ccc;
+
+      .nav-top{
+        left: auto!important;
+      }
+
+      &.pop-hide{
+        left: 100%;
+
+        .nav-top{
+          left: auto!important;
+        }
+      }
+    }
+
+    &.pop-show{
+      left: 0;
+    }
+
+    &.pop-hide{
+      left: 100%;
+
+      .nav-top{
+        left: 100%;
+      }
+    }
+  }
+
+}
+
 .nav-top{
   position: fixed;
   width: 100%;
@@ -168,7 +213,7 @@ import { addDays, formatDateTwo } from '@/assets/util'
   left: 0;
   z-index: 1000;
 }
- .calendar-head-wrap{
+.calendar-head-wrap{
    @at-root .calendar-week-title{
     line-height: 0.25rem;
     font-size: 0.12rem;
