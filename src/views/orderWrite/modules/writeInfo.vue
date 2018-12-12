@@ -5,7 +5,7 @@
 			<div class="per-line">
 				<span class="per-info-title">房间数</span>
 				<span class="per-info-txt" @click="openRoomNum">1</span>
-				<mt-popup v-model="roomNumVisible" position="bottom">
+				<mt-popup class="popup-bottom" v-model="roomNumVisible" position="bottom">
 					<button class="confirm" @click="confirmRoomNum">确定</button>
 					<mt-picker :slots="roomNumSlots" @change="onValuesChange"></mt-picker>
 				</mt-popup>
@@ -13,7 +13,7 @@
 			<div class="per-line">
 				<span class="per-info-title">个性化需求</span>
 				<span class="per-info-txt" @click="openSpecial">添加个性化需求</span>
-				<mt-popup v-model="specialVisible" position="bottom">
+				<mt-popup class="popup-bottom" v-model="specialVisible" position="bottom">
 					<OperationBtn @clear="clearSpecial" @confirm="confirmSpecial"/>
 					<mt-checklist v-model="specialReq" :options="specialReqList"></mt-checklist>
 				</mt-popup>
@@ -32,15 +32,13 @@
 				<span class="per-info-title">结算方式</span>
 				<span class="per-info-txt" @click="openPayment">单结
 				</span>
-				<mt-popup
-						v-model="paymentVisible"
-						position="bottom">
+				<mt-popup class="popup-bottom" v-model="paymentVisible" position="bottom">
 					<button class="confirm" @click="confirmPayment">确定</button>
 					<mt-picker :slots="paymentSlots" @change="onValuesChange"></mt-picker>
 				</mt-popup>
 			</div>
 		</div>
-		<div class="per-module" :max="maxPersonNum">
+		<div class="per-module name-module" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
 			<div class="per-line">
 				<span class="per-info-title green"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
@@ -48,10 +46,13 @@
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
 				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
 				<span class="username-input nationality" v-model="nameArr[item].n" @click.prevent.stop="selectNationality">国籍</span>
-				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon" @click="nextVisible(item)"></i>
-				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon" @click="hideName(item)"></i>
+				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon green" @click="nextVisible(item)"></i>
+				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon deep-orange" @click="hideName(item)"></i>
 			</div>
 		</div>
+		
+		<extraService/>
+		
 		<div class="rules">
 			<h6 class="rule-title">取消条款</h6>
 			<p class="rule-txt">此房即订即保，一旦预订，不可修改或取消。</p>
@@ -74,7 +75,6 @@
 		<mt-popup v-model="confirmVisible" popup-transition="popup-fade">
 			<confirmInfo @close="closeConfirmMask"/>
 		</mt-popup>
-		<!--<div class="confirmMask" v-show="confirmVisible"/>-->
 		
 		<mt-popup class="nationality-popup" v-model="nationalityVisible" position="right" catchtouchmove="true">
 			<nationality  @hideNationality="hideNationality"/>
@@ -87,6 +87,7 @@
   import OperationBtn from '@/components/OperationBtn.vue';
   import confirmInfo from '../modules/confirmInfo.vue';
   import nationality from '../modules/nationality.vue';
+  import extraService from '../modules/extraService.vue';
   import { MessageBox } from 'mint-ui';
   
   export default {
@@ -138,7 +139,8 @@
         nameRank: [],
         country: 70007,
         confirmVisible: false,
-        nationalityVisible: false
+        nationalityVisible: false,
+        nameModuleHeight: 1
       }
     },
     
@@ -147,7 +149,8 @@
     components: {
       OperationBtn,
       confirmInfo,
-      nationality
+      nationality,
+      extraService
     },
     
     computed: {
@@ -266,6 +269,7 @@
   
           if (i%maxPersonNum !== 0 && !this.nameVisibleArr[i]){
             this.$set(this.nameVisibleArr, i, true);
+            this.nameModuleHeight += 0.5;
             break;
           }
   
@@ -274,6 +278,7 @@
       hideName(index){
         this.$set(this.nameVisibleArr, index, false);
         this.$set(this.nameArr, index, {l: '', f: '', n: ''});
+        this.nameModuleHeight -= 0.5;
       },
       onSubmit(){
         this.$validator.validateAll().then((result) => {
@@ -347,6 +352,11 @@
 		@at-root .per-module{
 			background-color: #fff;
 			margin-bottom: 0.1rem;
+			transition: all .5s;
+			
+			&.name-module{
+				overflow: hidden;
+			}
 			
 			@at-root .per-line{
 				height: 0.5rem;
@@ -401,7 +411,6 @@
 				.username-input{
 					padding-left: 0.2rem;
 					width: 1rem;
-					/*box-sizing: border-box;*/
 					
 					&.nationality{
 						width: 0.4rem;
@@ -413,8 +422,12 @@
 				}
 				
 				.username-icon{
-					padding: 0 0.2rem;
-					font-size: 0.24rem;
+					padding: 0.1rem 0.2rem;
+					font-size: 0.16rem;
+				}
+				
+				.mint-popup.popup-bottom{
+					background-color: #fff;
 				}
 			}
 			
@@ -429,13 +442,11 @@
 				color: #050505;
 				font-weight: bold;
 				font-size: 0.12rem;
-				/*height: 0.3rem;*/
 				line-height: 0.3rem;
 			}
 			
 			.rule-txt{
 				color: #777a7c;
-				/*height: 0.3rem;*/
 				line-height: 0.3rem;
 			}
 		}
@@ -448,18 +459,6 @@
 				height: 100%;
 			}
 		}
-		
-		/*
-		@at-root .confirmMask{
-			position: fixed;
-			top: 0;
-			left: 0;
-			z-index: 1999;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0 , 0, .4);
-		}
-		*/
 		
 		input{
 			border: none;
@@ -476,7 +475,6 @@
 		position: fixed;
 		bottom: 0;
 		left: 0;
-		/*background-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,.8), rgba(255,255,255,0) 70%);*/
 		background-color: #fff;
 		padding: 0 0.2rem;
 		box-sizing: border-box;
@@ -515,6 +513,9 @@
 		color: #f44336;
 	}
 	
+	.deep-orange{
+		color: #ff4400;
+	}
 	
 	.green{
 		color: #0bc16f;

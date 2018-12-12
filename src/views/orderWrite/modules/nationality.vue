@@ -6,7 +6,7 @@
 		</div>
 		<mt-header title="选择国籍"></mt-header>
 		
-		<mt-search v-model="value" lockScroll="true"></mt-search>
+		<mt-search v-model="countryValue" @input="searchCountry"></mt-search>
 	</div>
 </template>
 
@@ -17,7 +17,7 @@
     
     data() {
       return {
-        value: ''
+        countryValue: ''
       }
     },
     
@@ -30,6 +30,13 @@
     methods: {
       hideNationality(){
         this.$emit('hideNationality');
+      },
+      searchCountry(){
+        this.$api.orderWrite.syncCountrySuggest({key: this.countryValue}).then(res => {
+          if(res.returnCode === 1){
+            console.log(res);
+          }
+        })
       }
     }
   }

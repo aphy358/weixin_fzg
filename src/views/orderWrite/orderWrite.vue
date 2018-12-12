@@ -118,4 +118,18 @@
 	.mint-cell:last-child{
 		background-image: none;
 	}
+	
+	
+	//清除浮动
+	.clearfix:after {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		clear: both;
+	}
+	
+	.clearfix {
+		zoom: 1
+	}
 </style>
