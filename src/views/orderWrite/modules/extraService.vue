@@ -8,8 +8,7 @@
 		</div>
 		<div class="per-service-open clearfix" :style="'height:' + breakfastHeight">
 			<input class="per-service-date" type="text" placeholder="2018-12-11至2018-12-13" @focus="showBreakfastDate">
-			<mt-datetime-picker v-model="breakfastDateVisible" :startDate="startDate" :endDate="endDate" ref="breakfastDatePicker" type="date">
-			</mt-datetime-picker>
+			<!--<StartPricePopup v-model="breakfastDateVisible" :open="startDate" :dateBind="endDate"/>-->
 			<input type="text" placeholder="加早类型">
 			<input class="add-num" type="text" placeholder="份数">
 			<button class="add-service-icon">添加</button>
@@ -38,6 +37,8 @@
 </template>
 
 <script>
+//	import StartPricePopup from '@/components/StarPricePopup';
+	
   export default {
     name: 'extraService',
     
@@ -57,7 +58,9 @@
     
     props: {},
     
-    components: {},
+    components: {
+//      StartPricePopup
+    },
     
     computed: {},
     
@@ -75,7 +78,7 @@
         this.netWorkHeight = this.netWorkHeight === 0 ? '0.8rem' : 0;
       },
       showBreakfastDate(){
-        this.$refs.breakfastDatePicker.open();
+        this.breakfastDateVisible = true;
       }
     }
   }
