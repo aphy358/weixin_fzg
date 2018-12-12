@@ -43,6 +43,9 @@ export default {
   computed: {
   },
   mounted(){
+    if(this.open){
+      this.$refs.picker.open()
+    }
   },
   methods:{
     handleConfirm (data) {
