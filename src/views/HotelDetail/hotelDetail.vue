@@ -8,10 +8,12 @@
     <SearchFilter />
 
     <GAP />
-    
+
     <!-- 酒店价格列表 -->
     <HotelPriceList />
 
+    <!-- 成人小孩选择 popup -->
+    <AdultChildPopup />
 
   </div>
 </template>
@@ -20,6 +22,7 @@
 import Banner from './modules/banner.vue'
 import SearchFilter from './modules/searchFilter.vue'
 import HotelPriceList from './modules/hotelPriceList.vue'
+import AdultChildPopup from './modules/adultChildPopup.vue'
 import GAP from '@/components/GAP.vue'
 
 
@@ -33,6 +36,7 @@ export default {
     Banner,
     SearchFilter,
     HotelPriceList,
+    AdultChildPopup,
     GAP,
   },
   watch: {},

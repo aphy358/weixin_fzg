@@ -20,7 +20,7 @@
           <span class="s-f-week">{{ week2 }}</span>
         </div>
       </div>
-      <div class="s-f-adult-wrap">
+      <div class="s-f-adult-wrap" @click="showAdultChildPopup">
         <div class="s-f-adult-label">每间入住</div>
         <div class="s-f-adult-text">2成人0儿童</div>
       </div>
@@ -93,6 +93,10 @@ export default {
       }else{
         this.week2 = this.weekArr[checkout.getDay()]
       }
+    },
+    // 显示成人小孩选择 popup
+    showAdultChildPopup(){
+      this.$store.commit(`hotelDetail/setCommonState`, {k: 'adultChildPopupVisible', v: true})
     }
   }
 }
