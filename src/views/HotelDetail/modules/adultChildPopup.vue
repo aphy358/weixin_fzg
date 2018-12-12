@@ -52,7 +52,7 @@
         </div>
 
         <div class="a-c-s-bottom">
-          <button @click="">确认</button>
+          <button @click="setAdultChild">确认</button>
         </div>
 
       </div>
@@ -105,16 +105,24 @@ export default {
   methods:{
     // 设置成人小孩
     setAdultChild(){
-      this.$store.commit(`hotelDetail/setCommonState`, {k: 'adultChildPopupVisible', v: false})
-    },
-    // 清空成人小孩
-    clearAdultChild(){
+      let adultNum = this.adultValue
+      let childrenNum = [this.childValue1, this.childValue2, this.childValue3].filter(n => n != '-1').length
+      let childrenStr = [this.childValue1, this.childValue2, this.childValue3].filter(n => n != '-1').join(',')
 
+      this.$store.commit(`setCommonState`, {k: 'adultNum', v: adultNum})
+      this.$store.commit(`setCommonState`, {k: 'childrenNum', v: childrenNum})
+      this.$store.commit(`setCommonState`, {k: 'childrenStr', v: childrenStr})
+
+      this.hidePopup()
     },
     // 点击回退按钮
     clickGoBack(){
-      this.$store.commit(`hotelDetail/setCommonState`, {k: 'adultChildPopupVisible', v: false})
+      this.hidePopup()
     },
+    // 隐藏 popup
+    hidePopup(){
+      this.$store.commit(`hotelDetail/setCommonState`, {k: 'adultChildPopupVisible', v: false})
+    }
   }
 }
 </script>
