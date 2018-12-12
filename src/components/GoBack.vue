@@ -12,7 +12,7 @@ export default {
     return {
     }
   },
-  props: ['_style'],
+  props: ['_style', 'onClick'],
   components: {
   },
   created(){
@@ -24,8 +24,12 @@ export default {
   methods:{
     // 返回上一页
     gobackPage(){
-      window.historyObj.arr.pop()
-      this.$router.go(-1)
+      if(this.onClick){
+        this.onClick()
+      }else{
+        window.historyObj.arr.pop()
+        this.$router.go(-1)
+      }
     }
   }
 }
