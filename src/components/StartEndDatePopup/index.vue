@@ -102,7 +102,7 @@ export default {
   },
   watch: {
     popVisible(){
-      this.popupVisible = popVisible
+      this.popupVisible = this.popVisible
     }
   },
   created(){
@@ -166,14 +166,14 @@ export default {
 
       return true
     },
-    // 检查 dayStr，如果其日期值等于 startDate 则返回1，如等于 endDate 则返回2，否则返回0
+    // 检查 dayStr，如果其日期值等于 this.checkin 则返回1，如等于 this.checkout 则返回2，否则返回0
     checkDayStr(day){
       let dayStr = day.dayStr
 
       if(dayStr){
         let d1 = +new Date( formatDateTwo(dayStr) )
-        let d2 = +new Date( formatDateTwo(this.startDate || '') )
-        let d3 = +new Date( formatDateTwo(this.endDate || '') )
+        let d2 = +new Date( formatDateTwo(this.checkin || '') )
+        let d3 = +new Date( formatDateTwo(this.checkout || '') )
 
         if(d1 == d2)  return 1
         if(d1 == d3)  return 2
