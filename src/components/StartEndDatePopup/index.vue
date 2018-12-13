@@ -330,6 +330,8 @@ export default {
                 text-align: center;
                 font-size: 0.12rem;
                 color: rgb(67, 178, 224);
+                line-height: 0.18rem;
+                height: 0.18rem;
               }
 
               .checkout-text {
@@ -341,6 +343,8 @@ export default {
                 text-align: center;
                 font-size: 0.12rem;
                 color: #fb6c85;
+                line-height: 0.18rem;
+                height: 0.18rem;
               }
             }
           }
