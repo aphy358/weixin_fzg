@@ -1,76 +1,78 @@
 <template>
   <div class="page checkinCheckout-page">
+    <div class="page-content">
 
-    <div class="calendar-head-wrap nav-top">
+      <div class="calendar-head-wrap nav-top">
 
-      <!-- 头部 -->
-      <mt-header title="入离日期选择"></mt-header>
+        <!-- 头部 -->
+        <mt-header title="入离日期选择"></mt-header>
 
-      <!-- 返回上一页 -->
-      <GoBack _style="top: 0.02rem" />
+        <!-- 返回上一页 -->
+        <GoBack _style="top: 0.02rem" />
 
-      <div class="calendar-week-title">
-        <table>
-          <tbody>
-            <tr>
-              <td>日</td>
-              <td>一</td>
-              <td>二</td>
-              <td>三</td>
-              <td>四</td>
-              <td>五</td>
-              <td>六</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="calendar-week-title">
+          <table>
+            <tbody>
+              <tr>
+                <td>日</td>
+                <td>一</td>
+                <td>二</td>
+                <td>三</td>
+                <td>四</td>
+                <td>五</td>
+                <td>六</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
 
-    </div>
+      <div class="calendar-body-wrap">
 
-    <div class="calendar-body-wrap">
-
-      <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
-        <table>
-          <thead>
-            <tr>
-              <th colspan="7"><h5 id="first-month">{{ m.year }}年{{ m.month }}月</h5></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(week, j) in m.days.length / 7" :key="j">
-              <td v-for="(day, k) in m.days.slice(j * 7, (j + 1) * 7)" :key="k" 
-                :class="{
-                  'disable': ifDisable(day), 
-                  'festival': day.festText, 
-                  'text-white': checkDayStr(day), 
-                  'weekend': k % 7 == 0 || k % 7 == 6
-                }"
-                @click="clickOneDay(ifDisable(day), m, day)">
-
-                <p :class="{'small-text': day.festText || day.today, 'circle': checkDayStr(day)}">{{ day.festText || day.today || day.day }}</p>
-
-                <span v-if="checkDayStr(day)" 
+        <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
+          <table>
+            <thead>
+              <tr>
+                <th colspan="7"><h5 id="first-month">{{ m.year }}年{{ m.month }}月</h5></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(week, j) in m.days.length / 7" :key="j">
+                <td v-for="(day, k) in m.days.slice(j * 7, (j + 1) * 7)" :key="k" 
                   :class="{
-                    'checkin': checkDayStr(day) == 1, 
-                    'checkout': checkDayStr(day) == 2, 
-                    'bg-circle': checkDayStr(day), 
-                    'today': day.today
+                    'disable': ifDisable(day), 
+                    'festival': day.festText, 
+                    'text-white': checkDayStr(day), 
+                    'weekend': k % 7 == 0 || k % 7 == 6
                   }"
-                ></span>
+                  @click="clickOneDay(ifDisable(day), m, day)">
 
-                <span v-if="checkDayStr(day) == 1" class="checkin-text">入住</span>
-                <span v-if="checkDayStr(day) == 2" class="checkout-text">离店</span>
+                  <p :class="{'small-text': day.festText || day.today, 'circle': checkDayStr(day)}">{{ day.festText || day.today || day.day }}</p>
 
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <span v-if="checkDayStr(day)" 
+                    :class="{
+                      'checkin': checkDayStr(day) == 1, 
+                      'checkout': checkDayStr(day) == 2, 
+                      'bg-circle': checkDayStr(day), 
+                      'today': day.today
+                    }"
+                  ></span>
+
+                  <span v-if="checkDayStr(day) == 1" class="checkin-text">入住</span>
+                  <span v-if="checkDayStr(day) == 2" class="checkout-text">离店</span>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
 
+      <END />
+      
     </div>
-
-    <END />
-
   </div>
 </template>
 

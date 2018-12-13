@@ -1,19 +1,16 @@
 <template>
-  <transition :name="transitionName" id="app" 
-    @enter="enter"
-    @after-enter="afterEnter"
+  <div class="pages">
 
-    @leave="leave"
-    @after-leave="afterLeave"
-    >
-    <keep-alive :max="5">
-      <router-view/>
-    </keep-alive>
-  </transition>
+    <transition :name="transitionName" id="app">
+      <keep-alive :max="5">
+        <router-view/>
+      </keep-alive>
+    </transition>
+
+  </div>
 </template>
 
 <script>
-import Velocity from 'velocity-animate'
 
 export default {
   name: "",
@@ -42,83 +39,48 @@ export default {
   created() {},
   computed: {},
   mounted() {},
-  methods: {
-    // --------
-    // 进入中
-    // --------
-
-    // beforeEnter: function (el) {
-    // },
-    // 当与 CSS 结合使用时
-    // 回调函数 done 是可选的
-    enter: function (el, done) {
-      if( el.classList.contains('slide-left-enter') ){
-        el.style.left = '100%'
-        Velocity(el, {left: '0%'}, {duration: 300, complete: done})
-      }else{
-        el.style.left = '-50%'
-        Velocity(el, {left: '0%'}, {duration: 300, complete: done})
-      }
-    },
-    afterEnter: function (el) {
-      el.removeAttribute('style')
-    },
-
-    // --------
-    // 离开时
-    // --------
-
-    // beforeLeave: function (el) {
-    // },
-    // 当与 CSS 结合使用时
-    // 回调函数 done 是可选的
-    leave: function (el, done) {
-      if( el.classList.contains('slide-left-leave') ){
-        el.style.left = '0%'
-        Velocity(el, {left: '-50%'}, {duration: 300, complete: done})
-      }else{
-        el.style.left = '0%'
-        Velocity(el, {left: '100%'}, {duration: 300, complete: done})
-      }
-    },
-    afterLeave: function (el) {
-      el.removeAttribute('style')
-    },
-  }
+  methods: {}
 };
 </script>
 
 <style lang="scss">
+
 .slide-right-enter-active,
 .slide-right-leave-active,
 .slide-left-enter-active,
 .slide-left-leave-active {
+  will-change: transform;
+  transition: all 2600ms;
   height: 1000%;
   top: 0;
   position: absolute;
-  /* perspective: 1000; 这个属性会导致页面切换时，顶部 fixed 的元素无法固定在预想位置 */
   backface-visibility: hidden;
+  perspective: 1000;
   box-shadow: 0 0 10px #ccc;
 }
 
+.slide-right-enter {
+  transform: translate3d(-35%, 0, 0);
+  opacity: 0.9;
+}
+
+.slide-right-leave-active {
+  transform: translate3d(100%, 0, 0);
+}
+
+.slide-left-enter {
+  transform: translate3d(100%, 0, 0);
+  height: 100vh;
+}
+
+.slide-left-leave-active {
+  transform: translate3d(-35%, 0, 0);
+  opacity: 0.9;
+}
+
+
+.slide-left-enter-active,
 .slide-right-leave-active{
-  /* position: fixed; */
-}
-
-/* 这里是为了去除 transform 样式，使页面切换时，不会影响 fixed 元素的正常固定 */
-.page.velocity-animating{
-  transform: none!important;
-
-  .nav-top{
-    left: auto!important;
-  }
-}
-
-.slide-right-enter-active{
-  z-index: -1;
-}
-
-.slide-left-enter-active{
   z-index: 2000;
 }
 
