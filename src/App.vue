@@ -1,13 +1,11 @@
 <template>
-  <div class="pages">
 
-    <transition :name="transitionName" id="app">
-      <keep-alive :max="5">
-        <router-view/>
-      </keep-alive>
-    </transition>
+  <transition :name="transitionName" id="app">
+    <keep-alive :max="5">
+      <router-view/>
+    </keep-alive>
+  </transition>
 
-  </div>
 </template>
 
 <script>
@@ -50,7 +48,7 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all 2600ms;
+  transition: all 26000ms;
   height: 1000%;
   top: 0;
   position: absolute;
