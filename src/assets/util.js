@@ -55,7 +55,7 @@ export const getStarText = (n) => {
 
 // 前进到某个页面
 export const gotoPage = (router, pageStr, query) => {
-  window.historyObj.arr.push(pageStr)
+  window.historyObj.arr.push({path: pageStr})
   query
     ? router.push({ path: pageStr, query: query})
     : router.push(pageStr)

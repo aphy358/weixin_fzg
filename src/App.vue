@@ -21,14 +21,39 @@ export default {
   watch: {
     $route(to, from) {
       // window.historyObj = {
-      //   arr: ['/'],
+      //   arr: [{path: 'home'}],
       //   preLen: 1
       // }
 
       let o = window.historyObj
-      
+      let len = o.arr.length      
+
+      // 是否是回退
+      let goBack = o.arr.length <= o.preLen
+
       // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键 && o.preLen > 1
-      this.transitionName = o.arr.length <= o.preLen ? "slide-right" : "slide-left";
+      // this.transitionName = o.arr.length <= o.preLen ? "slide-right" : "slide-left";
+      this.transitionName = goBack ? "slide-right" : "slide-left";
+
+      if(goBack){ // 返回页面操作，后退取出 
+        if(o.arr.length){  // 有时候是无限制的后退导致对象为空，所以这里要判断一下不为空 
+
+          if(o.arr.length == o.preLen && o.arr.length > 1){ // 如果是点击了系统自带的回退按钮
+            o.arr.pop()
+            len = o.arr.length
+          }
+
+          let scrollTop = o.arr[len - 1].scrollTop
+
+          setTimeout(() => {
+            let len = document.querySelectorAll('.page-content').length
+            document.querySelectorAll('.page-content')[len - 1].scrollTop = scrollTop
+          }, 10)
+        }
+      }else{  // 前进页面操作，前进保存 scrollTop
+        let scrollTop = document.querySelectorAll('.page-content')[0].scrollTop
+        o.arr[len - 2].scrollTop = scrollTop
+      }
 
       window.historyObj.preLen = window.historyObj.arr.length
     }

@@ -15,7 +15,7 @@
      
     </div>
 
-    <div class="page-content">
+    <div class="keywordBoard-page-content">
 
       <div class="result-list-wrap">
         <div v-show="keywords != ''">
@@ -119,57 +119,69 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.nav-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ff7625;
-  color: white;
-  z-index: 1000;
+.keywordBoard-page{
 
-  .KWI_wrap {
-    margin: 0.1rem 0.20rem 0.10rem 0.40rem;
-
-    .searchIcon{
-      position: absolute;
-      color: #c1c1c1;
-      top: 0.17rem;
-      left: 0.47rem;
-    }
-
-    .kw_del{
-      position: fixed;
-      color: #c1c1c1;
-      height: 0.34rem;
-      line-height: 0.36rem;
-      width: 0.30rem;
-      top: 0.09rem;
-      right: 0.55rem;
-      text-align: center;
-      padding-top: 0.02rem;
-    }
-
-    .keyw-input {
-      border: 0;
-      border-radius: 0.02rem;
-      height: 0.36rem;
-      font-size: 0.14rem;
-      padding: 0 0.30rem;
-      width: calc(100% - 0.95rem);
-    }
-
-    .kw-cancel {
-      position: fixed;
-      font-size: 0.15rem;
-      top: 0.1rem;
-      right: 0.1rem;
-      height: 0.36rem;
-      line-height: 0.36rem;
-      width: 0.36rem;
-      text-align: center;
+  .nav-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ff7625;
+    color: white;
+    z-index: 1000;
+  
+    .KWI_wrap {
+      margin: 0.1rem 0.20rem 0.10rem 0.40rem;
+  
+      .searchIcon{
+        position: absolute;
+        color: #c1c1c1;
+        top: 0.17rem;
+        left: 0.47rem;
+      }
+  
+      .kw_del{
+        position: fixed;
+        color: #c1c1c1;
+        height: 0.34rem;
+        line-height: 0.36rem;
+        width: 0.30rem;
+        top: 0.09rem;
+        right: 0.55rem;
+        text-align: center;
+        padding-top: 0.02rem;
+      }
+  
+      .keyw-input {
+        border: 0;
+        border-radius: 0.02rem;
+        height: 0.36rem;
+        font-size: 0.14rem;
+        padding: 0 0.30rem;
+        width: calc(100% - 0.95rem);
+      }
+  
+      .kw-cancel {
+        position: fixed;
+        font-size: 0.15rem;
+        top: 0.1rem;
+        right: 0.1rem;
+        height: 0.36rem;
+        line-height: 0.36rem;
+        width: 0.36rem;
+        text-align: center;
+      }
     }
   }
+}
+
+.keywordBoard-page-content{
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 </style>
