@@ -7,9 +7,11 @@
 			<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
 		</div>
 		<div class="per-service-open clearfix" :style="'height:' + breakfastHeight">
-			<input class="per-service-date" type="text" placeholder="2018-12-11至2018-12-13" @focus="showBreakfastDate">
-			<!--<StartPricePopup v-model="breakfastDateVisible" :open="startDate" :dateBind="endDate"/>-->
-			<input type="text" placeholder="加早类型">
+			<input class="per-service-date" v-model="breakfastValue" type="text" placeholder="起止日期" @focus="showBreakfastDate">
+			<StartEndDatePopup v-show="breakfastDateVisible" :minDate="startDate" :maxDate="endDate" @goback="closeDate" @confirm="confirmDate"/>
+			<label>
+				<select v-for="item in breakfastTypeList"></select>
+			</label>
 			<input class="add-num" type="text" placeholder="份数">
 			<button class="add-service-icon">添加</button>
 		</div>
@@ -37,7 +39,7 @@
 </template>
 
 <script>
-//	import StartPricePopup from '@/components/StarPricePopup';
+	import StartEndDatePopup from '@/components/StartEndDatePopup';
 	
   export default {
     name: 'extraService',
@@ -51,18 +53,38 @@
         bedHeight: 0,
         netWorkHeight: 0,
         breakfastDateVisible: false,
-        startDate: new Date(this.$store.state.checkin),
-        endDate: new Date(this.$store.state.checkout),
+        startDate: this.$store.state.checkin,
+        endDate: this.$store.state.checkout,
+        breakfastValue: '',
       }
     },
     
     props: {},
     
     components: {
-//      StartPricePopup
+      StartEndDatePopup
     },
     
-    computed: {},
+    computed: {
+      breakfastTypeList(){
+        let params = {
+          startDate: this.startDate,
+          endDate: this.endDate,
+          infoId: 577,
+          suppId: 231,
+          roomtypeId: 17,
+          roomNum: this.$store.state.roomNum,
+          typeId: 1
+        };
+        this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
+          if(res.returnCode === 1){
+            console.log(res);
+          }
+        })
+      }
+    },
+    
+    created(){},
     
     methods: {
       changeBreakfast(){
@@ -79,6 +101,16 @@
       },
       showBreakfastDate(){
         this.breakfastDateVisible = true;
+      },
+      closeDate(){
+        this.breakfastDateVisible = false;
+      },
+      confirmDate($event){
+        this.breakfastValue = $event.startDate + '至' + $event.endDate;
+        let _this = this;
+        setTimeout(function () {
+          _this.breakfastDateVisible = false;
+        }, 300);
       }
     }
   }
@@ -142,7 +174,7 @@
 			overflow: hidden;
 			transition: all .5s;
 			
-			>input{
+			>input,select{
 				width: 0.6rem;
 				height: 0.3rem;
 				line-height: 0.3rem;

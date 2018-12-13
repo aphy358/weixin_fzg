@@ -6,7 +6,13 @@
 		</div>
 		<mt-header title="选择国籍"></mt-header>
 		
-		<mt-search v-model="countryValue" @input="searchCountry"></mt-search>
+		<mt-search v-model="countryValue" @input="searchCountry">
+			<mt-cell
+					v-for="item in nationalityList"
+					:title="item.title"
+					:value="item.id">
+			</mt-cell>
+		</mt-search>
 	</div>
 </template>
 
@@ -17,7 +23,8 @@
     
     data() {
       return {
-        countryValue: ''
+        countryValue: '',
+        nationalityList: []
       }
     },
     
@@ -33,8 +40,11 @@
       },
       searchCountry(){
         this.$api.orderWrite.syncCountrySuggest({key: this.countryValue}).then(res => {
-          if(res.returnCode === 1){
-            console.log(res);
+          if(res.list && res.list.length > 0){
+            for (let i = 0; i < res.list.length; i++) {
+              let item = res.list[i];
+              this.$set(this.nationalityList, i, {id: item.countryid, title: item.name.split('-')[1]})
+            }
           }
         })
       }
@@ -62,7 +72,21 @@
 		}
 		
 		.mint-search{
-			height: 10%;
 		}
+	}
+</style>
+
+<style lang="scss">
+	.select-nationality{
+		
+		.mint-search-list{
+			top: 0.5rem;
+			
+			.mint-cell{
+				display: block;
+				width: 100%;
+			}
+		}
+		
 	}
 </style>
