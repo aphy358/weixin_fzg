@@ -38,7 +38,7 @@ export default {
       if(goBack){ // 返回页面操作，后退取出 
         if(o.arr.length){  // 有时候是无限制的后退导致对象为空，所以这里要判断一下不为空 
 
-          if(o.arr.length == o.preLen){ // 如果是点击了系统自带的回退按钮
+          if(o.arr.length == o.preLen && o.arr.length > 1){ // 如果是点击了系统自带的回退按钮
             o.arr.pop()
             len = o.arr.length
           }

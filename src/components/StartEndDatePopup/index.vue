@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="page-content calendar-body-wrap">
+      <div class="calendar-page-content calendar-body-wrap">
         <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
           <table>
             <thead>
@@ -226,6 +226,15 @@ export default {
         }
       }
     }
+  }
+
+  .calendar-page-content{
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   .calendar-body-wrap {
