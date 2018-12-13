@@ -24,7 +24,7 @@ Vue.use(VeeValidate, { validity: true });
 // historyObj.preLen 表示页面跳转之前，history 里的页面个数
 // 当每次页面跳转的时候，只要比较 historyObj.arr.length 和 historyObj.preLen 的大小，就知道页面是 forward 还是 back 了。
 window.historyObj = {
-  arr: ['/'],
+  arr: [{path: 'home'}],
   preLen: 1
 }
 

@@ -7,22 +7,22 @@
         <i class="cui-tab-scrollbar"></i>
       </ul>
 
-      <div v-if="cityType == '0'" class="nav-bar-wrap">
+      <div v-show="cityType == '0'" class="nav-bar-wrap">
         <ul>
-          <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市0' + n)">{{ n }}</li>
+          <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市0' + n, 'type-0')">{{ n }}</li>
           <!-- <li v-for="n in cityArr" :key="n"><a :href="'#城市' + n">{{ n }}</a></li> -->
         </ul>
       </div>
-      <div v-if="cityType == '1'" class="nav-bar-wrap">
+      <div v-show="cityType == '1'" class="nav-bar-wrap">
         <ul>
-          <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市1' + n)">{{ n }}</li>
+          <li v-for="n in cityArr" :key="n" @click="scrollIntoView('城市1' + n, 'type-1')">{{ n }}</li>
         </ul>
       </div>
     </div>
 
     <div class="city-list-wrap">
       <!-- 境内城市 -->
-      <div v-if="cityType == '0'" class="city-list-inner-wrap">
+      <div v-show="cityType == '0'" class="city-list-inner-wrap type-0">
         <span class="cui-city-t">热门城市</span>
         <ul class="hotel-city-tags">
           <li v-for="n in hotCity0" :key="n.cityId" @click="selectOneCity(n)">{{ n.cityName }}</li>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- 境外城市 -->
-      <div v-else class="city-list-inner-wrap">
+      <div v-show="cityType != '0'" class="city-list-inner-wrap type-1">
         <span class="cui-city-t">热门城市</span>
         <ul class="hotel-city-tags">
           <li v-for="n in hotCity1" :key="n.cityId" @click="selectOneCity(n)">{{ n.cityName }}</li>
@@ -88,14 +88,13 @@ export default {
   mounted(){
   },
   methods:{
-    scrollIntoView(id){
+    scrollIntoView(id, type){
       let elem = document.getElementById(id)
-      let bodyWidth = document.body.clientWidth
-      let offsetWidth = -bodyWidth / 375 * 91
+      let container = document.querySelector('.city-list-inner-wrap.' + type)
 
-      Velocity(elem, 'scroll', {offset: offsetWidth + 'px'})
+      Velocity(elem, 'scroll', {offset: '0px', container: container})
       Velocity(elem, 'finish')
-      elem.querySelector('input').checked = true
+      // elem.querySelector('input').checked = true
     },
     selectOneCity(city){
       this.$store.commit(`setCityType`, city.cityType)
@@ -189,8 +188,21 @@ export default {
 .city-list-wrap{
   padding-top: 0.91rem;
 
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+
+
   @at-root .city-list-inner-wrap{
     position: relative;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 
     @at-root .cui-city-t{
       font-size: 0.14rem;
