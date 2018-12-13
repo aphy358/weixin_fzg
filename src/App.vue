@@ -48,7 +48,7 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all 26000ms;
+  transition: all 260ms;
   height: 1000%;
   top: 0;
   position: absolute;

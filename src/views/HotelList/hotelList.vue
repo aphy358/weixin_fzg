@@ -1,13 +1,14 @@
 <template>
-  <div class="page hotelList-page">
-    <div class="page-content">
+  <div class="page">
+    <div class="page hotelList-page" v-show="!showKeywordBoard">
 
-      <div v-show="!showKeywordBoard">
-        <!-- 关键字搜索 -->
-        <KeywordInput @showKeywordBoard="showKeywordBoard = true" />
+      <!-- 关键字搜索 -->
+      <KeywordInput @showKeywordBoard="showKeywordBoard = true" />
 
-        <!-- 搜索条件过滤 -->
-        <SearchFilter />     
+      <!-- 搜索条件过滤 -->
+      <SearchFilter />
+
+      <div class="page-content">
 
         <!-- 酒店列表组件 -->
         <HotelListInfinite :showKeywordBoard="showKeywordBoard" />
@@ -20,9 +21,10 @@
 
       </div>
 
-      <KeywordBoard v-show="showKeywordBoard" @hideKeywordBoard="showKeywordBoard = false" :showBoard="showKeywordBoard" />
-
     </div>
+
+    <KeywordBoard v-show="showKeywordBoard" @hideKeywordBoard="showKeywordBoard = false" :showBoard="showKeywordBoard" />
+
   </div>
 </template>
 
