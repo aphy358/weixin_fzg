@@ -7,7 +7,7 @@
 			<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
 		</div>
 		<div class="per-service-open clearfix" :style="'height:' + breakfastHeight">
-			<input class="per-service-date" v-model="breakfastValue" type="text" placeholder="起止日期" @focus="showBreakfastDate">
+			<span class="per-service-date" v-model="breakfastValue" @click="showBreakfastDate">起止日期</span>
 			<StartEndDatePopup v-show="breakfastDateVisible" :minDate="startDate" :maxDate="endDate" @goback="closeDate" @confirm="confirmDate"/>
 			<label>
 				<select v-for="item in breakfastTypeList"></select>
@@ -78,7 +78,7 @@
         };
         this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
           if(res.returnCode === 1){
-            console.log(res);
+//            console.log(res);
           }
         })
       }
@@ -174,7 +174,7 @@
 			overflow: hidden;
 			transition: all .5s;
 			
-			>input,select{
+			>input,select,>span{
 				width: 0.6rem;
 				height: 0.3rem;
 				line-height: 0.3rem;
@@ -184,6 +184,8 @@
 				border: none;
 				border-radius: 0;
 				float: left;
+				background-color: #fff;
+				color: #d8d8dc;
 			}
 			
 			.per-service-date{
