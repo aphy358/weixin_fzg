@@ -7,10 +7,7 @@
 		<mt-header title="选择国籍"></mt-header>
 		
 		<mt-search v-model="countryValue" @input="searchCountry">
-			<mt-cell
-					v-for="item in nationalityList"
-					:title="item.title"
-					:value="item.id">
+			<mt-cell v-for="item in nationalityList" :title="item.title" :id="item.id" @click="selectNationality(item.id)">
 			</mt-cell>
 		</mt-search>
 	</div>
@@ -46,6 +43,15 @@
               this.$set(this.nationalityList, i, {id: item.countryid, title: item.name.split('-')[1]})
             }
           }
+        })
+      },
+      selectNationality(id){
+        let params = {
+          suppId: 231,
+          countryId: id
+        };
+        this.$api.orderWrite.syncProperMarket(params).then(res => {
+          console.log(res);
         })
       }
     }
