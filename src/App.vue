@@ -78,6 +78,9 @@ export default {
   opacity: 0.9;
 }
 
+.slide-right-enter-active{
+  z-index: -1;
+}
 
 .slide-left-enter-active,
 .slide-right-leave-active{
