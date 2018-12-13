@@ -7,9 +7,13 @@
 		</mt-header>
 		<GoBack _style="top: 0.02rem" />
 		
-		<hotelInfo/>
-		
-		<writeInfo/>
+		<div class="page-content">
+
+			<hotelInfo/>
+			
+			<writeInfo/>
+
+		</div>
 	</div>
 
 </template>
