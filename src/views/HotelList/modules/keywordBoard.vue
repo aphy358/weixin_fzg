@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="page keywordBoard-page">
     <div class="nav-top">
       <div class="KWI_wrap">
         
         <!-- 返回上一页 -->
-        <GoBack />
+        <GoBack :onClick="clickGoBack" />
         
         <i class="iconfont icon-search0 searchIcon"></i>
         <i class="iconfont icon-shanchu kw_del" v-if="keywords != ''" @click="clearKeyword"></i>
@@ -15,34 +15,39 @@
      
     </div>
 
-    <div class="result-list-wrap">
-      <div v-show="keywords != ''">
-        <div style="line-height: 0.4rem;">
-          <div class="kw-r-icon">
-            <span class="iconfont icon-search0" style="color: #099FDE;"></span>
+    <div class="page-content">
+
+      <div class="result-list-wrap">
+        <div v-show="keywords != ''">
+          <div style="line-height: 0.4rem;">
+            <div class="kw-r-icon">
+              <span class="iconfont icon-search0" style="color: #099FDE;"></span>
+            </div>
+            <div class="kw-r-content">
+              <span style="margin-right: 0.1rem;float: left;">搜索</span>
+              <span style="float: left;color: #ff7625;width: calc(100% - 0.4rem);" class="ellips search-text">{{ keywords }}</span>
+            </div>
           </div>
-          <div class="kw-r-content">
-            <span style="margin-right: 0.1rem;float: left;">搜索</span>
-            <span style="float: left;color: #ff7625;width: calc(100% - 0.4rem);" class="ellips search-text">{{ keywords }}</span>
-          </div>
+        </div>
+
+        <div v-show="resultList.length > 0">
+          <ul>
+            <li v-for="n in resultList" :key="n.i">
+              <div class="kw-r-row">
+                <div class="kw-r-icon">
+                  <span class="iconfont icon-baofang"></span>
+                </div>
+                <div class="kw-r-content">
+                  <span v-html="n.html"></span>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <div v-show="resultList.length > 0">
-        <ul>
-          <li v-for="n in resultList" :key="n.i">
-            <div class="kw-r-row">
-              <div class="kw-r-icon">
-                <span class="iconfont icon-baofang"></span>
-              </div>
-              <div class="kw-r-content">
-                <span v-html="n.html"></span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
     </div>
+
   </div>
 </template>
 
@@ -105,6 +110,9 @@ export default {
     clearKeyword(){
       this.keywords = ''
       this.resultList = []
+    },
+    clickGoBack(){
+      this.hideKeywordBoard()
     }
   }
 }

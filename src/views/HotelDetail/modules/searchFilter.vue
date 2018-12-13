@@ -22,7 +22,7 @@
       </div>
       <div class="s-f-adult-wrap" @click="showAdultChildPopup">
         <div class="s-f-adult-label">每间入住</div>
-        <div class="s-f-adult-text">2成人0儿童</div>
+        <div class="s-f-adult-text">{{ getAdultNum }}成人{{ getChildrenNum }}儿童</div>
       </div>
       <i class="iconfont icon-right-thin" style="font-size: 0.12rem;line-height: 0.5rem;color: #999;"></i>
     </div>
@@ -59,6 +59,15 @@ export default {
     },
     getCheckout(){
       return this.$store.state.checkout
+    },
+    getAdultNum(){
+      return this.$store.state.adultNum
+    },
+    getChildrenNum(){
+      return this.$store.state.childrenNum
+    },
+    getChildrenStr(){
+      return this.$store.state.childrenStr
     },
   },
   mounted(){},

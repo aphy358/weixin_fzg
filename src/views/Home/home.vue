@@ -1,26 +1,28 @@
 <template>
   <div class="page home-page">
+    <div class="page-content">
 
-    <!-- 头部 -->
-    <mt-header title="境内/境外酒店">
-      <mt-button class="iconfont icon-user" slot="right"></mt-button>
-    </mt-header>
+      <!-- 头部 -->
+      <mt-header title="境内/境外酒店">
+        <mt-button class="iconfont icon-user" slot="right"></mt-button>
+      </mt-header>
 
-    <!-- banner -->
-    <Banner />
+      <!-- banner -->
+      <Banner />
 
-    <!-- 搜索区域 -->
-    <SearchSection />
+      <!-- 搜索区域 -->
+      <SearchSection />
 
-    <!-- 页面分隔符 -->
-    <GAP />
+      <!-- 页面分隔符 -->
+      <GAP />
 
-    <!-- 精选酒店 -->
-    <Recommended />
+      <!-- 精选酒店 -->
+      <Recommended />
 
-    <!-- 底部 END 标识 -->
-    <END />
-
+      <!-- 底部 END 标识 -->
+      <END />
+      
+    </div>
   </div>
 </template>
 

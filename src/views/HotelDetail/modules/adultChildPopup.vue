@@ -21,7 +21,7 @@
         </div>
 
         <div style="line-height: 0.46rem;color: #999;font-size: 0.12rem;padding: 0 0.1rem;">
-          <span style="color: #000;font-size: 0.16rem;">儿童</span>
+          <span style="color: #000;font-size: 0.14rem;">儿童</span>
           (每间最多携带3名儿童)
         </div>
 
@@ -86,7 +86,12 @@ export default {
     // 监视成人小孩弹出框的状态，弹出的时候初始化选择项
     getAdultChildPopupVisible(){
       if(this.getAdultChildPopupVisible){
+        this.adultValue = this.$store.state.adultNum
 
+        let childrenStrArr = this.$store.state.childrenStr.split(',')
+        for (let i = 1; i <= 3; i++) {
+          this['childValue' + i] = childrenStrArr[i - 1] || '-1'
+        }
       }
     }
   },
@@ -155,7 +160,6 @@ export default {
     .a-c-s-label{
       float: left;
       color: #999;
-      font-size: 0.16rem;
       width: 0.45rem;
     }
 
@@ -163,7 +167,6 @@ export default {
       position: absolute;
       border: none;
       height: 0.5rem;
-      font-size: 0.16rem;
       width: calc(100% - 0.6rem);
       opacity: 0;
       background: transparent;
@@ -172,7 +175,6 @@ export default {
     .a-c-s-span{
       position: absolute;
       height: 0.5rem;
-      font-size: 0.16rem;
       width: calc(100% - 0.6rem);
       text-align: center;
     }
@@ -189,9 +191,10 @@ export default {
         width: calc(100% - 0.2rem);
         color: white;
         line-height: 0.4rem;
-        font-size: 0.18rem;
+        font-size: 0.16rem;
         background: #ff7625;
         border-radius: 0.02rem;
+        padding: 0;
       }
     }
   }

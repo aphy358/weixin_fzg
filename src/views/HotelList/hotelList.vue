@@ -1,20 +1,25 @@
 <template>
-  <div class="page hotelList-page">
-    <div v-show="!showKeywordBoard">
+  <div class="page">
+    <div class="page hotelList-page" v-show="!showKeywordBoard">
+
       <!-- 关键字搜索 -->
       <KeywordInput @showKeywordBoard="showKeywordBoard = true" />
 
       <!-- 搜索条件过滤 -->
-      <SearchFilter />     
+      <SearchFilter />
 
-      <!-- 酒店列表组件 -->
-      <HotelListInfinite :showKeywordBoard="showKeywordBoard" />
+      <div class="page-content">
 
-      <!-- 星级价格 popup -->
-      <StarPricePopup page="hotelList" />
+        <!-- 酒店列表组件 -->
+        <HotelListInfinite :showKeywordBoard="showKeywordBoard" />
 
-      <!-- 行政区、商圈 popup -->
-      <AreaBizPopup />
+        <!-- 星级价格 popup -->
+        <StarPricePopup page="hotelList" />
+
+        <!-- 行政区、商圈 popup -->
+        <AreaBizPopup />
+
+      </div>
 
     </div>
 
