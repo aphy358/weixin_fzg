@@ -1,6 +1,6 @@
 <!-- 组件说明 -->
 <template>
-	<div class="page order-write-box">
+	<div class="page order-write-box-page">
 		
 		<!-- 头部 -->
 		<mt-header title="订单填写">
@@ -54,7 +54,7 @@
 </script>
 
 <style scoped lang="scss">
-	.order-write-box{
+	.order-write-box-page{
 		background-color: #efeff4;
 	}
 	

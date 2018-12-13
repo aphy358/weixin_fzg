@@ -101,7 +101,7 @@
         paymentVisible: false,
         nameVisibleArr: [],
         nameRegArr: [],
-        payVisible: false,
+        payVisible: true,
         telIconVisible: false,
         emailIconVisible: false,
         email: '',
@@ -218,12 +218,14 @@
     },
   
     mounted () {
-      window.addEventListener('scroll', this.handleScroll)
+      document.querySelector('.order-write-box-page .page-content').addEventListener('scroll', this.handleScroll)
     },
     
     methods: {
       handleScroll () {
-        if(window.scrollY >= 20){
+        let scrollTop = document.querySelector('.order-write-box-page .page-content').scrollTop
+        
+        if(scrollTop >= 20){
           this.payVisible = true;
         }else{
           this.payVisible = false;
