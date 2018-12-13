@@ -1,49 +1,52 @@
 <template>
   <div class="page login-page">
-    <div class="logo-wrap">
-      <img :src="logo" alt="jl_logo">
+    <div class="page-content">
+
+      <div class="logo-wrap">
+        <img :src="logo" alt="jl_logo">
+      </div>
+      
+      <div class="login-wrap">
+        <form id="loginForm" novalidate="novalidate">
+          <div class="login-row" id="company-login-row">
+            <div class="login-label">
+              <span class="iconfont icon-baofang"></span>
+            </div>
+            <div class="login-item">
+              <input type="text" placeholder="公司编号" id="loginCompanyCode" name="loginCompanyCode">
+            </div>
+          </div>
+          
+          <div class="login-row">
+            <div class="login-label">
+              <span class="iconfont icon-user"></span>
+            </div>
+            <div class="login-item">
+              <input type="text" placeholder="用户名" id="loginUserName" name="loginUserName">
+            </div>
+          </div>
+          
+          <div class="login-row">
+            <div class="login-label">
+              <span class="iconfont icon-key"></span>
+            </div>
+            <div class="login-item">
+              <input type="password" placeholder="密码" id="loginPW" name="loginPW">
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="login-bline">
+        <div class="login-registry">快速注册</div>
+        <div class="login-forget">忘记密码？</div>
+      </div>
+
+      <div class="login-btn-wrap">
+        <button class="login-login">登录</button>
+      </div>
+
     </div>
-    
-    <div class="login-wrap">
-			<form id="loginForm" novalidate="novalidate">
-				<div class="login-row" id="company-login-row">
-					<div class="login-label">
-						<span class="iconfont icon-baofang"></span>
-					</div>
-					<div class="login-item">
-						<input type="text" placeholder="公司编号" id="loginCompanyCode" name="loginCompanyCode">
-					</div>
-				</div>
-				
-				<div class="login-row">
-					<div class="login-label">
-						<span class="iconfont icon-user"></span>
-					</div>
-					<div class="login-item">
-						<input type="text" placeholder="用户名" id="loginUserName" name="loginUserName">
-					</div>
-				</div>
-				
-				<div class="login-row">
-					<div class="login-label">
-						<span class="iconfont icon-key"></span>
-					</div>
-					<div class="login-item">
-						<input type="password" placeholder="密码" id="loginPW" name="loginPW">
-					</div>
-				</div>
-			</form>
-		</div>
-
-    <div class="login-bline">
-			<div class="login-registry">快速注册</div>
-			<div class="login-forget">忘记密码？</div>
-		</div>
-
-    <div class="login-btn-wrap">
-      <button class="login-login">登录</button>
-    </div>
-
   </div>
 </template>
 

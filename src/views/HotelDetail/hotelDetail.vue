@@ -1,20 +1,22 @@
 <template>
   <div class="page hotelDetail-page">
+    <div class="page-content">
 
-    <!-- banner -->
-    <Banner />
+      <!-- banner -->
+      <Banner />
 
-    <!-- 搜索条件 -->
-    <SearchFilter />
+      <!-- 搜索条件 -->
+      <SearchFilter />
 
-    <GAP />
+      <GAP />
 
-    <!-- 酒店价格列表 -->
-    <HotelPriceList />
+      <!-- 酒店价格列表 -->
+      <HotelPriceList />
 
-    <!-- 成人小孩选择 popup -->
-    <AdultChildPopup />
-
+      <!-- 成人小孩选择 popup -->
+      <AdultChildPopup />
+      
+    </div>
   </div>
 </template>
 

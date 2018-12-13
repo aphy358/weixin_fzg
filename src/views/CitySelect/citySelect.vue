@@ -1,12 +1,14 @@
 <template>
   <div class="page citySelect-page">
+    <div class="page-content">
 
-    <!-- 顶部关键字输入区域 -->
-    <KeywordInput />
+      <!-- 顶部关键字输入区域 -->
+      <KeywordInput />
 
-    <!-- 城市列表 -->
-    <CityList />
+      <!-- 城市列表 -->
+      <CityList />
 
+    </div>
   </div>
 </template>
 
