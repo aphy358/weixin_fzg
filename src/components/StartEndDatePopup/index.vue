@@ -1,6 +1,6 @@
 <template>
   <transition @enter="enter" @leave="leave">
-    <div class="page start-end-wrap">
+    <div class="page start-end-wrap" style="position: fixed;">
       
       <div class="calendar-head-wrap">
         <!-- 头部 -->
