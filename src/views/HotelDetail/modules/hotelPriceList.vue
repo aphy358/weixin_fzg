@@ -53,6 +53,7 @@ import Loading from '@/components/Loading.vue'
 import END from '@/components/END.vue'
 import { queryString } from '@/assets/util'
 import Velocity from 'velocity-animate'
+import { debounce } from 'lodash'
 
 export default {
   name: 'hotelPriceList',
@@ -60,7 +61,6 @@ export default {
     return {
       // 用于标记是否已经查过价了
       loadedPrice: false,
-      hotelId: null,
       roomTypeBases: [],
     }
   },
@@ -69,13 +69,24 @@ export default {
     Loading,
     END,
   },
-  watch: {},
+  watch: {
+    getCheckin(){
+      this.reQueryHotelPrice()
+    },
+    getCheckout(){
+      this.reQueryHotelPrice()
+    },
+    getAdultNum(){
+      this.reQueryHotelPrice()
+    },
+    getChildrenStr(){
+      this.reQueryHotelPrice()
+    },
+  },
   created(){
   },
   activated(){
-    this.initQueryString()
-    this.resetData()
-    this.queryHotelPrice()
+    this.reQueryHotelPrice()
   },
   computed: {
     getCheckin(){
@@ -84,29 +95,40 @@ export default {
     getCheckout(){
       return this.$store.state.checkout
     },
+    getAdultNum(){
+      return this.$store.state.adultNum
+    },
+    getChildrenStr(){
+      return this.$store.state.childrenStr
+    },
   },
   mounted(){},
   methods:{
+    // 重新查询酒店价格
+    reQueryHotelPrice: debounce(function(){
+      this.resetData()
+      this.initQueryString()
+      this.queryHotelPrice()
+    }, 300),
     // 重新设置数据
     resetData(){
       this.loadedPrice = false
-      this.hotelId = null
       this.roomTypeBases = []
     },
     // 处理 queryString 带过来的参数
     initQueryString(){
-      this.hotelId = queryString('hotelId')
       let cityType = queryString('cityType')
 
       if(cityType != this.$store.state.cityType){ // 如果 queryString 上传过来的 cityType 和 store 里存的 cityType 不相等，则说明这种情况不是从酒店列表页点击进的酒店详情页
         this.$store.commit(`setCityType`, cityType)
       }
     },
+    // 查询酒店价格
     queryHotelPrice(){
       let param = {
         startDate: this.getCheckin,
         endDate: this.getCheckout,
-        hotelId: this.hotelId,
+        hotelId: queryString('hotelId'),
         roomNum: 1,
         adultNum: 2,
         childrenNum: 0,
