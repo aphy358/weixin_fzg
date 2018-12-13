@@ -40,6 +40,7 @@
 <style scoped lang="scss">
 	.hotel-info{
 		margin: 0.1rem 0.1rem;
+		/*margin: 0.5rem 0.1rem 0.1rem;*/
 		background-color: #fff;
 		padding: 0 0.2rem;
 		font-size: 0.14rem;

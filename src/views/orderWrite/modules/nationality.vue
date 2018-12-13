@@ -4,16 +4,17 @@
 		<div class="nav-back" @click="hideNationality">
 			<i class="iconfont icon-left-thin"></i>
 		</div>
-		<mt-header title="选择国籍"></mt-header>
+		<div class="nationality-title">选择国籍</div>
 		
 		<mt-search v-model="countryValue" @input="searchCountry">
-			<mt-cell v-for="item in nationalityList" :title="item.title" :id="item.id" @click="selectNationality(item.id)">
+			<mt-cell v-for="(item, index) in nationalityList" :key="index" :title="item.title" :id="item.id" @click.native="selectNationality(item.id, item.title)">
 			</mt-cell>
 		</mt-search>
 	</div>
 </template>
 
 <script>
+  import { MessageBox } from 'mint-ui';
   
   export default {
     name: 'nationality',
@@ -45,13 +46,18 @@
           }
         })
       },
-      selectNationality(id){
+      selectNationality(id, title){
         let params = {
           suppId: 231,
           countryId: id
         };
         this.$api.orderWrite.syncProperMarket(params).then(res => {
-          console.log(res);
+          if (res.inProperMarket){
+            MessageBox('提示', '当前价格，不适于该国籍客人，请联系捷旅客服后下单，电话33397777');
+          }else{
+            this.$emit('selectNationality', title);
+            this.$emit('hideNationality');
+          }
         })
       }
     }
@@ -62,11 +68,28 @@
 	.select-nationality{
 		width: 100%;
 		/*height: 100%;*/
+		position: relative;
+		/*padding-top: 0.4rem;*/
+		
+		.nationality-title{
+			width: 100%;
+			height: 0.4rem;
+			line-height: 0.4rem;
+			color: #ffffff;
+			background-color: #ff7625;
+			text-align: center;
+			font-size: 0.14rem;
+			/*position: fixed;*/
+			/*left: 0;*/
+			/*top: 0;*/
+			/*z-index: 10000;*/
+		}
 		
 		.nav-back {
 			position: absolute;
 			width: 0.40rem;
 			height: 0.36rem;
+			line-height: 0.36rem;
 			left: 0;
 			top: 0.02rem;
 			text-align: center;
@@ -75,9 +98,7 @@
 			color: white;
 			z-index: 1001;
 			transform: translate3d(0, 0, 0) scale(1);
-		}
-		
-		.mint-search{
+			cursor: pointer;
 		}
 	}
 </style>

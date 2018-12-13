@@ -45,7 +45,8 @@
 			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="item">
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
 				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
-				<span class="username-input nationality" v-model="nameArr[item].n" @click.prevent.stop="selectNationality">国籍</span>
+				<span class="username-input nationality" v-html="nameArr[item].n || '国籍'" @click.prevent.stop="selectNationality(item)"></span>
+				<!--<input class="username-input nationality" type="text" placeholder="国籍" v-model="nameArr[item].n" @click.prevent.stop="selectNationality(item)">-->
 				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon green" @click="nextVisible(item)"></i>
 				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon deep-orange" @click="hideName(item)"></i>
 			</div>
@@ -76,8 +77,9 @@
 			<confirmInfo @close="closeConfirmMask"/>
 		</mt-popup>
 		
+		
 		<mt-popup class="nationality-popup" v-model="nationalityVisible" position="right" catchtouchmove="true">
-			<nationality  @hideNationality="hideNationality"/>
+			<nationality  @hideNationality="hideNationality" @selectNationality="getNationality"/>
 		</mt-popup>
 		
 	</div>
@@ -140,7 +142,8 @@
         country: 70007,
         confirmVisible: false,
         nationalityVisible: false,
-        nameModuleHeight: 1
+        nameModuleHeight: 1,
+        nationalityIndex: 0, //由于所有国籍输入框共用一个国籍选择弹出框，而函数内部传参在此处不可行，所以使用一个变量指示每次选择国籍的index，以便赋值到对应地方
       }
     },
     
@@ -339,11 +342,16 @@
       closeConfirmMask(){
         this.confirmVisible = false;
       },
-      selectNationality(){
+      selectNationality(index){
         this.nationalityVisible = true;
+        this.nationalityIndex = index;
       },
       hideNationality(){
         this.nationalityVisible = false;
+      },
+      getNationality($event){
+        let index = this.nationalityIndex;
+        this.$set(this.nameArr, index, {l: this.nameArr[index].l, f: this.nameArr[index].f, n: $event});
       }
     }
   }
