@@ -1,6 +1,7 @@
 <template>
   <transition @enter="enter" @leave="leave">
-    <div class="start-end-wrap">
+    <div class="page start-end-wrap">
+      
       <div class="calendar-head-wrap">
         <!-- 头部 -->
         <mt-header title="起止日期选择"></mt-header>
@@ -22,7 +23,8 @@
           </table>
         </div>
       </div>
-      <div class="calendar-body-wrap">
+
+      <div class="page-content calendar-body-wrap">
         <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
           <table>
             <thead>

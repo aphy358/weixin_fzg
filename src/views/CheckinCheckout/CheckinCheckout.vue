@@ -1,32 +1,34 @@
 <template>
   <div class="page checkinCheckout-page">
-    <div class="page-content">
 
-      <div class="calendar-head-wrap nav-top">
+    <div class="calendar-head-wrap nav-top">
 
-        <!-- 头部 -->
-        <mt-header title="入离日期选择"></mt-header>
+      <!-- 头部 -->
+      <mt-header title="入离日期选择"></mt-header>
 
-        <!-- 返回上一页 -->
-        <GoBack _style="top: 0.02rem" />
+      <!-- 返回上一页 -->
+      <GoBack _style="top: 0.02rem" />
 
-        <div class="calendar-week-title">
-          <table>
-            <tbody>
-              <tr>
-                <td>日</td>
-                <td>一</td>
-                <td>二</td>
-                <td>三</td>
-                <td>四</td>
-                <td>五</td>
-                <td>六</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
+      <div class="calendar-week-title">
+        <table>
+          <tbody>
+            <tr>
+              <td>日</td>
+              <td>一</td>
+              <td>二</td>
+              <td>三</td>
+              <td>四</td>
+              <td>五</td>
+              <td>六</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+    </div>
+
+    
+    <div class="page-content">
 
       <div class="calendar-body-wrap">
 
