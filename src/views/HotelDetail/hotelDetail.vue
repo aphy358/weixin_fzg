@@ -1,6 +1,6 @@
 <template>
   <div class="page hotelDetail-page">
-    <div class="page-content">
+    <div class="page-content" style="background: #efeff4;">
 
       <!-- banner -->
       <Banner />

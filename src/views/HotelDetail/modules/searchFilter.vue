@@ -115,6 +115,7 @@ export default {
 .hotelDetail-page{
   @at-root .search-filter-outer{
     padding: 0 0.1rem;
+    background: white;
 
     @at-root .s-f-inner{
       display: flex;

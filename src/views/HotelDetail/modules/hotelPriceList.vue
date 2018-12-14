@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div style="background: white;" class="">
     <Loading v-if="!loadedPrice" />
 
     <div class="hotel-price-wrap">
@@ -260,6 +260,7 @@ export default {
   
         .roomtype-name{
           font-size: 0.16rem;
+          height: 0.24rem;
           padding: 0.15rem 0;
           color: #576690;
         }

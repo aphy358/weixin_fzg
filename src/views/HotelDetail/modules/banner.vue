@@ -1,5 +1,5 @@
 <template>
-  <div v-if="curHotel">
+  <div style="background: white;" v-if="curHotel">
     <!-- banner 区域 -->
     <div class="banner-wrap">
       <mt-swipe :auto="0" :showIndicators="false" >
