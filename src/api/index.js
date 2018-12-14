@@ -1,8 +1,8 @@
-import * as common from './common'
-import * as hotelList from './hotelList'
-import * as hotelDetail from './hotelDetail'
-import * as citySelect from './citySelect'
-import * as orderWrite from './orderWrite'
+import * as common from './modules/common'
+import * as hotelList from './modules/hotelList'
+import * as hotelDetail from './modules/hotelDetail'
+import * as citySelect from './modules/citySelect'
+import * as orderWrite from './modules/orderWrite'
 
 const api = {
   common,

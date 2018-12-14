@@ -1,4 +1,4 @@
-import http from './http'
+import http from '../http'
 
 
 // 查询酒店价格，(实查)
