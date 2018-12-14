@@ -27,7 +27,7 @@
       </div>
       <div class="hotel-info-item line-after">
         <p style="line-height: 0.24rem;">{{ curHotel.infoDesc }}</p>
-        <div class="mask-left-div">
+        <div class="mask-left-div" @click="showHotelInfo">
           详情<i class="iconfont icon-right-thin"></i>
         </div>
       </div>
@@ -75,6 +75,9 @@ export default {
         })
       }
       
+    },
+    showHotelInfo(){
+      this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: true})
     }
   }
 }

@@ -6,6 +6,9 @@ export default {
   state: {
     // 成人小孩 popup
     adultChildPopupVisible: false,
+
+    // 酒店信息 popup
+    hotelInfoPopupVisible: false,
   },
 
   getters: {
