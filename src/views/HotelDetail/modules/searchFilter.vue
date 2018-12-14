@@ -142,7 +142,7 @@ export default {
           @at-root .s-f-date{
             color: #576690;
             font-weight: bold;
-            margin: 0 0.05rem;
+            margin-right: 0.05rem;
           }
   
           @at-root .s-f-week{
