@@ -1,5 +1,5 @@
 <template>
-  <div v-if="curHotel">
+  <div style="background: white;" v-if="curHotel">
     <!-- banner 区域 -->
     <div class="banner-wrap">
       <mt-swipe :auto="0" :showIndicators="false" >
@@ -17,15 +17,18 @@
     <div class="hotel-info-list">
       <div class="hotel-info-item line-after">
         <p>{{ curHotel.address }}</p>
-        <p>{{ curHotel.businessCircle }}</p>
+        <p style="color: #bbb;font-size: 0.12rem;line-height: 0.12rem;margin-bottom: 0.03rem;">
+          <i class="iconfont icon-weizhi" style="position: relative;top: 0.01rem;color: #bbb;font-size: 0.14rem;margin-right: 0.05rem;"></i>
+          {{ curHotel.businessCircle }}
+        </p>
         <div class="mask-left-div">
           地图<i class="iconfont icon-right-thin"></i>
         </div>
       </div>
       <div class="hotel-info-item line-after">
-        <p>{{ curHotel.infoDesc }}</p>
-        <div class="mask-left-div">
-          酒店详情<i class="iconfont icon-right-thin"></i>
+        <p style="line-height: 0.24rem;">{{ curHotel.infoDesc }}</p>
+        <div class="mask-left-div" @click="showHotelInfo">
+          详情<i class="iconfont icon-right-thin"></i>
         </div>
       </div>
     </div>
@@ -72,6 +75,9 @@ export default {
         })
       }
       
+    },
+    showHotelInfo(){
+      this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: true})
     }
   }
 }
@@ -83,10 +89,10 @@ export default {
     transform: translateY(0)
   }
   45% {
-    transform: translateY(-30px)
+    transform: translateY(-0.3rem)
   }
   50% {
-    transform: translateY(-30px)
+    transform: translateY(-0.3rem)
   }
   95% {
     transform: translateY(0)
@@ -98,14 +104,23 @@ export default {
 
 .mask-left-div{
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 0.1rem;
+  bottom: 0;
+  font-size: 0.12rem;
+  color: #576690;
   box-shadow: 0 0 0.2rem 0.3rem white;
-  height: 100%;
-  line-height: 0.47rem;
-  width: 0.85rem;
+  height: 0.5rem;
+  line-height: 0.5rem;
+  width: 0.45rem;
   background: white;
   text-align: right;
+  font-weight: bold;
+
+  .iconfont{
+    font-size: 0.12rem;
+    line-height: 0.5rem;
+    color: rgb(153, 153, 153);
+  }
 }
 
 .hotelDetail-page{
@@ -154,7 +169,6 @@ export default {
 
     .hotel-info-item{
       position: relative;
-      color: #666666;
       padding: 0.13rem 0.1rem;
       overflow: hidden;
 

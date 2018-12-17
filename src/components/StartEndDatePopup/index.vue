@@ -66,8 +66,10 @@
             </tbody>
           </table>
         </div>
+
+        <END/>
+        
       </div>
-      <END/>
     </div>
   </transition>
 </template>
@@ -186,7 +188,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .start-end-wrap {
   position: absolute;
   width: 100%;
@@ -239,6 +241,7 @@ export default {
 
   .calendar-body-wrap {
     margin-top: 0.65rem;
+    padding-bottom: 0.65rem;
 
     .calendar-body {
 

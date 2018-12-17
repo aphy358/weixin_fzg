@@ -93,6 +93,10 @@ export default {
           this['childValue' + i] = childrenStrArr[i - 1] || '-1'
         }
       }
+    },
+    $route(to, from) {
+      // 切换页面时隐藏 popup
+      this.hidePopup()
     }
   },
   created(){},
@@ -134,6 +138,7 @@ export default {
 
 <style lang="scss">
 .adult-child-select-wrap{
+  height: 100%;
   height: 100vh;
   background: #F2F3F8;
 

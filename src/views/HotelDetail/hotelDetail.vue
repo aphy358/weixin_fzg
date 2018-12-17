@@ -1,9 +1,11 @@
 <template>
   <div class="page hotelDetail-page">
-    <div class="page-content">
+    <div class="page-content" style="background: #efeff4;">
 
       <!-- banner -->
       <Banner />
+
+      <GAP />
 
       <!-- 搜索条件 -->
       <SearchFilter />
@@ -15,6 +17,9 @@
 
       <!-- 成人小孩选择 popup -->
       <AdultChildPopup />
+
+      <!-- 酒店信息 popup -->
+      <HotelInfoPopup />
       
     </div>
   </div>
@@ -25,6 +30,7 @@ import Banner from './modules/banner.vue'
 import SearchFilter from './modules/searchFilter.vue'
 import HotelPriceList from './modules/hotelPriceList.vue'
 import AdultChildPopup from './modules/adultChildPopup.vue'
+import HotelInfoPopup from './modules/hotelInfoPopup.vue'
 import GAP from '@/components/GAP.vue'
 
 
@@ -39,6 +45,7 @@ export default {
     SearchFilter,
     HotelPriceList,
     AdultChildPopup,
+    HotelInfoPopup,
     GAP,
   },
   watch: {},
