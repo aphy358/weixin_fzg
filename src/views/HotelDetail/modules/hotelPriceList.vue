@@ -82,14 +82,14 @@ export default {
     getChildrenStr(){
       this.reQueryHotelPrice()
     },
+    getCurHotel(){
+      this.reQueryHotelPrice()
+    }
   },
   created(){
+    this.reQueryHotelPrice()
   },
   activated(){
-    if(sessionStorage.getItem('queryHotelPrice')){
-      this.reQueryHotelPrice()
-      sessionStorage.removeItem('queryHotelPrice')
-    }
   },
   computed: {
     getCheckin(){
@@ -104,6 +104,9 @@ export default {
     getChildrenStr(){
       return this.$store.state.childrenStr
     },
+    getCurHotel(){
+      return this.$store.state.curHotel
+    }
   },
   mounted(){},
   methods:{

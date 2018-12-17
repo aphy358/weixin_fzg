@@ -207,6 +207,7 @@ export default {
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
       sessionStorage.setItem('queryHotelPrice', true)
+      sessionStorage.setItem('initHotelShare', true)
       gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: hotel.type})
     }
   }

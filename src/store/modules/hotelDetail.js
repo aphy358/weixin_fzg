@@ -9,6 +9,9 @@ export default {
 
     // 酒店信息 popup
     hotelInfoPopupVisible: false,
+
+    // 酒店地图 popup
+    hotelMapPopupVisible: false,
   },
 
   getters: {

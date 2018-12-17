@@ -31,6 +31,8 @@ export default {
       // 是否是回退
       let goBack = o.arr.length <= o.preLen
 
+      if(from.path == '/') goBack = false
+
       // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键 && o.preLen > 1
       // this.transitionName = o.arr.length <= o.preLen ? "slide-right" : "slide-left";
       this.transitionName = goBack ? "slide-right" : "slide-left";
@@ -51,8 +53,11 @@ export default {
           }, 10)
         }
       }else{  // 前进页面操作，前进保存 scrollTop
-        let scrollTop = document.querySelectorAll('.page-content')[0].scrollTop
-        o.arr[len - 2].scrollTop = scrollTop
+        if(len > 1){
+          let scrollTop = document.querySelectorAll('.page-content')[0].scrollTop
+          o.arr[len - 2].scrollTop = scrollTop
+        }else{  // 有可能直接由其他页面的链接进入项目，那么其实路由列表不止一个，但是 window.historyObj.arr 对象却只有一个，这时候什么都不做
+        }
       }
 
       window.historyObj.preLen = window.historyObj.arr.length
