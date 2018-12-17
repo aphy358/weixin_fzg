@@ -39,12 +39,13 @@
 
 <style scoped lang="scss">
 	.hotel-info{
-		margin: 0.1rem 0.1rem;
-		/*margin: 0.5rem 0.1rem 0.1rem;*/
+		/*margin: 0.1rem 0.1rem;*/
+		margin: 0.5rem 0.1rem 0.1rem;
 		background-color: #fff;
 		padding: 0 0.2rem;
 		font-size: 0.14rem;
 		position: relative;
+		/*position: absolute;*/
 	}
 	
 	.hotel-info:before, .hotel-info:after{
@@ -71,7 +72,7 @@
 		line-height: 0.5rem;
 		color: #050505;
 		border-bottom: 0.01rem dashed #e3e3e3;
-		font-size: 14px;
+		font-size: 0.14rem;
 	}
 	
 	.additional-info p{

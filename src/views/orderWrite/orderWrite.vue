@@ -108,15 +108,19 @@
 			/*position: relative;*/
 		}
 		
-		/*.mint-header{*/
-			/*width: 100%;*/
-			/*height: 0.4rem;*/
-			/*line-height: 0.4rem;*/
-			/*position: fixed;*/
-			/*left: 0;*/
-			/*top: 0;*/
-			/*z-index: 99;*/
-		/*}*/
+		.mint-header{
+			width: 100%;
+			height: 0.4rem;
+			line-height: 0.4rem;
+			position: fixed;
+			left: 0;
+			top: 0;
+			z-index: 99;
+		}
+		
+		.page-content{
+			position: static;
+		}
 	}
 	
 	

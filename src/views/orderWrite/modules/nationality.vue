@@ -69,6 +69,7 @@
 		width: 100%;
 		/*height: 100%;*/
 		position: relative;
+		/*position: absolute;*/
 		/*padding-top: 0.4rem;*/
 		
 		.nationality-title{
@@ -79,10 +80,10 @@
 			background-color: #ff7625;
 			text-align: center;
 			font-size: 0.14rem;
-			/*position: fixed;*/
-			/*left: 0;*/
-			/*top: 0;*/
-			/*z-index: 10000;*/
+			position: fixed;
+			left: 0;
+			top: 0;
+			z-index: 10000;
 		}
 		
 		.nav-back {
@@ -96,7 +97,8 @@
 			font-size: 0.23rem;
 			font-weight: bold;
 			color: white;
-			z-index: 1001;
+			/*z-index: 1001;*/
+			z-index: 10001;
 			transform: translate3d(0, 0, 0) scale(1);
 			cursor: pointer;
 		}
