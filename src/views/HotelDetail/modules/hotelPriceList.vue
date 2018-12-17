@@ -86,7 +86,10 @@ export default {
   created(){
   },
   activated(){
-    this.reQueryHotelPrice()
+    if(sessionStorage.getItem('queryHotelPrice')){
+      this.reQueryHotelPrice()
+      sessionStorage.removeItem('queryHotelPrice')
+    }
   },
   computed: {
     getCheckin(){

@@ -206,6 +206,7 @@ export default {
     // 跳转到酒店详情页（或分销页？）
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
+      sessionStorage.setItem('queryHotelPrice', true)
       gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: hotel.type})
     }
   }
