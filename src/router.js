@@ -25,6 +25,14 @@ let router = new Router({
       },
     },
     {
+      path: '/about',
+      name: 'about',
+      component: () => import('./views/About.vue'),
+      meta: {
+        wechatAuth: false
+      },
+    },
+    {
       path: '/citySelect',
       name: 'citySelect',
       component: () => import('./views/CitySelect/citySelect.vue'),

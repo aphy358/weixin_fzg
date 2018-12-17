@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div style="background: white;" class="">
     <Loading v-if="!loadedPrice" />
 
     <div class="hotel-price-wrap">
@@ -257,11 +257,14 @@ export default {
       @at-root .hotel-roomtype-name-head{
         position: relative;
         padding: 0 0.1rem;
+        overflow: hidden;
   
         .roomtype-name{
           font-size: 0.16rem;
+          height: 0.24rem;
           padding: 0.15rem 0;
           color: #576690;
+          width: 500%;
         }
   
         .roomtype-price-wrap{
@@ -269,9 +272,12 @@ export default {
           height: 0.3rem;
           line-height: 0.3rem;
           top: 0.12rem;
-          right: 0.1rem;
+          right: 0;
           font-size: 0.1rem;
           color: #999999;
+          background: white;
+          padding-right: 0.1rem;
+          box-shadow: 0 0 0.2rem 0.3rem white;
   
           .red{
             color: #E8010F;

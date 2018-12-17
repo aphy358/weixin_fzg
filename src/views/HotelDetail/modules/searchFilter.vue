@@ -20,7 +20,7 @@
           <span class="s-f-week">{{ week2 }}</span>
         </div>
       </div>
-      <div class="s-f-adult-wrap" @click="showAdultChildPopup">
+      <div class="s-f-adult-wrap" @click="showAdultChildPopup" v-if="getCityType == '1'">
         <div class="s-f-adult-label">每间入住</div>
         <div class="s-f-adult-text">{{ getAdultNum }}成人{{ getChildrenNum }}儿童</div>
       </div>
@@ -69,6 +69,9 @@ export default {
     getChildrenStr(){
       return this.$store.state.childrenStr
     },
+    getCityType(){
+      return this.$store.state.cityType
+    },
   },
   mounted(){},
   methods:{
@@ -115,6 +118,7 @@ export default {
 .hotelDetail-page{
   @at-root .search-filter-outer{
     padding: 0 0.1rem;
+    background: white;
 
     @at-root .s-f-inner{
       display: flex;
@@ -141,7 +145,7 @@ export default {
           @at-root .s-f-date{
             color: #576690;
             font-weight: bold;
-            margin: 0 0.05rem;
+            margin-right: 0.05rem;
           }
   
           @at-root .s-f-week{

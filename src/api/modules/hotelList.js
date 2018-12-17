@@ -1,4 +1,4 @@
-import http from './http'
+import http from '../http'
 
 
 // 查询某个城市下的所有行政区和商圈
