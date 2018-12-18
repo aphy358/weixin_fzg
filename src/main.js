@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import Mint from 'mint-ui'
 import api from "./api"
-import VeeValidate from 'vee-validate';
 import wx from 'weixin-js-sdk'
 
 import 'mint-ui/lib/style.css'
@@ -14,7 +13,6 @@ import '@/assets/resetMintUI.scss'
 
 Vue.use(Mint)
 Vue.use(api)
-Vue.use(VeeValidate, { validity: true });
 Vue.config.productionTip = false
 
 // 全局变量 historyObj，用于保存页面状态
