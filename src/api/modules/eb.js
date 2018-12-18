@@ -12,3 +12,7 @@ export const syncEBUnBind = (args, loading = true) => http.post("/vue/relieveSup
 
 // 获取供应商权限？
 export const syncSupplierInfo = (args, loading = false) => http.post("/vue/ebMenu/supplierInfoSearch.do", args, loading)
+
+
+// 查询订单列表
+export const syncSearchOrderList = (args, loading = false) => http.post("/vue/orderList/searchOrderList.do", args, loading)

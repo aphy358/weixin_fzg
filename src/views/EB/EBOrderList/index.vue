@@ -11,7 +11,7 @@
 
       <!-- 顶部搜索栏、筛选按钮、条件过滤按钮等 -->
 			<section class="eb-order-list-top">
-				<div class="olt-row" style="padding: 0.1rem;">
+				<div class="olt-row" style="padding: 0.1rem;background: rgb(239, 239, 244);">
 					<div class="olt-search-wrap">
 						<i class="iconfont icon-search0 searchIcon"></i>
             <span style="color: #D8D8DC;margin-left: 0.05rem;">请输入筛选条件</span>
@@ -35,6 +35,50 @@
 				</div>
 			</section>
 
+      <GAP />
+
+      <div class="eb-order-list-wrap" style="padding-bottom: 0.4rem;margin-top: 0.05rem;">
+        <ul 
+          class="eb-order-list"
+          v-infinite-scroll="queryEBOrderList"
+          infinite-scroll-disabled="infiniteLoad"
+          infinite-scroll-distance="10">
+
+          <li class="eb-order-list-item" v-for="(n, i) in ebOrderList" :key="i">
+            <div class="eoli-title">
+              <span v-html="getStatus(n.status)"></span>
+              <span v-html="getAttribute(n.attribute)"></span>
+            </div>
+            <div class="eoli-sub-title">
+              <div class="eoli-sub-title-row">
+                <label>订单号/入住人：</label>
+                <span>{{ n.orderCode + '/' + (n.userName || '').split(',')[0] }}</span>
+              </div>
+              <div class="eoli-sub-title-row">
+                <label>下单时间：</label>
+                <span>{{ n.createTime }}</span>
+              </div>
+              <div class="eoli-sub-title-row">
+                <label>已发渠道：</label>
+                <span class="blue">{{ (n.sendType || '无') }}</span>
+              </div>
+            </div>
+            <div class="eoli-main-content">
+              <p class="eoli-hname">{{ n.itemName }}</p>
+              <p class="eoli-room">{{ n.roomType + ' - ' + n.acount + '间' }}</p>
+              <p class="eoli-hname">{{ n.distrbName }}</p>
+              <div class="eoli-price-outer">
+                <span class="eoli-date">{{ n.beginDate + '至' + n.endDate + ' 共' + n.days + '晚' }}</span>
+                <span class="eoli-price-wrap">{{ n.currency + ':' }}<span class="eoli-price-num">{{ n.basePrice }}</span></span>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+
+        <END />
+      </div>
+
       
     </div>
   </div>
@@ -43,28 +87,65 @@
 <script>
 import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
+import GAP from '@/components/GAP.vue'
+import { _ebOrderList } from './ebOrderList.js'
+
+const orderStatus = [
+  {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
+  {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
+  {status: 'confirmed', icon: 'icon-yiqueren', name: '已确认'},
+  {status: 'refused', icon: 'icon-yijudan', name: '已拒单'},
+  {status: 'canceled', icon: 'icon-yiquxiao', name: '已取消'},
+  {status: 'apply-cancel', icon: 'icon-shenqingquxiao', name: '不可取消'},
+  {status: 'apply-cancel', icon: 'icon-shenqingquxiao', name: '申请取消'},
+]
 
 export default {
   name: 'EBOrderList',
   data(){
     return {
       activeStatus: '0',
-
+      ebOrderList: [],
     }
   },
   props: {},
   components: {
     GoBack,
-    END
+    END,
+    GAP
   },
   watch: {},
-  created(){},
+  created(){
+    this.ebOrderList = _ebOrderList
+  },
   computed: {},
   mounted(){},
   methods:{
+    // 切换显示的订单状态
     switchOrderStatus(status){
       this.activeStatus = status
     },
+    // 获取订单状态的显示，如 '待处理'、'申请取消' 等图标
+    getStatus(status){
+      var st = orderStatus[++status]
+      if(!st){
+        st = {status: 'canceled', icon: 'icon-yiquxiao', name: '未知状态'}
+      }
+      return '<span class="eoli-status-item ' + st.status + '"><i class="iconfont ' + st.icon + '"></i>' + st.name + '</span>';
+    },
+    // 获取订单属性，如 '新订'、'取消' 等字样
+    getAttribute(attribute){
+      var clazz =
+          ~attribute.indexOf('新订') ? 'new-book' :
+          ~attribute.indexOf('取消') ? 'cancel' :
+          ~attribute.indexOf('修改') ? 'erase' : '';
+
+      return '<span class="eoli-attr-flag ' + clazz + '">' + attribute + '</span>';
+    },
+    // 查询 eb 订单列表
+    queryEBOrderList(){
+
+    }
 
   }
 }
@@ -111,7 +192,7 @@ export default {
     line-height: 0.32rem;
     text-align: center;
     border-radius: 0.18rem;
-    background-color: #efefef;
+    background-color: white;
     overflow: hidden;
 }
 
@@ -150,15 +231,10 @@ export default {
 }
 
 
-.eb-order-list-wrap{
-    margin-top: 0.15rem;
-    margin-bottom: 0;
-}
-
 .eb-order-list-item{
     background: white;
     padding: 0 0.1rem;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.1rem;
     color: #666666;
     overflow: hidden;
 }
