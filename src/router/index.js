@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import axios from 'axios'
-import wechatPlugin from './plugins/vue-wechat-plugin'
-import Home from './views/Home/home.vue'
+import wechatPlugin from '@/plugins/vue-wechat-plugin'
+import Home from '@/views/Home/home.vue'
+import ebRouter from './ebRouter'
 
 let router = new Router({
   mode: 'history',
@@ -19,7 +20,7 @@ let router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import('./views/Login.vue'),
+      component: () => import('@/views/Login.vue'),
       meta: {
         wechatAuth: false
       },
@@ -27,7 +28,7 @@ let router = new Router({
     {
       path: '/about',
       name: 'about',
-      component: () => import('./views/About.vue'),
+      component: () => import('@/views/About.vue'),
       meta: {
         wechatAuth: false
       },
@@ -35,7 +36,7 @@ let router = new Router({
     {
       path: '/citySelect',
       name: 'citySelect',
-      component: () => import('./views/CitySelect/citySelect.vue'),
+      component: () => import('@/views/CitySelect/citySelect.vue'),
       meta: {
         wechatAuth: false
       },
@@ -43,7 +44,7 @@ let router = new Router({
     {
       path: '/hotelList',
       name: 'hotelList',
-      component: () => import('./views/HotelList/hotelList.vue'),
+      component: () => import('@/views/HotelList/hotelList.vue'),
       meta: {
         wechatAuth: false
       },
@@ -51,7 +52,7 @@ let router = new Router({
     {
       path: '/hotelDetail',
       name: 'hotelDetail',
-      component: () => import('./views/HotelDetail/hotelDetail.vue'),
+      component: () => import('@/views/HotelDetail/hotelDetail.vue'),
       meta: {
         wechatAuth: false
       },
@@ -59,7 +60,7 @@ let router = new Router({
     {
       path: '/checkinCheckout',
       name: 'checkinCheckout',
-      component: () => import('./views/CheckinCheckout/CheckinCheckout.vue'),
+      component: () => import('@/views/CheckinCheckout/CheckinCheckout.vue'),
       meta: {
         wechatAuth: false
       },
@@ -67,12 +68,12 @@ let router = new Router({
     {
       path: '/orderWrite',
       name: 'orderWrite',
-      component: () => import('./views/orderWrite/orderWrite.vue'),
+      component: () => import('@/views/orderWrite/orderWrite.vue'),
       meta: {
         wechatAuth: false
       },
     }
-  ],
+  ].concat(ebRouter),
   // scrollBehavior (to, from, savedPosition) {
   //   if (savedPosition) {
   //     return savedPosition
