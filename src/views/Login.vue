@@ -13,7 +13,7 @@
               <span class="iconfont icon-baofang"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="公司编号" id="loginCompanyCode" name="loginCompanyCode">
+              <input type="text" placeholder="公司编号" v-validate={required:true} v-model="companyCode" name="公司编号" :class="{'error': errors.has('公司编号')}" />
             </div>
           </div>
           
@@ -22,7 +22,7 @@
               <span class="iconfont icon-user"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="用户名" id="loginUserName" name="loginUserName">
+              <input type="text" placeholder="用户名" e="'required'" v-model="userName" name="用户名" :class="{'error': errors.has('用户名')}" />
             </div>
           </div>
           
@@ -31,7 +31,7 @@
               <span class="iconfont icon-key"></span>
             </div>
             <div class="login-item">
-              <input type="password" placeholder="密码" id="loginPW" name="loginPW">
+              <input type="password" placeholder="密码" v-validate="'required'" v-model="passWord" name="密码" :class="{'error': errors.has('密码')}" />
             </div>
           </div>
         </form>
@@ -39,11 +39,11 @@
 
       <div class="login-bline">
         <div class="login-registry">快速注册</div>
-        <div class="login-forget">忘记密码？</div>
+        <!-- <div class="login-forget">忘记密码？</div> -->
       </div>
 
       <div class="login-btn-wrap">
-        <button class="login-login">登录</button>
+        <button class="login-login" @click="login">登录</button>
       </div>
 
     </div>
@@ -52,12 +52,19 @@
 
 <script>
 import logo from '@/assets/img/fzglogo.jpg'
+import { Toast } from 'mint-ui';
+import Vue from 'vue'
+import VeeValidate from 'vee-validate'
+Vue.use(VeeValidate)
 
 export default {
   name: 'Login',
   data(){
     return {
-      logo: ''
+      logo: '',
+      companyCode: '',
+      userName: '',
+      passWord: '',
     }
   },
   props: {
@@ -66,12 +73,42 @@ export default {
   },
   created(){
     this.logo = logo
+    this.configValidation()
   },
   computed: {
   },
   mounted(){
   },
   methods:{
+    // 点击 '登录'
+    login(){
+      let _this = this
+      this.$validator.validateAll().then(res => {
+        if(!res){
+          Toast({
+            message: _this.errors.all()[0],
+            duration: 1000
+          });
+
+          setTimeout(() => {
+            _this.$validator.reset()
+          }, 1000)
+        }
+      })
+    },
+    // 配置验证信息
+    configValidation(){
+      //错误提示
+      const dictionary = {
+        en: {
+          messages: {
+            required: field => '请输入' + field,
+          }
+        },
+      };
+
+      this.$validator.localize(dictionary);
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@
               <span class="iconfont icon-baofang"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="供应商编号" v-validate={required:true} v-model="supplierCode" name="供应商编号" />
+              <input type="text" placeholder="供应商编号" v-validate={required:true} v-model="supplierCode" name="供应商编号" :class="{'error': errors.has('供应商编号')}" />
             </div>
           </div>
           
@@ -23,7 +23,7 @@
               <span class="iconfont icon-user"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="用户名" v-validate="'required'" v-model="userName" name="用户名" />
+              <input type="text" placeholder="用户名" v-validate="'required'" v-model="userName" name="用户名" :class="{'error': errors.has('用户名')}" />
             </div>
           </div>
           
@@ -32,7 +32,7 @@
               <span class="iconfont icon-key"></span>
             </div>
             <div class="login-item">
-              <input type="password" placeholder="密码" v-validate="'required'" v-model="passWord" name="密码" />>
+              <input type="password" placeholder="密码" v-validate="'required'" v-model="passWord" name="密码" :class="{'error': errors.has('密码')}" />
             </div>
           </div>
         </form>
@@ -53,6 +53,7 @@
 
 <script>
 import logo from '@/assets/img/fzglogo.jpg'
+import { Toast } from 'mint-ui';
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
@@ -88,7 +89,16 @@ export default {
     ebLogin(){
       let _this = this
       this.$validator.validateAll().then(res => {
-        console.log(_this.errors.all());
+        if(!res){
+          Toast({
+            message: _this.errors.all()[0],
+            duration: 1000
+          });
+
+          setTimeout(() => {
+            _this.$validator.reset()
+          }, 1000)
+        }
       })
     },
     // 配置验证信息
@@ -170,6 +180,10 @@ export default {
           padding: 0 0.05rem;
           line-height: 0.2rem;
           height: 0.4rem;
+
+          &.error{
+            // background: rgba(249, 36, 36, 0.5);
+          }
         }
       }
     }
