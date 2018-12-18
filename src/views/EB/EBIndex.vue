@@ -10,7 +10,7 @@
 
       <ul class="eb-index-menu-list">
 
-        <li class="eb-index-menu-item">
+        <li class="eb-index-menu-item" @click="gotoEBOrderList">
           <div class="img-wrap">
             <img src="http://image.jladmin.cn/real_1525936333292.png" />
           </div>
@@ -115,6 +115,10 @@ export default {
           Toast(res.returnMsg)
         }
       })
+    },
+    // 跳转到 eb 订单列表页
+    gotoEBOrderList(){
+      gotoPage(this.$router, 'eborderlist')
     }
   }
 }

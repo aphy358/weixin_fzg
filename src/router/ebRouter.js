@@ -1,5 +1,4 @@
-export default [
-	{
+export default [{
 		path: '/eblogin',
 		name: 'eblogin',
 		component: () => import('@/views/EB/EBLogin.vue'),
@@ -11,6 +10,14 @@ export default [
 		path: '/ebindex',
 		name: 'ebindex',
 		component: () => import('@/views/EB/EBIndex.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
+	{
+		path: '/eborderlist',
+		name: 'eborderlist',
+		component: () => import('@/views/EB/EBOrderList/index.vue'),
 		meta: {
 			wechatAuth: false
 		},
