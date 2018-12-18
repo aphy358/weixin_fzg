@@ -54,6 +54,7 @@
 <script>
 import logo from '@/assets/img/fzglogo.jpg'
 import { Toast } from 'mint-ui';
+import { gotoPage, replacePage } from '@/assets/util'
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
@@ -98,6 +99,23 @@ export default {
           setTimeout(() => {
             _this.$validator.reset()
           }, 1000)
+        }else{
+          // 通过验证，继续登录
+          let param = {
+            from: 'wx',
+            distrbCode: this.supplierCode,
+            name: this.userName,
+            password: this.passWord,
+          }
+
+          this.$api.eb.syncEBLogin(param).then(res => {
+            if(res.returnCode === 1){
+              // TO DO 跳转到微信 eb 首页
+              replacePage(this.$router, 'ebindex')
+            }else{
+              Toast(res.returnMsg)
+            }
+          })
         }
       })
     },

@@ -6,5 +6,13 @@ export default [
 		meta: {
 			wechatAuth: false
 		},
-	}, 
+	},
+	{
+		path: '/ebindex',
+		name: 'ebindex',
+		component: () => import('@/views/EB/EBIndex.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
 ]

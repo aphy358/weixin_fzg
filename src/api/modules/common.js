@@ -2,13 +2,13 @@ import http from '../http'
 
 
 
-// 登录
+// 初始化 JSSDK
 export const syncInitJSSDK = (args, loading = false) => http.post("/vue/wx/js/sign.do", args, loading)
 
 
 
 // 登录
-// export const syncLogin = (args, loading = true) => http.post("/user/loginShop.do", args, loading)
+export const syncLogin = (args, loading = false) => http.post("/vue/login.do", args, loading)
 
 
 

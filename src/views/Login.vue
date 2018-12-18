@@ -53,6 +53,7 @@
 <script>
 import logo from '@/assets/img/fzglogo.jpg'
 import { Toast } from 'mint-ui';
+import { gotoPage, replacePage } from '@/assets/util'
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
@@ -93,6 +94,22 @@ export default {
           setTimeout(() => {
             _this.$validator.reset()
           }, 1000)
+        }else{
+          // 通过验证，继续登录
+          let param = {
+            from: 'wx',
+            distrbCode: this.companyCode,
+            name: this.userName,
+            password: this.passWord,
+          }
+
+          this.$api.common.syncLogin(param).then(res => {
+            if(res.returnCode === 1){
+              // TO DO 跳转到微信  replacePage
+            }else{
+              Toast(res.returnMsg)
+            }
+          })
         }
       })
     },
