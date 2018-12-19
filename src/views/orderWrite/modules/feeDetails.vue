@@ -15,7 +15,7 @@
 				<span class="fr deep-orange">￥{{totalBreakfastPrice}}</span>
 			</div>
 			
-			<div class="per-part-detail" v-for="(item, index) in surchargeBref" :key="index">
+			<div class="per-part-detail" v-for="(item, index) in surchargeBref" :key="'_1detail' + index">
 				<span class="fl">{{item.date}}</span>
 				<span class="fl">{{item.name}}</span>
 				<span class="fl">{{item.num}}份</span>
@@ -27,7 +27,7 @@
 				<span class="fr deep-orange">￥{{totalBedPrice}}</span>
 			</div>
 			
-			<div class="per-part-detail" v-for="(item, index) in surchargeBed" :key="index">
+			<div class="per-part-detail" v-for="(item, index) in surchargeBed" :key="'_2detail' + index">
 				<span class="fl">{{item.date}}</span>
 				<span class="fl">{{item.name}}</span>
 				<span class="fl">{{item.num}}份</span>
@@ -39,7 +39,7 @@
 				<span class="fr deep-orange">￥{{totalNetworkPrice}}</span>
 			</div>
 			
-			<div class="per-part-detail" v-for="(item, index) in surchargeInternet" :key="index">
+			<div class="per-part-detail" v-for="(item, index) in surchargeInternet" :key="'_3detail' + index">
 				<span class="fl">{{item.date}}</span>
 				<span class="fl">{{item.name}}</span>
 				<span class="fl">{{item.num}}份</span>
