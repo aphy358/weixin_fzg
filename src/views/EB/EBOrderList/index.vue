@@ -12,18 +12,19 @@
       <!-- 顶部搜索栏、筛选按钮、条件过滤按钮等 -->
 			<section class="eb-order-list-top">
 				<div class="olt-row" style="padding: 0.1rem;background: rgb(239, 239, 244);">
-					<div class="olt-search-wrap">
+					<div class="olt-search-wrap" @click="showPopup">
 						<i class="iconfont icon-search0 searchIcon"></i>
             <span style="color: #D8D8DC;margin-left: 0.05rem;">请输入筛选条件</span>
 						<i class="iconfont icon-delete olt-icon-delete hidden"></i>
 					</div>
 
-					<div class="olt-filter-wrap">
+					<div class="olt-filter-wrap" @click="showPopup">
 						<i class="iconfont icon-filter"></i>
 						<span>筛选</span>
 					</div>
 				</div>
 
+        <!-- 切换显示的订单状态 -->
 				<div class="olt-row">
 					<div class="olt-status-wrap">
 						<div class="olt-status-item" :class="{'active': activeStatus == '0'}" @click="switchOrderStatus('0')">待处理(<span>0</span>)</div>
@@ -37,44 +38,14 @@
 
       <GAP />
 
-      <div class="eb-order-list-wrap" style="padding-bottom: 0.4rem;margin-top: 0.05rem;">
-        <ul 
-          class="eb-order-list"
-          v-infinite-scroll="queryEBOrderList"
-          infinite-scroll-disabled="infiniteLoad"
-          infinite-scroll-distance="10">
+      <div 
+        class="eb-order-list-wrap" 
+        style="padding-bottom: 0.4rem;margin-top: 0.05rem;"
+        v-infinite-scroll="queryEBOrderList"
+        infinite-scroll-disabled="infiniteLoad"
+        infinite-scroll-distance="10" >
 
-          <li class="eb-order-list-item" v-for="(n, i) in orderResults[activeStatus]" :key="i">
-            <div class="eoli-title">
-              <span v-html="getStatus(n.status)"></span>
-              <span v-html="getAttribute(n.attribute)"></span>
-            </div>
-            <div class="eoli-sub-title">
-              <div class="eoli-sub-title-row">
-                <label>订单号/入住人：</label>
-                <span>{{ n.orderCode + '/' + (n.userName || '').split(',')[0] }}</span>
-              </div>
-              <div class="eoli-sub-title-row">
-                <label>下单时间：</label>
-                <span>{{ n.createTime }}</span>
-              </div>
-              <div class="eoli-sub-title-row">
-                <label>已发渠道：</label>
-                <span class="blue">{{ (n.sendType || '无') }}</span>
-              </div>
-            </div>
-            <div class="eoli-main-content">
-              <p class="eoli-hname">{{ n.itemName }}</p>
-              <p class="eoli-room">{{ n.roomType + ' - ' + n.acount + '间' }}</p>
-              <p class="eoli-hname">{{ n.distrbName }}</p>
-              <div class="eoli-price-outer">
-                <span class="eoli-date">{{ n.beginDate + '至' + n.endDate + ' 共' + n.days + '晚' }}</span>
-                <span class="eoli-price-wrap">{{ n.currency + ':' }}<span class="eoli-price-num">{{ n.basePrice }}</span></span>
-              </div>
-            </div>
-          </li>
-
-        </ul>
+        <EbOrderItems :orderList="orderResults[activeStatus]" />
 
         <div v-if="infiniteLoad && orderResults[activeStatus].length < 1" style="text-align: center;color: red;margin: 0.2rem 0;">无相关订单</div>
 
@@ -82,11 +53,42 @@
 
       </div>
 
+
       <mt-popup
-        v-model="getAreaBizPopupVisible"
-        position="bottom">
-      
+        style="width: 2.6rem;border-radius: 0.03rem;overflow: hidden;"
+        v-model="filterPopupVisible" >
         
+        <div class="eol-pop-wrap">
+          <div class="eol-pop-title-wrap">
+            <span>筛选条件</span>
+            <i class="iconfont icon-delete2" style="position: absolute;right: 0;padding: 0 0.08rem;color: #ccc;" @click="hidePopup"></i>
+          </div>
+          <div class="eol-pop-row">
+            <input type="text" placeholder="酒店名称" class="eol-pop-hname" v-model="itemName_c" />
+          </div>
+          <div class="eol-pop-row">
+            <div class="eol-pop-row-subdiv">
+              <input type="text" class="eol-pop-date-fake eol-pop-checkin" placeholder="起始日期" readonly :value="beginDate_c" >
+              <input type="date" v-model="beginDate_c">
+            </div>
+            <span></span>
+            <div class="eol-pop-row-subdiv">
+              <input type="text" class="eol-pop-date-fake eol-pop-checkout" placeholder="终止日期" readonly :value="endDate_c" style="text-align: right;">
+              <input type="date" v-model="endDate_c">
+            </div>
+          </div>
+          <div class="eol-pop-row">
+            <input type="text" placeholder="订单号" class="eol-pop-ordercode" v-model="orderCode_c" />
+          </div>
+          <div class="eol-pop-row">
+            <input type="text" placeholder="入住人" class="eol-pop-name" v-model="userName_c" />
+          </div>
+
+          <div class="eol-pop-btn-wrap">
+            <button class="eol-pop-btn-reset" @click="resetFilter">重置</button>
+            <button class="eol-pop-btn-confirm" @click="confirmFilter">确定</button>
+          </div>
+        </div>
 
       </mt-popup>
 
@@ -100,46 +102,23 @@ import END from '@/components/END.vue'
 import GAP from '@/components/GAP.vue'
 import { _ebOrderList } from './ebOrderList.js'
 import { gotoPage, replacePage } from '@/assets/util'
+import EbOrderItems from './ebOrderItems'
 
-const orderStatus = [
-  {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
-  {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
-  {status: 'confirmed', icon: 'icon-yiqueren', name: '已确认'},
-  {status: 'refused', icon: 'icon-yijudan', name: '已拒单'},
-  {status: 'canceled', icon: 'icon-yiquxiao', name: '已取消'},
-  {status: 'apply-cancel', icon: 'icon-shenqingquxiao', name: '不可取消'},
-  {status: 'apply-cancel', icon: 'icon-shenqingquxiao', name: '申请取消'},
-]
 
 export default {
   name: 'EBOrderList',
   data(){
     return {
-      infiniteLoad: true,
+      filterPopupVisible: false,
+      infiniteLoad: false,
       orderResults: {'0':[], '1':[], '2':[], '3':[], 'a':[]},
       subParams: {
-        '0': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        '1': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        '2': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        '3': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        'a': {
-          currPage: 1,
-          pageCount: 1,
-        },
+        '0': { currPage: 1, pageCount: null, finished: false, },
+        '1': { currPage: 1, pageCount: null, finished: false, },
+        '2': { currPage: 1, pageCount: null, finished: false, },
+        '3': { currPage: 1, pageCount: null, finished: false, },
+        'a': { currPage: 1, pageCount: null, finished: false, },
       },
-
 
       // 订单列表查询条件
       activeStatus: '0',
@@ -148,13 +127,21 @@ export default {
       userName: null,
       beginDate: null,
       endDate: null,
+
+      // popup 临时数据
+      itemName_c: null,
+      orderCode_c: null,
+      userName_c: null,
+      beginDate_c: null,
+      endDate_c: null,
     }
   },
   props: {},
   components: {
     GoBack,
     END,
-    GAP
+    GAP,
+    EbOrderItems
   },
   watch: {},
   created(){
@@ -171,30 +158,23 @@ export default {
     // 切换显示的订单状态，同时记得更改 infiniteLoad 的状态
     switchOrderStatus(status){
       this.activeStatus = status
-    },
-    // 获取订单状态的显示，如 '待处理'、'申请取消' 等图标
-    getStatus(status){
-      var st = orderStatus[++status]
-      if(!st){
-        st = {status: 'canceled', icon: 'icon-yiquxiao', name: '未知状态'}
-      }
-      return '<span class="eoli-status-item ' + st.status + '"><i class="iconfont ' + st.icon + '"></i>' + st.name + '</span>';
-    },
-    // 获取订单属性，如 '新订'、'取消' 等字样
-    getAttribute(attribute){
-      var clazz =
-          ~attribute.indexOf('新订') ? 'new-book' :
-          ~attribute.indexOf('取消') ? 'cancel' :
-          ~attribute.indexOf('修改') ? 'erase' : '';
+      this.infiniteLoad = this.subParams[this.activeStatus].finished
 
-      return '<span class="eoli-attr-flag ' + clazz + '">' + attribute + '</span>';
+      if(this.subParams[this.activeStatus].pageCount == null){ // 如果某个订单状态下之前从未查过订单，则需要查询订单
+        this.queryEBOrderList()
+      }
     },
     // 查询 eb 订单列表
-    queryEBOrderList(){
+    queryEBOrderList(flag){
+
+      if(flag){ // 表示改变了搜索条件，要先清空之前的搜索数据
+        this.resetData()
+      }
+      
       let params = {
-        orderType: this.activeStatus,
+        orderType: this.activeStatus == 'a' ? null : this.activeStatus,
         itemName: this.itemName,
-        orderCode: this.itemName,
+        orderCode: this.orderCode,
         userName: this.userName,
         beginDate: this.beginDate,
         endDate: this.endDate,
@@ -220,27 +200,46 @@ export default {
       this.infiniteLoad = false
       this.orderResults = {'0':[], '1':[], '2':[], '3':[], 'a':[]}
       this.subParams = {
-        '0': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        '1': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        '2': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        '3': {
-          currPage: 1,
-          pageCount: 1,
-        },
-        'a': {
-          currPage: 1,
-          pageCount: 1,
-        },
+        '0': { currPage: 1, pageCount: null, finished: false, },
+        '1': { currPage: 1, pageCount: null, finished: false, },
+        '2': { currPage: 1, pageCount: null, finished: false, },
+        '3': { currPage: 1, pageCount: null, finished: false, },
+        'a': { currPage: 1, pageCount: null, finished: false, },
       }
+    },
+    // 隐藏条件过滤 popup
+    hidePopup(){
+      this.filterPopupVisible = false
+    },
+    // 显示条件过滤 popup
+    showPopup(){
+      this.itemName_c = this.itemName
+      this.orderCode_c = this.orderCode
+      this.userName_c = this.userName
+      this.beginDate_c = this.beginDate
+      this.endDate_c = this.endDate
+
+      this.filterPopupVisible = true
+    },
+    // popup 点击 '重置'
+    resetFilter(){
+      this.itemName_c = null
+      this.orderCode_c = null
+      this.userName_c = null
+      this.beginDate_c = null
+      this.endDate_c = null
+    },
+    // popup 点击 '确定'
+    confirmFilter(){
+      this.itemName = this.itemName_c
+      this.orderCode = this.orderCode_c
+      this.userName = this.userName_c
+      this.beginDate = this.beginDate_c
+      this.endDate = this.endDate_c
+
+      this.queryEBOrderList(1)
+
+      this.hidePopup()
     }
 
   }
@@ -259,8 +258,7 @@ export default {
     line-height: 0.45rem;
 }   
 
-.olt-row,
-.eoli-title{
+.olt-row{
     position: relative;
     background: white;
     padding: 0 0.1rem;
@@ -327,157 +325,135 @@ export default {
 }
 
 
-.eb-order-list-item{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.eol-pop-wrap{
     background: white;
-    padding: 0 0.1rem;
-    margin-bottom: 0.1rem;
-    color: #666666;
-    overflow: hidden;
 }
 
-.eb-order-list-item:last-child{
-    margin-bottom: 0;
+.eol-pop-title-wrap{
+  text-align: center;
+  color: #ff7625;
+  position: relative;
+  line-height: 0.45rem;
+  font-size: 0.16rem;
+  border-bottom: 0.01rem solid;
 }
 
-.eoli-title{
-    height: 0.2rem;
-    padding: 0.1rem 0;
+.pop-single-line{
+	margin: 0.6rem 0 0.4rem;
 }
 
-.eoli-title img{
-    height: 0.2rem;
+.eol-pop-title{
+    font-size: 0.16rem;
+    height: 0.45rem;
+    line-height: 0.45rem;
+    text-align: center;
+    color: #ff7625;
+    border-bottom: 0.01rem solid #ff7625;
+    margin-bottom: 0.2rem;
 }
 
-.eoli-attr-flag{
-    float: right;
-    border: 0.01rem solid;
-    font-size: 0.12rem;
-    padding: 0 0.1rem;
-    border-radius: 0.1rem;
-    height: 0.18rem;
-    line-height: 0.18rem;
-}
-
-.eoli-title span.new-book{
-    color: #FBBD85;
-    border-color: #FBBD85;
-}
-
-.eoli-title span.cancel{
-    color: #aaa;
-    border-color: #aaa;  
-}
-
-.eoli-title span.erase{
-    color: #79C6FB;
-    border-color: #79C6FB;
-}
-
-
-.eoli-sub-title{
-    position: relative;
-    padding: 0.1rem 0 0;
-}
-
-.eoli-sub-title::after{
+.modalCloseBtn{
     position: absolute;
-    bottom: -0.08rem;
-    left: 0;
-    transform-origin: 50% 100%;
-    content: '';
-    width: 100%;
-    height: 0.01rem;
-    display: block;
-    border-bottom: 0.01rem dashed rgba(200, 199, 204, 0.65);
-    transform: scaleY(.5);
+    width: 0.45rem;
+    height: 0.45rem;
+    background: none;
+    border-radius: 0;
+    line-height: 0.45rem;
+    color: gray;
+    right: 0;
 }
 
-.eoli-sub-title-row{
-    margin-bottom: 0.02rem;
+.modalCloseBtn .iconfont.icon-delete2{
+    color: #ccc;
 }
 
-.eoli-sub-title-row label{
-    float: left;
-    color: #999;
-}
-
-.eoli-sub-title-row .blue{
-    color: #4848F3;
-}
-
-.eoli-main-content{
-    margin-top: 0.16rem;
-}
-
-.eoli-hname{
-    color: #333333;
-    margin: 0;
-    // font-size: 0.13rem;
-}
-
-.eoli-room{
-    margin: 0.02rem 0;
-}
-
-.eoli-price-outer{
+.eol-pop-row{
+    line-height: 0.4rem;
     overflow: hidden;
-    margin: 0.05rem 0 0.1rem;
-    height: 0.25rem;
-    line-height: 0.25rem;
+    margin: 0.15rem 0.2rem;
+    border: 0.01rem solid #eee;
 }
 
-.eoli-date{
-    font-size: 0.12rem;
+.eol-pop-row > input{
     float: left;
-    color: #999;
-}
-
-.eoli-price-wrap{
-    font-size: 0.12rem;
-    float: right;
-    color: rgb(241, 88, 152);
-}
-
-.eoli-price-num{
-    font-size: 0.18rem;
-}
-
-
-.eoli-status-item{
-    float: left;
-    font-size: 0.12rem;
-    color: white;
     padding: 0 0.1rem;
-    border-radius: 0.1rem;
-    height: 0.2rem;
-    line-height: 0.2rem;
-}
-
-.eoli-status-item i{
-    float: left;
-    margin-right: 0.03rem;
+    width: calc(100% - 0.2rem);
+    height: 0.4rem;
+    line-height: 0.16rem;
+    border: none;
     font-size: 0.14rem;
 }
 
-
-.eoli-status-item.to-be-confirm{
-    background: linear-gradient(to bottom, #6CB7FF , #8B9CF8);
+.eol-pop-row-subdiv{
+	position: relative;
+    float: left;
+    height: 0.4rem;
+    width: calc(50% - 0.05rem);
+    overflow: hidden;
 }
 
-.eoli-status-item.canceled{
-    background: linear-gradient(to bottom, #CBCBCB , #9B9B9B);
+.eol-pop-row-subdiv input{
+    float: left;
+    padding: 0 0.1rem;
+    width: calc(100% - 0.2rem);
+    background: white;
+    height: 0.4rem;
+    line-height: 0.16rem;
+    border: none;
+    font-size: 0.14rem;
 }
 
-.eoli-status-item.confirmed{
-    background: linear-gradient(to bottom, #75E59C , #51C4D7);
+.eol-pop-row-subdiv input[type='date']{
+    margin-top: -40px;
+    color: transparent;
+    background: transparent;
 }
 
-.eoli-status-item.apply-cancel{
-    background: linear-gradient(to bottom, #FBDEA6 , #FFAD43);
+.eol-pop-row-subdiv+span{
+    float: left;
+    width: 0.1rem;
+    height: 0.01rem;
+    background: #eee;
+    margin-top: 0.19rem;
 }
 
-.eoli-status-item.refused{
-    background: linear-gradient(to bottom, #F7A3BD , #F2818C);
+.eol-pop-btn-wrap{
+    margin: 0.2rem 0 0.15rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.eol-pop-btn-wrap button{
+    width: 0.8rem;
+    border: none;
+    height: 0.35rem;
+    border-radius: 0.05rem;
+    color: #666;
+    font-size: 0.16rem;
+    background: #E0E0E0;
+}
+
+.eol-pop-btn-cancel{
+
+}
+
+button.eol-pop-btn-confirm{
+    color: white;
+    background: #ff7625;
 }
 
 </style>
