@@ -3,8 +3,8 @@
 	<div class="page order-write-box-page">
 		
 		<!-- 头部 -->
-		<mt-header title="订单填写"></mt-header>
-		<GoBack _style="top: 0.02rem" />
+		<!--<mt-header title="订单填写"></mt-header>-->
+		<!--<GoBack _style="top: 0.02rem" />-->
 		
 		<div class="page-content">
 			<!--<div class="order-write-title-box">-->
@@ -22,8 +22,8 @@
 			<!--</div>-->
 			
 			
-			<!--<mt-header title="订单填写"></mt-header>-->
-			<!--<GoBack _style="top: 0.02rem" />-->
+			<mt-header title="订单填写"></mt-header>
+			<GoBack _style="top: 0.02rem" />
 			
 			<hotelInfo/>
 			
@@ -36,7 +36,6 @@
 
 <script>
   import hotelInfo from './modules/hotelInfo.vue';
-//  import GAP from '@/components/GAP.vue';
   import writeInfo from './modules/writeInfo.vue';
   import GoBack from '@/components/GoBack.vue';
 	
@@ -137,6 +136,18 @@
 	
 	.orange{
 		color: #ff7625;
+	}
+	
+	.deep-orange{
+		color: #ff4400;
+	}
+	
+	.green{
+		color: #0bc16f;
+	}
+	
+	.gray{
+		color: #747477;
 	}
 	
 	.mint-checklist{
