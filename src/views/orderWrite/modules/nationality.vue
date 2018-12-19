@@ -7,7 +7,7 @@
 		<div class="nationality-title">选择国籍</div>
 		
 		<mt-search v-model="countryValue" @input="searchCountry">
-			<mt-cell v-for="(item, index) in nationalityList" :key="index" :title="item.title" :id="item.id" @click.native="selectNationality(item.id, item.title)">
+			<mt-cell v-for="(item, index) in nationalityList" :key="'_country' + index" :title="item.title" :id="item.id" @click.native="selectNationality(item.id, item.title)">
 			</mt-cell>
 		</mt-search>
 	</div>

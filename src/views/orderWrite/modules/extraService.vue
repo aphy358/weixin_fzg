@@ -10,12 +10,12 @@
 			<div class="condition-box">
 				<label>
 					<select class="per-service-date" v-model="dateValue1" @change="changeDate(0)">
-						<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
+						<option v-for="(item, index) in dateList" :key="'_1date' + index" :value="item">{{item}}</option>
 					</select>
 				</label>
 				<label>
 					<select v-model="breakfastType">
-						<option v-for="(item, index) in breakfastTypeList" :key="index" :value="item.type" :price="item.price">{{item.name}}</option>
+						<option v-for="(item, index) in breakfastTypeList" :key="'_1type' + index" :value="item.type" :price="item.price">{{item.name}}</option>
 					</select>
 				</label>
 				<input class="add-num" type="number" v-model="breakfastNum" placeholder="份数">
@@ -23,7 +23,7 @@
 			</div>
 			
 			<ul class="add-service-list">
-				<li v-for="(item, index) in addBreakfastList" :key="index">
+				<li v-for="(item, index) in addBreakfastList" :key="'_1add' + index">
 					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(0, index)"></i>
 				</li>
 			</ul>
@@ -37,12 +37,12 @@
 			<div class="condition-box">
 				<label>
 					<select class="per-service-date" v-model="dateValue2" @change="changeDate(1)">
-						<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
+						<option v-for="(item, index) in dateList" :key="'_2date' + index" :value="item">{{item}}</option>
 					</select>
 				</label>
 				<label>
 					<select v-model="bedType">
-						<option v-for="(item, index) in bedTypeList" :key="index" :value="item.type" :price="item.price">{{item.name}}</option>
+						<option v-for="(item, index) in bedTypeList" :key="'_2type' + index" :value="item.type" :price="item.price">{{item.name}}</option>
 					</select>
 				</label>
 				<input class="add-num" type="number" v-model="bedNum" placeholder="份数">
@@ -50,7 +50,7 @@
 			</div>
 			
 			<ul class="add-service-list">
-				<li v-for="(item, index) in addBedList" :key="index">
+				<li v-for="(item, index) in addBedList" :key="'_2add' + index">
 					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(1, index)"></i>
 				</li>
 			</ul>
@@ -63,7 +63,7 @@
 			<div class="condition-box">
 				<label>
 					<select class="per-service-date" v-model="dateValue3" @change="changeDate(2)">
-						<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
+						<option v-for="(item, index) in dateList" :key="'_3date' + index" :value="item">{{item}}</option>
 					</select>
 				</label>
 				<input class="add-num" type="number" v-model="networkNum" placeholder="份数">
@@ -71,8 +71,8 @@
 			</div>
 			
 			<ul class="add-service-list">
-				<li v-for="(item, index) in addNetworkList" :key="index">
-					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2"></i>
+				<li v-for="(item, index) in addNetworkList" :key="'_3add' + index">
+					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(2, index)"></i>
 				</li>
 			</ul>
 		</div>
@@ -103,10 +103,10 @@
         bedType: '',
         networkPrice: 40,
         extrafeeParams: {
-//          startDate: this.$store.state.checkin,
-          startDate: '2018-12-18',
-//          endDate: this.$store.state.checkout,
-          endDate: '2018-12-20',
+          startDate: this.$store.state.checkin,
+//          startDate: '2018-12-18',
+          endDate: this.$store.state.checkout,
+//          endDate: '2018-12-20',
           infoId: 171840,
           suppId: 40160,
           roomtypeId: 29,
@@ -407,6 +407,7 @@
 <style scoped lang="scss">
 	.extra-service{
 		background-color: #fff;
+		margin-bottom: 0.1rem;
 		
 		.extra-service-title{
 			height: 0.5rem;

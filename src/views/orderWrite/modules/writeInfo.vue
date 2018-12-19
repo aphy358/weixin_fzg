@@ -6,7 +6,7 @@
 				<span class="per-info-title">房间数</span>
 				<label class="per-info-txt">
 					<select name="roomNum" id="roomNum" style="width: 2rem;">
-						<option v-for="(item, index) in roomNumList" :key="index" :value="item">{{item}}</option>
+						<option v-for="(item, index) in roomNumList" :key="'_roomnum' + index" :value="item">{{item}}</option>
 					</select>
 				</label>
 			</div>
@@ -30,19 +30,18 @@
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">结算方式</span>
-				<span class="per-info-txt" @click="openPayment">单结
-				</span>
-				<mt-popup class="popup-bottom" v-model="paymentVisible" position="bottom">
-					<button class="confirm" @click="confirmPayment">确定</button>
-					<mt-picker :slots="paymentSlots" @change="onValuesChange"></mt-picker>
-				</mt-popup>
+				<label class="per-info-txt">
+					<select name="payment" id="payment" style="width: 2rem;">
+						<option v-for="(item, index) in paymentList" :key="'_payment' + index" :value="item">{{item}}</option>
+					</select>
+				</label>
 			</div>
 		</div>
 		<div class="per-module name-module" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
 			<div class="per-line">
 				<span class="per-info-title green"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
-			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="item">
+			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="'_inname' + item">
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
 				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
 				<span class="username-input nationality" v-html="nameArr[item].n || '国籍'" @click.prevent.stop="selectNationality(item)"></span>
@@ -120,7 +119,6 @@
       return {
         roomNum: false,
         specialVisible: false,
-        paymentVisible: false,
         nameVisibleArr: [],
         nameRegArr: [],
         payVisible: true,
@@ -131,13 +129,7 @@
         tel: '',
         specialReq: [],
         specialReqList: ['立即到店', '原房续住', '安静房间', '吸烟楼层', '连通房间', '相同楼层', '尽量有窗', '尽量无烟楼层', '尽量相邻房间', '尽量高层楼房', '残疾设施房间', '尽量大床房', '尽量双床房'],
-        paymentSlots: [
-          {
-            flex: 1,
-            values: ['单结'],
-            className: 'slot1',
-          }
-        ],
+        paymentList: ['单结'],
         nameArr: [
           {l: '', f: '', n: ''},
           {l: '', f: '', n: ''},
@@ -252,7 +244,6 @@
           this.payVisible = false;
         }
       },
-      onValuesChange(){},
       openSpecial(){
         this.specialVisible = true;
       },
@@ -261,12 +252,6 @@
       },
       confirmSpecial() {
         this.specialVisible = false;
-      },
-      openPayment(){
-        this.paymentVisible = true;
-      },
-      confirmPayment(){
-      
       },
       nextVisible(index){
         let maxPersonNum = this.maxPersonNum;
