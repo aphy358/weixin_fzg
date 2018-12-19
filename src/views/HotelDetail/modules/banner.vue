@@ -21,7 +21,7 @@
           <i class="iconfont icon-weizhi" style="position: relative;top: 0.01rem;color: #bbb;font-size: 0.14rem;margin-right: 0.05rem;"></i>
           {{ curHotel.businessCircle }}
         </p>
-        <div class="mask-left-div">
+        <div class="mask-left-div" @click="showHotelMap">
           地图<i class="iconfont icon-right-thin"></i>
         </div>
       </div>
@@ -78,6 +78,9 @@ export default {
     },
     showHotelInfo(){
       this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: true})
+    },
+    showHotelMap(){
+      this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelMapPopupVisible', v: true})
     }
   }
 }

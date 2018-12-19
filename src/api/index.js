@@ -3,13 +3,15 @@ import * as hotelList from './modules/hotelList'
 import * as hotelDetail from './modules/hotelDetail'
 import * as citySelect from './modules/citySelect'
 import * as orderWrite from './modules/orderWrite'
+import * as eb from './modules/eb'
 
 const api = {
   common,
   hotelList,
   hotelDetail,
   citySelect,
-  orderWrite
+  orderWrite,
+  eb
 }
 
 // define install for vue.use()

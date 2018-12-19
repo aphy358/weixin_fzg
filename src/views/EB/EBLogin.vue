@@ -4,6 +4,7 @@
 
       <div class="logo-wrap">
         <img :src="logo" alt="jl_logo">
+        <p class="supplier-note">请使用捷旅供应商账号登录</p>
       </div>
       
       <div class="login-wrap">
@@ -13,7 +14,7 @@
               <span class="iconfont icon-baofang"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="公司编号" v-validate={required:true} v-model="companyCode" name="公司编号" :class="{'error': errors.has('公司编号')}" />
+              <input type="text" placeholder="供应商编号" v-validate={required:true} v-model="supplierCode" name="供应商编号" :class="{'error': errors.has('供应商编号')}" />
             </div>
           </div>
           
@@ -22,7 +23,7 @@
               <span class="iconfont icon-user"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="用户名" e="'required'" v-model="userName" name="用户名" :class="{'error': errors.has('用户名')}" />
+              <input type="text" placeholder="用户名" v-validate="'required'" v-model="userName" name="用户名" :class="{'error': errors.has('用户名')}" />
             </div>
           </div>
           
@@ -38,12 +39,12 @@
       </div>
 
       <div class="login-bline">
-        <div class="login-registry">快速注册</div>
+        <div class="login-registry" @click="applyForSupplier">供应商申请加入</div>
         <!-- <div class="login-forget">忘记密码？</div> -->
       </div>
 
       <div class="login-btn-wrap">
-        <button class="login-login" @click="login">登录</button>
+        <button class="login-login" @click="ebLogin">登录</button>
       </div>
 
     </div>
@@ -59,11 +60,11 @@ import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
 
 export default {
-  name: 'Login',
+  name: 'EBLogin',
   data(){
     return {
       logo: '',
-      companyCode: '',
+      supplierCode: '',
       userName: '',
       passWord: '',
     }
@@ -81,8 +82,12 @@ export default {
   mounted(){
   },
   methods:{
+    // 点击 '供应商申请加入'
+    applyForSupplier(){
+      window.location.href = 'tel://' + "0755-33397777";
+    },
     // 点击 '登录'
-    login(){
+    ebLogin(){
       let _this = this
       this.$validator.validateAll().then(res => {
         if(!res){
@@ -98,14 +103,15 @@ export default {
           // 通过验证，继续登录
           let param = {
             from: 'wx',
-            distrbCode: this.companyCode,
+            distrbCode: this.supplierCode,
             name: this.userName,
             password: this.passWord,
           }
 
-          this.$api.common.syncLogin(param).then(res => {
+          this.$api.eb.syncEBLogin(param).then(res => {
             if(res.returnCode === 1){
-              // TO DO 跳转到微信  replacePage
+              // TO DO 跳转到微信 eb 首页
+              replacePage(this.$router, 'ebindex')
             }else{
               Toast(res.returnMsg)
             }
@@ -140,6 +146,12 @@ export default {
       display: block;
       width: 1.2rem;
       margin: auto;
+    }
+
+    .supplier-note{
+      color: red;
+      margin: 0.2rem 0;
+      text-align: center;
     }
   }
 
@@ -186,6 +198,10 @@ export default {
           padding: 0 0.05rem;
           line-height: 0.2rem;
           height: 0.4rem;
+
+          &.error{
+            // background: rgba(249, 36, 36, 0.5);
+          }
         }
       }
     }

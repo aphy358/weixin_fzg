@@ -1,36 +1,19 @@
 <template>
   <mt-popup
-    v-model="getHotelInfoPopupVisible"
+    v-model="getHotelMapPopupVisible"
     position="right">
   
-    <div class="hotel-info-wrap">
+    <div class="hotel-info-wrap" :getCurHotel="getCurHotel">
       <!-- 头部 -->
-      <mt-header title="酒店信息"></mt-header>
+      <mt-header title="酒店地图"></mt-header>
 
       <!-- 返回 -->
       <GoBack _style="top: 0.02rem" :onClick="clickGoBack" />
 
       <div class="h-i-wrap" v-if="getCurHotel">
 
-        <div class="h-i-block-wrap line-after">
-          <p class="h-i-block-title">酒店简介</p>
-          <p class="h-i-block-content">{{ getCurHotel.infoDesc || '无' }}</p>
-        </div>
-
-        <div class="h-i-block-wrap line-after">
-          <p class="h-i-block-title">酒店设施</p>
-          <p class="h-i-block-content">{{ getCurHotel.facilities || '无' }}</p>
-        </div>
-
-        <div class="h-i-block-wrap line-after">
-          <p class="h-i-block-title">特别提示</p>
-          <p class="h-i-block-content">{{ getCurHotel.indicate || '无' }}</p>
-        </div>
-
-        <div class="h-i-block-wrap line-after">
-          <p class="h-i-block-title">联系方式</p>
-          <p class="h-i-block-content">{{ getCurHotel.bookingPhone || '无' }}</p>
-        </div>
+        
+      
 
       </div>
 
@@ -43,7 +26,7 @@
 import GoBack from '@/components/GoBack.vue'
 
 export default {
-  name: 'hotelInfoPopup',
+  name: 'hotelMapPopup',
   data(){
     return {
     }
@@ -56,17 +39,16 @@ export default {
     $route(to, from) {
       // 切换页面时隐藏 popup
       this.hidePopup()
-    },    
+    },
   },
-  created(){
-  },
+  created(){},
   computed: {
-    getHotelInfoPopupVisible: {
+    getHotelMapPopupVisible: {
       get: function () {
-        return this.$store.state.hotelDetail.hotelInfoPopupVisible
+        return this.$store.state.hotelDetail.hotelMapPopupVisible
       },
       set: function (newValue) {
-        this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: newValue})
+        this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelMapPopupVisible', v: newValue})
       }
     },
     getCurHotel(){
@@ -81,7 +63,7 @@ export default {
     },
     // 隐藏 popup
     hidePopup(){
-      this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: false})
+      this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelMapPopupVisible', v: false})
     }
   }
 }
@@ -89,7 +71,14 @@ export default {
 
 <style lang="scss">
 .hotel-info-wrap{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+  background: white;
+  box-sizing: border-box;
 
   .h-i-wrap{
     position: relative;

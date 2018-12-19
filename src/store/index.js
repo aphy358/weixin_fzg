@@ -27,6 +27,9 @@ export default new Vuex.Store({
     
     priceRange: '',
     checkedStar: '',
+
+    // 用于标记微信 jssdk 是否初始化成功
+    wx_ready: false,
   
     //订单填写页
     maxPersonNum: 3,
