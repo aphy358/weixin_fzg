@@ -6,6 +6,7 @@ import { addDays, _setCommonState } from "@/assets/util"
 import home from './modules/home'
 import hotelList from './modules/hotelList'
 import hotelDetail from './modules/hotelDetail'
+import orderWrite from './modules/orderWrite'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,7 @@ export default new Vuex.Store({
     childrenNum: '0',
     childrenStr: '',
     checkin: addDays(new Date),
-    checkout: addDays(new Date, 1),
+    checkout: addDays(new Date, 4),
     
     priceRange: '',
     checkedStar: '',
@@ -73,5 +74,6 @@ export default new Vuex.Store({
     home,
     hotelList,
     hotelDetail,
+    orderWrite,
   },
 })

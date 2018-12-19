@@ -6,60 +6,76 @@
 			<p class="per-service-title">加早信息</p>
 			<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
 		</div>
-		<div class="per-service-open clearfix" :style="'height:' + breakfastHeight">
-			<!--<span class="per-service-date" v-html="breakfastValue || '起止日期'" @click="showDate(0)"></span>-->
-			<label>
-				<select class="per-service-date" v-model="breakfastValue">
-					<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
-				</select>
-			</label>
-			<label>
-				<select v-model="breakfastType">
-					<option v-for="(item,index) in breakfastTypeList" :key="index" :value="item.type" :price="item.price">{{item.name}}</option>
-				</select>
-			</label>
-			<input class="add-num" type="number" v-model="breakfastNum" placeholder="份数">
-			<button class="add-service-icon" @click="addExtrafee(0)">添加</button>
+		<div class="per-service-open clearfix" :style="'height:' + breakfastHeight + 'rem;'">
+			<div class="condition-box">
+				<label>
+					<select class="per-service-date" v-model="dateValue1" @change="changeDate(0)">
+						<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
+					</select>
+				</label>
+				<label>
+					<select v-model="breakfastType">
+						<option v-for="(item, index) in breakfastTypeList" :key="index" :value="item.type" :price="item.price">{{item.name}}</option>
+					</select>
+				</label>
+				<input class="add-num" type="number" v-model="breakfastNum" placeholder="份数">
+				<button class="add-service-icon" @click="addExtrafee(0)">添加</button>
+			</div>
+			
+			<ul class="add-service-list">
+				<li v-for="(item, index) in addBreakfastList" :key="index">
+					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(0, index)"></i>
+				</li>
+			</ul>
 		</div>
 		<div class="per-service" @click="changeBed">
 			<p class="per-service-title">加床信息</p>
 			<p class="per-service-ins">儿童床<span class="orange">50/张</span>成人床<span class="orange">￥101/张</span></p>
 			<p class="green">该房型每间房最多加床2张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
 		</div>
-		<div class="per-service-open clearfix" :style="'height:' + bedHeight">
-			<!--<span class="per-service-date" v-html="bedValue || '起止日期'" @click="showDate(1)"></span>-->
-			<label>
-				<select class="per-service-date" v-model="bedValue">
-					<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
-				</select>
-			</label>
-			<label>
-				<select v-model="bedType">
-					<option v-for="(item,index) in bedTypeList" :key="index" :value="item.type" :price="item.price">{{item.name}}</option>
-				</select>
-			</label>
-			<input class="add-num" type="number" v-model="bedNum" placeholder="份数">
-			<button class="add-service-icon" @click="addExtrafee(1)">添加</button>
+		<div class="per-service-open clearfix" :style="'height:' + bedHeight + 'rem;'">
+			<div class="condition-box">
+				<label>
+					<select class="per-service-date" v-model="dateValue2" @change="changeDate(1)">
+						<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
+					</select>
+				</label>
+				<label>
+					<select v-model="bedType">
+						<option v-for="(item, index) in bedTypeList" :key="index" :value="item.type" :price="item.price">{{item.name}}</option>
+					</select>
+				</label>
+				<input class="add-num" type="number" v-model="bedNum" placeholder="份数">
+				<button class="add-service-icon" @click="addExtrafee(1)">添加</button>
+			</div>
+			
+			<ul class="add-service-list">
+				<li v-for="(item, index) in addBedList" :key="index">
+					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(1, index)"></i>
+				</li>
+			</ul>
 		</div>
 		<div class="per-service" @click="changeNetwork">
 			<p class="per-service-title">加宽带信息</p>
 			<p class="per-service-ins" style="padding-bottom: 0.1rem;"><span class="orange">￥{{networkPrice}}/间/日</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
 		</div>
-		<div class="per-service-open clearfix" :style="'height:' + netWorkHeight">
-			<!--<span class="per-service-date" v-html="networkValue || '起止日期'" @click="showDate(2)"></span>-->
-			<label>
-				<select class="per-service-date" v-model="networkValue">
-					<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
-				</select>
-			</label>
-			<input class="add-num" type="number" v-model="networkNum" placeholder="份数">
-			<button class="add-service-icon" @click="addExtrafee(2)">添加</button>
+		<div class="per-service-open clearfix" :style="'height:' + networkHeight + 'rem;'">
+			<div class="condition-box">
+				<label>
+					<select class="per-service-date" v-model="dateValue3" @change="changeDate(2)">
+						<option v-for="(item, index) in dateList" :key="index" :value="item">{{item}}</option>
+					</select>
+				</label>
+				<input class="add-num" type="number" v-model="networkNum" placeholder="份数">
+				<button class="add-service-icon" @click="addExtrafee(2)">添加</button>
+			</div>
+			
+			<ul class="add-service-list">
+				<li v-for="(item, index) in addNetworkList" :key="index">
+					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2"></i>
+				</li>
+			</ul>
 		</div>
-		
-		<!--<StartEndDatePopup v-show="dateVisible" :minDate="startDate" :maxDate="endDate" @goback="closeDate" @confirm="confirmDate"/>-->
-		
-		<!--<mt-datetime-picker v-model="dateVisible" type="date" year-format="{value}" month-format="{value}" date-format="{value}" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>-->
-		
 		
 	</div>
 </template>
@@ -67,6 +83,7 @@
 <script>
 	import StartEndDatePopup from '@/components/StartEndDatePopup';
 	import { addDays } from '@/assets/util';
+	import { Toast } from 'mint-ui';
 	
   export default {
     name: 'extraService',
@@ -75,21 +92,21 @@
       return {
         breakfastHeight: 0,
         bedHeight: 0,
-        netWorkHeight: 0,
-//        dateVisible: false,
+        networkHeight: 0,
         dateIndex: 0,//所有杂费都共用一个日期选择弹出层，使用一个外层变量来指示当前操作的是哪个杂费项的日期
         startDate: this.$store.state.checkin,
         endDate: this.$store.state.checkout,
-        breakfastValue: String(this.$store.state.checkin),
-        bedValue: this.$store.state.checkin,
-        networkValue: this.$store.state.checkin,
+        dateValue1: this.$store.state.checkin,
+        dateValue2: this.$store.state.checkin,
+        dateValue3: this.$store.state.checkin,
         breakfastType: '',
         bedType: '',
+        networkPrice: 40,
         extrafeeParams: {
 //          startDate: this.$store.state.checkin,
-          startDate: '2018-12-14',
+          startDate: '2018-12-18',
 //          endDate: this.$store.state.checkout,
-          endDate: '2018-12-17',
+          endDate: '2018-12-20',
           infoId: 171840,
           suppId: 40160,
           roomtypeId: 29,
@@ -101,6 +118,13 @@
         breakfastNum: 1,
         bedNum: 1,
         networkNum: 1,
+        breakfastTypeList: [],
+        bedTypeList: [],
+        networkPriceList: [],
+        addBreakfastList: [],
+        addBedList: [],
+        addNetworkList: [],
+        addBedNumObj: {}
       }
     },
     
@@ -123,172 +147,257 @@
         
         return arr;
       },
-      
-      breakfastTypeList(){
-        let params = this.extrafeeParams;
-        params.typeId = 1;
-        let obj = {};
-        this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
-          if(res.returnCode === 1 && res.data.length > 0){
-
-            for (let i = 0; i < res.data.length; i++) {
-              let outer = res.data[i];
-              let arr = [];
-              let key = '';
-              for (let j = 0; j < outer.length; j++) {
-                let inner = outer[j];
-                key = inner.date.split(' ')[0];
-                arr.push({
-                  name: inner.name,
-                  type: inner.type,
-                  price: inner.price
-                })
-              }
-              obj[key] = arr;
-            }
-            this.breakfastType = obj[this.breakfastValue][0].type;
-            Object.assign(this.breakfastPriceObj, obj);
-            return obj[this.breakfastValue];
-          }
-        });
-      },
-  
-      bedTypeList(){
-        let params = this.extrafeeParams;
-        params.typeId = 2;
-        let obj = {};
-        this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
-          if(res.returnCode === 1 && res.data.length > 0){
-      
-            for (let i = 0; i < res.data.length; i++) {
-              let outer = res.data[i];
-              let arr = [];
-              let key = '';
-              for (let j = 0; j < outer.length; j++) {
-                let inner = outer[j];
-                key = inner.date.split(' ')[0];
-                arr.push({
-                  name: inner.name,
-                  type: inner.type,
-                  price: inner.price
-                })
-              }
-              obj[key] = arr;
-            }
-  
-            this.bedType = obj[this.bedValue][0].name;
-            Object.assign(this.bedPriceObj, obj);
-            return obj[this.bedValue];
-          }
-        });
-      },
-  
-      networkPrice(){
-        let params = this.extrafeeParams;
-        params.typeId = 3;
-        let obj = {};
-        this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
-          if(res.returnCode === 1 && res.data.length > 0){
-      
-            for (let i = 0; i < res.data.length; i++) {
-              let outer = res.data[i];
-              let arr = [];
-              let key = '';
-              for (let j = 0; j < outer.length; j++) {
-                let inner = outer[j];
-                key = inner.date.split(' ')[0];
-                arr.push({
-                  name: inner.name,
-                  type: inner.type,
-                  price: inner.price
-                })
-              }
-              obj[key] = arr;
-            }
-  
-            Object.assign(this.networkPriceObj, obj);
-            return obj[this.networkValue][0].price;
-          }
-        });
-      }
     },
     
-    created(){},
+    created(){
+      let params = this.extrafeeParams;
+      let _this = this;
+      
+      //加早
+      params.typeId = 1;
+      let obj1 = {};
+      this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
+        if(res.returnCode === 1 && res.data.length > 0){
+      
+          for (let i = 0; i < res.data.length; i++) {
+            let outer = res.data[i];
+            let arr = [];
+            let key = '';
+            for (let j = 0; j < outer.length; j++) {
+              let inner = outer[j];
+              key = inner.date.split(' ')[0];
+              arr.push({
+                name: inner.name,
+                type: inner.type,
+                price: inner.price
+              })
+            }
+            obj1[key] = arr;
+          }
+          _this.breakfastType = obj1[_this.dateValue1][0].type;
+          Object.assign(_this.breakfastPriceObj, obj1);
+          Object.assign(_this.breakfastTypeList, obj1[_this.dateValue1]);
+        }
+      });
+      
+      //加床
+      params.typeId = 2;
+      let obj2 = {};
+      this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
+        if(res.returnCode === 1 && res.data.length > 0){
+      
+          for (let i = 0; i < res.data.length; i++) {
+            let outer = res.data[i];
+            let arr = [];
+            let key = '';
+            for (let j = 0; j < outer.length; j++) {
+              let inner = outer[j];
+              key = inner.date.split(' ')[0];
+              arr.push({
+                name: inner.name,
+                type: inner.type,
+                price: inner.price
+              })
+            }
+            obj2[key] = arr;
+          }
+          
+          _this.bedType = obj2[_this.dateValue2][0].type;
+          Object.assign(_this.bedPriceObj, obj2);
+          Object.assign(_this.bedTypeList, obj2[_this.dateValue2]);
+        }
+      });
+      
+      //加宽带
+      params.typeId = 3;
+      let obj3 = {};
+      this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
+        if(res.returnCode === 1 && res.data.length > 0){
+      
+          for (let i = 0; i < res.data.length; i++) {
+            let outer = res.data[i];
+            let arr = [];
+            let key = '';
+            for (let j = 0; j < outer.length; j++) {
+              let inner = outer[j];
+              key = inner.date.split(' ')[0];
+              arr.push({
+                name: '宽带',
+                type: inner.type,
+                price: inner.price
+              })
+            }
+            obj3[key] = arr;
+          }
+      
+          Object.assign(this.networkPriceObj, obj3);
+          Object.assign(this.networkPriceList, obj3[_this.dateValue3]);
+        }
+      });
+    },
     
     methods: {
       changeBreakfast(){
-        this.breakfastHeight = this.breakfastHeight === 0 ? '0.8rem' : 0;
+        this.breakfastHeight = this.breakfastHeight === 0 ? 0.8 + (0.4*this.addBreakfastList.length) : 0;
       },
       changeBed(){
-        this.bedHeight = this.bedHeight === 0 ? '0.8rem' : 0;
+        this.bedHeight = this.bedHeight === 0 ? 0.8 + (0.4*this.addBedList.length) : 0;
       },
       changeNetwork(){
-        this.netWorkHeight = this.netWorkHeight === 0 ? '0.8rem' : 0;
-      },
-      showDate(index){
-        this.dateVisible = true;
-        this.dateIndex = index;
-      },
-      closeDate(){
-        this.dateVisible = false;
-      },
-      confirmDate($event){
-        switch (this.dateIndex){
-          case 0:
-            //加早
-            this.breakfastValue = $event.startDate + '至' + $event.endDate;
-            break;
-          case 1:
-            //加早
-            this.bedValue = $event.startDate + '至' + $event.endDate;
-            break;
-          case 2:
-            //加早
-            this.networkValue = $event.startDate + '至' + $event.endDate;
-            break;
-        }
-        
-        let _this = this;
-        setTimeout(function () {
-          _this.dateVisible = false;
-        }, 300);
+        this.networkHeight = this.networkHeight === 0 ? 0.8 + (0.4*this.addNetworkList.length) : 0;
       },
       addExtrafee(type){
         //必填校验及格式校验
         switch (type){
           case 0:
             //加早
-            this.checkAddList(this.breakfastNum, '加早', function () {
-            
-            });
-	        
+            this.checkAddList(this.breakfastNum, '加早', 0);
 	        break;
           case 1:
             //加床
-            this.checkAddList(this.bedNum, '加早', function () {
-    
-            });
-            
+            this.checkAddList(this.bedNum, '加早', 1);
             break;
           case 2:
             //加床
-            this.checkAddList(this.networkNum, '加早', function () {
-    
-            });
-    
+            this.checkAddList(this.networkNum, '加宽带', 2);
+            break;
+            
+          default:
             break;
         }
       },
-      checkAddList(num, msg, fn){
+      checkAddList(num, msg, type){
         if (num){
-          if (typeof num === 'number' && isNaN(num) && num > 0){
+          if (/^[0-9]+$/.test(num)){
             //通过校验
-            fn && fn();
+            let list,selectType,addList,num,date,price,name,height,storeIndex;
+            if (type === 0){
+              list = this.breakfastTypeList; //类型列表，比如“儿童早、成人早”等
+              selectType = this.breakfastType; //要添加的杂费的类型，比如儿童早
+              addList = 'addBreakfastList'; //存放单种杂费下的所有已添加杂费，比如加早项下的所有已添加杂费
+              num = this.breakfastNum; //添加的份数
+              date = this.dateValue1; //添加的日期
+              height = 'breakfastHeight'; //对应杂费模块的盒子总高
+              storeIndex = 'surchargeBref'; //需要改变的store中的值
+            }else if (type === 1){
+              list = this.bedTypeList; //类型列表，比如“儿童床、成人床”等
+              selectType = this.bedType; //要添加的杂费的类型，比如儿童床
+              addList = 'addBedList'; //存放单种杂费下的所有已添加杂费，比如加床项下的所有已添加杂费
+              num = +this.bedNum; //添加的份数
+              date = this.dateValue2; //添加的日期
+              height = 'bedHeight'; //对应杂费模块的盒子总高
+              storeIndex = 'surchargeBed'; //需要改变的store中的值
+              
+              //判断是否已达最大加床数
+              let maxPersonNum = this.$store.state.maxPersonNum;
+              if (this.addBedNumObj[date] + num > maxPersonNum){
+                Toast(date + '最大加床数为' + maxPersonNum + '张');
+                return;
+              }else{
+                //存储每日已加的份数
+                this.$set(this.addBedNumObj, date, num + (this.addBedNumObj[date] || 0));
+              }
+              
+            }else if (type === 2){
+              list = this.networkPriceList;
+              addList = 'addNetworkList'; //存放单种杂费下的所有已添加杂费，比如加宽带项下的所有已添加杂费
+              selectType = '-1';
+              num = +this.networkNum; //添加的份数
+              date = this.dateValue3; //添加的日期
+              height = 'networkHeight'; //对应杂费模块的盒子总高
+              storeIndex = 'surchargeInternet'; //需要改变的store中的值
+            }
+            
+            for (let i = 0; i < list.length; i++) {
+              let item = list[i];
+              if (item.type === selectType){
+                price = item.price;
+                name = item.name;
+              }
+            }
+  
+            if (!name){
+              Toast(date + '没有可添加的' + msg + '类型');
+              return;
+            }
+            
+            this.$set(this[addList], this[addList].length, {
+              date: date,
+              num: num,
+              name: name,
+              price: price
+            });
+  
+            this[height] += 0.4;
+  
+            this.$store.commit('orderWrite/setCommonState', {
+              k : storeIndex,
+              v : this[addList]
+            });
           }else{
             Toast(msg + '份数必须为正整数');
           }
         }else{
-          Toast('请输入' + msg + '份数');
+          Toast('请输入' + msg + '份数(正整数)');
+        }
+      },
+      delExtrafee(type, index){
+        if (type === 0){
+          //加早
+          this.addBreakfastList.length === 1 ? this.addBreakfastList.length = 0 : this.addBreakfastList.splice(index, 1);
+          this.breakfastHeight -= 0.4;
+          this.$store.commit('orderWrite/setCommonState', {
+            k : 'surchargeBref',
+            v : this.addBreakfastList
+          });
+        }else if (type === 1){
+          //加床
+          let num = this.addBedList[index].num;
+          let date = this.addBedList[index].date;
+          this.addBedList.length === 1 ? this.addBedList.length = 0 : this.addBedList.splice(index, 1);
+          
+          //更改对应日期内的总加床数
+          this.$set(this.addBedNumObj, date, this.addBedNumObj[date] - num);
+          this.bedHeight -= 0.4;
+          this.$store.commit('orderWrite/setCommonState', {
+            k : 'surchargeBed',
+            v : this.addBedList
+          });
+        }else if (type === 2){
+          //加宽带
+          this.addNetworkList.length === 1 ? this.addNetworkList.length = 0 : this.addNetworkList.splice(index, 1);
+          this.networkHeight -= 0.4;
+          this.$store.commit('orderWrite/setCommonState', {
+            k : 'surchargeInternet',
+            v : this.addNetworkList
+          });
+        }
+        
+        return false;
+      },
+      changeDate(type){
+        switch (type){
+          case 0:
+            //加早
+            this.breakfastTypeList.length = 0;
+            let arr1 = this.breakfastPriceObj[this.dateValue1];
+            this.breakfastType = arr1 ? arr1[0].type : '';
+            Object.assign(this.breakfastTypeList, arr1);
+	        break;
+          case 1:
+            //加床
+            this.bedTypeList.length = 0;
+            let arr2 = this.bedPriceObj[this.dateValue2];
+            this.bedType = arr2 ? arr2[0].type : '';
+            Object.assign(this.bedTypeList, arr2);
+            break;
+          case 2:
+            //加宽带
+            this.networkPriceList.length = 0;
+            Object.assign(this.networkPriceList, this.networkPriceObj[this.dateValue3]);
+            break;
+          default:
+            break;
         }
       }
     }
@@ -353,43 +462,69 @@
 			overflow: hidden;
 			transition: all .5s;
 			
-			>input,select,>span{
-				width: 0.6rem;
-				height: 0.3rem;
-				line-height: 0.3rem;
-				margin: 0.2rem 0.1rem 0.3rem 0;
-				/*margin-right: 0.06rem;*/
-				padding-left: 0.05rem;
-				border: none;
-				border-radius: 0;
-				float: left;
-				background-color: #fff;
-				color: #555555;
+			@at-root .condition-box{
+				height: 0.6rem;
+				
+				>input,select,>span{
+					width: 0.6rem;
+					height: 0.3rem;
+					line-height: 0.3rem;
+					margin: 0.2rem 0.1rem 0 0;
+					/*margin-right: 0.06rem;*/
+					padding-left: 0.05rem;
+					border: none;
+					border-radius: 0;
+					float: left;
+					background-color: #fff;
+					color: #555555;
+				}
+				
+				.per-service-date{
+					width: 0.8rem;
+				}
+				
+				.add-num{
+					width: 0.4rem;
+				}
+				
+				.add-service-icon{
+					float: left;
+					vertical-align: middle;
+					width: 0.5rem;
+					height: 0.3rem;
+					line-height: 0.3rem;
+					background-color: #ff4400;
+					color: #ffffff;
+					border-radius: 0;
+					border: none;
+					margin-top: 0.2rem;
+				}
 			}
 			
-			.per-service-date{
-				width: 0.8rem;
-			}
 			
-			.add-num{
-				width: 0.4rem;
-			}
-			
-			.add-service-icon{
-				float: left;
-				vertical-align: middle;
-				width: 0.5rem;
-				height: 0.3rem;
-				line-height: 0.3rem;
-				background-color: #ff4400;
-				color: #ffffff;
-				border-radius: 0;
-				border: none;
-				margin-top: 0.2rem;
+			@at-root .add-service-list{
+				>li{
+					display: block;
+					width: 3rem;
+					height: 0.3rem;
+					line-height: 0.3rem;
+					padding-left: 0.05rem;
+					background: #ffffff;
+					border: 0.5px solid #eeeeee;
+					margin-bottom: 0.1rem;
+					
+					>span{
+						display: inline-block;
+						margin-right: 0.2rem;
+					}
+					
+					>.iconfont{
+						float: right;
+						margin-right: 0.1rem;
+					}
+				}
 			}
 		}
-		
-		
 		
 		.green{
 			color: #0bc16f;

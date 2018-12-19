@@ -46,13 +46,26 @@
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
 				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
 				<span class="username-input nationality" v-html="nameArr[item].n || '国籍'" @click.prevent.stop="selectNationality(item)"></span>
-				<!--<input class="username-input nationality" type="text" placeholder="国籍" v-model="nameArr[item].n" @click.prevent.stop="selectNationality(item)">-->
 				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon green" @click="nextVisible(item)"></i>
 				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon deep-orange" @click="hideName(item)"></i>
 			</div>
 		</div>
 		
 		<extraService/>
+		
+		<div class="per-module name-module" v-if="marketingVisible">
+			<div class="per-line">
+				<span class="per-info-title green"><i class="iconfont icon-gift"></i>小礼包</span>
+			</div>
+			<div class="per-line" style="margin: 0 0.3rem;">
+				<span>礼包信息：</span>
+			</div>
+			<div class="per-line" style="margin: 0 0.3rem;">
+				<span>手机号：</span>
+				<input name="tel" type="tel" v-model="marketingTel" v-validate="marketingVisible ? {required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/} : ''" placeholder="必填" style="width: 2.4rem">
+				<i v-show="marketingIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
+			</div>
+		</div>
 		
 		<div class="rules">
 			<h6 class="rule-title">取消条款</h6>
@@ -71,15 +84,18 @@
 			<span class="fl orange">订单总额：￥</span>
 			<span class="fl orange total-money">843.15</span>
 			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
+			<span class="fr gray" style="margin-right: 0.2rem;font-size: 0.12rem" @click="showFeeDetails">明细</span>
 		</div>
+		<mt-popup v-model="feeDetailsVisible" position="bottom">
+			<feeDetails @hideFeeDetails="hideFeeDetails"/>
+		</mt-popup>
 		
 		<mt-popup v-model="confirmVisible" popup-transition="popup-fade">
 			<confirmInfo @close="closeConfirmMask"/>
 		</mt-popup>
 		
-		
 		<mt-popup class="nationality-popup" v-model="nationalityVisible" position="right" catchtouchmove="true">
-			<nationality  @hideNationality="hideNationality" @selectNationality="getNationality"/>
+			<nationality @hideNationality="hideNationality" @selectNationality="getNationality"/>
 		</mt-popup>
 		
 	</div>
@@ -90,6 +106,7 @@
   import confirmInfo from '../modules/confirmInfo.vue';
   import nationality from '../modules/nationality.vue';
   import extraService from '../modules/extraService.vue';
+  import feeDetails from '../modules/feeDetails.vue';
   import { MessageBox } from 'mint-ui';
   
   export default {
@@ -105,6 +122,7 @@
         nameRegArr: [],
         payVisible: true,
         telIconVisible: false,
+        marketingIconVisible: false,
         emailIconVisible: false,
         email: '',
         tel: '',
@@ -125,18 +143,9 @@
           }
         ],
         nameArr: [
-          {
-            l: '',
-            f: ''
-          },
-          {
-            l: '',
-            f: ''
-          },
-          {
-            l: '',
-            f: ''
-          },
+          {l: '', f: '', n: ''},
+          {l: '', f: '', n: ''},
+          {l: '', f: '', n: ''},
         ],
         nameRank: [],
         country: 70007,
@@ -144,6 +153,9 @@
         nationalityVisible: false,
         nameModuleHeight: 1,
         nationalityIndex: 0, //由于所有国籍输入框共用一个国籍选择弹出框，而函数内部传参在此处不可行，所以使用一个变量指示每次选择国籍的index，以便赋值到对应地方
+        feeDetailsVisible: false,
+        marketingVisible: true,
+        marketingTel: ''
       }
     },
     
@@ -153,7 +165,8 @@
       OperationBtn,
       confirmInfo,
       nationality,
-      extraService
+      extraService,
+      feeDetails
     },
     
     computed: {
@@ -289,20 +302,21 @@
         this.$validator.validateAll().then((result) => {
           this.telIconVisible = true;
           this.emailIconVisible = true;
+          this.marketingIconVisible = true;
           if (result) {
             //弹出确认框
-            let params = {
-              hotelName: '深圳海燕大酒店',
-              roomType: '豪华双床房[双床]',
-              date: '2018-12-09/2018-12-10',
-              roomNum: 1,
-              name: '测试',
-              confirmWay: '手机号：13537820062',
-              payWay: '单结',
-              specialReq: '',
-              cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
-              totalPay: 'RMB417.90元',
-            };
+//            let params = {
+//              hotelName: '深圳海燕大酒店',
+//              roomType: '豪华双床房[双床]',
+//              date: '2018-12-09/2018-12-10',
+//              roomNum: 1,
+//              name: '测试',
+//              confirmWay: '手机号：13537820062',
+//              payWay: '单结',
+//              specialReq: '',
+//              cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
+//              totalPay: 'RMB417.90元',
+//            };
             
             this.confirmVisible = true;
           }else{
@@ -312,11 +326,13 @@
               MessageBox('提示', '请输入邮箱');
             }else{
               //判断入住人
+              let flag = true;
               for (let i = 0; i < 3; i++) {
                 if (i === 0 || i%3 === 0){
                   //主入住人
                   if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
                     MessageBox('提示', '主入住人的姓、名和国籍均为必填');
+                    flag = false;
                     break;
                   }
                 }else{
@@ -325,14 +341,19 @@
                     if (this.nameArr[i].l || this.nameArr[i].f || this.nameArr[i].n){
                       if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
                         MessageBox('提示', '附加入住人填了姓、名或国籍其中一个，则另一个也必填');
+                        flag = false;
                         break;
                       }
                     }
                   }
                 }
               }
-    
-              MessageBox('提示', this.errors.first('tel') || this.errors.first('email') || this.errors.first('lastName') || this.errors.first('firstName'));
+  
+              if (this.marketingVisible && !this.marketingTel){
+                MessageBox('提示', '小礼包中的手机号为必填');
+                return;
+              }
+              if (flag){MessageBox('提示', this.errors.first('tel') || this.errors.first('email') || this.errors.first('lastName') || this.errors.first('firstName'));}
             }
           }
   
@@ -345,6 +366,8 @@
       selectNationality(index){
         this.nationalityVisible = true;
         this.nationalityIndex = index;
+        
+        this.payVisible = false;
       },
       hideNationality(){
         this.nationalityVisible = false;
@@ -352,6 +375,12 @@
       getNationality($event){
         let index = this.nationalityIndex;
         this.$set(this.nameArr, index, {l: this.nameArr[index].l, f: this.nameArr[index].f, n: $event});
+      },
+      showFeeDetails(){
+        this.feeDetailsVisible = true;
+      },
+      hideFeeDetails(){
+        this.feeDetailsVisible = false;
       }
     }
   }
@@ -485,6 +514,7 @@
 		position: fixed;
 		bottom: 0;
 		left: 0;
+		z-index: 10000;
 		background-color: #fff;
 		padding: 0 0.2rem;
 		box-sizing: border-box;
@@ -523,11 +553,12 @@
 		color: #f44336;
 	}
 	
+	.green{
+		color: #0bc16f;
+	}
+	
 	.deep-orange{
 		color: #ff4400;
 	}
 	
-	.green{
-		color: #0bc16f;
-	}
 </style>
