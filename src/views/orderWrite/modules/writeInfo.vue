@@ -39,13 +39,13 @@
 		</div>
 		<div class="per-module name-module" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
 			<div class="per-line">
-				<span class="per-info-title green"><i class="iconfont icon-yonghu"></i>入住人</span>
+				<span class="per-info-title purple"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
 			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="'_inname' + item">
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
 				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
 				<span class="username-input nationality" v-html="nameArr[item].n || '国籍'" @click.prevent.stop="selectNationality(item)"></span>
-				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon green" @click="nextVisible(item)"></i>
+				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon purple" @click="nextVisible(item)"></i>
 				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon deep-orange" @click="hideName(item)"></i>
 			</div>
 		</div>
@@ -54,14 +54,14 @@
 		
 		<div class="per-module name-module" v-if="marketingVisible">
 			<div class="per-line">
-				<span class="per-info-title green"><i class="iconfont icon-gift"></i>小礼包</span>
+				<span class="per-info-title purple"><i class="iconfont icon-gift"></i>小礼包</span>
 			</div>
 			<div class="per-line" style="margin: 0 0.3rem;">
 				<span>礼包信息：</span>
 			</div>
 			<div class="per-line" style="margin: 0 0.3rem;">
 				<span>手机号：</span>
-				<input name="tel" type="tel" v-model="marketingTel" v-validate="marketingVisible ? {required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/} : ''" placeholder="必填" style="width: 2.4rem">
+				<input name="tel" type="tel" v-model="marketingTel" v-validate="marketingVisible ? {required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/} : ''" placeholder="必填" style="width: 2.3rem">
 				<i v-show="marketingIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 		</div>
@@ -541,6 +541,10 @@
 	
 	.green{
 		color: #0bc16f;
+	}
+	
+	.purple{
+		color: #666fb1;
 	}
 	
 	.deep-orange{

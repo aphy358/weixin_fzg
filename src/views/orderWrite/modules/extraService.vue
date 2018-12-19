@@ -1,7 +1,7 @@
 <!-- 组件说明 -->
 <template>
 	<div class="extra-service">
-		<h6 class="extra-service-title green"><i class="iconfont icon-pack"></i>杂费</h6>
+		<h6 class="extra-service-title purple"><i class="iconfont icon-pack"></i>杂费</h6>
 		<div class="per-service add-breakfast" @click="changeBreakfast">
 			<p class="per-service-title">加早信息</p>
 			<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
@@ -31,7 +31,7 @@
 		<div class="per-service" @click="changeBed">
 			<p class="per-service-title">加床信息</p>
 			<p class="per-service-ins">儿童床<span class="orange">50/张</span>成人床<span class="orange">￥101/张</span></p>
-			<p class="green">该房型每间房最多加床2张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
+			<p class="purple">该房型每间房最多加床2张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
 		</div>
 		<div class="per-service-open clearfix" :style="'height:' + bedHeight + 'rem;'">
 			<div class="condition-box">
@@ -529,6 +529,10 @@
 		
 		.green{
 			color: #0bc16f;
+		}
+		
+		.purple{
+			color: #666fb1;
 		}
 	}
 </style>
