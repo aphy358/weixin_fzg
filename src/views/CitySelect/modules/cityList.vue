@@ -94,7 +94,7 @@ export default {
 
       Velocity(elem, 'scroll', {offset: '0px', container: container})
       Velocity(elem, 'finish')
-      // elem.querySelector('input').checked = true
+      elem.querySelector('input').checked = true
     },
     selectOneCity(city){
       this.$store.commit(`setCityType`, city.cityType)

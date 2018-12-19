@@ -62,3 +62,14 @@ export const gotoPage = (router, pageStr, query) => {
 
   // 参考： router.push({ path: 'register', query: { plan: 'private' }})
 }
+
+// 替换掉当前页面
+export const replacePage = (router, pageStr, query) => {
+  window.historyObj.arr.pop()
+  window.historyObj.preLen--
+  window.historyObj.arr.push({path: pageStr})
+
+  query
+    ? router.replace({ path: pageStr, query: query})
+    : router.replace(pageStr)
+}
