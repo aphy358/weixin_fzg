@@ -149,7 +149,7 @@
       },
     },
     
-    created(){
+    activated(){
       let params = this.extrafeeParams;
       let _this = this;
       

@@ -86,10 +86,6 @@
 
 <style scoped lang="scss">
 	.confirm-info{
-		/*position: fixed;*/
-		/*left: 2%;*/
-		/*top: 0.2rem;*/
-		/*z-index: 2000;*/
 		width: 96%;
 		height: auto;
 		margin: 0 auto;
