@@ -72,6 +72,14 @@ let router = new Router({
       meta: {
         wechatAuth: false
       },
+    },
+    {
+      path: '/orderPay',
+      name: 'orderPay',
+      component: () => import('@/views/orderPay/orderPay.vue'),
+      meta: {
+        wechatAuth: false
+      },
     }
   ].concat(ebRouter),
   // scrollBehavior (to, from, savedPosition) {
