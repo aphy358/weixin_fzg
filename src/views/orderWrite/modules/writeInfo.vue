@@ -4,11 +4,11 @@
 		<div class="per-module">
 			<div class="per-line">
 				<span class="per-info-title">房间数</span>
-				<span class="per-info-txt" @click="openRoomNum">1</span>
-				<mt-popup class="popup-bottom" v-model="roomNumVisible" position="bottom">
-					<button class="confirm" @click="confirmRoomNum">确定</button>
-					<mt-picker :slots="roomNumSlots" @change="onValuesChange"></mt-picker>
-				</mt-popup>
+				<label class="per-info-txt">
+					<select name="roomNum" id="roomNum" style="width: 2rem;">
+						<option v-for="(item, index) in roomNumList" :key="index" :value="item">{{item}}</option>
+					</select>
+				</label>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">个性化需求</span>
@@ -109,13 +109,16 @@
   import feeDetails from '../modules/feeDetails.vue';
   import { MessageBox } from 'mint-ui';
   
+  import Vue from 'vue';
+  import VeeValidate from 'vee-validate';
+  Vue.use(VeeValidate, { validity: true });
+  
   export default {
     name: '',
     
     data() {
       return {
         roomNum: false,
-        roomNumVisible: false,
         specialVisible: false,
         paymentVisible: false,
         nameVisibleArr: [],
@@ -126,13 +129,6 @@
         emailIconVisible: false,
         email: '',
         tel: '',
-        roomNumSlots: [
-          {
-            flex: 1,
-            values: [1, 2, 3, 4, 5, 6],
-            className: 'slot1',
-          }
-        ],
         specialReq: [],
         specialReqList: ['立即到店', '原房续住', '安静房间', '吸烟楼层', '连通房间', '相同楼层', '尽量有窗', '尽量无烟楼层', '尽量相邻房间', '尽量高层楼房', '残疾设施房间', '尽量大床房', '尽量双床房'],
         paymentSlots: [
@@ -173,9 +169,18 @@
       maxPersonNum(){
         return this.$store.state.maxPersonNum;
       },
+      roomNumList(){
+        let stock = this.$store.state.orderWrite.stock;
+        let arr = [];
+        for (let i = 0; i < stock; i++) {
+          arr.push(i + 1);
+          
+        }
+        return arr;
+      }
     },
     
-    created(){
+    activated(){
       //入住人显示与否、验证规则
       let maxPersonNum = this.$store.state.maxPersonNum;
       let roomNum = this.$store.state.roomNum;
@@ -247,17 +252,8 @@
           this.payVisible = false;
         }
       },
-      openRoomNum() {
-        this.roomNumVisible = true;
-      },
       openSpecial(){
         this.specialVisible = true;
-      },
-      onValuesChange(){
-      
-      },
-      confirmRoomNum(){
-      
       },
       clearSpecial() {
         this.specialReq = [];
@@ -500,6 +496,10 @@
 		}
 		
 		input{
+			border: none;
+		}
+		
+		select{
 			border: none;
 		}
 		

@@ -10,7 +10,7 @@ export default {
     // supplierId : '',
     // roomNum : 1,
     // dateNum : 1,
-    // stock : 7,
+    stock : 7,
     // roomCost : '',
     // taxesAndFeesRMB : 0,
     // payTotalMoney : 0,
