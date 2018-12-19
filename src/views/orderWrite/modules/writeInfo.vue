@@ -252,6 +252,7 @@
           this.payVisible = false;
         }
       },
+      onValuesChange(){},
       openSpecial(){
         this.specialVisible = true;
       },
