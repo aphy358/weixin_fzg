@@ -44,7 +44,7 @@
           infinite-scroll-disabled="infiniteLoad"
           infinite-scroll-distance="10">
 
-          <li class="eb-order-list-item" v-for="(n, i) in ebOrderList" :key="i">
+          <li class="eb-order-list-item" v-for="(n, i) in orderResults[activeStatus]" :key="i">
             <div class="eoli-title">
               <span v-html="getStatus(n.status)"></span>
               <span v-html="getAttribute(n.attribute)"></span>
@@ -76,10 +76,20 @@
 
         </ul>
 
-        <END />
+        <div v-if="infiniteLoad && orderResults[activeStatus].length < 1" style="text-align: center;color: red;margin: 0.2rem 0;">无相关订单</div>
+
+        <END v-if="infiniteLoad && orderResults[activeStatus].length > 0" />
+
       </div>
 
+      <mt-popup
+        v-model="getAreaBizPopupVisible"
+        position="bottom">
       
+        
+
+      </mt-popup>
+
     </div>
   </div>
 </template>
@@ -89,6 +99,7 @@ import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
 import GAP from '@/components/GAP.vue'
 import { _ebOrderList } from './ebOrderList.js'
+import { gotoPage, replacePage } from '@/assets/util'
 
 const orderStatus = [
   {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
@@ -104,8 +115,39 @@ export default {
   name: 'EBOrderList',
   data(){
     return {
+      infiniteLoad: true,
+      orderResults: {'0':[], '1':[], '2':[], '3':[], 'a':[]},
+      subParams: {
+        '0': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        '1': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        '2': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        '3': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        'a': {
+          currPage: 1,
+          pageCount: 1,
+        },
+      },
+
+
+      // 订单列表查询条件
       activeStatus: '0',
-      ebOrderList: [],
+      itemName: null,
+      orderCode: null,
+      userName: null,
+      beginDate: null,
+      endDate: null,
     }
   },
   props: {},
@@ -116,12 +158,17 @@ export default {
   },
   watch: {},
   created(){
-    this.ebOrderList = _ebOrderList
+    for (const key in this.orderResults) {
+      this.orderResults[key] = _ebOrderList.filter(n => n.status == key)
+    }
+    this.orderResults.a = _ebOrderList
+
+    this.queryEBOrderList()
   },
   computed: {},
   mounted(){},
   methods:{
-    // 切换显示的订单状态
+    // 切换显示的订单状态，同时记得更改 infiniteLoad 的状态
     switchOrderStatus(status){
       this.activeStatus = status
     },
@@ -144,7 +191,56 @@ export default {
     },
     // 查询 eb 订单列表
     queryEBOrderList(){
+      let params = {
+        orderType: this.activeStatus,
+        itemName: this.itemName,
+        orderCode: this.itemName,
+        userName: this.userName,
+        beginDate: this.beginDate,
+        endDate: this.endDate,
+        currPage: this.subParams[this.activeStatus].currPage
+      }
 
+      this.$api.eb.syncSearchOrderList(params).then(res => {
+        //*** 上线放开 */
+        return
+        if(res.returnCode === 1){
+          // TO DO，将相关数据赋值给 orderResults 和 subParams
+
+        }else if(res.errcode == 'notLogin'){
+          // 跳转到微信 eb 登录页
+          replacePage(this.$router, 'eblogin')
+        }else{
+          Toast(res.returnMsg)
+        }
+      })
+    },
+    // 修改搜索条件，重置相关数据项
+    resetData(){
+      this.infiniteLoad = false
+      this.orderResults = {'0':[], '1':[], '2':[], '3':[], 'a':[]}
+      this.subParams = {
+        '0': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        '1': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        '2': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        '3': {
+          currPage: 1,
+          pageCount: 1,
+        },
+        'a': {
+          currPage: 1,
+          pageCount: 1,
+        },
+      }
     }
 
   }
@@ -316,7 +412,7 @@ export default {
 .eoli-hname{
     color: #333333;
     margin: 0;
-    font-size: 0.15rem;
+    // font-size: 0.13rem;
 }
 
 .eoli-room{
