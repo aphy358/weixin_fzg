@@ -199,7 +199,11 @@ export default {
   components: {
     GoBack
   },
-  watch: {},
+  watch: {
+    orderStatus(){
+      this.getTitleAndInitFooterBtns()
+    }
+  },
   created() {
   },
   activated(){
@@ -283,7 +287,8 @@ export default {
         return
         if(res.returnCode === 1){
           // 已取消，俩按钮都不可操作
-          this.updateTitleAndFooter(true, true, '已取消', '订单已取消！')
+          this.orderStatus = '3'
+          Toast('订单已取消！')
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
@@ -300,7 +305,8 @@ export default {
         return
         if(res.returnCode === 1){
           // 不可取消，俩按钮都不可操作
-          this.updateTitleAndFooter(true, true, '不可取消', '已拒绝取消！')
+          this.orderStatus = '4'
+          Toast('已拒绝取消！')
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
@@ -318,7 +324,8 @@ export default {
         return
         if(res.returnCode === 1){
           // 已拒单，俩按钮都不可操作
-          this.updateTitleAndFooter(true, true, '已拒单', '已拒单！')
+          this.orderStatus = '2'
+          Toast('已拒单！')
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
@@ -338,7 +345,8 @@ export default {
           if(this.checkedFinallyOrderArr.length && 'extId'){
             this.updateOrderSuppRemark()
           }else{
-            this.updateTitleAndFooter(true, false, '已确认', '订单确认成功！')
+            this.orderStatus = '1'
+            Toast('订单确认成功！')
           }
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
@@ -347,13 +355,6 @@ export default {
           Toast(res.returnMsg)
         }
       })
-    },
-    // 操作成功后，更新 title 和底部按钮的状态
-    updateTitleAndFooter(refuseDisable, acceptDisable, titleText, toast){
-      this.refuseDisable = refuseDisable
-      this.acceptDisable = acceptDisable
-      this.titleText = titleText
-      Toast(toast)
     },
     // 更新供应商 Remark
     updateOrderSuppRemark(){
