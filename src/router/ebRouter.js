@@ -22,4 +22,12 @@ export default [{
 			wechatAuth: false
 		},
 	},
+	{
+		path: '/ebordertobeconfirm',
+		name: 'ebordertobeconfirm',
+		component: () => import('@/views/EB/EbOrderToBeConfirm.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
 ]

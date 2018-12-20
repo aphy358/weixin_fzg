@@ -176,33 +176,34 @@ export default {
     }
 }
 
-.mint-checkbox-core{
-  width: 0.14rem;
-  height: 0.14rem;
 
-  &:after{
-    top: 0.015rem;
-    left: 0.045rem;
-    width: 0.03rem;
-    height: 0.07rem;
-  }
+.mint-checkbox-core{
+    width: 0.14rem;
+    height: 0.14rem;
+
+    &:after{
+        top: 0.015rem;
+        left: 0.045rem;
+        width: 0.03rem;
+        height: 0.07rem;
+    }
 }
 
 .mint-checkbox-label{
-  color: #333333;
-  margin-left: 0.03rem;
+    color: #333333;
+    margin-left: 0.03rem;
 }
 .mint-cell-wrapper{
-  font-size: 0.15rem;
-  background-image: none;
+    font-size: 0.15rem;
+    background-image: none;
 }
 .mint-cell{
-  min-height: 0.35rem;
+    min-height: 0.35rem;
 }
 
 .mint-checkbox-input:checked + .mint-checkbox-core {
-  background-color: #ff7625;
-  border-color: #ff7625;
+    background-color: #ff7625;
+    border-color: #ff7625;
 }
 
 </style>
