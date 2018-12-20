@@ -240,6 +240,9 @@ export default {
         o == '4'  ? '不可取消' :
         o == '5'  ? '申请取消' : '未知状态'
 
+      this.refuseDisable = false
+      this.acceptDisable = false
+
       if(o == '1'){ // 已确认订单只能修改确认号
         this.refuseDisable = true
       }
