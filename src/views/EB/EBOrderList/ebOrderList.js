@@ -1,3 +1,4 @@
+// 供应商状态(status) -1:待处理 0已发送 5申请取消 (待确认)    1已确认 2已拒单 3已取消 4不取消
 export const _ebOrderList = [
   {
     status: '0',

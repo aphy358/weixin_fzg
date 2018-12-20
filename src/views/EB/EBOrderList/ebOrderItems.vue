@@ -1,6 +1,6 @@
 <template>
   <ul class="eb-order-list">
-    <li class="eb-order-list-item" v-for="(n, i) in orderList" :key="i">
+    <li class="eb-order-list-item" v-for="(n, i) in orderList" :key="i" @click="gotoConfirmPage(n)">
       <div class="eoli-title">
         <span v-html="getStatus(n.status)"></span>
         <span v-html="getAttribute(n.attribute)"></span>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { gotoPage } from '@/assets/util'
+
 const orderStatus = [
   {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
   {status: 'to-be-confirm', icon: 'icon-daichuli', name: '待处理'},
@@ -72,6 +74,10 @@ export default {
 
       return '<span class="eoli-attr-flag ' + clazz + '">' + attribute + '</span>';
     },
+    // 跳转到订单待确认页（或取消页）
+    gotoConfirmPage(order){
+      gotoPage(this.$router, 'ebordertobeconfirm', {id: order.orderInfoId, status: order.status})
+    }
   }
 }
 </script>
