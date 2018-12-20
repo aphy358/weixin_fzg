@@ -254,7 +254,7 @@ export default {
     },
     // 查询订单信息
     queryOrderInfo(){
-      let param = {orderid: this.orderId}
+      let param = {orderId: '65456'}
 
       this.$api.eb.syncQueryOrderInfo1(param).then(res => {
         //*** 上线放开 */
@@ -269,6 +269,8 @@ export default {
         }
       })
 
+      //*** */
+      return
       this.$api.eb.syncQueryOrderInfo2(param).then(res => {
         //*** 上线放开 */
         return
@@ -361,7 +363,8 @@ export default {
     },
     // 更新供应商 Remark
     updateOrderSuppRemark(){
-      let param = {"orderExtId": 'extId', "suppReturnRemark": "末单确认"}
+      // 这里 orderExtId 一定要传数字型参数
+      let param = {"orderExtId": '65456', "suppReturnRemark": "末单确认"}
 
       this.$api.eb.syncUpdateOrderSuppRemark(param).then(res => {
         console.log('updateOrderSuppRemark');

@@ -23,7 +23,7 @@ export const syncQueryOrderInfo1 = (args, loading = false) => http.post("/vue/sh
 
 
 // 查询订单信息
-export const syncQueryOrderInfo2 = (args, loading = false) => http.post("/initOrderDetail.do", args, loading)
+export const syncQueryOrderInfo2 = (args, loading = false) => http.post("/vue/initOrderDetail.do", args, loading)
 
 
 // 获取客户姓名
