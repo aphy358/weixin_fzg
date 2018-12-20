@@ -361,7 +361,7 @@ export default {
         }
       })
     },
-    // 更新供应商 Remark
+    // 更新供应商 Remark（修改确认号？）
     updateOrderSuppRemark(){
       // 这里 orderExtId 一定要传数字型参数
       let param = {"orderExtId": '65456', "suppReturnRemark": "末单确认"}

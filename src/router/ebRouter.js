@@ -30,4 +30,12 @@ export default [{
 			wechatAuth: false
 		},
 	},
+	{
+		path: '/ebhotellist',
+		name: 'ebhotellist',
+		component: () => import('@/views/EB/EBHotelList.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
 ]

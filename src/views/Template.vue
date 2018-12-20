@@ -17,6 +17,7 @@ export default {
   components: {},
   watch: {},
   created(){},
+  activated(){},
   computed: {},
   mounted(){},
   methods:{}
