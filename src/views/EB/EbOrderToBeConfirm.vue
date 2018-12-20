@@ -1,7 +1,7 @@
 <template>
   <div class="page eb-order-tobe-confirm-page">
     <!-- 头部 -->
-    <mt-header :title="getTitle()"></mt-header>
+    <mt-header :title="titleText"></mt-header>
 
     <!-- 返回上一页 -->
     <GoBack _style="top: 0.02rem"/>
@@ -142,10 +142,11 @@
         </div>
       </div>
 
-      <div>
+      <div style="margin: 0.2rem 0.3rem;">
         <div>
-          <input type="text">
+          <input type="text" placeholder="请输入确认号，如无可不填" v-model="hotelCode" class="accept-pop-input">
         </div>
+        <mt-checklist v-model="checkedFinallyOrderArr" :options="finallyOrderArr" style="padding: 0;margin-left: -0.1rem;"></mt-checklist>
       </div>
 
       <div class="eol-pop-footer">
@@ -167,10 +168,13 @@ export default {
   name: "EbOrderToBeConfirm",
   data() {
     return {
+      titleText: '',
       orderId: null,
+
+      // 供应商状态(status) -1:待处理 0已发送 5申请取消 (待确认)    1已确认 2已拒单 3已取消 4不取消
       orderStatus: null,
-      orderStatusText: null,
-      acceptPopupVisible: true,
+
+      acceptPopupVisible: false,
       refuseReasonPopupVisible: false,
       checkedRefuseArr: [],
       refuseArr: [
@@ -183,6 +187,9 @@ export default {
         {label: '提供联系号码', value: '提供联系号码'},
         {label: '床型无法安排', value: '床型无法安排'},
       ],
+      hotelCode: null,
+      checkedFinallyOrderArr: [],
+      finallyOrderArr: [{label: '末单确认', value: '末单确认'},],
       refuseDisable: false,
       acceptDisable: false,
 
@@ -197,6 +204,7 @@ export default {
   },
   activated(){
     this.getQueryParams()
+    this.getTitleAndInitFooterBtns()
     this.queryOrderInfo()
   },
   computed: {},
@@ -215,16 +223,27 @@ export default {
       this.orderId = queryString('id')
       this.orderStatus = queryString('status')
     },
-    // 获取页面标题
-    getTitle(){
+    // 获取页面标题并且初始化底部俩按钮的状态
+    getTitleAndInitFooterBtns(){
       let o = this.orderStatus
-      if(o == '-1' || o == '0' || o == '1'){
-        this.orderStatusText = 'confirm'
-        return '订单待确认'
+
+      this.titleText =
+        o == '-1' ? '待确认' :
+        o == '0'  ? '待确认' :
+        o == '1'  ? '已确认' :
+        o == '2'  ? '已拒单' :
+        o == '3'  ? '已取消' :
+        o == '4'  ? '不可取消' :
+        o == '5'  ? '申请取消' : '未知状态'
+
+      if(o == '1'){ // 已确认订单只能修改确认号
+        this.refuseDisable = true
       }
 
-      this.orderStatusText = 'cancel'
-      return '取消订单待确认'
+      if(o == '2' || o == '3' || o == '4'){ // 已拒单、已取消、不可取消 都不可以再有任何操作
+        this.refuseDisable = true
+        this.acceptDisable = true
+      }
     },
     // 查询订单信息
     queryOrderInfo(){
@@ -260,11 +279,11 @@ export default {
     cancelOrder(){
       let param = {"status": 3, "orderInfoId": this.orderId, "textVal": "", "isChange": ""}
       this.$api.eb.syncHandleOrder(param).then(res => {
-        console.log('cancelOrder');
         //*** 上线放开 */
         return
         if(res.returnCode === 1){
-
+          // 已取消，俩按钮都不可操作
+          this.updateTitleAndFooter(true, true, '已取消', '订单已取消！')
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
@@ -277,11 +296,11 @@ export default {
     refuseCancelOrder(){
       let param = {"status": 4, "orderInfoId": this.orderId, "textVal": "", "isChange": ""}
       this.$api.eb.syncHandleOrder(param).then(res => {
-        console.log('refuseCancelOrder');
         //*** 上线放开 */
         return
         if(res.returnCode === 1){
-
+          // 不可取消，俩按钮都不可操作
+          this.updateTitleAndFooter(true, true, '不可取消', '已拒绝取消！')
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
@@ -295,13 +314,11 @@ export default {
       let param = {"status": 2, "orderInfoId": this.orderId, "textVal": this.checkedRefuseArr.join(','), "isChange": ""}
 
       this.$api.eb.syncHandleOrder(param).then(res => {
-        console.log('refuseOrder');
-        
         //*** 上线放开 */
         return
         if(res.returnCode === 1){
-          this.refuseDisable = true
-          this.acceptDisable = true
+          // 已拒单，俩按钮都不可操作
+          this.updateTitleAndFooter(true, true, '已拒单', '已拒单！')
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
@@ -312,9 +329,38 @@ export default {
     },
     // 确认订单
     confirmOrder(){
-      let param = {"status": 1, "orderInfoId": this.orderId, "textVal": "拒绝理由拼接字符串", "isChange": ""}
+      let param = {"status": 1, "orderInfoId": this.orderId, "textVal": this.hotelCode, "isChange": this.hotelCode != 'oldVal' ? 1 : ""}
+
       this.$api.eb.syncHandleOrder(param).then(res => {
-        console.log('confirmOrder');
+        //*** 上线放开 */
+        return
+        if(res.returnCode === 1){
+          if(this.checkedFinallyOrderArr.length && 'extId'){
+            this.updateOrderSuppRemark()
+          }else{
+            this.updateTitleAndFooter(true, false, '已确认', '订单确认成功！')
+          }
+        }else if(res.errcode == 'notLogin'){
+          // 跳转到微信 eb 登录页
+          replacePage(this.$router, 'eblogin')
+        }else{
+          Toast(res.returnMsg)
+        }
+      })
+    },
+    // 操作成功后，更新 title 和底部按钮的状态
+    updateTitleAndFooter(refuseDisable, acceptDisable, titleText, toast){
+      this.refuseDisable = refuseDisable
+      this.acceptDisable = acceptDisable
+      this.titleText = titleText
+      Toast(toast)
+    },
+    // 更新供应商 Remark
+    updateOrderSuppRemark(){
+      let param = {"orderExtId": 'extId', "suppReturnRemark": "末单确认"}
+
+      this.$api.eb.syncUpdateOrderSuppRemark(param).then(res => {
+        console.log('updateOrderSuppRemark');
         //*** 上线放开 */
         return
         if(res.returnCode === 1){
@@ -338,7 +384,9 @@ export default {
     // 点击 '拒绝' 按钮
     clickRefuseBtn(){
       if(!this.refuseDisable){
-        if(this.orderStatusText == 'confirm'){
+        let o = this.orderStatus
+
+        if(o == '-1' || o == '0'){
           this.refuseReasonPopupVisible = true
         }else{
           this.refuseCancelOrder()
@@ -348,7 +396,9 @@ export default {
     // 点击 '接受' 按钮
     clickAcceptBtn(){
       if(!this.acceptDisable){
-        if(this.orderStatusText == 'confirm'){
+        let o = this.orderStatus
+
+        if(o == '-1' || o == '0' || o == '1'){
           this.acceptPopupVisible = true
         }else{
           this.cancelOrder()
@@ -367,6 +417,7 @@ export default {
     // 提交接受
     submitAccept(){
       this.hideAcceptPopup()
+      this.confirmOrder()
     },
   }
 };
@@ -522,6 +573,14 @@ export default {
     background: #ff7625;
     border-radius: 0.02rem;
   }
+}
+
+.accept-pop-input{
+  width: 100%;
+  border: none;
+  border-bottom: 0.01rem solid #ccc;
+  line-height: 0.3rem;
+  padding-left: 0.05rem;
 }
 
 </style>
