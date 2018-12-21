@@ -7,6 +7,7 @@
           <span class="eb-rsm-month-text1">{{ monthText1 }}</span>
           <span class="eb-rsm-month-text2 color-gray">{{ monthText2 }}</span>
           <i class="iconfont icon-triangle-down" style="position: relative;top: 0.02rem;"></i>
+          <input type="date" class="date" v-model="datePick">
         </div>
       </div>
       <button>批量修改</button>
@@ -23,7 +24,10 @@
             v-for="(n, i) in totalDayStrArr" :key="i" 
             class="eb-rsm-day-li" 
             :class="[n.clazz, {'current': n.dateStr == activeDay}]"
-            @click="switchDay(n)">{{ n.dayStr }}</li>
+            @click="switchDay(n)">
+            
+            {{ n.dayStr }}
+          </li>
         </ul>
       </div>
     </div>
@@ -42,18 +46,25 @@ export default {
   name: 'dateBar',
   data(){
     return {
+      // 日期选择的日期值
+      datePick: '',
       mtypeText: '',
       monthText1: '',
       monthText2: '',
       totalWeekStrArr: [],
       totalDayStrArr: [],
       ulWidth: '',
-      activeDay: '2018-12-20',
+      activeDay: '',
     }
   },
   props: {},
   components: {},
-  watch: {},
+  watch: {
+    datePick(){
+      this.activeDay = !this.isBeforeToday(this.datePick) ? this.datePick : null
+      this.getOneMonthData(this.datePick)
+    }
+  },
   created(){},
   activated(){
     this.getQueryParams()
@@ -62,6 +73,10 @@ export default {
   computed: {},
   mounted(){},
   methods:{
+    // 判断一个字符串是否小于今天
+    isBeforeToday(_dayStr){
+      return +new Date( _dayStr.replace(/-/g, '/') + ' 23:59:59' ) < +new Date
+    },
     // 获取 url 参数
     getQueryParams(){
       this.mtypeText = queryString('mtype') == '1' ? '房态管理' : '房价管理'
@@ -69,9 +84,9 @@ export default {
     // 初始化本月的日期 DOM
     initCurrentMonth(){
       let _today = new Date()
-      let val = _today.Format('yyyy-MM')
+      let val = _today.Format('yyyy-MM-dd')
 
-      this.activeDay = _today.Format('yyyy-MM-dd')
+      this.activeDay = val
 
       this.getOneMonthData(val)
 
@@ -89,11 +104,12 @@ export default {
       var _d = new Date(val.replace(/-/g, '/'))
       var month = _d.getMonth()
       var year = _d.getFullYear()
+      var monthStr = year + '-' + (month + 1)
 
-      this.monthText1 = val
+      this.monthText1 = monthStr
       this.monthText2 = `(${monthArr[month]})`
 
-      var firstweek = new Date(val.replace(/-/g, '/') + '/01').getDay() 	//计算当月第一天是星期几
+      var firstweek = _d.getDay() 	//计算当月第一天是星期几
       var dayArr = this.getDaysForeachMonth(year);	//今年所有月份日期数的数组
       var dayCount = dayArr[month]
       var width = 50 * dayCount
@@ -102,24 +118,21 @@ export default {
 
       var totalWeekStr = ''
       var totalDayStr = ''
-      var today = +new Date
-      var left = (new Date().getDate() - 1) * 50
+      var left = ( _d.getDate() - 1 ) * 50
 
-      // 如果不是当月，则不需要左偏移
-      if(_d.getMonth() !== new Date().getMonth() || _d.getFullYear() !== new Date().getFullYear()){
-        left = 0;
-      }
-
-      this.$nextTick(() => {
-        document.querySelector('.eb-rsm-day-switch-inner').scrollLeft = left
+      this.$nextTick(() => {  // 设置偏移
+        document.querySelector('.eb-rsm-day-switch-inner').scrollLeft = document.body.clientWidth / 375 * left
       })
 
+      // 先清空这俩数组
+      this.totalWeekStrArr = []
+      this.totalDayStrArr = []
       for (var i = 0; i < dayCount; i++) {
-        var _dayStr = val + '-' + (i + 1);
-        var disabled = +new Date( _dayStr.replace(/-/g, '/') + ' 23:59:59' ) < today ? 'disabled' : ''
+        var _dayStr = new Date( (monthStr + '-' + (i + 1)).replace(/-/g, '/') ).Format('yyyy-MM-dd')
+        var clazz = this.isBeforeToday(_dayStr) ? 'disabled' : ''
 
         this.totalWeekStrArr.push( weekArr[(firstweek++ % 7)] )
-        this.totalDayStrArr.push({dateStr: _dayStr, clazz: disabled, dayStr: (i + 1)})
+        this.totalDayStrArr.push({dateStr: _dayStr, clazz: clazz, dayStr: (i + 1)})
       }
     },
     queryRoomStatusAndPriceForOneDay(){
@@ -137,7 +150,7 @@ export default {
     },
     // 点击某一天
     switchDay(n){
-      if(!n.clazz){
+      if(n.clazz != 'disabled'){
         this.activeDay = n.dateStr
       }
     }
@@ -213,6 +226,17 @@ export default {
     background: orange;
     color: white;
     border-radius: 50%;
+}
+
+.eb-rsm-month-wrap .date{
+  position: absolute;
+  height: 0.5rem;
+  box-sizing: border-box;
+  width: 1.2rem;
+  left: 0.1rem;
+  border: none;
+  background: transparent;
+  color: transparent;
 }
 
 </style>
