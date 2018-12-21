@@ -80,6 +80,14 @@ let router = new Router({
       meta: {
         wechatAuth: false
       },
+    },
+    {
+      path: '/myCenter',
+      name: 'myCenter',
+      component: () => import('@/views/myCenter/myCenter.vue'),
+      meta: {
+        wechatAuth: false
+      },
     }
   ].concat(ebRouter),
   // scrollBehavior (to, from, savedPosition) {
