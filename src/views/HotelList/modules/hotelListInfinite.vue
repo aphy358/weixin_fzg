@@ -16,7 +16,7 @@
 
       <li v-for="n in hotelList" :key="n.infoId" class="item-content" @click="gotoHotelDetail(n)">
           <div class="item-media">
-            <img :src="n.picSrc" :class="{'nopic': n.picSrc.indexOf('nopic') != -1}">
+            <img :src="n.picSrc.indexOf('nopic') != -1 ? logo : n.picSrc" :class="{'nopic': n.picSrc.indexOf('nopic') != -1}">
           </div>
           <div class="item-inner">
             <div class="item-title-row">
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import logo from '@/assets/img/fzglogo.jpg'
 import noHotel from '@/assets/img/no-hotel.png'
 import END from '@/components/END.vue'
 import LoadMore from '@/components/LoadMore.vue'
@@ -66,6 +67,7 @@ export default {
   name: 'hotelListInfinite',
   data(){
     return {
+      logo: '',
       noHotel: '',
       hotelList: [],
       loading: false,
@@ -110,6 +112,7 @@ export default {
     },
   },
   created(){
+    this.logo = logo
     this.queryHotel()
     this.noHotel = noHotel
   },

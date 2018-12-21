@@ -4,7 +4,7 @@
     <div class="banner-wrap">
       <mt-swipe :auto="0" :showIndicators="false" >
         <mt-swipe-item v-for="(n, i) in curHotel.picList" :key="i">
-          <img :src="n" width="100%">
+          <img :src="n.indexOf('nopic') != -1 ? logo : n" width="100%" >
         </mt-swipe-item>
       </mt-swipe>
 
@@ -37,12 +37,14 @@
 </template>
 
 <script>
+import logo from '@/assets/img/fzglogo.jpg'
 import { queryString, getStarText } from '@/assets/util'
 
 export default {
   name: 'banner',
   data(){
     return {
+      logo: '',
       curHotel: null,
     }
   },
@@ -50,6 +52,7 @@ export default {
   components: {},
   watch: {},
   created(){
+    this.logo = logo
   },
   activated(){
     this.initHotelInfo()
