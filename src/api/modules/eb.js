@@ -23,7 +23,7 @@ export const syncQueryOrderInfo1 = (args, loading = false) => http.post("/vue/sh
 
 
 // 查询订单信息
-export const syncQueryOrderInfo2 = (args, loading = false) => http.post("/initOrderDetail.do", args, loading)
+export const syncQueryOrderInfo2 = (args, loading = false) => http.post("/vue/initOrderDetail.do", args, loading)
 
 
 // 获取客户姓名
@@ -37,6 +37,12 @@ export const syncHandleOrder = (args, loading = false) => http.post("/vue/wxSave
 
 // 更新供应商 Remark ？
 export const syncUpdateOrderSuppRemark = (args, loading = false) => http.post("/vue/updateOrderSuppRemark.do", args, loading)
+
+
+
+// 查酒店列表
+export const syncEBQueryHotelList = (args, loading = false) => http.post("/vue/ebHotel/hotelQueryseach.do", args, loading)
+
 
 
 // 这里有个问题，查询订单相关信息怎么用了三个接口？可否整合到一个接口？

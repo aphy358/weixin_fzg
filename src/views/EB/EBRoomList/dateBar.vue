@@ -1,0 +1,218 @@
+<template>
+  <div style="margin: 0.1rem 0;">
+    
+    <div class="eb-rsm-month-line">
+      <div class="eol-pop-row-subdiv">
+        <div class="eb-rsm-month-wrap">
+          <span class="eb-rsm-month-text1">{{ monthText1 }}</span>
+          <span class="eb-rsm-month-text2 color-gray">{{ monthText2 }}</span>
+          <i class="iconfont icon-triangle-down" style="position: relative;top: 0.02rem;"></i>
+        </div>
+      </div>
+      <button>批量修改</button>
+      <span style="position: absolute;right: 0.8rem;top: 0;color: #999;">{{ mtypeText }}</span>
+    </div>
+
+    <div class="eb-rsm-day-switch-wrap">
+      <div class="eb-rsm-day-switch-inner">
+        <ul class="line-one" style="height: 0.16rem;" :style="'width:' + ulWidth + 'rem;'">
+          <li v-for="(n, i) in totalWeekStrArr" :key="i">{{ n }}</li>
+        </ul>
+        <ul class="line-two" :style="'width:' + ulWidth + 'rem;'">
+          <li 
+            v-for="(n, i) in totalDayStrArr" :key="i" 
+            class="eb-rsm-day-li" 
+            :class="[n.clazz, {'current': n.dateStr == activeDay}]"
+            @click="switchDay(n)">{{ n.dayStr }}</li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+</template>
+
+<script>
+import { queryString } from '@/assets/util'
+
+const monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const weekArr = ['日', '一', '二', '三', '四', '五', '六']
+
+
+export default {
+  name: 'dateBar',
+  data(){
+    return {
+      mtypeText: '',
+      monthText1: '',
+      monthText2: '',
+      totalWeekStrArr: [],
+      totalDayStrArr: [],
+      ulWidth: '',
+      activeDay: '2018-12-20',
+    }
+  },
+  props: {},
+  components: {},
+  watch: {},
+  created(){},
+  activated(){
+    this.getQueryParams()
+    this.initCurrentMonth()
+  },
+  computed: {},
+  mounted(){},
+  methods:{
+    // 获取 url 参数
+    getQueryParams(){
+      this.mtypeText = queryString('mtype') == '1' ? '房态管理' : '房价管理'
+    },
+    // 初始化本月的日期 DOM
+    initCurrentMonth(){
+      let _today = new Date()
+      let val = _today.Format('yyyy-MM')
+
+      this.activeDay = _today.Format('yyyy-MM-dd')
+
+      this.getOneMonthData(val)
+
+      // var dayArr = _slice( $(".eb-rsm-day-li") )
+      // dayArr.forEach((n) => {
+      //   if( new Date( $(n).attr('data-day').replace(/-/g, '/') ).Format('yyyy-MM-dd') === new Date().Format('yyyy-MM-dd') ){
+      //     this.queryRoomStatusAndPriceForOneDay($(n).attr('data-day'))
+      //   }
+      // })
+    },
+    // 获取一个月的数据
+    getOneMonthData(val){
+      if(!val)	return
+
+      var _d = new Date(val.replace(/-/g, '/'))
+      var month = _d.getMonth()
+      var year = _d.getFullYear()
+
+      this.monthText1 = val
+      this.monthText2 = `(${monthArr[month]})`
+
+      var firstweek = new Date(val.replace(/-/g, '/') + '/01').getDay() 	//计算当月第一天是星期几
+      var dayArr = this.getDaysForeachMonth(year);	//今年所有月份日期数的数组
+      var dayCount = dayArr[month]
+      var width = 50 * dayCount
+
+      this.ulWidth = width / 100
+
+      var totalWeekStr = ''
+      var totalDayStr = ''
+      var today = +new Date
+      var left = (new Date().getDate() - 1) * 50
+
+      // 如果不是当月，则不需要左偏移
+      if(_d.getMonth() !== new Date().getMonth() || _d.getFullYear() !== new Date().getFullYear()){
+        left = 0;
+      }
+
+      this.$nextTick(() => {
+        document.querySelector('.eb-rsm-day-switch-inner').scrollLeft = left
+      })
+
+      for (var i = 0; i < dayCount; i++) {
+        var _dayStr = val + '-' + (i + 1);
+        var disabled = +new Date( _dayStr.replace(/-/g, '/') + ' 23:59:59' ) < today ? 'disabled' : ''
+
+        this.totalWeekStrArr.push( weekArr[(firstweek++ % 7)] )
+        this.totalDayStrArr.push({dateStr: _dayStr, clazz: disabled, dayStr: (i + 1)})
+      }
+    },
+    queryRoomStatusAndPriceForOneDay(){
+
+    },
+    // 返回当下年份中二月份的天数
+    _leap(year){
+      return 28 + ( year % 100 == 0 
+        ? (year % 400 == 0 ? 1 : 0)
+        : (year % 4 == 0 ? 1 : 0) )
+    },
+    // 计算当年所有月份的天数，存入一个数组
+    getDaysForeachMonth(year){
+      return new Array(31, this._leap(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    },
+    // 点击某一天
+    switchDay(n){
+      if(!n.clazz){
+        this.activeDay = n.dateStr
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+
+.color-gray,
+.disabled{
+	color: #999999;
+}
+
+.eb-rsm-month-line{
+    position: relative;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    background: #EAF5FF;
+    padding: 0 0.1rem;
+}
+
+.eb-rsm-month-line button{
+    position: absolute;
+    border: 0.01rem solid #3399FF;
+    background: transparent;
+    border-radius: 0.05rem;
+    height: 0.26rem;
+    font-size: 0.12rem;
+    color: #3399FF;
+    padding: 0 0.05rem;
+    right: 0.1rem;
+    top: 0.12rem;
+}
+
+.eb-rsm-day-switch-wrap{
+    background: white;
+    padding: 0.1rem;
+    overflow: hidden;
+}
+
+.eb-rsm-day-switch-wrap .line-one li{
+    font-size: 0.12rem;
+    color: #999;
+}
+
+.eb-rsm-day-switch-wrap .line-two{
+    height: 0.3rem;
+    line-height: 0.3rem;
+    margin-top: 0.1rem!important;
+}
+
+
+.eb-rsm-day-switch-inner{
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+.eb-rsm-day-switch-inner ul{
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+.eb-rsm-day-switch-inner ul li{
+	float: left;
+	text-align: center;
+    width: 0.3rem;
+    margin: 0 0.1rem;
+}
+
+.eb-rsm-day-switch-wrap .line-two li.current{
+    background: orange;
+    color: white;
+    border-radius: 50%;
+}
+
+</style>
