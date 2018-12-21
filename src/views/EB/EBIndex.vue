@@ -18,7 +18,7 @@
           <i class="iconfont icon-right-thin"></i>
         </li>
 
-        <li class="eb-index-menu-item">
+        <li class="eb-index-menu-item" @click="goEBHotelList(1)">
           <div class="img-wrap">
             <img src="http://image.jladmin.cn/real_1525936409017.png" />
           </div>
@@ -26,7 +26,7 @@
           <i class="iconfont icon-right-thin"></i>
         </li>
 
-        <li class="eb-index-menu-item">
+        <li class="eb-index-menu-item" @click="goEBHotelList(2)">
           <div class="img-wrap">
             <img src="http://image.jladmin.cn/real_1525936297423.png" />
           </div>
@@ -119,6 +119,10 @@ export default {
     // 跳转到 eb 订单列表页
     gotoEBOrderList(){
       gotoPage(this.$router, 'eborderlist')
+    },
+    // 跳转到 eb 酒店列表页，flag： 1：房态管理   2：房价管理
+    goEBHotelList(flag){
+      gotoPage(this.$router, 'ebhotellist', {mtype: flag})
     }
   }
 }

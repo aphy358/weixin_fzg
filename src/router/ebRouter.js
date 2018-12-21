@@ -22,4 +22,36 @@ export default [{
 			wechatAuth: false
 		},
 	},
+	{
+		path: '/ebordertobeconfirm',
+		name: 'ebordertobeconfirm',
+		component: () => import('@/views/EB/EbOrderToBeConfirm.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
+	{
+		path: '/ebhotellist',
+		name: 'ebhotellist',
+		component: () => import('@/views/EB/EBHotelList.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
+	{
+		path: '/ebroomlist',
+		name: 'ebroomlist',
+		component: () => import('@/views/EB/EBRoomList/index.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
+	{
+		path: '/ebbatchmodify',
+		name: 'ebbatchmodify',
+		component: () => import('@/views/EB/EBBatchModify.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
 ]

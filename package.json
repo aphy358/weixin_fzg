@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-plugin-component": "^1.1.1",
+    "clipboard": "^2.0.4",
     "lodash": "^4.17.11",
     "mint-ui": "^2.2.13",
     "nprogress": "^0.2.0",
