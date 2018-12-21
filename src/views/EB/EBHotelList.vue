@@ -88,7 +88,7 @@ export default {
     }, 300),
     // 跳转到房型列表页
     gotoRoomListPage(hotel){
-
+      gotoPage(this.$router, 'ebroomlist', {hotelId: hotel.infoId, hname: encodeURIComponent(hotel.infoName), mtype: queryString('mtype')})
     },
   }
 }
