@@ -55,6 +55,10 @@ export const syncEBQueryHotelList = (args, loading = false) => http.post("/vue/e
 export const syncEBQueryRoomStatusAndPriceForOneDay = (args, loading = false) => http.post("/vue/ebHotel/supplierQueryHotelRoom.do", args, loading)
 
 
+// 关房
+export const syncEBCutHotelRoom = (args, loading = false) => http.post("/vue/ebHotel/cutHotelRoom.do", args, loading)
+
+
 
 
 
