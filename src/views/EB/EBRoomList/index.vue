@@ -13,7 +13,7 @@
       <Head @switchType="switchType" />
 
       <!-- 日期选择操作栏 -->
-      <DateBar />
+      <DateBar @pickDate="pickDate" />
       
     </div>
   </div>
@@ -58,6 +58,11 @@ export default {
     // 切换配额类型
     switchType($event){
       console.log($event);
+    },
+    // 选择了一个日期
+    pickDate($event){
+      console.log($event);
+      
     }
   }
 }

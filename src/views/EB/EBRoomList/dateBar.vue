@@ -63,12 +63,15 @@ export default {
     datePick(){
       this.activeDay = !this.isBeforeToday(this.datePick) ? this.datePick : null
       this.getOneMonthData(this.datePick)
+      this.$emit('pickDate', this.activeDay)
     }
   },
   created(){},
   activated(){
-    this.getQueryParams()
-    this.initCurrentMonth()
+    if(!window.goBack){ // 如果是前进到当前页面，则进行相关的初始化操作
+      this.getQueryParams()
+      this.initCurrentMonth()
+    }
   },
   computed: {},
   mounted(){},
@@ -83,19 +86,9 @@ export default {
     },
     // 初始化本月的日期 DOM
     initCurrentMonth(){
-      let _today = new Date()
-      let val = _today.Format('yyyy-MM-dd')
-
+      let val = (new Date).Format('yyyy-MM-dd')
       this.activeDay = val
-
       this.getOneMonthData(val)
-
-      // var dayArr = _slice( $(".eb-rsm-day-li") )
-      // dayArr.forEach((n) => {
-      //   if( new Date( $(n).attr('data-day').replace(/-/g, '/') ).Format('yyyy-MM-dd') === new Date().Format('yyyy-MM-dd') ){
-      //     this.queryRoomStatusAndPriceForOneDay($(n).attr('data-day'))
-      //   }
-      // })
     },
     // 获取一个月的数据
     getOneMonthData(val){
@@ -152,6 +145,7 @@ export default {
     switchDay(n){
       if(n.clazz != 'disabled'){
         this.activeDay = n.dateStr
+        this.$emit('pickDate', this.activeDay)
       }
     }
   }

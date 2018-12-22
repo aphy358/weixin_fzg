@@ -33,6 +33,9 @@ export default {
 
       if(from.path == '/') goBack = false
 
+      // 将这个变量存入全局，后续可根据页面是前进还是后退来做出相关操作
+      window.goBack = goBack
+
       // 当 o.arr.length == o.preLen 的时候，很有可能是用户点击了系统自带的返回键 && o.preLen > 1
       // this.transitionName = o.arr.length <= o.preLen ? "slide-right" : "slide-left";
       this.transitionName = goBack ? "slide-right" : "slide-left";
