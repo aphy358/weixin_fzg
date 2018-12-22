@@ -62,6 +62,7 @@ import END from '@/components/END.vue'
 import LoadMore from '@/components/LoadMore.vue'
 import Loading from '@/components/Loading.vue'
 import { gotoPage, getStarText } from '@/assets/util'
+import { debounce } from 'lodash'
 
 export default {
   name: 'hotelListInfinite',
@@ -72,7 +73,6 @@ export default {
       hotelList: [],
       loading: false,
       infiniteLoad: false,
-      infiniteLoadCopy: false,
       pageNow: 1,
     }
   },
@@ -83,15 +83,6 @@ export default {
     Loading
   },
   watch: {
-    showKeywordBoard(){
-      if(this.showKeywordBoard){
-        // 当显示关键字输入组件时，先将该组件的无限滚动禁用。
-        this.infiniteLoad = true
-      }else{
-        // 当隐藏关键字输入组件时，恢复之前的无限滚动状态
-        this.infiniteLoad = this.infiniteLoadCopy
-      }
-    },
     getCheckedArea(){
       this.queryHotel(1)
     },
@@ -110,6 +101,9 @@ export default {
     getCheckedStar(){
       this.queryHotel(1)
     },
+    getCityId(){
+      this.queryHotel(1)
+    }
   },
   created(){
     this.logo = logo
@@ -135,22 +129,18 @@ export default {
     getCheckedStar(){
       return this.$store.state.checkedStar
     },
-  },
-  activated(){
-    this.infiniteLoad = this.infiniteLoadCopy
-    
-    if(sessionStorage.getItem('queryHotelList')){
-      this.queryHotel(1)
-      sessionStorage.removeItem('queryHotelList')
+    getCityId(){
+      return this.$store.state.countryId + this.$store.state.stateId + this.$store.state.cityId
     }
   },
-  deactivated(){
-    // 当跳转到其他页面时，先将该组件的无限滚动禁用。
-    this.infiniteLoad = true
+  activated(){
+    if(!window.goBack){
+      this.queryHotel(1)
+    }
   },
   mounted(){},
   methods:{
-    queryHotel(flag){
+    queryHotel: debounce(function(flag){
       let _this = this
       // 如果已经在查询酒店列表，则暂时不允许再查询
       if(_this.loading)   return false
@@ -182,10 +172,8 @@ export default {
           let content = res.data
           if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
-            _this.infiniteLoadCopy = true
           }else{
             _this.infiniteLoad = false
-            _this.infiniteLoadCopy = false
             _this.pageNow++
           }
 
@@ -199,18 +187,15 @@ export default {
           }
         }
       })
-    },
+    }, 10),
     resetData(){
       this.hotelList = []
       this.pageNow = 1
       this.infiniteLoad = false
-      this.infiniteLoadCopy = false
     },
     // 跳转到酒店详情页（或分销页？）
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
-      sessionStorage.setItem('queryHotelPrice', true)
-      sessionStorage.setItem('initHotelShare', true)
       gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: hotel.type})
     }
   }

@@ -100,7 +100,6 @@ export default {
       this.$store.commit(`setCityType`, city.cityType)
       this.$store.commit(`setCommonState`, {k: 'cityId', v: city.cityId})
       this.$store.commit(`setCommonState`, {k: 'cityText', v: city.cityName})
-      sessionStorage.setItem('queryHotelList', 'query')
       this.$router.go(-1)
     },
   }

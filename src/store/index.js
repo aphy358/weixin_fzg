@@ -13,6 +13,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     // 默认深圳
+    countryId: '',
+    stateId: '',
     cityId: '70002',
     cityText: '深圳',
     cityType: '0',
