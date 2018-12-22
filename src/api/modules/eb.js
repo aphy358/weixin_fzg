@@ -45,4 +45,25 @@ export const syncEBQueryHotelList = (args, loading = false) => http.post("/vue/e
 
 
 
+
+
+
+
+// 房型列表页
+
+// 查询某一天的房态、房价数据
+export const syncEBQueryRoomStatusAndPriceForOneDay = (args, loading = false) => http.post("/vue/ebHotel/supplierQueryHotelRoom.do", args, loading)
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 这里有个问题，查询订单相关信息怎么用了三个接口？可否整合到一个接口？

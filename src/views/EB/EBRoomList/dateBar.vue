@@ -46,14 +46,25 @@ export default {
   name: 'dateBar',
   data(){
     return {
-      // 日期选择的日期值
+      // 日期选择框对应的日期值
       datePick: '',
+
+      // 配额类型
       mtypeText: '',
+
       monthText1: '',
       monthText2: '',
+
+      // 日历星期的数组
       totalWeekStrArr: [],
+
+      // 日历日期值的数组，
       totalDayStrArr: [],
+
+      // 日历条的宽度
       ulWidth: '',
+
+      // 当前被选中的日期
       activeDay: '',
     }
   },
@@ -127,9 +138,6 @@ export default {
         this.totalWeekStrArr.push( weekArr[(firstweek++ % 7)] )
         this.totalDayStrArr.push({dateStr: _dayStr, clazz: clazz, dayStr: (i + 1)})
       }
-    },
-    queryRoomStatusAndPriceForOneDay(){
-
     },
     // 返回当下年份中二月份的天数
     _leap(year){

@@ -14,6 +14,9 @@
 
       <!-- 日期选择操作栏 -->
       <DateBar @pickDate="pickDate" />
+
+      <!-- 房型列表 -->
+      <RoomList :roomList="roomList" />
       
     </div>
   </div>
@@ -27,6 +30,7 @@ import { Toast } from 'mint-ui'
 
 import Head from './head'
 import DateBar from './dateBar'
+import RoomList from './roomList'
 
 
 export default {
@@ -34,6 +38,7 @@ export default {
   data(){
     return {
       titleText: '',
+      roomList: [],
     }
   },
   props: {},
@@ -41,7 +46,8 @@ export default {
     GoBack,
     Loading,
     Head,
-    DateBar
+    DateBar,
+    RoomList
   },
   watch: {},
   created(){},
@@ -63,7 +69,11 @@ export default {
     pickDate($event){
       console.log($event);
       
-    }
+    },
+    // 查询某一天的房态、房价数据
+    queryRoomStatusAndPriceForOneDay(){
+
+    },
   }
 }
 </script>

@@ -25,6 +25,7 @@ window.historyObj = {
 }
 
 window.wx = wx
+window.router = router
 
 api.common.syncInitJSSDK({url: encodeURIComponent(location.href.split('#')[0])}).then(res => {
   if(res.returnCode == 1){

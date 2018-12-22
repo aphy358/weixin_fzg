@@ -4,7 +4,8 @@ import axios from "axios"
 import qs from 'qs'
 
 // https://github.com/rstacruz/nprogress
-import { Indicator } from 'mint-ui'
+import { Indicator, Toast } from 'mint-ui'
+// import { gotoPage, replacePage } from '@/assets/util'
 
 const printErrorInfo = info => {
   alert(info)
@@ -66,6 +67,18 @@ function _h(verb) {
             window.location.href = _loginurl
           }
         }
+
+        // 当请求出错或未登录时，在这里统一显示错误信息
+        if(response.data){
+          if(response.data.returnCode == 0 && response.data.returnMsg){
+            Toast(response.data.returnMsg)
+          }
+
+          // if(response.data.errcode == 'notLogin'){
+          //   replacePage(window.router, 'eblogin')
+          // }
+        }
+
 
         // api拦截 登录超时
         if (restPath != "/login" && response.data && (response.data.errorCode == 'INVALID_USER' || response.data.errorCode == 'Expired_Token')) {
