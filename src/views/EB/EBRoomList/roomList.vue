@@ -34,6 +34,7 @@
 			</li>
     </ul>
 
+    <!-- 房态房价编辑框 popup -->
     <RoomStatusPriceEditPopup 
       :visible="rSPPopupVisible"
       :checkedPriceType="checkedPriceType"

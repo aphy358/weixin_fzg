@@ -46,7 +46,7 @@
           <div class="rsp-popup-title">底价</div>
           <div class="rsp-popup-block">
             <div class="rsp-room-price-wrap">
-              <span>RMB</span>
+              <span>{{ getSupplierCurrency }}</span>
               <input type="number" v-model="checkedPriceType.basePrice" />
             </div>
           </div>
@@ -64,9 +64,10 @@ export default {
   name: 'roomStatusPriceEditPopup',
   data(){
     return {
-      rSPPopupVisible: false
+      rSPPopupVisible: false,
     }
   },
+  // formulaType：配额类型   typeFlag：房态、房价
   props: ['visible', 'checkedPriceType', 'activeDay', 'formulaType', 'typeFlag'],
   components: {},
   watch: {
@@ -79,9 +80,15 @@ export default {
       }
     }
   },
-  created(){},
-  activated(){},
-  computed: {},
+  created(){
+  },
+  activated(){
+  },
+  computed: {
+    getSupplierCurrency(){
+      return this.$store.state.eb.supplierCurrency
+    }
+  },
   mounted(){},
   methods:{
     // 隐藏房态房价 popup
@@ -153,7 +160,7 @@ export default {
     // 编辑房量
     inputRoomNum(){
       this.checkedPriceType.showStock = parseInt(this.checkedPriceType.showStock) || 0
-    }
+    },
   }
 }
 </script>
