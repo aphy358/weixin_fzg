@@ -88,6 +88,14 @@ let router = new Router({
       meta: {
         wechatAuth: false
       },
+    },
+    {
+      path: '/hotelOrderList',
+      name: 'hotelOrderList',
+      component: () => import('@/views/hotelOrderList/hotelOrderList.vue'),
+      meta: {
+        wechatAuth: false
+      },
     }
   ].concat(ebRouter),
   // scrollBehavior (to, from, savedPosition) {
