@@ -1,8 +1,8 @@
 <template>
   <div class="eb-roomList-head">
     <div class="eb-roomList-head-inner">
-      <span :class="{'active': titleType == 1}" @click="switchTitleType(1)">合约配额</span>
-      <span :class="{'active': titleType == 2}" @click="switchTitleType(2)">outside</span>
+      <span :class="{'active': formulaType == 1}" @click="switchFormulaType(1)">合约配额</span>
+      <span :class="{'active': formulaType == 2}" @click="switchFormulaType(2)">outside</span>
     </div>
   </div>
 </template>
@@ -13,10 +13,9 @@ export default {
   name: 'roomListHead',
   data(){
     return {
-      titleType: 1,
     }
   },
-  props: {},
+  props: ['formulaType'],
   components: {},
   watch: {},
   created(){},
@@ -25,9 +24,8 @@ export default {
   mounted(){},
   methods:{
     // 切换配额类型
-    switchTitleType(type){
-      this.titleType = type
-      this.$emit('switchType', type)
+    switchFormulaType(type){
+      this.$emit('switchFormulaType', type)
     }
   }
 }

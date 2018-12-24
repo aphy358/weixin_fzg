@@ -14,12 +14,12 @@ export const _ebRoomList = [
         priceTypeName: '价格类型二',
         status: 1,
         stock: 9,
-        sellStock: 0,
+        sellStock: 2,
         basePrice: '88.0'
       },
     ],
     canCutRoom: true,
-    roomType: '',
+    roomType: 'roomType1',
     roomTypeName: '单人房'
   },
   {
@@ -29,12 +29,12 @@ export const _ebRoomList = [
         priceTypeName: '价格类型一',
         status: 3,
         stock: 9,
-        sellStock: 0,
+        sellStock: 4,
         basePrice: '198.0'
       },
     ],
     canCutRoom: true,
-    roomType: '',
+    roomType: 'roomType2',
     roomTypeName: '豪华房'
   },
   {
@@ -44,12 +44,12 @@ export const _ebRoomList = [
         priceTypeName: '价格类型一',
         status: 5,
         stock: 9,
-        sellStock: 0,
+        sellStock: 5,
         basePrice: '195.0'
       },
     ],
     canCutRoom: false,
-    roomType: '',
+    roomType: 'roomType3',
     roomTypeName: '双人房'
   },
   {
@@ -59,12 +59,12 @@ export const _ebRoomList = [
         priceTypeName: '价格类型一',
         status: 2,
         stock: 9,
-        sellStock: 0,
+        sellStock: 6,
         basePrice: '195.0'
       },
     ],
     canCutRoom: false,
-    roomType: '',
+    roomType: 'roomType4',
     roomTypeName: '双人房'
   },
 ]

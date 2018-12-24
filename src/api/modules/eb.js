@@ -59,6 +59,14 @@ export const syncEBQueryRoomStatusAndPriceForOneDay = (args, loading = false) =>
 export const syncEBCutHotelRoom = (args, loading = false) => http.post("/vue/ebHotel/cutHotelRoom.do", args, loading)
 
 
+// 保存房态
+export const syncEBSaveRoomStatus = (args, loading = false) => http.post("/vue/ebHotel/supplierSaveHotelRoom.do", args, loading)
+
+
+// 保存房价
+export const syncEBSaveRoomPrice = (args, loading = false) => http.post("/vue/ebHotel/supplierSaveHotelPrice.do", args, loading)
+
+
 
 
 
