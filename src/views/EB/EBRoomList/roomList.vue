@@ -1,0 +1,289 @@
+<template>
+  <div class="eb-room-list-wrap">
+
+    <ul class="eb-room-type-list">
+      <li class="eb-room-type-item" v-for="(n, i) in roomList" :key="i">
+					<!-- <div class="switch-comp-wrap active${n.canCutRoom ? '' : ' disable'}${typeFlag === 'room-status' ? '' : ' hide'}"
+						data-roomType="${n.roomType}"
+						data-priceTypes="${priceTypes}"
+						data-staticInfoId="${n.hotelPriceEbDtoList[0].infoId}"
+					>
+						<span class="switch-comp-text1">开房</span>
+						<span class="switch-comp-text2">关房</span>
+						<span class="switch-comp-btn"></span>
+					</div> -->
+          <mt-switch 
+            class="switch-comp-wrap" :class="{'disabled': !n.canCutRoom}"  
+            v-if="typeFlag == 1" 
+            :value="n.canCutRoom"
+            @click.native="cutHotelRoom(n)"
+            :disabled="!n.canCutRoom">{{ n.canCutRoom ? '开房' : '关房' }}</mt-switch>
+
+					<div class="eb-room-type-row">
+						<div class="eb-room-type-row-left">
+							<span class="room-name">{{ n.roomTypeName }}</span>
+						</div>
+					</div>
+					
+          <div 
+            v-for="(o, j) in n.hotelPriceEbDtoList" :key="j"
+            class="eb-room-type-row eb-rate-type-item" :class="typeFlag" @click="clickSinglePriceType">
+            <div class="eb-room-type-row-left">
+              <span class="breakfast-name">{{ o.priceTypeName }}</span>
+            </div>
+            <div class="eb-room-type-row-right">
+              <span v-html="typeFlag == 1 ? getRoomStatusText(o) : getRoomPriceText(o)"></span>
+              <i class="iconfont icon-right-thin"></i>
+            </div>
+          </div>
+			</li>
+    </ul>
+    
+  </div>
+</template>
+
+<script>
+import { Toast } from 'mint-ui'
+import { debounce } from 'lodash'
+
+export default {
+  name: 'roomList',
+  data(){
+    return {}
+  },
+  props: ['roomList', 'typeFlag', 'hotelId', 'activeDay'],
+  components: {},
+  watch: {},
+  created(){},
+  activated(){},
+  computed: {},
+  mounted(){},
+  methods:{
+    // 获取房态字符串，0：剩余库存  1畅订  2：待查  3：满房   5不可超售
+    getRoomStatusText(price){
+      let roomStatusText = ''
+
+      switch(price.status){
+        case 0:
+          roomStatusText = '<span class="room-status-tag green">剩</span><span class="room-status-text color-gray">剩' + (price.stock - price.sellStock) + '间</span>';
+          break;
+        case 1:
+          roomStatusText = '<span class="room-status-tag green">畅</span>';
+          break;
+        case 2:
+          roomStatusText = '<span class="room-status-tag orange">待</span>';
+          break;
+        case 3:
+          roomStatusText = '<span class="room-status-tag red">满</span>';
+          break;
+        case 5:
+          roomStatusText = '<span class="room-status-tag blue">超</span><span class="room-status-text color-gray">剩' + (price.stock - price.sellStock) + '间</span>';
+          break;
+        default:
+          roomStatusText = ''
+      }
+
+      return roomStatusText;
+    },
+    // 获取房型价格字符串 DOM
+    getRoomPriceText(price){
+      return `
+        <span class="eb-room-price-text1">底:</span><span class="eb-room-price-text2">${price.basePrice}</span>
+      `
+    },
+    // 关房
+    cutHotelRoom: debounce(function(n){
+      if(n.canCutRoom){
+        let params = {
+          staticInfoId: this.hotelId,
+          checkInDates: this.activeDay,
+          roomTypes: n.roomType,
+          priceTypes: n.hotelPriceEbDtoList.map(o => o.priceType).join(','),
+          formulaTypes: this.typeFlag,
+        }
+
+        this.$api.eb.syncEBCutHotelRoom(params).then(res => {
+          if(res.returnCode === 1){
+            Toast('当前房型关房成功！')
+            this.$emit('refreshData')
+          }
+        })
+      }
+    }, 10),
+    // 点击单个价格类型进行设置
+    clickSinglePriceType(){
+
+    }
+  }
+
+}
+</script>
+
+<style lang="scss">
+.eb-room-list-wrap{
+
+  .color-gray,
+  .disabled{
+    color: #999999;
+  }
+
+  .eb-room-type-list{
+      overflow: hidden;
+      background: #efeff4;
+      margin: 0;
+  }
+
+  .eb-room-type-item{
+    position: relative;
+      background: white;
+      margin-bottom: 0.1rem;
+
+      .switch-comp-wrap{
+        display: block;
+        position: absolute;
+        right: 0.1rem;
+        top: 0.15rem;
+        z-index: 99;
+
+        .mint-switch-input:checked + .mint-switch-core::after{
+          transform: translateX(0.2rem);
+        }
+        
+        .mint-switch-core{
+          width: 0.4rem;
+          height: 0.21rem;
+          border: 0.01rem solid #d9d9d9;
+          border-radius: 0.16rem;
+
+          &::before{
+            width: 0.38rem;
+            height: 0.19rem;
+            border-radius: 0.15rem;
+          }
+
+          &:after{
+            width: 0.18rem;
+            height: 0.18rem;
+            border-radius: 0.15rem;
+          }
+        }
+
+        .mint-switch-label{
+          float: left;
+          margin-right: 0.05rem;
+        }
+
+        &.disabled{
+          .mint-switch-label{
+            color: #cccccc;
+          }
+        }
+      }
+  }
+
+  .eb-room-type-row{
+    position: relative;
+    height: 0.5rem;
+      line-height: 0.5rem;
+      padding: 0 0.1rem;
+  }
+
+  .eb-room-type-row:after{
+      content: '';
+      transform-origin: 50% 100%;
+      border-bottom: 0.01rem solid rgba(200, 199, 204, 0.65);
+      width: 100%;
+      height: 0;
+      transform: scaleY(0.5);
+      position: absolute;
+      left: 0;
+      bottom: 0;
+  }
+
+  .eb-room-price-text1{
+    float: left;
+      color: #E699D9;
+      font-size: 0.1rem;
+  }
+
+  .eb-room-price-text2{
+    float: left;
+      color: #EF38D0;
+  }
+
+  .eb-room-type-row .icon-right-thin{
+      color: rgba(200, 199, 204, 0.8);
+      font-size: 0.12rem;
+      float: right;
+  }
+
+  .eb-room-type-row:last-child:after{
+      content: none;
+  }
+
+  .eb-room-type-row-left{
+      float: left;
+      width: 60%;
+      margin-right: 0.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+
+  .eb-room-type-row-left .room-name{
+    border-left: 0.03rem solid orange;
+      padding-left: 0.08rem;
+  }
+
+  .eb-room-type-row-left .breakfast-name{
+      padding-left: 0.11rem;
+  }
+
+  .eb-room-type-row-right{
+
+  }
+
+  .eb-room-type-row-right .room-status-tag{
+      font-size: 0.1rem;
+      border-radius: 0.03rem;
+      float: left;
+      width: 0.16rem;
+      height: 0.16rem;
+      margin-top: 0.17rem;
+      margin-right: 0.1rem;
+      text-align: center;
+      line-height: 0.16rem;
+  }
+
+  .eb-room-type-row-right .room-status-tag.red{
+      background: #FFCCCC;
+      color: #F74363;
+  }
+
+  .eb-room-type-row-right .room-status-tag.green{
+    background: #CCFAEC;
+    color: #00AE73;
+  }
+
+  .eb-room-type-row-right .room-status-tag.blue{
+    background: #DCE5FC;
+    color: #4A72E1;
+  }
+
+  .eb-room-type-row-right .room-status-tag.orange{
+    background: #FCECD3;
+    color: #FF8400;
+  }
+
+  .room-status-text{
+    float: left;
+    font-size: 0.12rem;
+  }
+  .color-pink{
+      color: #F74363;
+      margin: 0 0.02rem;
+  }
+
+
+}
+</style>

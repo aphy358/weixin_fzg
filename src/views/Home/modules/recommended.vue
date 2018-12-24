@@ -3,7 +3,7 @@
     <!--精选酒店-->
     <div class="hotel-block-title">精选酒店</div>
 
-    <div class="hotel-block-item" v-for="n in recommendArr" :key="n.hotelId" :data-hid="n.hotelId">
+    <div class="hotel-block-item" v-for="n in recommendArr" :key="n.hotelId" @click="gotoHotelDetailPage(n)">
       <div class="h-b-img-wrap">
         <img :src="n.img">
         <div class="hotel-block-hname">{{ n.hotelName }}</div>
@@ -21,6 +21,7 @@
 
 <script>
 // 精选酒店
+import { gotoPage } from '@/assets/util'
 
 export default {
   name: 'recommended',
@@ -32,7 +33,7 @@ export default {
           img: 'http://image.jladmin.cn/real_1537842545089.jpg',
           hotelName: '济州神话世界度假酒店',
           location: '济州岛',
-          lowest: '240起'
+          lowest: '240起',
         },
         { // <!--广州长隆香江酒店 254542   -->
           hotelId: '254542',
@@ -127,6 +128,11 @@ export default {
   mounted(){
   },
   methods:{
+    // 跳转到酒店详情页
+    gotoHotelDetailPage(hotel){
+      this.$store.commit(`setCommonState`, {k: 'curHotel', v: null})
+      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.hotelId, cityType: hotel.type || '0'})
+    }
   }
 }
 </script>
