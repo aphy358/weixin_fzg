@@ -190,7 +190,6 @@ export default {
     // 跳转到酒店列表页
     gotoHotelList(){
       gotoPage(this.$router, 'hotelList')
-      sessionStorage.setItem('queryHotelList', 'query')
     },
     // 跳转到城市选择页面
     gotoCitySelect(){

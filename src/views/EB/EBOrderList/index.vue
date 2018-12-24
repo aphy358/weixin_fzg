@@ -190,8 +190,6 @@ export default {
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
-        }else{
-          Toast(res.returnMsg)
         }
       })
     },

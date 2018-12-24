@@ -76,9 +76,8 @@ export default {
   created(){
   },
   activated(){
-    if(sessionStorage.getItem('initHotelShare')){
+    if(!window.goBack){
       this.initHotelShare()
-      sessionStorage.removeItem('initHotelShare')
     }
   },
   deactivated(){

@@ -72,11 +72,11 @@ export default {
     unBind(){
       MessageBox.confirm('是否解绑当前账号？').then(action => {
         this.$api.eb.syncEBUnBind({}).then(res => {
+          console.log(res);
+          
           if(res.returnCode === 1){
             // 跳转到微信 eb 登录页
             replacePage(this.$router, 'eblogin')
-          }else{
-            Toast(res.returnMsg)
           }
         })
       });
@@ -111,8 +111,6 @@ export default {
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页
           replacePage(this.$router, 'eblogin')
-        }else{
-          Toast(res.returnMsg)
         }
       })
     },

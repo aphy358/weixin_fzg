@@ -48,7 +48,7 @@ export default {
   },
   props: {
   },
-  activated(){
+  deactivated(){
     this.showKeywordBoard = false
   },
   components: {

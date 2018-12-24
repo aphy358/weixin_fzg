@@ -1,13 +1,15 @@
 <template>
   <!-- banner 区域 -->
   <mt-swipe :auto="4000">
-    <mt-swipe-item v-for="n in bannerSwiper" :key="n.hotelId">
+    <mt-swipe-item v-for="n in bannerSwiper" :key="n.hotelId" @click.native="gotoHotelDetailPage(n)">
       <img :src="n.img" width="100%">
     </mt-swipe-item>
   </mt-swipe>
 </template>
 
 <script>
+import { gotoPage } from '@/assets/util'
+
 export default {
   name: 'banner',
   data(){
@@ -69,6 +71,11 @@ export default {
   mounted(){
   },
   methods:{
+    // 跳转到酒店详情页
+    gotoHotelDetailPage(hotel){
+      this.$store.commit(`setCommonState`, {k: 'curHotel', v: null})
+      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.hotelId, cityType: hotel.type || '0'})
+    }
   }
 }
 </script>

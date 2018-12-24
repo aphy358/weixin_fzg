@@ -112,8 +112,6 @@ export default {
             if(res.returnCode === 1){
               // TO DO 跳转到微信 eb 首页
               replacePage(this.$router, 'ebindex')
-            }else{
-              Toast(res.returnMsg)
             }
           })
         }
