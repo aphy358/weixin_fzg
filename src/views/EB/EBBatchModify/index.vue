@@ -18,12 +18,12 @@
         <div class="rsp-popup-title">房型、价格类型</div>
         <div class="rsp-popup-block items-float line-after" @click="roomTypeVisible = true">
           <div class="rsp-popup-label">房型</div>
-          <input type="text" placeholder="请选择房型" readonly>
+          <input type="text" placeholder="请选择房型" :value="getRPTText(1)" readonly>
           <i class="iconfont icon-right-thin"></i>
         </div>
         <div class="rsp-popup-block items-float" @click="priceTypeVisible = true">
           <div class="rsp-popup-label">价格类型</div>
-          <input type="text" placeholder="请选择价格类型" readonly>
+          <input type="text" placeholder="请选择价格类型" :value="getRPTText(2)" readonly>
           <i class="iconfont icon-right-thin"></i>
         </div>
 
@@ -320,6 +320,18 @@ export default {
         ? this.checkedRoomTypes = $event
         : this.checkedPriceTypes = $event
     },
+    getRPTText(flag){
+      if(this.mtype == 1){
+        return flag == 1
+          ? this.roomTypes.filter(n => this.checkedRoomTypes.includes(n.value)).map(n => n.label).join('，')
+          : this.priceTypes.filter(n => this.checkedPriceTypes.includes(n.value)).map(n => n.label).join('，')
+      }else{
+        return flag == 1
+          ? this.roomTypes.filter(n => this.checkedRoomTypes == n.value).map(n => n.label)
+          : this.priceTypes.filter(n => this.checkedPriceTypes == n.value).map(n => n.label)
+      }
+    },
+
   }
 }
 </script>
