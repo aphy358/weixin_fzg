@@ -100,13 +100,13 @@
 
       <!-- 房型选择 popup -->
       <RoomTypePopup 
-        :mtype="mtype" :visible="roomTypeVisible" :checkedRoomTypes="checkedRoomTypes" :roomTypes="roomTypes"
-        @hideRoomTypePopup="hideRoomTypePopup" @checked="checkedRTs" />
+        :mtype="mtype" :visible="roomTypeVisible" :checkedTypes="checkedRoomTypes" :types="roomTypes"
+        @hidePopup="hidePopup(1)" @checked="popupChecked($event, 1)" />
 
       <!-- 价格类型 popup -->
       <PriceTypePopup 
-        :mtype="mtype" :visible="priceTypeVisible" :checkedPriceTypes="checkedPriceTypes" :priceTypes="priceTypes"
-        @hidePriceTypePopup="hidePriceTypePopup" @checked="checkedPTs" />
+        :mtype="mtype" :visible="priceTypeVisible" :checkedTypes="checkedPriceTypes" :types="priceTypes"
+        @hidePopup="hidePopup(2)" @checked="popupChecked($event, 2)" />
 
     </div>
   </div>
@@ -310,17 +310,15 @@ export default {
         ? this.timeZoneArr.push({start: '', end: ''})
         : this.timeZoneArr.splice(i, 1)
     },
-    hideRoomTypePopup(){
-      this.roomTypeVisible = false
+    hidePopup(flag){
+      flag == 1
+        ? this.roomTypeVisible = false
+        : this.priceTypeVisible = false
     },
-    hidePriceTypePopup(){
-      this.priceTypeVisible = false
-    },
-    checkedRTs($event){
-      this.checkedRoomTypes = $event
-    },
-    checkedPTs($event){
-      this.checkedPriceTypes = $event
+    popupChecked($event, flag){
+      flag == 1
+        ? this.checkedRoomTypes = $event
+        : this.checkedPriceTypes = $event
     },
   }
 }

@@ -13,14 +13,14 @@
     <mt-radio
       v-if="mtype != 1"
       align="right"
-      v-model="checkedRoomTypesArr"
-      :options="roomTypesArr">
+      v-model="checkedRoomTypes"
+      :options="roomTypes">
     </mt-radio>
     <mt-checklist
       v-else
       align="right"
-      v-model="checkedRoomTypesArr"
-      :options="roomTypesArr">
+      v-model="checkedRoomTypes"
+      :options="roomTypes">
     </mt-checklist>
 
   </mt-popup>
@@ -34,26 +34,26 @@ export default {
     return {
       roomTypeVisible: false,
 
-      checkedRoomTypesArr: '',
-      roomTypesArr: [],
+      checkedRoomTypes: '',
+      roomTypes: [],
     }
   },
-  props: ['mtype', 'visible', 'checkedRoomTypes', 'roomTypes'],
+  props: ['mtype', 'visible', 'checkedTypes', 'types'],
   components: {},
   watch: {
     roomTypeVisible(){
       if(!this.roomTypeVisible){
         this.hidePopup()
       }else{
-        this.checkedRoomTypesArr = this.checkedRoomTypes
-        this.roomTypesArr = this.roomTypes
+        this.checkedRoomTypes = this.checkedTypes
+        this.roomTypes = this.types
       }
     },
     mtype(){
       if(this.mtype == 1){
-        this.checkedRoomTypesArr = []
+        this.checkedRoomTypes = []
       }else{
-        this.checkedRoomTypesArr = ''
+        this.checkedRoomTypes = ''
       }
     },
     visible(){
@@ -68,11 +68,11 @@ export default {
   mounted(){},
   methods:{
     hidePopup(){
-      this.$emit('hideRoomTypePopup')
+      this.$emit('hidePopup')
     },
     selectRoomType(){
       this.hidePopup()
-      this.$emit('checked', this.checkedRoomTypesArr)
+      this.$emit('checked', this.checkedRoomTypes)
     }
   }
 }
