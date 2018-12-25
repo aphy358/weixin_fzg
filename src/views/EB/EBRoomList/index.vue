@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page eb-roomlist-page">
 
     <!-- 头部 -->
     <mt-header :title="titleText"></mt-header>
@@ -13,7 +13,7 @@
       <Head :formulaType="formulaType" @switchFormulaType="switchFormulaType" />
 
       <!-- 日期选择操作栏 -->
-      <DateBar @pickDate="pickDate" />
+      <DateBar @pickDate="pickDate" :mtype="mtype" :formulaType="formulaType" :hotelId="hotelId" />
 
       <!-- 房型列表 -->
       <RoomList 
@@ -43,7 +43,7 @@ import { gotoPage, queryString } from '@/assets/util'
 import { Toast } from 'mint-ui'
 import { debounce } from 'lodash'
 
-import Head from './head'
+import Head from '../components/head'
 import DateBar from './dateBar'
 import RoomList from './roomList'
 
@@ -107,7 +107,7 @@ export default {
     getQueryParams(){
       this.mtype = queryString('mtype')
       this.hotelId = queryString('hotelId')
-      this.titleText = decodeURIComponent(queryString('hname')) + ' - ' + (this.mtype ? '房态' : '房价')
+      this.titleText = decodeURIComponent(queryString('hname')) + ' - ' + (this.mtype == 1 ? '房态' : '房价')
     },
     // 切换配额类型
     switchFormulaType($event){
