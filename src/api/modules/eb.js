@@ -72,6 +72,12 @@ export const syncEBSaveRoomPrice = (args, loading = false) => http.post("/vue/eb
 
 
 
+// 批量修改页
+
+// 查询 '房型' 和 '价格类型'
+export const syncEBQueryAlwaysType = (args, loading = false) => http.post("/vue/ebHotel/queryAlwaysType.do", args, loading)
+
+
 
 
 

@@ -16,12 +16,12 @@
 
         <!-- 房型、价格类型 -->
         <div class="rsp-popup-title">房型、价格类型</div>
-        <div class="rsp-popup-block items-float line-after">
+        <div class="rsp-popup-block items-float line-after" @click="roomTypeVisible = true">
           <div class="rsp-popup-label">房型</div>
           <input type="text" placeholder="请选择房型" readonly>
           <i class="iconfont icon-right-thin"></i>
         </div>
-        <div class="rsp-popup-block items-float">
+        <div class="rsp-popup-block items-float" @click="priceTypeVisible = true">
           <div class="rsp-popup-label">价格类型</div>
           <input type="text" placeholder="请选择价格类型" readonly>
           <i class="iconfont icon-right-thin"></i>
@@ -97,7 +97,17 @@
           </div>
         </div>
       </div>
-      
+
+      <!-- 房型选择 popup -->
+      <RoomTypePopup 
+        :mtype="mtype" :visible="roomTypeVisible" :checkedRoomTypes="checkedRoomTypes" :roomTypes="roomTypes"
+        @hideRoomTypePopup="hideRoomTypePopup" @checked="checkedRTs" />
+
+      <!-- 价格类型 popup -->
+      <PriceTypePopup 
+        :mtype="mtype" :visible="priceTypeVisible" :checkedPriceTypes="checkedPriceTypes" :priceTypes="priceTypes"
+        @hidePriceTypePopup="hidePriceTypePopup" @checked="checkedPTs" />
+
     </div>
   </div>
 </template>
@@ -110,18 +120,32 @@ import { Toast } from 'mint-ui'
 import { debounce } from 'lodash'
 
 import '../components/roomStatusPriceEditItems.scss'
+import '../components/srpChecklistRadio.scss'
 import Head from '../components/head'
+import RoomTypePopup from './roomTypePopup'
+import PriceTypePopup from './priceTypePopup'
 
 export default {
   name: 'ebbatchmodify',
   data(){
     return {
+      roomTypeVisible: false,
+      priceTypeVisible: false,
+
+      // 房型、价格类型
+      roomTypes: [],
+      priceTypes: [],
+
+      checkedRoomTypes: '',
+      checkedPriceTypes: '',
+
+
       weekTextArr: ['日', '一', '二', '三', '四', '五', '六'],
 
       titleText: '',
 
       // 1：房态管理    2：房价管理
-      mtype: '1',
+      mtype: '',
 
       // 1：合约配额    2：outside
       formulaType: '1',
@@ -157,13 +181,17 @@ export default {
   components: {
     GoBack,
     END,
-    Head
+    Head,
+    RoomTypePopup,
+    PriceTypePopup
   },
   watch: {},
-  created(){},
+  created(){
+  },
   activated(){
     if(!window.goBack){
       this.getQueryParams()
+      this.queryAlwaysType()
     }
   },
   computed: {
@@ -178,7 +206,32 @@ export default {
       this.mtype = queryString('mtype')
       this.formulaType = queryString('formulaType')
       this.hotelId = queryString('hotelId')
-      this.titleText = (this.mtype == 1 ? '房态' : '房价') + '批量修改'
+
+      if(this.mtype == 1){
+        this.checkedRoomTypes = []
+        this.checkedPriceTypes = []
+        this.titleText = '房态批量修改'
+      }else{
+        this.checkedRoomTypes = ''
+        this.checkedPriceTypes = ''
+        this.titleText = '房价批量修改'
+      }
+    },
+    // 查询房型、价格类型
+    queryAlwaysType(){
+      this.$api.eb.syncEBQueryAlwaysType({staticInfoId: this.hotelId}).then(res => {
+        //***测试 */
+        this.roomTypes = [
+          {ratetypeName: '价格一', ratetypeId: '5454', label: '价格一', value: '5454'},
+          {ratetypeName: '价格二', ratetypeId: '5453', label: '价格二', value: '5453'},
+        ]
+        this.priceTypes = [
+          {roomTypeName: '房型一', roomTypeId: '545', label: '房型一', value: '545'},
+          {roomTypeName: '房型二', roomTypeId: '544', label: '房型二', value: '544'},
+        ]
+        if(res.returnCode === 1){
+        }
+      })
     },
     // 切换配额类型
     switchFormulaType($event){
@@ -256,8 +309,19 @@ export default {
       i == 0
         ? this.timeZoneArr.push({start: '', end: ''})
         : this.timeZoneArr.splice(i, 1)
-    }
-
+    },
+    hideRoomTypePopup(){
+      this.roomTypeVisible = false
+    },
+    hidePriceTypePopup(){
+      this.priceTypeVisible = false
+    },
+    checkedRTs($event){
+      this.checkedRoomTypes = $event
+    },
+    checkedPTs($event){
+      this.checkedPriceTypes = $event
+    },
   }
 }
 </script>
@@ -341,54 +405,7 @@ export default {
       }
 
     }
-  }
-
-  @at-root .rsp-popup-weekqs{
-    display: flex;
-    justify-content: space-between;
-
-    .mint-radiolist-title{
-      display: none;
-    }
-
-    .mint-cell{
-      min-height: auto;
-
-      &:last-child{
-        background-image: unset;
-      }
-    }
-
-    .mint-cell-wrapper{
-      padding: 0;
-      background-image: unset;
-    }
-
-    .mint-radiolist-label{
-      padding: 0;
-    }
-
-    .mint-radio-label{
-      font-size: 0.14rem;
-      margin-left: 0.03rem;
-    }
-
-    .mint-radio-core{
-      width: 0.16rem;
-      height: 0.16rem;
-
-      &::after{
-        top: 0.03rem;
-        left: 0.03rem;
-      }
-    }
-
-    .mint-radio-input:checked + .mint-radio-core{
-      background-color: rgba(255, 118, 37, 0.8);
-      border-color: rgba(255, 118, 37, 0.8);
-    }
-
-  }
+  } 
 
 }
 </style>
