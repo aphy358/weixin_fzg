@@ -3,21 +3,15 @@
 
     <ul class="eb-room-type-list">
       <li class="eb-room-type-item" v-for="(n, i) in roomList" :key="i">
-					<!-- <div class="switch-comp-wrap active${n.canCutRoom ? '' : ' disable'}${typeFlag === 'room-status' ? '' : ' hide'}"
-						data-roomType="${n.roomType}"
-						data-priceTypes="${priceTypes}"
-						data-staticInfoId="${n.hotelPriceEbDtoList[0].infoId}"
-					>
-						<span class="switch-comp-text1">开房</span>
-						<span class="switch-comp-text2">关房</span>
-						<span class="switch-comp-btn"></span>
-					</div> -->
           <mt-switch 
             class="switch-comp-wrap" :class="{'disabled': !n.canCutRoom}"  
             v-if="typeFlag == 1" 
             :value="n.canCutRoom"
             @click.native="cutHotelRoom(n)"
-            :disabled="!n.canCutRoom">{{ n.canCutRoom ? '开房' : '关房' }}</mt-switch>
+            :disabled="!n.canCutRoom">
+            
+            {{ n.canCutRoom ? '开房' : '关房' }}
+          </mt-switch>
 
 					<div class="eb-room-type-row">
 						<div class="eb-room-type-row-left">
@@ -27,7 +21,7 @@
 					
           <div 
             v-for="(o, j) in n.hotelPriceEbDtoList" :key="j"
-            class="eb-room-type-row eb-rate-type-item" :class="typeFlag" @click="clickSinglePriceType">
+            class="eb-room-type-row eb-rate-type-item" :class="typeFlag" @click="clickSinglePriceType(o, n)">
             <div class="eb-room-type-row-left">
               <span class="breakfast-name">{{ o.priceTypeName }}</span>
             </div>
@@ -36,23 +30,52 @@
               <i class="iconfont icon-right-thin"></i>
             </div>
           </div>
+
 			</li>
     </ul>
-    
+
+    <!-- 房态房价编辑框 popup -->
+    <RoomStatusPriceEditPopup 
+      :visible="rSPPopupVisible"
+      :checkedPriceType="checkedPriceType"
+      @hidePopup="hidePopup"
+      @refreshData="refreshData"
+      :activeDay="activeDay"
+      :formulaType="formulaType"
+      :typeFlag="typeFlag" />
+
   </div>
 </template>
 
 <script>
 import { Toast } from 'mint-ui'
 import { debounce } from 'lodash'
+import RoomStatusPriceEditPopup from './roomStatusPriceEditPopup'
 
 export default {
   name: 'roomList',
   data(){
-    return {}
+    return {
+      // 设置单个房态房价的 popup 显示状态
+      rSPPopupVisible: false,
+
+      // 被点击到的价格类型
+      checkedPriceType: {
+        roomType: '',
+        roomTypeName: '',
+        showStock: '',
+        priceTypeName: '',
+        status: '',
+        basePrice: '',
+        priceType: '',
+        roomNumDisable: false
+      },
+    }
   },
-  props: ['roomList', 'typeFlag', 'hotelId', 'activeDay'],
-  components: {},
+  props: ['roomList', 'typeFlag', 'hotelId', 'activeDay', 'formulaType'],
+  components: {
+    RoomStatusPriceEditPopup
+  },
   watch: {},
   created(){},
   activated(){},
@@ -91,6 +114,9 @@ export default {
         <span class="eb-room-price-text1">底:</span><span class="eb-room-price-text2">${price.basePrice}</span>
       `
     },
+    refreshData(){
+      this.$emit('refreshData')
+    },
     // 关房
     cutHotelRoom: debounce(function(n){
       if(n.canCutRoom){
@@ -105,15 +131,41 @@ export default {
         this.$api.eb.syncEBCutHotelRoom(params).then(res => {
           if(res.returnCode === 1){
             Toast('当前房型关房成功！')
-            this.$emit('refreshData')
+            this.refreshData()
           }
         })
       }
     }, 10),
-    // 点击单个价格类型进行设置
-    clickSinglePriceType(){
+    // 点击单个价格类型弹出 popup 进行设置
+    clickSinglePriceType(price, room){
+      this.showPopup()
 
-    }
+      this.checkedPriceType.roomType      = room.roomType
+      this.checkedPriceType.roomTypeName  = room.roomTypeName
+      this.checkedPriceType.showStock     = price.stock - price.sellStock
+      this.checkedPriceType.priceTypeName = price.priceTypeName
+      this.checkedPriceType.status        = price.status
+      this.checkedPriceType.basePrice     = price.basePrice
+      this.checkedPriceType.priceType     = price.priceType
+
+      this.getRoomNumStatus(price.status)
+    },
+    // 获取 popup 房量输入框的状态
+    getRoomNumStatus(status){
+      if(status === 1 || status === 2 || status === 3){
+        this.checkedPriceType.roomNumDisable = true
+			}else{
+        this.checkedPriceType.roomNumDisable = false
+			}
+    },
+    // 显示房态房价 popup
+    showPopup(){
+      this.rSPPopupVisible = true
+    },
+    // 隐藏房态房价 popup
+    hidePopup(){
+      this.rSPPopupVisible = false
+    },
   }
 
 }
@@ -231,7 +283,7 @@ export default {
   }
 
   .eb-room-type-row-left .room-name{
-    border-left: 0.03rem solid orange;
+    border-left: 0.03rem solid #ff7625;
       padding-left: 0.08rem;
   }
 

@@ -85,6 +85,7 @@ export default {
     initCurrency(){
       this.$api.eb.syncSupplierInfo({}).then(res => {
         //*** 正式放开 */
+        this.$store.commit(`eb/setCommonState`, {k: 'supplierCurrency', v: 'RMB0'})
         return
         if(res.returnCode === 1){
           // TO DO，这里根据返回的权限控制几大菜单按钮的显示
@@ -105,8 +106,8 @@ export default {
           // (permission.indexOf('4') != -1)
           //   ? $("#toRoomPrice").parent().removeClass('hide')
           //   : $("#toRoomPrice").parent().addClass('hide');
-            
-            
+
+          this.$store.commit(`eb/setCommonState`, {k: 'supplierCurrency', v: res.supplierAccount.currency})
 
         }else if(res.errcode == 'notLogin'){
           // 跳转到微信 eb 登录页

@@ -4,6 +4,7 @@ import { addDays, _setCommonState } from "@/assets/util"
 
 // 引入各个子模块
 import home from './modules/home'
+import eb from './modules/eb'
 import hotelList from './modules/hotelList'
 import hotelDetail from './modules/hotelDetail'
 import orderWrite from './modules/orderWrite'
@@ -79,6 +80,7 @@ export default new Vuex.Store({
 
   modules: {
     home,
+    eb,
     hotelList,
     hotelDetail,
     orderWrite,
