@@ -1,0 +1,114 @@
+.rsp-popup-weekqs{
+  display: flex;
+  justify-content: space-between;
+
+  .mint-cell{
+    min-height: auto;
+
+    &:last-child{
+      background-image: unset;
+    }
+  }
+}
+
+.rsp-popup-wrap{
+  .mint-radiolist,
+  .mint-checklist{
+    padding: 0.1rem 0;
+  }
+
+  .mint-cell{
+    min-height: 0.45rem;
+    padding: 0 0.1rem;
+
+    &:after{
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      border-bottom: 0.01rem solid #EFEEEC;
+      width: 100%;
+      transform: scaleY(0.5);
+      transform-origin: 50% 100%;
+      z-index: 15;
+    }
+
+    &:last-child{
+      background-image: unset;
+
+      &::after{
+        content: none;
+      }
+    }
+  }
+}
+
+.rsp-popup-weekqs,
+.rsp-popup-wrap{
+
+  .mint-radiolist-title,
+  .mint-checklist-title{
+    display: none;
+  }
+
+  .mint-cell-wrapper{
+    padding: 0;
+    background-image: unset;
+  }
+
+  .mint-radiolist-label,
+  .mint-checklist-label{
+    padding: 0;
+  }
+
+  .mint-radio-label,
+  .mint-checkbox-label{
+    font-size: 0.14rem;
+    margin-left: 0.03rem;
+  }
+
+  .mint-radio-core,
+  .mint-checkbox-core{
+    width: 0.16rem;
+    height: 0.16rem;
+    border: 0.01rem solid #ccc;
+
+    &::after{
+      width: 0.08rem;
+      height: 0.08rem;
+      top: 0.03rem;
+      left: 0.03rem;
+    }
+  }
+
+  .mint-checkbox-core::after{
+    width: 0.04rem;
+    top: 0.025rem;
+    left: 0.05rem;
+  }
+
+  .mint-radio-input:checked + .mint-radio-core,
+  .mint-checkbox-input:checked + .mint-checkbox-core{
+    background-color: rgba(255, 118, 37, 0.8);
+    border-color: rgba(255, 118, 37, 0.8);
+  }
+
+}
+
+
+.rsp-toolbar{
+
+  button {
+    border: none;
+    width: 50%;
+    background: #f0f0f0;
+    color: #666666;
+    height: 0.4rem;
+    font-size: 0.16rem;
+    
+    &.submit {
+      color: white;
+      background: #ff7625;
+    }
+  }
+}

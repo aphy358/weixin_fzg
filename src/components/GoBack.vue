@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { goBackPage } from '@/assets/util'
 
 export default {
   name: '',
@@ -27,8 +28,7 @@ export default {
       if(this.onClick){
         this.onClick()
       }else{
-        window.historyObj.arr.pop()
-        this.$router.go(-1)
+        goBackPage(this.$router)
       }
     }
   }

@@ -10,7 +10,7 @@
           <input type="date" class="date" v-model="datePick">
         </div>
       </div>
-      <button>批量修改</button>
+      <button @click="gotoBatchModifyPage">批量修改</button>
       <span style="position: absolute;right: 0.8rem;top: 0;color: #999;">{{ mtypeText }}</span>
     </div>
 
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { queryString } from '@/assets/util'
+import { gotoPage, queryString } from '@/assets/util'
 
 const monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const weekArr = ['日', '一', '二', '三', '四', '五', '六']
@@ -66,9 +66,10 @@ export default {
 
       // 当前被选中的日期
       activeDay: '',
+
     }
   },
-  props: {},
+  props: ['mtype', 'formulaType', 'hotelId'],
   components: {},
   watch: {
     datePick(){
@@ -93,7 +94,7 @@ export default {
     },
     // 获取 url 参数
     getQueryParams(){
-      this.mtypeText = queryString('mtype') == '1' ? '房态管理' : '房价管理'
+      this.mtypeText = this.mtype == '1' ? '房态管理' : '房价管理'
     },
     // 初始化本月的日期 DOM
     initCurrentMonth(){
@@ -155,6 +156,10 @@ export default {
         this.activeDay = n.dateStr
         this.$emit('pickDate', this.activeDay)
       }
+    },
+    // 跳转到批量修改页面
+    gotoBatchModifyPage(){
+      gotoPage(this.$router, 'ebbatchmodify', {hotelId: this.hotelId, formulaType: this.formulaType, mtype: this.mtype})
     }
   }
 }
@@ -225,7 +230,7 @@ export default {
 }
 
 .eb-rsm-day-switch-wrap .line-two li.current{
-    background: orange;
+    background: rgba(255, 118, 37, 0.8);;
     color: white;
     border-radius: 50%;
 }

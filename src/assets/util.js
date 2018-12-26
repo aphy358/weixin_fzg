@@ -73,3 +73,9 @@ export const replacePage = (router, pageStr, query) => {
     ? router.replace({ path: pageStr, query: query})
     : router.replace(pageStr)
 }
+
+// 回退一个页面
+export const goBackPage = (router) => {
+  window.historyObj.arr.pop()
+  router.go(-1)
+}

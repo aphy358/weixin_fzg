@@ -59,11 +59,31 @@ export const syncEBQueryRoomStatusAndPriceForOneDay = (args, loading = false) =>
 export const syncEBCutHotelRoom = (args, loading = false) => http.post("/vue/ebHotel/cutHotelRoom.do", args, loading)
 
 
+// 保存房态
+export const syncEBSaveRoomStatus = (args, loading = false) => http.post("/vue/ebHotel/supplierSaveHotelRoom.do", args, loading)
+
+
+// 保存房价
+export const syncEBSaveRoomPrice = (args, loading = false) => http.post("/vue/ebHotel/supplierSaveHotelPrice.do", args, loading)
 
 
 
 
 
+
+
+// 批量修改页
+
+// 查询 '房型' 和 '价格类型'
+export const syncEBQueryAlwaysType = (args, loading = false) => http.post("/vue/ebHotel/queryAlwaysType.do", args, loading)
+
+
+// 批量保存房态
+export const syncEBBatchSaveRoomStatus = (args, loading = false) => http.post("/vue/ebHotel/queryShortcut.do", args, loading)
+
+
+// 批量保存房价
+export const syncEBBatchSaveRoomPrice = (args, loading = false) => http.post("/vue/ebHotel/queryPriceShortcut.do", args, loading)
 
 
 

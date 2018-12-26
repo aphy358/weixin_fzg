@@ -49,7 +49,7 @@ export default [{
 	{
 		path: '/ebbatchmodify',
 		name: 'ebbatchmodify',
-		component: () => import('@/views/EB/EBBatchModify.vue'),
+		component: () => import('@/views/EB/EBBatchModify/index.vue'),
 		meta: {
 			wechatAuth: false
 		},
