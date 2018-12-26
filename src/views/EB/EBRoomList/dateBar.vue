@@ -230,7 +230,7 @@ export default {
 }
 
 .eb-rsm-day-switch-wrap .line-two li.current{
-    background: orange;
+    background: rgba(255, 118, 37, 0.8);;
     color: white;
     border-radius: 50%;
 }

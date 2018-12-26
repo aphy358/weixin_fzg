@@ -47,14 +47,14 @@ export default {
       width: 50%;
       text-align: center;
       line-height: 0.32rem;
-      border: 0.01rem solid orange;
-      color: orange;
+      border: 0.01rem solid rgba(255, 118, 37, 0.8);;
+      color: rgba(255, 118, 37, 0.8);;
       background: white;
       box-sizing: border-box;
 
       &.active{
         color: white;
-        background: orange;
+        background: rgba(255, 118, 37, 0.8);;
       }
     }
   }

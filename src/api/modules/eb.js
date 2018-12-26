@@ -78,6 +78,12 @@ export const syncEBSaveRoomPrice = (args, loading = false) => http.post("/vue/eb
 export const syncEBQueryAlwaysType = (args, loading = false) => http.post("/vue/ebHotel/queryAlwaysType.do", args, loading)
 
 
+// 批量保存房态
+export const syncEBBatchSaveRoomStatus = (args, loading = false) => http.post("/vue/ebHotel/queryShortcut.do", args, loading)
+
+
+// 批量保存房价
+export const syncEBBatchSaveRoomPrice = (args, loading = false) => http.post("/vue/ebHotel/queryPriceShortcut.do", args, loading)
 
 
 

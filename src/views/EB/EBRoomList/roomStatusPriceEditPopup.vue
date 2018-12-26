@@ -46,8 +46,8 @@
           <div class="rsp-popup-title">底价</div>
           <div class="rsp-popup-block">
             <div class="rsp-room-price-wrap">
-              <span>{{ getSupplierCurrency }}</span>
               <input type="number" v-model="checkedPriceType.basePrice" />
+              <span>{{ getSupplierCurrency }}</span>
             </div>
           </div>
         </div>
