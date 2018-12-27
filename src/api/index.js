@@ -6,6 +6,7 @@ import * as orderWrite from './modules/orderWrite'
 import * as orderPay from './modules/orderPay'
 import * as myCenter from './modules/myCenter'
 import * as eb from './modules/eb'
+import * as qnb from './modules/qnb'
 
 const api = {
   common,
@@ -15,7 +16,8 @@ const api = {
   orderWrite,
   orderPay,
   myCenter,
-  eb
+  eb,
+  qnb
 }
 
 // define install for vue.use()
