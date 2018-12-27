@@ -82,6 +82,9 @@ export default {
       // 1：用于添加关注   2：直接由供应商页面进入到房型列表页
       pageType: '',
 
+      // 1：房态   2：房价
+      mtype: '',
+
       countryType: 0,
 
       hotelList: [],
@@ -122,6 +125,7 @@ export default {
     // 获取 url 参数
     getQueryParams(){
       this.pageType = queryString('pageType')
+      this.mtype = queryString('mtype')
     },
     // 清空关键字
     clearKeyWord(){
@@ -189,6 +193,9 @@ export default {
     gotoRoomListPage(n){
       let params = {infoId: n.infoId, suppId: n.suppId}
       this.$api.qnb.syncQNBHasAuthority(params).then(res => {
+
+        gotoPage(this.$router, 'qnbRoomList', {hname: encodeURIComponent(n.hname), mtype: this.mtype, hotelId: n.infoId, suppId: n.suppId})
+
         if(res.returnCode === 1){
           // TO DO
         }
@@ -206,7 +213,7 @@ export default {
     // 单击某个供应商，或关注，或跳转到房型列表页面 // 1：用于添加关注   2：直接由供应商页面进入到房型列表页
     clickOneSupplier(o, n){
       if(this.pageType == 2){
-        this.gotoRoomListPage({infoId: n.i, suppId: o.suppId})
+        this.gotoRoomListPage({infoId: n.i, suppId: o.suppId, hname: n.n})
       }else{
         if(o.hasAttention){
           Toast('已关注该供应商！')
@@ -227,13 +234,14 @@ export default {
 
 <style lang="scss">
 .supplier-list-KWI-outer{
-  margin: 0.1rem;
+  padding: 0.1rem;
   overflow: hidden;
 
   select{
     float: left;
     width: 0.52rem;
     padding: 0 0.05rem;
+    color: #ff7625;
     border: none;
     border-radius: 0.02rem;
     line-height: 0.4rem;
@@ -247,6 +255,7 @@ export default {
     background: white;
     border-radius: 0.02rem;
     line-height: 0.4rem;
+    box-shadow: 0 0 0.05rem 0 rgba(0, 0, 0, 0.1);
 
     .iconfont{
       color: #ccc;
@@ -262,6 +271,7 @@ export default {
 }
 
 .qnb-hotel-list{
+  margin-top: -0.1rem;
 
   @at-root .qnb-hotel-item{
     margin: 0.1rem;

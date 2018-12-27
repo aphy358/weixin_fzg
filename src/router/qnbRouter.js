@@ -30,22 +30,14 @@ export default [{
 			wechatAuth: false
 		},
 	},
-	// {
-	// 	path: '/ebhotellist',
-	// 	name: 'ebhotellist',
-	// 	component: () => import('@/views/QNB/EBHotelList.vue'),
-	// 	meta: {
-	// 		wechatAuth: false
-	// 	},
-	// },
-	// {
-	// 	path: '/ebroomlist',
-	// 	name: 'ebroomlist',
-	// 	component: () => import('@/views/QNB/EBRoomList/index.vue'),
-	// 	meta: {
-	// 		wechatAuth: false
-	// 	},
-	// },
+	{
+		path: '/qnbRoomList',
+		name: 'qnbRoomList',
+		component: () => import('@/views/QNB/QNBRoomList/index.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
 	// {
 	// 	path: '/ebbatchmodify',
 	// 	name: 'ebbatchmodify',
