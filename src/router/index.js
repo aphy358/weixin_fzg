@@ -4,6 +4,7 @@ import axios from 'axios'
 import wechatPlugin from '@/plugins/vue-wechat-plugin'
 import Home from '@/views/Home/home.vue'
 import ebRouter from './ebRouter'
+import qnbRouter from './qnbRouter'
 
 let router = new Router({
   mode: 'history',
@@ -97,7 +98,7 @@ let router = new Router({
         wechatAuth: false
       },
     }
-  ].concat(ebRouter),
+  ].concat(ebRouter).concat(qnbRouter),
   // scrollBehavior (to, from, savedPosition) {
   //   if (savedPosition) {
   //     return savedPosition
