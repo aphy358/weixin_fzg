@@ -174,11 +174,15 @@ export default {
         .info-name{
           color: #333;
           font-size: 0.14rem;
+          height: 0.14rem;
+          line-height: 0.14rem;
           margin-bottom: 0.05rem;
         }
 
         .supp-name{
           font-size: 0.12rem;
+          height: 0.12rem;
+          line-height: 0.12rem;
         }
       }
     }
