@@ -89,7 +89,7 @@ export default {
     },
     // 跳转到 qnb 供应商列表页，flag： 1：房态管理   2：房价管理
     gotoSupplierListPage(flag){
-      gotoPage(this.$router, 'qnbSupplierList', {pageType: 2})
+      gotoPage(this.$router, 'qnbSupplierList', {pageType: 2, mtype: 1})
     }
   }
 }

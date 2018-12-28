@@ -37,3 +37,23 @@ export const syncQNBQuerySuppliers = (args, loading = true) => http.post("/vue/q
 // 根据关键字查酒店列表
 export const syncQNBQueryHotels = (args, loading = false) => http.post("/vue/qnbPersonalCenter/suggestHotel.do", args, loading)
 
+
+
+
+
+// 房型列表页
+
+// 查询某一天的房态、房价数据
+export const syncQNBQueryRoomStatusAndPriceForOneDay = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/supplierQueryHotelRoom.do", args, loading)
+
+
+// 关房
+export const syncQNBCutHotelRoom = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/cutHotelRoom.do", args, loading)
+
+
+// 保存房态
+export const syncQNBSaveRoomStatus = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelRoom.do", args, loading)
+
+
+// 保存房价
+export const syncQNBSaveRoomPrice = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelPrice.do", args, loading)

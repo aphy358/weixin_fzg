@@ -138,6 +138,9 @@ export default {
     gotoRoomListPage(n){
       let params = {infoId: n.infoId, suppId: n.suppId}
       this.$api.qnb.syncQNBHasAuthority(params).then(res => {
+
+        gotoPage(this.$router, 'qnbRoomList', {hname: encodeURIComponent(n.infoName), mtype: 1, hotelId: n.infoId, suppId: n.suppId})
+
         if(res.returnCode === 1){
           // TO DO
         }
@@ -145,7 +148,7 @@ export default {
     },
     // 跳转到供应商列表页面，添加关注
     gotoSupplierListPage(){
-      gotoPage(this.$router, 'qnbSupplierList', {pageType: 1})
+      gotoPage(this.$router, 'qnbSupplierList', {pageType: 2, mtype: 1})
     }
   }
 }
