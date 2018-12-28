@@ -1,5 +1,5 @@
 <template>
-  <div class="page eb-batchmodify-page">
+  <div class="page qnb-batchmodify-page">
 
     <!-- 头部 -->
     <mt-header :title="titleText"></mt-header>
@@ -105,7 +105,7 @@
 
 
       <div style="padding: 0.2rem 0.1rem;">
-        <button class="eb-batch-save" @click="saveAll">保存</button>
+        <button class="qnb-batch-save" @click="saveAll">保存</button>
       </div>
 
     </div>
@@ -127,7 +127,7 @@ import PriceTypePopup from './priceTypePopup'
 import RoomPriceType from './roomPriceType'
 
 export default {
-  name: 'ebbatchmodify',
+  name: 'qnbBatchModify',
   data(){
     return {
       roomTypeVisible: false,
@@ -154,6 +154,9 @@ export default {
 
       // 当前酒店 ID
       hotelId: '',
+
+      // 当前供应商 ID
+      suppId: '',
 
       // 房态，0：剩余库存  1畅订  2：待查  3：满房   5不可超售
       roomStatus: '0',
@@ -202,7 +205,7 @@ export default {
   },
   computed: {
     getSupplierCurrency(){
-      return this.$store.state.eb.supplierCurrency
+      // return this.$store.state.qnb.supplierCurrency
     }
   },
   mounted(){},
@@ -212,6 +215,7 @@ export default {
       this.mtype = queryString('mtype')
       this.formulaType = queryString('formulaType')
       this.hotelId = queryString('hotelId')
+      this.suppId = queryString('suppId')
 
       if(this.mtype == 1){
         this.checkedRoomTypes = []
@@ -225,7 +229,7 @@ export default {
     },
     // 查询房型、价格类型
     queryAlwaysType(){
-      this.$api.eb.syncEBQueryAlwaysType({staticInfoId: this.hotelId}).then(res => {
+      this.$api.qnb.syncQNBQueryAlwaysType({staticInfoId: this.hotelId, suppId: this.suppId}).then(res => {
         //***测试 */
         this.roomTypes = [
           {ratetypeName: '价格一', ratetypeId: '5454', label: '价格一', value: '5454'},
@@ -372,20 +376,21 @@ export default {
       if(!this.validate())  return
 
       let params = {
-        staticInfoId: this.hotelId,
-				checkInDates: this.timeZoneArr.map(n => n.start).join(','),
-				checkOutDates: this.timeZoneArr.map(n => n.end).join(','),
-				roomTypes: this.mtype == 1 ? this.checkedRoomTypes.join(',') : this.checkedRoomTypes,
-				priceTypes: this.mtype == 1 ? this.checkedPriceTypes.join(',') : this.checkedPriceTypes,
-				formulaTypes: this.formulaType,
-				weekRange: this.checkedWeekArr.join(''),
+        staticInfoId:   this.hotelId,
+				checkInDates:   this.timeZoneArr.map(n => n.start).join(','),
+				checkOutDates:  this.timeZoneArr.map(n => n.end).join(','),
+				roomTypes:      this.mtype == 1 ? this.checkedRoomTypes.join(',') : this.checkedRoomTypes,
+				priceTypes:     this.mtype == 1 ? this.checkedPriceTypes.join(',') : this.checkedPriceTypes,
+				formulaTypes:   this.formulaType,
+        weekRange:      this.checkedWeekArr.join(''),
+        suppId:         this.suppId
       }
 
       if(this.mtype == 1){
 				params.status = this.roomStatus
         params.remainStock = this.showStock
 
-        this.$api.eb.syncEBBatchSaveRoomStatus(params).then(res => {
+        this.$api.qnb.syncQNBBatchSaveRoomStatus(params).then(res => {
           if(res.returnCode === 1){
             Toast('批量设置成功')
             goBackPage(this.$router)
@@ -395,7 +400,7 @@ export default {
 				params.priceAdjustStyle = this.priceAdjustStyle
         params.basePrice = this.basePrice
         
-        this.$api.eb.syncEBBatchSaveRoomPrice(params).then(res => {
+        this.$api.qnb.syncQNBBatchSaveRoomPrice(params).then(res => {
           if(res.returnCode === 1){
             Toast('批量设置成功')
             goBackPage(this.$router)
@@ -515,7 +520,7 @@ export default {
 
 }
 
-.eb-batch-save{
+.qnb-batch-save{
   height: 0.4rem;
   border: none;
   width: 100%;
