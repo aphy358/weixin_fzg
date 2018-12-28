@@ -57,3 +57,21 @@ export const syncQNBSaveRoomStatus = (args, loading = false) => http.post("/vue/
 
 // 保存房价
 export const syncQNBSaveRoomPrice = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelPrice.do", args, loading)
+
+
+
+
+
+
+// 批量修改页
+
+// 查询 '房型' 和 '价格类型'
+export const syncQNBQueryAlwaysType = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/queryAlwaysType.do", args, loading)
+
+
+// 批量保存房态
+export const syncQNBBatchSaveRoomStatus = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/queryShortcut.do", args, loading)
+
+
+// 批量保存房价
+export const syncQNBBatchSaveRoomPrice = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/queryPriceShortcut.do", args, loading)

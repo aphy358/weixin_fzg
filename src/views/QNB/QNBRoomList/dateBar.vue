@@ -69,7 +69,7 @@ export default {
 
     }
   },
-  props: ['mtype', 'formulaType', 'hotelId'],
+  props: ['mtype', 'formulaType', 'hotelId', 'suppId'],
   components: {},
   watch: {
     datePick(){
@@ -159,7 +159,7 @@ export default {
     },
     // 跳转到批量修改页面
     gotoBatchModifyPage(){
-      gotoPage(this.$router, 'ebbatchmodify', {hotelId: this.hotelId, formulaType: this.formulaType, mtype: this.mtype})
+      gotoPage(this.$router, 'qnbBatchModify', {hotelId: this.hotelId, formulaType: this.formulaType, mtype: this.mtype, suppId: this.suppId})
     }
   }
 }

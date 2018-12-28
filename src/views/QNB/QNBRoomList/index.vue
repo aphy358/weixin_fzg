@@ -13,7 +13,7 @@
       <Head :formulaType="formulaType" @switchFormulaType="switchFormulaType" />
 
       <!-- 日期选择操作栏 -->
-      <DateBar @pickDate="pickDate" :mtype="mtype" :formulaType="formulaType" :hotelId="hotelId" />
+      <DateBar @pickDate="pickDate" :mtype="mtype" :formulaType="formulaType" :hotelId="hotelId" :suppId="suppId" />
 
       <!-- 房型列表 -->
       <RoomList 

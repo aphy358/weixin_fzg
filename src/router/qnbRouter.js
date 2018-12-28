@@ -38,12 +38,12 @@ export default [{
 			wechatAuth: false
 		},
 	},
-	// {
-	// 	path: '/ebbatchmodify',
-	// 	name: 'ebbatchmodify',
-	// 	component: () => import('@/views/QNB/EBBatchModify/index.vue'),
-	// 	meta: {
-	// 		wechatAuth: false
-	// 	},
-	// },
+	{
+		path: '/qnbBatchModify',
+		name: 'qnbBatchModify',
+		component: () => import('@/views/QNB/QNBBatchModify/index.vue'),
+		meta: {
+			wechatAuth: false
+		},
+	},
 ]
