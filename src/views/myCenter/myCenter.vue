@@ -1,10 +1,10 @@
 <!-- 组件说明 -->
 <template>
-	<div class="my-center">
+	<div class="page my-center">
 		
 		<GoBack/>
 		
-		<div class="head-background clearfix">
+		<div class="page-content head-background clearfix">
 			<div class="head-txt fl">
 				<p class="nick-name">李白</p>
 				<span class="status">管理员</span>
@@ -176,6 +176,10 @@
 </style>
 
 <style lang="scss">
+	
+	.mint-cell-wrapper{
+		font-size: 0.16rem;
+	}
 	.fl{
 		float: left;
 	}

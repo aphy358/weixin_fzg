@@ -44,8 +44,12 @@
 			</li>
 			<li>
 				<span class="filter-type">入离日期</span>
-				<input type="date" placeholder="选择入住日期" v-model="params.beginDate">
-				<input type="date" placeholder="选择离店日期" v-model="params.endDate">
+				<div class="date-input-box">
+					<input type="date" v-model="params.beginDate">
+					<input class="start-date" placeholder="选择入住日期">
+					<input type="date" v-model="params.endDate">
+					<input class="end-date" placeholder="选择离店日期">
+				</div>
 			</li>
 			<li>
 				<span class="filter-type">订单号</span>
@@ -98,24 +102,7 @@
 		
 		<div class="cancel-reason" :class="reasonVisible ? 'reason-shown' : 'reason-hidden'">
 			<p class="cancel-reason-title">请选择取消订单的原因：</p>
-			<label>
-				<input type="radio" value="-1" title="取消订单" name="cancelReason">取消订单
-			</label>
-			<label>
-				<input type="radio" value="0" title="行程改变" name="cancelReason">行程改变
-			</label>
-			<label>
-				<input type="radio" value="1" title="无法满足需求" name="cancelReason">无法满足需求
-			</label>
-			<label>
-				<input type="radio" value="2" title="其他途径预定" name="cancelReason">其他途径预定
-			</label>
-			<label>
-				<input type="radio" value="3" title="酒店价格太贵" name="cancelReason">酒店价格太贵
-			</label>
-			<label>
-				<input type="radio" value="4" title="其他" name="cancelReason">其他
-			</label>
+			<mt-radio v-model="cancelReasonId" :options="reasonList"></mt-radio>
 			<div class="button-box">
 				<button class="cancel" @click="unCancelOrder">取消</button>
 				<button class="ensure" @click="ensureCancelOrder">确定</button>
@@ -132,7 +119,7 @@
     
     data() {
       return {
-        filterVisible: false,
+        filterVisible: true,
         orderList: [
           {
             hotelName: '深圳东华假日酒店'
@@ -153,7 +140,34 @@
           innerStatus: '',
           paymentStatus: ''
         },
-        reasonVisible: false
+        reasonVisible: false,
+        cancelReasonId: '',
+        reasonList: [
+          {
+            value: '-1',
+            label: '取消订单'
+          },
+          {
+            value: '0',
+            label: '行程改变'
+          },
+          {
+            value: '1',
+            label: '无法满足需求'
+          },
+          {
+            value: '2',
+            label: '其他途径预定'
+          },
+          {
+            value: '3',
+            label: '酒店价格太贵'
+          },
+          {
+            value: '4',
+            label: '其他'
+          }
+        ]
       }
     },
     
@@ -315,14 +329,43 @@
 				text-align: right;
 			}
 			
-			>input,>select{
+			input,select,.date-input-box{
 				flex: 1;
 				/*height: 0.26rem;*/
 				padding: 0 0.1rem;
 				border-radius: 0;
 				box-sizing: border-box;
 				border: none;
-				line-height: 0.5rem;
+				/*background: none;*/
+				line-height: 0.32rem;
+				margin: 0.09rem 0;
+			}
+			
+			.date-input-box{
+				position: relative;
+				input{
+					width: 1.8rem;
+					margin-top: 0;
+					background: transparent;
+					position: relative;
+					z-index: 10009;
+				}
+				
+				.start-date{
+					position: absolute;
+					top: 0;
+					left: 0.2rem;
+					color: #d8d8dc;
+					z-index: 10008;
+				}
+				
+				.end-date{
+					position: absolute;
+					top: 0.45rem;
+					left: 0.2rem;
+					color: #d8d8dc;
+					z-index: 10008;
+				}
 			}
 			
 			.reset{
@@ -386,31 +429,33 @@
 			background-color: #ff7625;
 			color: #ffffff;
 			margin-bottom: 0.2rem;
+			font-size: 0.14rem;
 		}
 		
-		>label{
-			display: block;
-			line-height: 0.26rem;
-			padding-left: 0.2rem;
-			color: #747477;
-			
-			>input{
-				margin-right: 0.06rem;
-				vertical-align: middle;
-			}
-		}
+		/*>label{*/
+			/*display: block;*/
+			/*line-height: 0.26rem;*/
+			/*padding-left: 0.2rem;*/
+			/*color: #747477;*/
+			/**/
+			/*>input{*/
+				/*margin-right: 0.06rem;*/
+				/*vertical-align: middle;*/
+			/*}*/
+		/*}*/
 		
 		@at-root .button-box{
 			text-align: center;
 			margin-top: 0.3rem;
 			border-top: 0.5px solid #dddddd;
+			font-size: 0.14rem;
 			
 			.cancel{
 				background-color: #fff;
 				color: #92bddb;
 				border: none;
 				width: 50%;
-				height: 0.32rem;
+				height: 0.4rem;
 				border-right: 0.5px solid #dddddd;
 				border-radius: 0 0 0 4px;
 			}
@@ -420,7 +465,7 @@
 				color: #ff592c;
 				border: none;
 				width: 50%;
-				height: 0.32rem;
+				height: 0.4rem;
 				border-radius: 0 0 4px 0;
 			}
 		}
@@ -435,5 +480,30 @@
 	
 	.fr{
 		float: right;
+	}
+	
+	.mint-cell-wrapper{
+		background: none;
+		line-height: 0.34rem;
+		font-size: 0.12rem;
+	}
+	
+	.mint-cell{
+		min-height: 0.34rem;
+	}
+	
+	.mint-cell:last-child{
+		background: none;
+	}
+	
+	.mint-radio-core{
+		width: 0.16rem;
+		height: 0.16rem;
+	}
+	.mint-radio-core::after{
+		width: 0.06rem;
+		height: 0.06rem;
+		top: 0.04rem;
+		left: 0.04rem;
 	}
 </style>
