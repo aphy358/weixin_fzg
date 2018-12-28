@@ -9,7 +9,9 @@
 		
 		
 		<div class="page-content">
-			<div class="order-list">
+			<div class="no-order" v-show="orderList.length <= 0"><i class="iconfont icon-warning" style="margin-right: 0.05rem;line-height: 0.8rem;"></i>暂无订单</div>
+			
+			<div class="order-list" v-show="orderList.length > 0">
 				<div class="per-order" v-for="(item, index) in orderList" :key="index">
 					<p class="order-title clearfix">
 						<span class="hotel-name fl">{{item.hotelName}}</span>
@@ -26,7 +28,7 @@
 						<span class="order-total">￥1916.25</span>
 					</div>
 					<div class="operate-order">
-						<button>取消订单</button>
+						<button @click="cancelOrder">取消订单</button>
 						<button>去支付</button>
 					</div>
 				</div>
@@ -34,7 +36,7 @@
 		</div>
 		
 		
-		<div class="filter-mask" v-show="filterVisible" @click="hideFilter"></div>
+		<div class="filter-mask" v-show="filterVisible || reasonVisible" @click="hideFilter"></div>
 		<ul class="filter-panel" :style="'right:' + (filterVisible ? '0' : '-2.9rem')">
 			<li>
 				<span class="filter-type">酒店名</span>
@@ -51,7 +53,7 @@
 			</li>
 			<li>
 				<span class="filter-type">客户订单号</span>
-				<input type="text" placeholder="请输入客户订单号">
+				<input type="text" placeholder="请输入客户订单号" v-model="params.customerOrderCode">
 			</li>
 			<li>
 				<span class="filter-type">入住人</span>
@@ -59,7 +61,7 @@
 			</li>
 			<li>
 				<span class="filter-type">预订员</span>
-				<select name="orderMan" id="orderMan" title="预订员">
+				<select name="orderMan" id="orderMan" title="预订员" v-model="params.bookMan">
 					<option value="0">全选</option>
 					<option value="1">测试</option>
 				</select>
@@ -93,6 +95,32 @@
 				<button class="ensure" @click="ensure">确认</button>
 			</li>
 		</ul>
+		
+		<div class="cancel-reason" :class="reasonVisible ? 'reason-shown' : 'reason-hidden'">
+			<p class="cancel-reason-title">请选择取消订单的原因：</p>
+			<label>
+				<input type="radio" value="-1" title="取消订单" name="cancelReason">取消订单
+			</label>
+			<label>
+				<input type="radio" value="0" title="行程改变" name="cancelReason">行程改变
+			</label>
+			<label>
+				<input type="radio" value="1" title="无法满足需求" name="cancelReason">无法满足需求
+			</label>
+			<label>
+				<input type="radio" value="2" title="其他途径预定" name="cancelReason">其他途径预定
+			</label>
+			<label>
+				<input type="radio" value="3" title="酒店价格太贵" name="cancelReason">酒店价格太贵
+			</label>
+			<label>
+				<input type="radio" value="4" title="其他" name="cancelReason">其他
+			</label>
+			<div class="button-box">
+				<button class="cancel" @click="unCancelOrder">取消</button>
+				<button class="ensure" @click="ensureCancelOrder">确定</button>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -105,7 +133,7 @@
     
     data() {
       return {
-        filterVisible: true,
+        filterVisible: false,
         orderList: [
           {
             hotelName: '深圳东华假日酒店'
@@ -123,9 +151,10 @@
 //          endDate: '',
 //          orderCode: '',
 //          userName: '',
-//          innerStatus: '',
-//          paymentStatus: ''
-        }
+          innerStatus: '',
+          paymentStatus: ''
+        },
+        reasonVisible: false
       }
     },
     
@@ -153,6 +182,15 @@
         this.$api.myCenter.syncOrderList(this.params).then(res => {
           console.log(res);
         })
+      },
+      cancelOrder(){
+        this.reasonVisible = true;
+      },
+      unCancelOrder(){
+        this.reasonVisible = false;
+      },
+      ensureCancelOrder(){
+        this.reasonVisible = false;
       }
     }
   }
@@ -161,6 +199,13 @@
 <style scoped lang="scss">
 	.page-content{
 		background-color: #efeff4;
+		
+		@at-root .no-order{
+			text-align: center;
+			line-height: 0.8rem;
+			color: #92bddb;
+			font-size: 0.16rem;
+		}
 		
 		@at-root .order-list{
 			padding: 0.2rem 0.1rem;
@@ -209,7 +254,7 @@
 				
 				
 				@at-root .operate-order{
-					padding: 0rem 0.1rem 0.2rem;
+					padding: 0 0.1rem 0.2rem;
 					text-align: right;
 					
 					>button{
@@ -288,10 +333,8 @@
 				color: #ffffff;
 				border-radius: 4px;
 				border: none;
-				/*margin-right: 0.4rem;*/
 				height: 0.32rem;
 				padding: 0 0.2rem;
-				/*flex: 1;*/
 			}
 			
 			.ensure{
@@ -302,7 +345,85 @@
 				border: none;
 				height: 0.32rem;
 				padding: 0 0.2rem;
-				/*flex: 1;*/
+			}
+		}
+	}
+	
+	@at-root .cancel-reason{
+		position: fixed;
+		top: 1.2rem;
+		left: 50%;
+		width: 3rem;
+		margin-left: -1.5rem;
+		height: auto;
+		background-color: #fff;
+		z-index: 10002;
+		/*padding-bottom: 0.1rem;*/
+		box-sizing: border-box;
+		transition: all 0.2s;
+		font-size: 0.12rem;
+		border-radius: 4px;
+		
+		&.reason-shown{
+			animation: bigger .3s ease-out forwards;
+		}
+		
+		&.reason-hidden{
+			animation: smaller .2s ease-out forwards;
+		}
+		
+		@keyframes bigger{
+			0%{transform:scale(0)}
+			100%{transform:scale(1)}
+		}
+		
+		@keyframes smaller{
+			0%{transform:scale(1)}
+			100%{transform:scale(0)}
+		}
+		
+		.cancel-reason-title{
+			line-height: 0.4rem;
+			padding-left: 0.2rem;
+			background-color: #ff7625;
+			color: #ffffff;
+			margin-bottom: 0.2rem;
+		}
+		
+		>label{
+			display: block;
+			line-height: 0.26rem;
+			padding-left: 0.2rem;
+			color: #747477;
+			
+			>input{
+				margin-right: 0.06rem;
+				vertical-align: middle;
+			}
+		}
+		
+		@at-root .button-box{
+			text-align: center;
+			margin-top: 0.3rem;
+			border-top: 0.5px solid #dddddd;
+			
+			.cancel{
+				background-color: #fff;
+				color: #92bddb;
+				border: none;
+				width: 50%;
+				height: 0.32rem;
+				border-right: 0.5px solid #dddddd;
+				border-radius: 0 0 0 4px;
+			}
+			
+			.ensure{
+				background-color: #fff;
+				color: #ff592c;
+				border: none;
+				width: 50%;
+				height: 0.32rem;
+				border-radius: 0 0 4px 0;
 			}
 		}
 	}
