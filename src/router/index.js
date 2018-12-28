@@ -97,6 +97,14 @@ let router = new Router({
       meta: {
         wechatAuth: false
       },
+    },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: () => import('@/views/orderDetail/orderDetail.vue'),
+      meta: {
+        wechatAuth: false
+      },
     }
   ].concat(ebRouter).concat(qnbRouter),
   // scrollBehavior (to, from, savedPosition) {

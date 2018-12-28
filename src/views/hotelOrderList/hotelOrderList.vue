@@ -126,7 +126,6 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
-//  import orderList from './modules/orderList.vue';
   
   export default {
     name: '',
@@ -162,7 +161,6 @@
     
     components: {
       GoBack,
-//      orderList
     },
     
     computed: {},
