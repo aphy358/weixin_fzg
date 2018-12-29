@@ -42,13 +42,17 @@
 				<span class="filter-type">酒店名</span>
 				<input type="text" placeholder="请输入酒店名" v-model="params.itemName">
 			</li>
-			<li>
+			<li class="two-line-li">
 				<span class="filter-type">入离日期</span>
-				<div class="date-input-box">
-					<input type="date" v-model="params.beginDate">
-					<input class="start-date" placeholder="选择入住日期">
-					<input type="date" v-model="params.endDate">
-					<input class="end-date" placeholder="选择离店日期">
+				<div class="date-box">
+					<div class="date-input-box">
+						<input type="text" placeholder="选择入住日期" readonly :value="params.beginDate">
+						<input type="date" v-model="params.beginDate">
+					</div>
+					<div class="date-input-box">
+						<input type="text" placeholder="选择离店日期" readonly :value="params.endDate">
+						<input type="date" v-model="params.endDate">
+					</div>
 				</div>
 			</li>
 			<li>
@@ -113,6 +117,7 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
+  import { addDays } from '@/assets/util.js'
   
   export default {
     name: '',
@@ -167,7 +172,7 @@
             value: '4',
             label: '其他'
           }
-        ]
+        ],
       }
     },
     
@@ -203,7 +208,7 @@
       },
       ensureCancelOrder(){
         this.reasonVisible = false;
-      }
+      },
     }
   }
 </script>
@@ -329,42 +334,63 @@
 				text-align: right;
 			}
 			
-			input,select,.date-input-box{
+			>input,select{
 				flex: 1;
-				/*height: 0.26rem;*/
 				padding: 0 0.1rem;
 				border-radius: 0;
 				box-sizing: border-box;
 				border: none;
-				/*background: none;*/
 				line-height: 0.32rem;
 				margin: 0.09rem 0;
 			}
 			
-			.date-input-box{
-				position: relative;
-				input{
-					width: 1.8rem;
-					margin-top: 0;
-					background: transparent;
+			.date-box{
+				flex: 1;
+				
+				.date-input-box{
 					position: relative;
-					z-index: 10009;
-				}
-				
-				.start-date{
-					position: absolute;
-					top: 0;
-					left: 0.2rem;
-					color: #d8d8dc;
-					z-index: 10008;
-				}
-				
-				.end-date{
-					position: absolute;
-					top: 0.45rem;
-					left: 0.2rem;
-					color: #d8d8dc;
-					z-index: 10008;
+					float: left;
+					overflow: hidden;
+					margin-top: 0.09rem;
+					/*width: 100%;*/
+					/*height: 0.32rem;*/
+					input{
+						/*margin-top: 0;*/
+						/*background: transparent;*/
+						float: left;
+						/*position: absolute;*/
+						/*top: 0;*/
+						/*left: 0;*/
+						/*z-index: 10008;*/
+						padding: 0 0.1rem;
+						border-radius: 0;
+						box-sizing: border-box;
+						border: none;
+						line-height: 0.32rem;
+						margin: 0 0 0.09rem 0;
+						width: 100%;
+					}
+					
+					input[type="date"]{
+						background-color: transparent;
+						color: transparent;
+						margin-top: -0.41rem;
+						margin-bottom: 0;
+					}
+					
+					/*.start-date{*/
+						/*position: absolute;*/
+						/*top: 0;*/
+						/*left: 0;*/
+						/*z-index: 10009;*/
+					/*}*/
+					/**/
+					/*.end-date{*/
+						/*position: absolute;*/
+						/*top: 0;*/
+						/*left: 0;*/
+						/*z-index: 10009;*/
+					/*}*/
 				}
 			}
 			
