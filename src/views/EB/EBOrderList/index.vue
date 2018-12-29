@@ -145,24 +145,28 @@ export default {
   },
   watch: {
     endDate_c(){
-      let d2 = +new Date( formatDateTwo(this.endDate_c) )
+      if(this.endDate_c){
+        let d2 = +new Date( formatDateTwo(this.endDate_c) )
 
-      if(this.beginDate_c){
-        let d1 = +new Date( formatDateTwo(this.beginDate_c) )
-  
-        if(d1 > d2){
-          this.beginDate_c = ''
+        if(this.beginDate_c){
+          let d1 = +new Date( formatDateTwo(this.beginDate_c) )
+    
+          if(d1 > d2){
+            this.beginDate_c = ''
+          }
         }
       }
     },
     beginDate_c(){
-      let d1 = +new Date( formatDateTwo(this.beginDate_c) )
+      if(this.beginDate_c){
+        let d1 = +new Date( formatDateTwo(this.beginDate_c) )
 
-      if(this.endDate_c){
-        let d2 = +new Date( formatDateTwo(this.endDate_c) )
-  
-        if(d1 > d2){
-          this.endDate_c = ''
+        if(this.endDate_c){
+          let d2 = +new Date( formatDateTwo(this.endDate_c) )
+    
+          if(d1 > d2){
+            this.endDate_c = ''
+          }
         }
       }
     }

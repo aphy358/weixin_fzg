@@ -37,45 +37,46 @@
 		
 		
 		<div class="filter-mask" v-show="filterVisible || reasonVisible" @click="hideFilter"></div>
-		<ul class="filter-panel" :style="'right:' + (filterVisible ? '0' : '-2.9rem')">
-			<li>
-				<span class="filter-type">酒店名</span>
-				<input type="text" placeholder="请输入酒店名" v-model="params.itemName">
+		<ul class="hol-filter-panel" :style="'right:' + (filterVisible ? '0' : '-2.9rem')">
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">酒店名</span>
+				<input type="text" class="hol-filter-input" placeholder="请输入酒店名" v-model="params.itemName">
 			</li>
-			<li class="two-line-li">
-				<span class="filter-type">入离日期</span>
-				<div class="date-box">
-					<div class="date-input-box">
-						<input type="text" placeholder="选择入住日期" readonly :value="params.beginDate">
-						<input type="date" v-model="params.beginDate">
-					</div>
-					<div class="date-input-box">
-						<input type="text" placeholder="选择离店日期" readonly :value="params.endDate">
-						<input type="date" v-model="params.endDate">
-					</div>
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">入住日期</span>
+				<div class="hol-filter-date-inner">
+					<input type="text" class="hol-filter-input" placeholder="选择入住日期" readonly :value="params.beginDate">
+					<input type="date" class="hol-filter-date" v-model="params.beginDate">
 				</div>
 			</li>
-			<li>
-				<span class="filter-type">订单号</span>
-				<input type="text" placeholder="请输入订单号" v-model="params.orderCode">
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">离店日期</span>
+				<div class="hol-filter-date-inner">
+					<input type="text" class="hol-filter-input" placeholder="选择离店日期" readonly :value="params.endDate">
+					<input type="date" class="hol-filter-date" v-model="params.endDate">
+				</div>
 			</li>
-			<li>
-				<span class="filter-type">客户订单号</span>
-				<input type="text" placeholder="请输入客户订单号" v-model="params.customerOrderCode">
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">订单号</span>
+				<input type="text" class="hol-filter-input" placeholder="请输入订单号" v-model="params.orderCode">
 			</li>
-			<li>
-				<span class="filter-type">入住人</span>
-				<input type="text" placeholder="请输入入住人" v-model="params.userName">
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">客户订单号</span>
+				<input type="text" class="hol-filter-input" placeholder="请输入客户订单号" v-model="params.customerOrderCode">
 			</li>
-			<li>
-				<span class="filter-type">预订员</span>
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">入住人</span>
+				<input type="text" class="hol-filter-input" placeholder="请输入入住人" v-model="params.userName">
+			</li>
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">预订员</span>
 				<select name="orderMan" id="orderMan" title="预订员" v-model="params.bookMan">
 					<option value="0">全选</option>
 					<option value="1">测试</option>
 				</select>
 			</li>
-			<li>
-				<span class="filter-type">订单状态</span>
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">订单状态</span>
 				<select name="orderStatus" id="orderStatus" title="订单状态" v-model="params.innerStatus">
 					<option value="">全选</option>
 					<option value="-1">待处理</option>
@@ -86,8 +87,8 @@
 					<option value="4">已取消</option>
 				</select>
 			</li>
-			<li>
-				<span class="filter-type">支付状态</span>
+			<li class="hol-filter-item">
+				<span class="hol-filter-label">支付状态</span>
 				<select name="payStatus" id="payStatus" title="支付状态" v-model="params.paymentStatus">
 					<option value="">全选</option>
 					<option value="-1">挂账</option>
@@ -98,7 +99,7 @@
 					<option value="4">退款失败</option>
 				</select>
 			</li>
-			<li>
+			<li class="hol-filter-item">
 				<button class="reset" @click="reset">重置</button>
 				<button class="ensure" @click="ensure">确认</button>
 			</li>
@@ -312,85 +313,59 @@
 		z-index: 10001;
 	}
 	
-	@at-root .filter-panel{
+	@at-root .hol-filter-panel{
 		position: fixed;
 		top: 0;
 		right: -2.9rem;
 		width: 2.5rem;
 		height: 100%;
 		background-color: #fff;
-		z-index: 10002;
-		padding: 0.1rem 0 0.1rem 0.1rem;
+		padding: 0.1rem;
 		transition: all 0.2s;
 		font-size: 0.12rem;
-		
-		>li{
-			line-height: 0.5rem;
-			display: flex;
+		z-index: 10002;
+
+		@at-root .hol-filter-item{
+			overflow: hidden;
+			margin-bottom: 0.1rem;
+
+			> *{
+				float: left;
+			}
 			
-			.filter-type{
-				display: inline-block;
+			@at-root .hol-filter-label{
 				width: 0.62rem;
 				text-align: right;
+				line-height: 0.4rem;
+				margin-right: 0.1rem;
 			}
-			
-			>input,select{
-				flex: 1;
-				padding: 0 0.1rem;
-				border-radius: 0;
-				box-sizing: border-box;
+
+			@at-root .hol-filter-input{
+				width: calc(100% - 0.72rem);
 				border: none;
-				line-height: 0.32rem;
-				margin: 0.09rem 0;
+				height: 0.4rem;
 			}
 			
-			.date-box{
-				flex: 1;
-				
-				.date-input-box{
+			select{
+			}
+			
+			@at-root .hol-filter-date-inner{
+				width: calc(100% - 0.72rem);
+				height: 0.4rem;
+				overflow: hidden;
+
+				input{
 					position: relative;
 					float: left;
-					overflow: hidden;
-					margin-top: 0.09rem;
-					/*width: 100%;*/
-					/*height: 0.32rem;*/
-					input{
-						/*margin-top: 0;*/
-						/*background: transparent;*/
-						float: left;
-						/*position: absolute;*/
-						/*top: 0;*/
-						/*left: 0;*/
-						/*z-index: 10008;*/
-						padding: 0 0.1rem;
-						border-radius: 0;
-						box-sizing: border-box;
-						border: none;
-						line-height: 0.32rem;
-						margin: 0 0 0.09rem 0;
-						width: 100%;
-					}
-					
-					input[type="date"]{
-						background-color: transparent;
+					width: 100%;
+					border: none;
+					height: 0.4rem;
+
+					&.hol-filter-date{
+						margin-top: -0.4rem;
 						color: transparent;
-						margin-top: -0.41rem;
-						margin-bottom: 0;
+    				background: transparent;
 					}
-					
-					/*.start-date{*/
-						/*position: absolute;*/
-						/*top: 0;*/
-						/*left: 0;*/
-						/*z-index: 10009;*/
-					/*}*/
-					/**/
-					/*.end-date{*/
-						/*position: absolute;*/
-						/*top: 0;*/
-						/*left: 0;*/
-						/*z-index: 10009;*/
-					/*}*/
 				}
 			}
 			
