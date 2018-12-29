@@ -118,14 +118,13 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
-  import { addDays } from '@/assets/util.js'
   
   export default {
     name: '',
     
     data() {
       return {
-        filterVisible: true,
+        filterVisible: false,
         orderList: [
           {
             hotelName: '深圳东华假日酒店'
@@ -194,6 +193,8 @@
       },
       reset(){
         this.params = {};
+        this.$set(this.params, 'innerStatus', '');
+        this.$set(this.params, 'paymentStatus', '');
       },
       ensure(){
         this.filterVisible = false;
@@ -347,6 +348,8 @@
 			}
 			
 			select{
+				line-height: 0.4rem;
+				border: none;
 			}
 			
 			@at-root .hol-filter-date-inner{
@@ -432,18 +435,6 @@
 			margin-bottom: 0.2rem;
 			font-size: 0.14rem;
 		}
-		
-		/*>label{*/
-			/*display: block;*/
-			/*line-height: 0.26rem;*/
-			/*padding-left: 0.2rem;*/
-			/*color: #747477;*/
-			/**/
-			/*>input{*/
-				/*margin-right: 0.06rem;*/
-				/*vertical-align: middle;*/
-			/*}*/
-		/*}*/
 		
 		@at-root .button-box{
 			text-align: center;

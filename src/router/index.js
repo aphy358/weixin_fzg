@@ -105,6 +105,14 @@ let router = new Router({
       meta: {
         wechatAuth: false
       },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/register/register.vue'),
+      meta: {
+        wechatAuth: false
+      },
     }
   ].concat(ebRouter).concat(qnbRouter),
   // scrollBehavior (to, from, savedPosition) {
