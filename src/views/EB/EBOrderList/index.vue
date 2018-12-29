@@ -101,7 +101,7 @@ import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
 import GAP from '@/components/GAP.vue'
 import { _ebOrderList } from './ebOrderList.js'
-import { gotoPage, replacePage } from '@/assets/util'
+import { gotoPage, replacePage, formatDateTwo } from '@/assets/util'
 import EbOrderItems from './ebOrderItems'
 
 
@@ -143,7 +143,34 @@ export default {
     GAP,
     EbOrderItems
   },
-  watch: {},
+  watch: {
+    endDate_c(){
+      if(this.endDate_c){
+        let d2 = +new Date( formatDateTwo(this.endDate_c) )
+
+        if(this.beginDate_c){
+          let d1 = +new Date( formatDateTwo(this.beginDate_c) )
+    
+          if(d1 > d2){
+            this.beginDate_c = ''
+          }
+        }
+      }
+    },
+    beginDate_c(){
+      if(this.beginDate_c){
+        let d1 = +new Date( formatDateTwo(this.beginDate_c) )
+
+        if(this.endDate_c){
+          let d2 = +new Date( formatDateTwo(this.endDate_c) )
+    
+          if(d1 > d2){
+            this.endDate_c = ''
+          }
+        }
+      }
+    }
+  },
   created(){
     for (const key in this.orderResults) {
       this.orderResults[key] = _ebOrderList.filter(n => n.status == key)
