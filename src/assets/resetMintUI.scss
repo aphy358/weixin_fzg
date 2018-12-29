@@ -39,3 +39,89 @@
     background: white;
     box-sizing: border-box;
 }
+
+
+
+// confirm 确认框样式矫正
+.mint-msgbox-wrapper{
+
+    .mint-msgbox{
+        border-radius: 0.03rem;
+        font-size: 0.16rem;
+    
+        .mint-msgbox-header{
+            padding: 0.15rem 0 0;
+    
+            .mint-msgbox-title{
+                font-size: 0.16rem;
+            }
+        }
+    
+        .mint-msgbox-content{
+            padding: 0.1rem 0.2rem 0.15rem;
+            border-bottom: 0.01rem solid #ddd;
+            min-height: 0.36rem;
+    
+            .mint-msgbox-message{
+                line-height: 0.36rem;
+            }
+    
+            .mint-msgbox-input{
+                padding-top: 0.15rem;
+    
+                input{
+                    border: 0.01rem solid #dedede;
+                    border-radius: 0.05rem;
+                    padding: 0.04rem 0.05rem;
+                }
+    
+                .mint-msgbox-errormsg{
+                    font-size: 0.12rem;
+                    min-height: 0.18rem;
+                    margin-top: 0.02rem;
+                }
+            }
+        }
+    
+        .mint-msgbox-btns{
+            height: 0.4rem;
+            line-height: 0.4rem;
+    
+            .mint-msgbox-btn{
+                line-height: 0.35rem;
+            }
+    
+            .mint-msgbox-cancel {
+                border-right: 0.01rem solid #ddd;
+            }
+        }
+    }
+}
+
+
+// Toast
+.mint-toast {
+    border-radius: 0.05rem;
+    padding: 0.1rem!important;
+
+    @at-root .mint-toast-text {
+        font-size: 0.14rem;
+    }
+}
+
+
+.mint-cell{
+
+    .mint-cell-wrapper{
+        font-size: 0.16rem;
+        padding: 0 0.10rem;
+    }
+
+    .mint-cell-swipe-buttongroup{
+
+        .mint-cell-swipe-button{
+            padding: 0 0.1rem;
+            line-height: 0.51rem;
+        }
+    }
+}
