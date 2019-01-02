@@ -127,7 +127,7 @@ import PriceTypePopup from './priceTypePopup'
 import RoomPriceType from './roomPriceType'
 
 export default {
-  name: 'ebbatchmodify',
+  name: 'ebBatchModify',
   data(){
     return {
       roomTypeVisible: false,

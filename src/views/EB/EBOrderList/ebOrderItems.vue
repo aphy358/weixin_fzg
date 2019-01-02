@@ -76,7 +76,7 @@ export default {
     },
     // 跳转到订单待确认页（或取消页）
     gotoConfirmPage(order){
-      gotoPage(this.$router, 'ebordertobeconfirm', {id: order.orderInfoId, status: order.status})
+      gotoPage(this.$router, 'ebOrderToBeConfirm', {id: order.orderInfoId, status: order.status})
     }
   }
 }

@@ -214,9 +214,6 @@ export default {
         if(res.returnCode === 1){
           // TO DO，将相关数据赋值给 orderResults 和 subParams
 
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
