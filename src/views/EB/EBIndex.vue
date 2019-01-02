@@ -76,7 +76,7 @@ export default {
           
           if(res.returnCode === 1){
             // 跳转到微信 eb 登录页
-            replacePage(this.$router, 'eblogin')
+            replacePage(this.$router, 'ebLogin')
           }
         })
       });
@@ -109,19 +109,16 @@ export default {
 
           this.$store.commit(`eb/setCommonState`, {k: 'supplierCurrency', v: res.supplierAccount.currency})
 
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
     // 跳转到 eb 订单列表页
     gotoEBOrderList(){
-      gotoPage(this.$router, 'eborderlist')
+      gotoPage(this.$router, 'ebOrderList')
     },
     // 跳转到 eb 酒店列表页，flag： 1：房态管理   2：房价管理
     goEBHotelList(flag){
-      gotoPage(this.$router, 'ebhotellist', {mtype: flag})
+      gotoPage(this.$router, 'ebHotelList', {mtype: flag})
     }
   }
 }

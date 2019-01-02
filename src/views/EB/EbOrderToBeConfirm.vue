@@ -261,9 +261,6 @@ export default {
         return
         if(res.returnCode === 1){
 
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
 
@@ -274,9 +271,6 @@ export default {
         return
         if(res.returnCode === 1){
 
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
@@ -290,9 +284,6 @@ export default {
           // 已取消，俩按钮都不可操作
           this.orderStatus = '3'
           Toast('订单已取消！')
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
@@ -306,9 +297,6 @@ export default {
           // 不可取消，俩按钮都不可操作
           this.orderStatus = '4'
           Toast('已拒绝取消！')
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
@@ -323,9 +311,6 @@ export default {
           // 已拒单，俩按钮都不可操作
           this.orderStatus = '2'
           Toast('已拒单！')
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
@@ -343,9 +328,6 @@ export default {
             this.orderStatus = '1'
             Toast('订单确认成功！')
           }
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },
@@ -360,9 +342,6 @@ export default {
         return
         if(res.returnCode === 1){
 
-        }else if(res.errcode == 'notLogin'){
-          // 跳转到微信 eb 登录页
-          replacePage(this.$router, 'eblogin')
         }
       })
     },

@@ -74,9 +74,14 @@ function _h(verb) {
             Toast(response.data.returnMsg)
           }
 
-          // if(response.data.errcode == 'notLogin'){
-          //   replacePage(window.router, 'eblogin')
-          // }
+          // -40001：普通微信未登录   -40002：微信 eb 未登录   -40003：微信 qnb（小工具）未登录
+          if(response.data.returnCode == -40001){
+            replacePage(window.router, 'ebLogin')
+          }else if(response.data.returnCode == -40002){
+            replacePage(window.router, 'ebLogin')
+          }else if(response.data.returnCode == -40003){
+            replacePage(window.router, 'ebLogin')
+          }
         }
 
 

@@ -159,7 +159,7 @@ export default {
     },
     // 跳转到批量修改页面
     gotoBatchModifyPage(){
-      gotoPage(this.$router, 'ebbatchmodify', {hotelId: this.hotelId, formulaType: this.formulaType, mtype: this.mtype})
+      gotoPage(this.$router, 'ebBatchModify', {hotelId: this.hotelId, formulaType: this.formulaType, mtype: this.mtype})
     }
   }
 }
