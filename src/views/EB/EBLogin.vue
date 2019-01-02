@@ -111,7 +111,7 @@ export default {
           this.$api.eb.syncEBLogin(param).then(res => {
             if(res.returnCode === 1){
               // TO DO 跳转到微信 eb 首页
-              replacePage(this.$router, 'ebindex')
+              replacePage(this.$router, 'ebIndex')
             }
           })
         }
