@@ -5,7 +5,7 @@ import qs from 'qs'
 
 // https://github.com/rstacruz/nprogress
 import { Indicator, Toast } from 'mint-ui'
-// import { gotoPage, replacePage } from '@/assets/util'
+import { gotoPage, replacePage } from '@/assets/util'
 
 const printErrorInfo = info => {
   alert(info)
@@ -76,11 +76,11 @@ function _h(verb) {
 
           // -40001：普通微信未登录   -40002：微信 eb 未登录   -40003：微信 qnb（小工具）未登录
           if(response.data.returnCode == -40001){
-            replacePage(window.router, 'ebLogin')
+            replacePage(window.router, 'login')
           }else if(response.data.returnCode == -40002){
             replacePage(window.router, 'ebLogin')
           }else if(response.data.returnCode == -40003){
-            replacePage(window.router, 'ebLogin')
+            replacePage(window.router, 'qnblogin')
           }
         }
 

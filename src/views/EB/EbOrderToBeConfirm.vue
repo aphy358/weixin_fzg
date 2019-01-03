@@ -10,8 +10,8 @@
       <div class="eb-oc-block-wrap">
         <div class="eb-oc-block-row line-after" style="height: 0.4rem;line-height: 0.4rem;">
           <span class="eb-oc-block-label">订单编号</span>
-          <span class="eb-oc-block-content" style="display: inline;font-size: 0.15rem;">AA18092045457</span>
-          <input type="text" value="AA180408478737" id="orderCode" style="position: absolute;right: 100%;" />
+          <span class="eb-oc-block-content" style="display: inline;font-size: 0.15rem;">{{ orderInfo.parentOrderCode }}</span>
+          <input type="text" :value="orderInfo.parentOrderCode" id="orderCode" style="position: absolute;right: 100%;" />
           <span
             style="padding: 0.1rem;font-size: 0.12rem;color: #474bf5;"
             data-clipboard-action="copy"
@@ -23,8 +23,8 @@
         <div class="eb-oc-block-row" style="height: 0.4rem;line-height: 0.4rem;">
           <span class="eb-oc-block-label">订单总额</span>
           <span class="eb-oc-block-content" style="line-height: 0.4rem;">
-            <span class="amount">88</span>
-            <span class="currency">元</span>
+            <span class="amount">{{ totalPrice }}</span>
+            <span class="currency">{{ orderInfo.currency }}</span>
           </span>
         </div>
       </div>
@@ -32,17 +32,17 @@
       <div class="eb-oc-block-wrap" style="padding: 0.06rem 0;">
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">入住时间</span>
-          <span class="eb-oc-block-content">2018-09-20 1晚</span>
+          <span class="eb-oc-block-content">{{ checkinPeriod }}</span>
         </div>
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">酒店名称</span>
-          <span class="eb-oc-block-content">深圳阳光酒店</span>
+          <span class="eb-oc-block-content">{{ orderInfo.itemName }}</span>
         </div>
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">客人姓名</span>
-          <span class="eb-oc-block-content">joker</span>
+          <span class="eb-oc-block-content">{{ userName }}</span>
         </div>
 
         <div class="eb-oc-block-row">
@@ -52,17 +52,17 @@
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">预订房型</span>
-          <span class="eb-oc-block-content">单人房</span>
+          <span class="eb-oc-block-content">{{ roomType }}</span>
         </div>
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">价格类型</span>
-          <span class="eb-oc-block-content">限住2晚</span>
+          <span class="eb-oc-block-content">{{ rateType }}</span>
         </div>
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">配额类型</span>
-          <span class="eb-oc-block-content">包房-剩余库存</span>
+          <span class="eb-oc-block-content">{{ formulateType }}</span>
         </div>
 
         <div class="eb-oc-block-row">
@@ -72,7 +72,7 @@
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">捷旅备注</span>
-          <span class="eb-oc-block-content">无</span>
+          <span class="eb-oc-block-content">{{ suppRemark }}</span>
         </div>
       </div>
 
@@ -88,20 +88,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>09-20</td>
+            <tr v-for="(n, i) in orderChargeList" :key="i">
+              <td>{{ n.checkinDate }}</td>
               <td>
-                <span class="currency">￥</span>88
+                <span class="currency">￥</span>{{ n.basePrice }}
               </td>
-              <td>1</td>
-              <td>0*0*0</td>
+              <td>{{ n.sellAmout }}</td>
+              <td>{{ n.bedNum }}*{{ n.brfNum }}*{{ n.wifiNum }}</td>
               <td>
-                <span class="currency">￥</span>88
+                <span class="currency">￥</span>{{ n.subTotal }}
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <div class="order-record-wrap" v-html="logList"></div>
 
     </div>
 
@@ -162,7 +164,7 @@
 import GoBack from "@/components/GoBack.vue"
 import Clipboard from 'clipboard'
 import { Toast } from 'mint-ui'
-import { queryString } from '@/assets/util'
+import { queryString, addDays, formatDateTwo, formatDateOne } from '@/assets/util'
 
 export default {
   name: "EbOrderToBeConfirm",
@@ -187,11 +189,25 @@ export default {
         {label: '提供联系号码', value: '提供联系号码'},
         {label: '床型无法安排', value: '床型无法安排'},
       ],
-      hotelCode: null,
+      hotelCode: '',
       checkedFinallyOrderArr: [],
       finallyOrderArr: [{label: '末单确认', value: '末单确认'},],
       refuseDisable: false,
       acceptDisable: false,
+
+      // 以下是订单页面基础信息字段
+      orderInfo: {},      // 订单信息（部分）
+      userName: '',       // 入住人
+      orderExtId: '',
+      suppRemark: '',     // 捷旅备注
+      hotelOrderCode: '', // 确认号
+      roomType: '',       // 房型
+      rateType: '',       // 价格类型
+      formulateType: '',  // 配额类型
+      checkinPeriod: '',  // 入住时间区间
+      totalPrice: 0,      // 订单总计
+      orderChargeList: [],// 订单费用清单列表
+      logList: '',        // 日志列表
 
     };
   },
@@ -207,9 +223,12 @@ export default {
   created() {
   },
   activated(){
-    this.getQueryParams()
-    this.getTitleAndInitFooterBtns()
-    this.queryOrderInfo()
+    if(!window.goBack){
+      this.resetData()
+      this.getQueryParams()
+      this.getTitleAndInitFooterBtns()
+      this.queryOrderInfo()
+    }
   },
   computed: {},
   mounted() {},
@@ -221,6 +240,25 @@ export default {
           e.clearSelection()
           Toast("复制成功！")
       });
+    },
+    // 重置数据
+    resetData(){
+      this.acceptPopupVisible = false
+      this.refuseReasonPopupVisible = false
+      this.checkedRefuseArr = []
+
+      this.orderInfo = {}
+      this.userName = ''
+      this.orderExtId = ''
+      this.suppRemark = ''
+      this.hotelOrderCode = ''
+      this.roomType = ''
+      this.rateType = ''
+      this.formulateType = ''
+      this.checkinPeriod = ''
+      this.totalPrice = 0
+      this.orderChargeList = []
+      this.logList = ''
     },
     // 获取 url 参数
     getQueryParams(){
@@ -254,23 +292,154 @@ export default {
     },
     // 查询订单信息
     queryOrderInfo(){
-      let param = {orderId: '65456'}
+      let param = {orderId: this.orderId}
 
-      this.$api.eb.syncQueryOrderInfo1(param).then(res => {
-        //*** 上线放开 */
-        return
+      this.$api.eb.syncQueryOrderInfo2(param).then(res => {
         if(res.returnCode === 1){
+          this.orderInfo = res.data.orderInfo
 
+          // 查询住客
+          this.queryTenant({orderCode: res.data.orderInfo.parentOrderCode, orderId: this.orderId})
+
+          // 获取入住区间，从哪天到哪天，一共几晚
+          this.getCheckinPeriod(res.data.orderInfo)
+
+          let orderInfoExt = res.data.orderInfoExt
+
+          this.orderExtId = orderInfoExt.orderExtId
+
+          // 捷旅备注
+          this.suppRemark = orderInfoExt.suppRemark
+
+          // 获取确认号、房型、价格类型
+          this.getOrderInfo1(res.data.hotelCode)
+
+          // 配额类型
+          this.formulateType = res.data.itemName
+
+          // 获取订单详情（处理子单费用清单、杂费等）
+          this.getOrderChargeList(res.data.subOrderList, res.data.orderSurchargeList)
+
+          // 获取订单日志
+          this.getOrderLogs(res.data.logs)
         }
       })
+    },
+    // 获取订单日志
+    getOrderLogs(logs){
+      if(logs){
+        for (let i = 0; i < logs.length; i++) {
+          const log = logs[i]
+          if((log.operateFrom == '2' && log.opertatorType != 11) || (log.operateFrom == '3' && log.opertatorType != 11)){
 
-      //*** */
-      return
-      this.$api.eb.syncQueryOrderInfo2(param).then(res => {
-        //*** 上线放开 */
-        return
+            this.logList += `
+              <div class="order-record">
+                <span class="mr-5">${log.createTime.substring(0, 10)}</span>
+                <span class="mr-5">${log.opertatorType == '26' ? '发送微信EB' : log.newValue}</span>
+                <span class="mr-5">${log.operateFrom == 3 ? log.operatorName : 'system'}</span>
+                ${log.opertatorType == '26' ? '<div class="tellPhone">0755-33397777</div>' : ''}
+              </div>
+              `
+          }
+        }
+      }
+    },
+    // 获取入住区间，从哪天到哪天，一共几晚
+    getCheckinPeriod(orderInfo){
+      let checkin = formatDateOne(orderInfo.beginDate)
+      let checkout = formatDateOne(orderInfo.endDate)
+      let nights = (new Date(checkout) - new Date(checkin)) / (24*60*60*1000)
+      this.checkinPeriod = addDays(new Date(checkin), 0, '/') + ' - ' + addDays(new Date(checkout), 0, '/') + ' (' + nights + '晚)'
+    },
+    // 获取订单详情（处理子单费用清单、杂费等）
+    getOrderChargeList(subOrderList, orderSurchargeList){
+      if(subOrderList && subOrderList.length > 0){
+
+        for (let i = 0; i < subOrderList.length; i++) {
+          const subOrder = subOrderList[i]
+
+          for (let j = 0; j < subOrder.orderDetails.length; j++) {
+            const orderDetail = subOrder.orderDetails[j];
+            if(orderDetail.ifValid == '1')  continue
+
+            let bedNum = 0
+            let brfNum = 0
+            let wifiNum = 0
+            let checkinDate = addDays(new Date(formatDateOne(orderDetail.checkinDate)), 0)    // 该订单明细下的某一天日期
+
+            let subTotal = (+orderDetail.basePrice) * (+orderDetail.sellAmout)
+
+            // 如果有房券，则总价需要扣除这部分价格
+            if(orderDetail.orderVouchers){
+              this.totalPrice -= (orderDetail.basePrice - orderDetail.orderVouchers.basePrice) * orderDetail.orderVouchers.vouchersNum
+            }
+
+            // 计算杂费..杂费金额加入总计，加入小计
+            if(orderSurchargeList){
+              for (let k = 0; k < orderSurchargeList.length; k++) {
+                const orderSurcharge = orderSurchargeList[k]
+                let surDate = addDays(new Date(formatDateOne(orderSurcharge.startTime)), 0)
+
+                if(checkinDate == surDate){
+                  // 统计加床.加早.加宽带数量
+                  if(orderSurcharge.typeId == 1){
+                    bedNum += (+orderSurcharge.sellReal)
+                  }else if(orderSurcharge.typeId == 2){
+                    brfNum += (+orderSurcharge.sellReal)
+                  }else if(orderSurcharge.typeId == 3){
+                    wifiNum += (+orderSurcharge.sellReal)
+                  }
+
+                  subTotal += orderSurcharge.orderSurcharge * orderSurcharge.sellReal
+                }
+              }
+            }
+
+            this.orderChargeList.push({
+              checkinDate: checkinDate,
+              basePrice: orderDetail.basePrice,
+              sellAmout: orderDetail.sellAmout,
+              bedNum: bedNum,
+              brfNum: brfNum,
+              wifiNum: wifiNum,
+              subTotal: subTotal
+            })
+
+            this.totalPrice += subTotal   // 订单总价叠加
+          }
+        }
+      }
+    },
+    // 获取确认号、房型、价格类型
+    getOrderInfo1(hotelCode){
+      if(hotelCode){
+        let attr = hotelCode.attr
+        if(attr){
+          let attrs = attr.split(";")
+          for(let attrIdx = 0; attrIdx < attrs.length; attrIdx++){
+            var attrStr = attrs[attrIdx]
+            var attrValue = attrStr.split(":")[1]
+
+            if(attrStr.indexOf("hotelOrderCode") != -1){  // 确认号
+              this.hotelOrderCode = attrValue.replace("%%", ",")
+              this.hotelCode = this.hotelOrderCode
+            }else if(attrStr.indexOf("roomtype") != -1){  // 房型
+              this.roomType = attrValue.split("#")[1]
+            }else if(attrStr.indexOf("ratetype") != -1){  // 价格类型
+              this.rateType = attrValue.split("#")[1]
+            }
+          }
+        }
+      }
+    },
+    // 查询住客
+    queryTenant(params){
+      this.$api.eb.syncQueryUser(params).then(res => {
         if(res.returnCode === 1){
-
+          if(res.data && res.data.orderUsers){
+            // 入住人
+            this.userName = res.data.orderUsers.map(n => n.firstName + n.lastName).join('，')
+          }
         }
       })
     },
@@ -278,8 +447,7 @@ export default {
     cancelOrder(){
       let param = {"status": 3, "orderInfoId": this.orderId, "textVal": "", "isChange": ""}
       this.$api.eb.syncHandleOrder(param).then(res => {
-        //*** 上线放开 */
-        return
+        debugger;
         if(res.returnCode === 1){
           // 已取消，俩按钮都不可操作
           this.orderStatus = '3'
@@ -291,8 +459,6 @@ export default {
     refuseCancelOrder(){
       let param = {"status": 4, "orderInfoId": this.orderId, "textVal": "", "isChange": ""}
       this.$api.eb.syncHandleOrder(param).then(res => {
-        //*** 上线放开 */
-        return
         if(res.returnCode === 1){
           // 不可取消，俩按钮都不可操作
           this.orderStatus = '4'
@@ -305,8 +471,6 @@ export default {
       let param = {"status": 2, "orderInfoId": this.orderId, "textVal": this.checkedRefuseArr.join(','), "isChange": ""}
 
       this.$api.eb.syncHandleOrder(param).then(res => {
-        //*** 上线放开 */
-        return
         if(res.returnCode === 1){
           // 已拒单，俩按钮都不可操作
           this.orderStatus = '2'
@@ -316,13 +480,11 @@ export default {
     },
     // 确认订单
     confirmOrder(){
-      let param = {"status": 1, "orderInfoId": this.orderId, "textVal": this.hotelCode, "isChange": this.hotelCode != 'oldVal' ? 1 : ""}
-
+      let param = {"status": 1, "orderInfoId": this.orderId, "textVal": this.hotelCode, "isChange": this.hotelCode != this.hotelOrderCode ? 1 : ""}
+debugger
       this.$api.eb.syncHandleOrder(param).then(res => {
-        //*** 上线放开 */
-        return
         if(res.returnCode === 1){
-          if(this.checkedFinallyOrderArr.length && 'extId'){
+          if(this.checkedFinallyOrderArr.length && this.orderExtId){
             this.updateOrderSuppRemark()
           }else{
             this.orderStatus = '1'
@@ -334,14 +496,12 @@ export default {
     // 更新供应商 Remark（修改确认号？）
     updateOrderSuppRemark(){
       // 这里 orderExtId 一定要传数字型参数
-      let param = {"orderExtId": '65456', "suppReturnRemark": "末单确认"}
+      let param = {"orderExtId": this.orderExtId, "suppReturnRemark": "末单确认"}
 
       this.$api.eb.syncUpdateOrderSuppRemark(param).then(res => {
-        console.log('updateOrderSuppRemark');
-        //*** 上线放开 */
-        return
         if(res.returnCode === 1){
-
+          this.orderStatus = '1'
+          Toast('订单确认成功！')
         }
       })
     },
@@ -501,6 +661,7 @@ export default {
 .mint-checkbox-label{
     color: #333333;
     margin-left: 0.03rem;
+    font-size: 0.14rem;
 }
 .mint-cell-wrapper{
     font-size: 0.14rem;
@@ -553,6 +714,21 @@ export default {
   border-bottom: 0.01rem solid #ccc;
   line-height: 0.3rem;
   padding-left: 0.05rem;
+}
+
+.order-record-wrap{
+  padding: 0.1rem;
+  font-size: 0.1rem;
+  color: #999;
+  margin-bottom: 1rem;
+
+  .mr-5{
+    margin-right: 0.05rem;
+  }
+
+  .tellPhone{
+    float: right;
+  }
 }
 
 </style>

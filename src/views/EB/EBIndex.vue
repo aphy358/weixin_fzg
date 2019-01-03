@@ -10,7 +10,7 @@
 
       <ul class="eb-index-menu-list">
 
-        <li class="eb-index-menu-item" @click="gotoEBOrderList">
+        <li class="eb-index-menu-item" v-if="permissionOrderList" @click="gotoEBOrderList">
           <div class="img-wrap">
             <img src="http://image.jladmin.cn/real_1525936333292.png" />
           </div>
@@ -18,7 +18,7 @@
           <i class="iconfont icon-right-thin"></i>
         </li>
 
-        <li class="eb-index-menu-item" @click="goEBHotelList(1)">
+        <li class="eb-index-menu-item" v-if="permissionRoomStatus" @click="goEBHotelList(1)">
           <div class="img-wrap">
             <img src="http://image.jladmin.cn/real_1525936409017.png" />
           </div>
@@ -26,7 +26,7 @@
           <i class="iconfont icon-right-thin"></i>
         </li>
 
-        <li class="eb-index-menu-item" @click="goEBHotelList(2)">
+        <li class="eb-index-menu-item" v-if="permissionRoomPrice" @click="goEBHotelList(2)">
           <div class="img-wrap">
             <img src="http://image.jladmin.cn/real_1525936297423.png" />
           </div>
@@ -57,13 +57,20 @@ import { gotoPage, replacePage } from '@/assets/util'
 export default {
   name: 'eb-index',
   data(){
-    return {}
+    return {
+      permissionOrderList: false,
+      permissionRoomStatus: false,
+      permissionRoomPrice: false,
+    }
   },
   props: {},
   components: {},
   watch: {},
-  created(){
-    this.initCurrency()
+  created(){},
+  activated(){
+    if(!window.goBack){
+      this.initCurrency()
+    }
   },
   computed: {},
   mounted(){},
@@ -72,8 +79,6 @@ export default {
     unBind(){
       MessageBox.confirm('是否解绑当前账号？').then(action => {
         this.$api.eb.syncEBUnBind({}).then(res => {
-          console.log(res);
-          
           if(res.returnCode === 1){
             // 跳转到微信 eb 登录页
             replacePage(this.$router, 'ebLogin')
@@ -81,34 +86,28 @@ export default {
         })
       });
     },
-    // 初始化币种
+    // 初始化币种、获取供应商权限
     initCurrency(){
       this.$api.eb.syncSupplierInfo({}).then(res => {
-        //*** 正式放开 */
-        this.$store.commit(`eb/setCommonState`, {k: 'supplierCurrency', v: 'RMB0'})
-        return
+        console.log(res);
+        
         if(res.returnCode === 1){
-          // TO DO，这里根据返回的权限控制几大菜单按钮的显示
 
-          // 1: 订单管理、2: 财务管理、3: 关房（房态管理）、4.5: 房价管理、6、批量管理、7: 我的工作台
-          // var permission = res.supplier.supplierPermission;
+          // 设置供应商币种
+          if(res.data){
+            if(res.data.supplierAccount){
+              this.$store.commit(`eb/setCommonState`, {k: 'supplierCurrency', v: res.data.supplierAccount.currency})
+            }
 
-          // (permission.indexOf('1') != -1)
-          //   ? $("#toOrderList").parent().removeClass('hide')
-          //   : $("#toOrderList").parent().addClass('hide');
+            if(res.data.supplier){
+              // 1: 订单管理、2: 财务管理、3: 关房（房态管理）、4.5: 房价管理、6、批量管理、7: 我的工作台
+              var permission = res.data.supplier.supplierPermission;
 
-
-          // (permission.indexOf('3') != -1)
-          //   ? $("#toRoomStatus").parent().removeClass('hide')
-          //   : $("#toRoomStatus").parent().addClass('hide');
-
-
-          // (permission.indexOf('4') != -1)
-          //   ? $("#toRoomPrice").parent().removeClass('hide')
-          //   : $("#toRoomPrice").parent().addClass('hide');
-
-          this.$store.commit(`eb/setCommonState`, {k: 'supplierCurrency', v: res.supplierAccount.currency})
-
+              if(permission.indexOf('1') != -1){ this.permissionOrderList = true }
+              if(permission.indexOf('3') != -1){ this.permissionRoomStatus = true }
+              if(permission.indexOf('4') != -1){ this.permissionRoomPrice = true }
+            }
+          }
         }
       })
     },

@@ -76,6 +76,7 @@ export default {
       console.log({currPage: 1, key: this.keyWord});
       
       this.$api.eb.syncEBQueryHotelList({currPage: 1, key: this.keyWord}).then(res => {
+        debugger;
         console.log('queryHotelList');
         
         return
