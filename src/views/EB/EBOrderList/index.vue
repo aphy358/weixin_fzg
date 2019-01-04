@@ -27,7 +27,7 @@
         <!-- 切换显示的订单状态 -->
 				<div class="olt-row">
 					<div class="olt-status-wrap">
-						<div class="olt-status-item" :class="{'active': activeStatus == '0'}" @click="switchOrderStatus('0')">待处理(<span>0</span>)</div>
+						<div class="olt-status-item" :class="{'active': activeStatus == '0'}" @click="switchOrderStatus('0')">待处理(<span>{{ tobeConfirmNum }}</span>)</div>
 						<div class="olt-status-item" :class="{'active': activeStatus == '1'}" @click="switchOrderStatus('1')">今日入住</div>
 						<div class="olt-status-item" :class="{'active': activeStatus == '2'}" @click="switchOrderStatus('2')">已拒单</div>
 						<div class="olt-status-item" :class="{'active': activeStatus == '3'}" @click="switchOrderStatus('3')">已取消</div>
@@ -49,9 +49,15 @@
 
         <div v-if="infiniteLoad && orderResults[activeStatus].length < 1" style="text-align: center;color: red;margin: 0.2rem 0;">无相关订单</div>
 
+        <Loading v-if="orderResults[activeStatus].length == 0 && !infiniteLoad" />
+
+        <LoadMore v-if="orderResults[activeStatus].length > 0 && !infiniteLoad" />
+
         <END v-if="infiniteLoad && orderResults[activeStatus].length > 0" />
 
       </div>
+
+      <div class="loading-mask" v-if="loading"></div>
 
 
       <mt-popup
@@ -99,10 +105,13 @@
 <script>
 import GoBack from '@/components/GoBack.vue'
 import END from '@/components/END.vue'
+import Loading from '@/components/Loading.vue'
+import LoadMore from '@/components/LoadMore.vue'
 import GAP from '@/components/GAP.vue'
 import { _ebOrderList } from './ebOrderList.js'
 import { gotoPage, replacePage, formatDateTwo } from '@/assets/util'
 import EbOrderItems from './ebOrderItems'
+import { debounce } from 'lodash'
 
 
 export default {
@@ -111,6 +120,8 @@ export default {
     return {
       filterPopupVisible: false,
       infiniteLoad: false,
+      loading: false,
+      tobeConfirmNum: 0,
       orderResults: {'0':[], '1':[], '2':[], '3':[], 'a':[]},
       subParams: {
         '0': { currPage: 1, pageCount: null, finished: false, },
@@ -140,6 +151,8 @@ export default {
   components: {
     GoBack,
     END,
+    Loading,
+    LoadMore,
     GAP,
     EbOrderItems
   },
@@ -172,11 +185,6 @@ export default {
     }
   },
   created(){
-    for (const key in this.orderResults) {
-      this.orderResults[key] = _ebOrderList.filter(n => n.status == key)
-    }
-    this.orderResults.a = _ebOrderList
-
     this.queryEBOrderList()
   },
   computed: {},
@@ -192,7 +200,9 @@ export default {
       }
     },
     // 查询 eb 订单列表
-    queryEBOrderList(flag){
+    queryEBOrderList: debounce(function(flag){
+      if(this.loading)  return
+      this.loading = true
 
       if(flag){ // 表示改变了搜索条件，要先清空之前的搜索数据
         this.resetData()
@@ -209,16 +219,25 @@ export default {
       }
 
       this.$api.eb.syncSearchOrderList(params).then(res => {
-        //*** 上线放开 */
-        return
-        if(res.returnCode === 1){
-          // TO DO，将相关数据赋值给 orderResults 和 subParams
+        this.loading = false
 
+        if(res.returnCode === 1 && res.data){
+          // TO DO，将相关数据赋值给 orderResults 和 subParams
+          this.orderResults[this.activeStatus] = this.orderResults[this.activeStatus].concat(res.data.item)
+          this.subParams[this.activeStatus].currPage = res.data.currPage + 1
+          this.subParams[this.activeStatus].pageCount = res.data.pageCount
+          this.subParams[this.activeStatus].finished = res.data.currPage >= res.data.pageCount
+          this.infiniteLoad = res.data.currPage >= res.data.pageCount
+
+          if(this.activeStatus == 0){
+            this.tobeConfirmNum = res.data.nowDateNum
+          }
         }
       })
-    },
+    }, 10),
     // 修改搜索条件，重置相关数据项
     resetData(){
+      this.tobeConfirmNum = 0
       this.infiniteLoad = false
       this.orderResults = {'0':[], '1':[], '2':[], '3':[], 'a':[]}
       this.subParams = {

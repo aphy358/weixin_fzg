@@ -6,6 +6,11 @@ import http from '../http'
 export const syncEBLogin = (args, loading = false) => http.post("/vue/supBind.do", args, loading)
 
 
+// 模拟登录
+export const syncEBLoginForTest = (args, loading = false) => http.post("/vue/analogLogin/supplierLogin.do", args, loading)
+
+
+
 // 解除绑定 eb 用户
 export const syncEBUnBind = (args, loading = true) => http.post("/vue/relieveSupBind.do", args, loading)
 
@@ -36,7 +41,7 @@ export const syncHandleOrder = (args, loading = false) => http.post("/vue/wxSave
 
 
 // 更新供应商 Remark ？
-export const syncUpdateOrderSuppRemark = (args, loading = false) => http.post("/vue/updateOrderSuppRemark.do", args, loading)
+export const syncUpdateOrderSuppRemark = (args, loading = true) => http.post("/vue/updateOrderSuppRemark.do", args, loading)
 
 
 

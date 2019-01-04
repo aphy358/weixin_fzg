@@ -5,6 +5,9 @@ import http from '../http'
 // 登录
 export const syncQNBLogin = (args, loading = false) => http.post("/vue/qnbBind.do", args, loading)
 
+// 模拟登录
+export const syncQNBLoginForTest = (args, loading = false) => http.post("/vue/analogLogin/qnbLogin.do", args, loading)
+
 
 // 获取当前用户
 export const syncQNBGetCurUser = (args, loading = false) => http.post("/vue/qnbPersonalCenter/getQnbUserInfo.do", args, loading)
