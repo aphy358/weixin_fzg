@@ -481,7 +481,7 @@ export default {
     // 确认订单
     confirmOrder(){
       let param = {"status": 1, "orderInfoId": this.orderId, "textVal": this.hotelCode, "isChange": this.hotelCode != this.hotelOrderCode ? 1 : ""}
-debugger
+
       this.$api.eb.syncHandleOrder(param).then(res => {
         if(res.returnCode === 1){
           if(this.checkedFinallyOrderArr.length && this.orderExtId){

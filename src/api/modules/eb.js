@@ -61,15 +61,15 @@ export const syncEBQueryRoomStatusAndPriceForOneDay = (args, loading = false) =>
 
 
 // 关房
-export const syncEBCutHotelRoom = (args, loading = false) => http.post("/vue/ebHotel/cutHotelRoom.do", args, loading)
+export const syncEBCutHotelRoom = (args, loading = true) => http.post("/vue/ebHotel/cutHotelRoom.do", args, loading)
 
 
 // 保存房态
-export const syncEBSaveRoomStatus = (args, loading = false) => http.post("/vue/ebHotel/supplierSaveHotelRoom.do", args, loading)
+export const syncEBSaveRoomStatus = (args, loading = true) => http.post("/vue/ebHotel/supplierSaveHotelRoom.do", args, loading)
 
 
 // 保存房价
-export const syncEBSaveRoomPrice = (args, loading = false) => http.post("/vue/ebHotel/supplierSaveHotelPrice.do", args, loading)
+export const syncEBSaveRoomPrice = (args, loading = true) => http.post("/vue/ebHotel/supplierSaveHotelPrice.do", args, loading)
 
 
 
@@ -84,11 +84,11 @@ export const syncEBQueryAlwaysType = (args, loading = false) => http.post("/vue/
 
 
 // 批量保存房态
-export const syncEBBatchSaveRoomStatus = (args, loading = false) => http.post("/vue/ebHotel/queryShortcut.do", args, loading)
+export const syncEBBatchSaveRoomStatus = (args, loading = true) => http.post("/vue/ebHotel/queryShortcut.do", args, loading)
 
 
 // 批量保存房价
-export const syncEBBatchSaveRoomPrice = (args, loading = false) => http.post("/vue/ebHotel/queryPriceShortcut.do", args, loading)
+export const syncEBBatchSaveRoomPrice = (args, loading = true) => http.post("/vue/ebHotel/queryPriceShortcut.do", args, loading)
 
 
 

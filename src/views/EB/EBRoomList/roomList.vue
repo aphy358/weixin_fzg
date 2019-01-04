@@ -40,6 +40,7 @@
       :checkedPriceType="checkedPriceType"
       @hidePopup="hidePopup"
       @refreshData="refreshData"
+      :hotelId="hotelId"
       :activeDay="activeDay"
       :formulaType="formulaType"
       :typeFlag="typeFlag" />

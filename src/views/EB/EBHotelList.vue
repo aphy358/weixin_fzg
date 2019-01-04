@@ -26,7 +26,9 @@
 				</li>
 			</ul>
 
-      <Loading />
+      <Loading v-if="loading" />
+
+      <div style="text-align: center;color: red;margin: 0.2rem 0;" v-if="!loading && hotelList.length < 1">无相关酒店</div>
 
     </div>
   </div>
@@ -39,8 +41,6 @@ import { gotoPage, queryString } from '@/assets/util'
 import { Toast } from 'mint-ui'
 import { debounce } from 'lodash'
 
-import { _ebHotelList } from './ebHotelList.js'
-
 
 export default {
   name: 'EBHotelList',
@@ -48,6 +48,7 @@ export default {
     return {
       keyWord: '',
       hotelList: [],
+      loading: false,
     }
   },
   props: {},
@@ -58,9 +59,6 @@ export default {
   watch: {},
   created(){},
   activated(){
-    //***测试 */
-    this.hotelList = _ebHotelList
-
     this.queryHotelList()
   },
   computed: {},
@@ -73,15 +71,15 @@ export default {
     },
     // 查询酒店列表
     queryHotelList: debounce(function(){
-      console.log({currPage: 1, key: this.keyWord});
-      
-      this.$api.eb.syncEBQueryHotelList({currPage: 1, key: this.keyWord}).then(res => {
-        debugger;
-        console.log('queryHotelList');
-        
-        return
-        if(res.returnCode === 1){
+      if(this.loading)  return
+      this.loading = true
+      this.hotelList = []
 
+      this.$api.eb.syncEBQueryHotelList({currPage: 1, key: this.keyWord}).then(res => {
+        this.loading = false
+
+        if(res.returnCode === 1){
+          this.hotelList = res.dataList
         }
       })
     }, 300),
@@ -131,6 +129,7 @@ export default {
 .eb-hotel-list{
     margin: 0.1rem 0;
     background: white;
+    margin-bottom: 1.5rem;
 }
 
 .eb-hotel-item{
