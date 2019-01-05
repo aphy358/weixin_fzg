@@ -58,20 +58,12 @@ export default {
   props: {},
   components: {},
   watch: {},
-  created(){
-
-    //*** 模拟登录，测试 */
-    let params = {
-      code: '8998',
-      name: 'hejinmei',
-      password: '1'
+  activated(){
+    if(!window.goBack){
+      this.getCurUser()
     }
-    this.$api.qnb.syncQNBLoginForTest(params).then(res => {
-      console.log(res);
-    })
-
-
-    this.getCurUser()
+  },
+  created(){
   },
   computed: {},
   mounted(){},

@@ -22,7 +22,7 @@ export const syncQNBQueryMyConcernList = (args, loading = false) => http.post("/
 
 
 // 判断用户对某供应商有无操作权限
-export const syncQNBHasAuthority = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/isHasAuthority.do", args, loading)
+export const syncQNBHasAuthority = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/isHasAuthority.do", args, loading)
 
 
 // 取消对某酒店供应商的关注
@@ -30,7 +30,7 @@ export const syncQNBCancleConcern = (args, loading = false) => http.post("/vue/q
 
 
 // 增加对某酒店供应商的关注
-export const syncQNBAddConcern = (args, loading = false) => http.post("/vue/qnbPersonalCenter/addAttenton.do", args, loading)
+export const syncQNBAddConcern = (args, loading = true) => http.post("/vue/qnbPersonalCenter/addAttenton.do", args, loading)
 
 
 // 查询某个酒店下的所有供应商

@@ -70,7 +70,7 @@ function _h(verb) {
 
         // 当请求出错或未登录时，在这里统一显示错误信息
         if(response.data){
-          if(response.data.returnCode == 0 && response.data.returnMsg){
+          if(response.data.returnCode == 0 || response.data.returnCode == -400001 || response.data.returnCode == -1){
             Toast(response.data.returnMsg)
           }
 

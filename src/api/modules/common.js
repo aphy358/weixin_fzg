@@ -12,5 +12,12 @@ export const syncLogin = (args, loading = false) => http.post("/vue/login.do", a
 
 
 
+
+// 授权登录
+export const syncAuthLogin = (args, loading = false) => http.post("/vue/autoLoginWx.do", args, loading)
+
+
+
+
 // 退出
 // export const syncLogout = (args, loading = true) => http.get("/user/logoutShop.do", args, loading)
