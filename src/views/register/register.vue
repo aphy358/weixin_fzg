@@ -249,11 +249,12 @@
       country() {
         this.province = '';
         this.city = '';
-        this.t = +new Date();//记录一个时间戳，用以传给后台，再由后台原原本本地传回来，可以帮助我们确定每次返回的结果到底是属于哪次发出去的请求）
-        this.$api.register.syncProvince({countryId: this.country, t: this.t}).then(res => {
+        let timeStamp = +new Date();
+        this.t = timeStamp;      //记录一个时间戳，标识每一个发出去的请求，可以帮助我们确定每次返回的结果到底是属于哪次发出去的请求）
+        this.$api.register.syncProvince({countryId: this.country}).then(res => {
           if (res.returnCode === 1) {
-            if (res.t === this.t) {
-              //将后台返回的时间戳与最后发送请求时获取的时间戳作对比，如果一致则表示此事返回的结果是我们最后一次更换国家时发出的请求（之所以要作这些处理是因为有可能发生更换国家过快时，先发出的请求反而后返回结果，导致展示的省份列表与当前选择的国家不符合）
+            if (timeStamp === this.t) {
+              //将局部的时间戳(即每次与最后发送请求时获取的时间戳作对比，如果一致则表示此事返回的结果是我们最后一次更换国家时发出的请求（之所以要作这些处理是因为有可能发生更换国家过快时，先发出的请求反而后返回结果，导致展示的省份列表与当前选择的国家不符合）
               this.provinceList = res.data;
             }
           }
@@ -262,9 +263,13 @@
       //所选省份发生改变时，相应的城市列表需要更新，同时重置之前选过的城市
       province() {
         this.city = '';
+        let timeStamp = +new Date();
+        this.t = timeStamp;
         this.$api.register.syncCity({stateId: this.province}).then(res => {
           if (res.returnCode === 1) {
-            this.cityList = res.data;
+            if(timeStamp === this.t){
+              this.cityList = res.data;
+            }
           }
         });
       },

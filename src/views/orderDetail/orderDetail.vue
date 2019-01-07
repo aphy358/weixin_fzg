@@ -10,64 +10,64 @@
 				<ul class="per-module-list">
 					<li>
 						<span class="item-txt">订单编号</span>
-						<span class="item-con blue">AA181210388827</span>
+						<span class="item-con blue">{{orderCode}}</span>
 					</li>
 					<li>
 						<span class="item-txt">下单日期</span>
-						<span class="item-con">2018-12-10</span>
+						<span class="item-con">{{orderInfo.createTime}}</span>
 					</li>
 					<li>
 						<span class="item-txt">付款方式</span>
-						<span class="item-con">预付</span>
+						<span class="item-con">{{orderInfo.paymentType === 0 ? '预付' : '现付'}}</span>
 					</li>
 					<li>
 						<span class="item-txt">结算周期</span>
-						<span class="item-con">单结</span>
+						<span class="item-con">{{['客人前台现付','单结','周结','半月结','月结','不固定','三日结','十日结','额度结'][orderInfo.paymentTerm + 1]}}</span>
 					</li>
 					<li>
 						<span class="item-txt">订单金额</span>
-						<span class="item-con gold">￥1916.25</span>
+						<span class="item-con gold">￥{{orderInfo.salePrice}}</span>
 					</li>
 					<li>
 						<span class="item-txt">入住日期</span>
-						<span class="item-con">2018-12-10</span>
+						<span class="item-con">{{orderInfo.beginDate}}</span>
 					</li>
 					<li>
 						<span class="item-txt">订单状态</span>
-						<span class="item-con deep-orange">已取消</span>
+						<span class="item-con deep-orange">{{orderInfo.status === -1 ? '未向客户确认' : orderInfo.status === 0 ? '已向客户确认' : orderInfo.status === 1 ? '已向客户拒单' : orderInfo.status === 2 ? '申请取消中' : orderInfo.status === 3 ? '不能取消' : orderInfo.status === 4 ? '已取消' : ''}}</span>
 					</li>
 					<li>
 						<span class="item-txt">到店时间</span>
-						<span class="item-con">2018-12-10 11:00 - 2018-12-11 12:00</span>
+						<span class="item-con">{{beginDate.split(' ')[0]}} 11:00 - {{endDate.split(' ')[0]}} 12:00</span>
 					</li>
 					<li>
 						<span class="item-txt">取消条款</span>
-						<span class="item-con red">此房即订即保，一旦预订，不可修改或取消</span>
+						<span class="item-con red">{{clauseDesc}}</span>
 					</li>
 				</ul>
 			</div>
 			<div class="per-module">
 				<p class="per-module-title">价格详情</p>
-				<ul class="per-module-list">
+				<ul class="per-module-list multi-price-info" v-for="(item, index) in orderDetailsInfoList" :key="'priceInfo' + index">
 					<li>
 						<span class="item-txt">房型</span>
-						<span class="item-con">高级房（高级房）</span>
+						<span class="item-con">{{item.roomName}} ( {{item.rateName}} ) </span>
 					</li>
 					<li>
 						<span class="item-txt">床型</span>
-						<span class="item-con">大床/双床</span>
+						<span class="item-con">{{item.bedTypeName}}</span>
 					</li>
 					<li>
 						<span class="item-txt">早餐</span>
-						<span class="item-con">两份早餐</span>
+						<span class="item-con">{{item.breakfastName}}</span>
 					</li>
 					<li>
 						<span class="item-txt">间数</span>
-						<span class="item-con">1</span>
+						<span class="item-con">{{item.acount}}</span>
 					</li>
 					<li>
 						<span class="item-txt">价格列表</span>
-						<span class="item-con gold">2018-12-10：￥1916.25</span>
+						<span class="item-con gold" v-for="(v, i) in item.detailsInfo" :key="'priceList' + i">{{v[0]}}：￥{{v[1]}}</span>
 					</li>
 				</ul>
 			</div>
@@ -76,19 +76,19 @@
 				<ul class="per-module-list">
 					<li>
 						<span class="item-txt">名称</span>
-						<span class="item-con blue">深圳东华假日酒店</span>
+						<span class="item-con blue">{{staticInfo.infoName}}</span>
 					</li>
 					<li>
 						<span class="item-txt">地址</span>
-						<span class="item-con">深圳南海大道东华园2307号</span>
+						<span class="item-con">{{staticInfo.address}}</span>
 					</li>
 					<li>
 						<span class="item-txt">电话</span>
-						<span class="item-con">0755-86193999</span>
+						<span class="item-con">{{staticInfo.phone}}</span>
 					</li>
 					<li>
 						<span class="item-txt">传真</span>
-						<span class="item-con">0755-26649699</span>
+						<span class="item-con">{{staticInfo.fax}}</span>
 					</li>
 				</ul>
 			</div>
@@ -119,18 +119,42 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
+  import {queryString} from '@/assets/util';
   
   export default {
     name: 'orderDetail',
     
     data() {
-      return {}
+      return {
+        orderCode: '',
+        clauseDesc: '',
+        orderInfo: {},
+        staticInfo: {},
+        beginDate: '',
+        endDate: '',
+        orderDetailsInfoList: [],
+      }
     },
     
     props: {},
     
     components: {
       GoBack
+    },
+    
+    created(){
+      let _this = this;
+      this.$api.myCenter.syncOrderDetail({orderId: queryString('orderId')}).then(res => {
+        if (res.returnCode === 1){
+          _this.orderCode = res.data.orderCode;
+          _this.clauseDesc = res.data.clauseDesc;
+          _this.orderInfo = res.data.orderInfo;
+          _this.beginDate = res.data.orderInfo.beginDate;
+          _this.endDate = res.data.orderInfo.endDate;
+          _this.staticInfo = res.data.staticInfo;
+          _this.orderDetailsInfoList = res.data.orderDetailsInfoList;
+        }
+      })
     },
     
     computed: {},
@@ -161,6 +185,14 @@
 				}
 				
 				@at-root .per-module-list{
+					
+					&.multi-price-info{
+						border-bottom: 0.5px dashed #666666;
+						
+						&:last-child{
+							border-bottom: none;
+						}
+					}
 					>li{
 						line-height: 0.32rem;
 						font-size: 0.12rem;
