@@ -113,6 +113,14 @@ let router = new Router({
       meta: {
         wechatAuth: false
       },
+    },
+    {
+      path: '/personalInfo',
+      name: 'personalInfo',
+      component: () => import('@/views/personalInfo/personalInfo.vue'),
+      meta: {
+        wechatAuth: false
+      },
     }
   ].concat(ebRouter).concat(qnbRouter),
 })

@@ -9,30 +9,32 @@
 		
 		
 		<div class="page-content">
-			<div class="no-order" v-show="orderList.length <= 0"><i class="iconfont icon-warning" style="margin-right: 0.05rem;line-height: 0.8rem;"></i>暂无订单</div>
+			<div class="no-order" v-show="orderList.length <= 0"><i class="iconfont icon-warning" style="margin-right: 0.05rem;line-height: 0.8rem;"></i>{{warningInfo}}</div>
 			
-			<div class="order-list" v-show="orderList.length > 0">
+			<div class="order-list" v-show="orderList.length > 0" v-infinite-scroll="getHotelOrderList" infinite-scroll-disabled="infiniteLoad" infinite-scroll-distance="0">
 				<div class="per-order" v-for="(item, index) in orderList" :key="index">
 					<p class="order-title clearfix">
-						<span class="hotel-name fl">{{item.hotelName}}</span>
-						<span class="fr read-detail">查看详情<i class="fr iconfont icon-right-c1"></i></span>
+						<span class="hotel-name fl">{{item.itemName}}</span>
+						<span class="fr read-detail" @click="readDetail(item.orderInfoId)">查看详情<i class="fr iconfont icon-right-c1"></i></span>
 					</p>
 					<div class="order-info">
-						<p class="room-type">高级房</p>
-						<p>订单号：AA181210388827</p>
-						<p>入住日期：2018-10-20</p>
-						<p>离店日期：2018-10-21</p>
+						<p class="room-type">{{item.roomType}}</p>
+						<p>订单号：{{item.orderCode}}</p>
+						<p>入住日期：{{item.beginDate}}</p>
+						<p>离店日期：{{item.endDate}}</p>
 						<p>
-							<span class="canceled">已取消</span>
+							<span class="canceled" :class="item.innerStatus === -1 ? 'purple' : item.innerStatus === 0 ? 'green' : item.innerStatus === 1 ? 'red' : item.innerStatus === 2 ? 'orange' : item.innerStatus === 3 ? 'red' : ''">{{item.innerStatus === -1 ? '待确认' : item.innerStatus === 0 ? '已确认' : item.innerStatus === 1 ? '已拒单' : item.innerStatus === 2 ? '取消申请中' : item.innerStatus === 3 ? '无法取消' : '已取消'}}</span>
 						</p>
-						<span class="order-total">￥1916.25</span>
+						<span class="order-total">￥{{item.salePrice}}</span>
 					</div>
 					<div class="operate-order">
-						<button @click="cancelOrder">取消订单</button>
-						<button>去支付</button>
+						<button @click="cancelOrder" v-show="item.canPayment">取消订单</button>
+						<button v-show="item.canCancle">去支付</button>
 					</div>
 				</div>
 			</div>
+			
+			<END v-show="endVisible"/>
 		</div>
 		
 		
@@ -118,6 +120,8 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
+  import {gotoPage} from '@/assets/util';
+  import END from '@/components/END.vue'
   
   export default {
     name: '',
@@ -125,17 +129,7 @@
     data() {
       return {
         filterVisible: false,
-        orderList: [
-          {
-            hotelName: '深圳东华假日酒店'
-          },
-          {
-            hotelName: '深圳东华假日酒店'
-          },
-          {
-            hotelName: '深圳东华假日酒店'
-          },
-        ],
+        orderList: [],
         params: {
 //          itemName: '',
 //          beginDate: '',
@@ -143,7 +137,8 @@
 //          orderCode: '',
 //          userName: '',
           innerStatus: '',
-          paymentStatus: ''
+          paymentStatus: '',
+          currPage: 0,
         },
         reasonVisible: false,
         cancelReasonId: '',
@@ -173,6 +168,10 @@
             label: '其他'
           }
         ],
+        loadingContinue: true,
+        infiniteLoad: false,
+        warningInfo: '查询中，请稍候......',
+        endVisible: false,
       }
     },
     
@@ -180,6 +179,22 @@
     
     components: {
       GoBack,
+      END,
+    },
+    
+    created(){
+      let _this = this;
+      this.$api.myCenter.syncLogin({code: 8998,name: 'fenghan',password: 1}).then(outerRes => {
+        if(outerRes.success){
+//          _this.getHotelOrderList();
+//          _this.$api.myCenter.syncHotelOrderList(_this.params).then(res => {
+//            if (res.returnCode === 1){
+//              _this.orderList = res.data.item;
+//            }
+//          });
+        }
+      })
+
     },
     
     computed: {},
@@ -211,6 +226,29 @@
       ensureCancelOrder(){
         this.reasonVisible = false;
       },
+      getHotelOrderList(){
+        if (this.loadingContinue){
+          this.infiniteLoad = true;
+          let num = ++this.params.currPage;
+          this.$set(this.params, 'currPage', num);
+          let _this = this;
+          this.$api.myCenter.syncHotelOrderList(this.params).then(res => {
+            if (res.returnCode === 1){
+              if (res.data.item.length <= 0){
+                _this.loadingContinue = false;
+                _this.endVisible = true;
+              }else{
+                _this.warningInfo = '暂无订单';
+                _this.orderList = Object.assign(_this.orderList.concat(res.data.item));
+                _this.infiniteLoad = false;
+              }
+            }
+          });
+        }
+      },
+      readDetail(orderId){
+        gotoPage(this.$router, 'orderDetail', {orderId: orderId})
+      }
     }
   }
 </script>
@@ -299,6 +337,26 @@
 			height: 0.24rem;
 			line-height: 0.24rem;
 			padding: 0 0.1rem;
+			
+			&.purple{
+				color: #666fb1;
+				background-color: rgba(102, 111, 177, 0.2);
+			}
+			
+			&.red{
+				color: #ff4400;
+				background-color: rgba(255, 68, 0, 0.2);
+			}
+			
+			&.orange{
+				color: #ff7625;
+				background-color: rgba(255, 118, 37, 0.2);
+			}
+			
+			&.green{
+				color: #4da52f;
+				background-color: rgba(77, 165, 47, 0.21);
+			}
 		}
 	}
 	
@@ -367,7 +425,7 @@
 					&.hol-filter-date{
 						margin-top: -0.4rem;
 						color: transparent;
-    				background: transparent;
+						background: transparent;
 					}
 				}
 			}
