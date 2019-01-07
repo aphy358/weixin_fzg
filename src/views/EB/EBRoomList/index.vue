@@ -39,7 +39,7 @@
 import GoBack from '@/components/GoBack.vue'
 import Loading from '@/components/Loading.vue'
 import END from "@/components/END.vue";
-import { gotoPage, queryString } from '@/assets/util'
+import { gotoPage, queryString, goBackPage } from '@/assets/util'
 import { Toast } from 'mint-ui'
 import { debounce } from 'lodash'
 
@@ -47,8 +47,6 @@ import Head from '../components/head'
 import DateBar from './dateBar'
 import RoomList from './roomList'
 
-//** 测试数据 */
-import { _ebRoomList } from './ebRoomList.js'
 
 
 export default {
@@ -98,10 +96,9 @@ export default {
       this.activeDay = (new Date).Format('yyyy-MM-dd')
       this.formulaType = '1'
       this.getQueryParams()
-    }else{
-      // 如果是从批量设置页面回退过来的，则重新查数据
-      this.queryRoomStatusAndPriceForOneDay()
     }
+
+    this.queryRoomStatusAndPriceForOneDay()
   },
   computed: {},
   mounted(){},
@@ -123,9 +120,6 @@ export default {
     },
     // 查询某一天的房态、房价数据
     queryRoomStatusAndPriceForOneDay: debounce(function(){
-      console.log('queryRoomStatusAndPriceForOneDay');
-      
-      
       // 查询之前先清空数据
       this.roomList = []
 
@@ -140,10 +134,9 @@ export default {
   
         this.$api.eb.syncEBQueryRoomStatusAndPriceForOneDay(params).then(res => {
           this.loading = false
-          this.roomList = _ebRoomList
 
           if(res.returnCode === 1){
-  
+            this.roomList = res.data.hotelRoomEbDtoList || []
           }
         })
       }

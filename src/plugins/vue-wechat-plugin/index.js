@@ -9,7 +9,6 @@ export default {
         //绑定到路由上
         router.beforeEach((to, from, next) => {
             if (to.matched.some(record => record.meta.wechatAuth)) { // 判断是否需要授权
-                debugger
                 // pageType：1：普通页面   2：eb 相关的页面   3：内部系统小工具相关的页面
                 let pageType =
                     to.matched[0].meta.pageType == 'eb'  ? 2 : 
@@ -22,7 +21,7 @@ export default {
                 if (user) { // 判断是否已经有登录
                     next()
                 } else if (to.query.code) { // 判断是否是微信的回调地址
-                    wechatPlugin.getCodeCallback(next, to.query.code)
+                    wechatPlugin.getCodeCallback(next, to.query.code, pageType)
                 } else { // 去获取code
                     wechatPlugin.getCode()
                 }

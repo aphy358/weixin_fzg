@@ -105,7 +105,7 @@ export default {
 
           this.$api.common.syncLogin(param).then(res => {
             if(res.returnCode === 1){
-              // TO DO 跳转到微信  replacePage
+              goBackPage(this.$router)
             }
           })
         }

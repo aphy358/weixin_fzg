@@ -41,6 +41,7 @@
       @hidePopup="hidePopup"
       @refreshData="refreshData"
       :activeDay="activeDay"
+      :hotelId="hotelId"
       :formulaType="formulaType"
       :suppId="suppId"
       :typeFlag="typeFlag" />

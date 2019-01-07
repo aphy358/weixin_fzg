@@ -67,11 +67,11 @@ module.exports = {
     open: process.platform === 'darwin',
     disableHostCheck: true,
     host: '0.0.0.0',
-    port: 8080,
+    port: 8085,
     https: false,
     hotOnly: false,
     // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
-    proxy: 'http://sz.jltour.com', // 'http://weixin.jlfzg.com' , http://localhost:8081 , http://192.168.101.93:8686 , http://sz.jltour.com
+    proxy: 'http://localhost:8081', // 'http://weixin.jlfzg.com' , http://localhost:8081 , http://192.168.101.93:8686 , http://sz.jltour.com
     // proxy: {
     //   '/api/*': {
     //     target: 'http://192.168.101.93:8686'

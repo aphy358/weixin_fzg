@@ -9,7 +9,7 @@
     <!-- 返回上一页 -->
     <GoBack _style="top: 0.02rem" />
     
-    <div class="page-content" style="background-color: #efeff4;">
+    <div class="page-content" style="background-color: #efeff4;padding-bottom: 0.4rem;">
 
       <ul 
         class="qnb-concern-list"
@@ -37,7 +37,7 @@
         
       </ul>
       
-      <Loading v-if="concernList.length == 0 && !infiniteLoad" />
+      <Loading v-if="concernList.length == 0 && loading" />
 
       <LoadMore v-if="concernList.length > 0 && !infiniteLoad" />
 
@@ -56,7 +56,6 @@ import END from '@/components/END.vue'
 import { gotoPage, replacePage } from '@/assets/util'
 import { debounce } from 'lodash'
 
-import { _concernList } from './concernList.js'
 
 export default {
   name: 'QNBMyConcernList',
@@ -78,7 +77,6 @@ export default {
   watch: {},
   created(){
     this.queryMyConcernList()
-    this.concernList = _concernList
   },
   computed: {},
   mounted(){},
@@ -97,32 +95,29 @@ export default {
       }
 
       let params = {pageSize: 10, pageNum: this.pageNow}
-      this.$api.eb.syncEBQueryHotelList(params).then(res => {
-        console.log('queryMyConcernList');
+      this.$api.qnb.syncQNBQueryMyConcernList(params).then(res => {
         _this.loading = false
 
         if(res.returnCode === 1){
-          let content = res.data
-          if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
+          if(res.pageTotal <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
           }else{
             _this.infiniteLoad = false
             _this.pageNow++
           }
 
-          if(content.data){
-            _this.concernList = _this.concernList.concat(content.data)
-          }
+          _this.concernList = _this.concernList.concat(res.dataList.filter(n => n.suppId))
         }
       })
-    }, 300),
+    }, 10),
     // 取消关注酒店
     deleteConcern(n, i){
       MessageBox.confirm('是否取消关注该供应商？').then(action => {
         let params = {supplierId: n.suppId, infoId: n.infoId}
         this.$api.qnb.syncQNBCancleConcern(params).then(res => {
-          this.concernList.splice(i, 1)
           if(res.returnCode === 1){
+            this.concernList.splice(i, 1)
+            Toast('已取消关注！')
           }
         })
       });
@@ -138,17 +133,18 @@ export default {
     gotoRoomListPage(n){
       let params = {infoId: n.infoId, suppId: n.suppId}
       this.$api.qnb.syncQNBHasAuthority(params).then(res => {
-
-        gotoPage(this.$router, 'qnbRoomList', {hname: encodeURIComponent(n.infoName), mtype: 1, hotelId: n.infoId, suppId: n.suppId})
-
         if(res.returnCode === 1){
-          // TO DO
+          if(res.data){
+            gotoPage(this.$router, 'qnbRoomList', {hname: encodeURIComponent(n.infoName), mtype: 1, hotelId: n.infoId, suppId: n.suppId})
+          }else{
+            Toast('您无权限操作此供应商！')
+          }
         }
       })
     },
     // 跳转到供应商列表页面，添加关注
     gotoSupplierListPage(){
-      gotoPage(this.$router, 'qnbSupplierList', {pageType: 2, mtype: 1})
+      gotoPage(this.$router, 'qnbSupplierList', {pageType: 1, mtype: 1})
     }
   }
 }
@@ -161,6 +157,10 @@ export default {
     margin: 0.15rem 0.1rem;
     border-radius: 0.02rem;
     box-shadow: 0 0 0.05rem 0 rgba(0, 0, 0, 0.1);
+
+    &:last-child{
+      margin-bottom: 0;
+    }
 
     .mint-cell-title{
       display: none;

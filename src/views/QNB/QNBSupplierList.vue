@@ -51,11 +51,13 @@
         
       </ul>
       
-      <Loading v-if="hotelList.length == 0 && !infiniteLoad" />
+      <Loading v-if="hotelList.length == 0 && loading" />
 
       <LoadMore v-if="hotelList.length > 0 && !infiniteLoad" />
 
       <END v-if="hotelList.length > 0 && infiniteLoad" />
+
+      <div v-if="hotelList.length == 0 && infiniteLoad" class="no-data">无数据</div>
 
     </div>
   </div>
@@ -71,7 +73,6 @@ import { gotoPage, replacePage, queryString } from '@/assets/util'
 import { debounce } from 'lodash'
 import Velocity from "velocity-animate";
 
-import { _hotelList } from './hotelList.js'
 
 export default {
   name: 'QNBSupplierList',
@@ -137,7 +138,6 @@ export default {
     }, 290),
     // 获取酒店列表回调函数
     getHotelList: debounce(function(flag){
-      console.log('getHotelList');
       
       // 如果已经在查询酒店列表，则暂时不允许再查询
       if(this.loading)   return false
@@ -151,21 +151,27 @@ export default {
         pageSize: 10,
         pageNum: this.pageNow,
         countryType: this.countryType,
-        key: '',
+        key: this.keyword,
       }
 
       this.$api.qnb.syncQNBQueryHotels(params).then(res => {
         this.loading = false
-        this.hotelList = _hotelList
+        
         if(res.returnCode === 1){
-          // TO DO
+          if(res.pageTotal <= this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
+            this.infiniteLoad = true
+          }else{
+            this.infiniteLoad = false
+            this.pageNow++
+          }
+
+          this.hotelList = this.hotelList.concat(res.dataList)
         }
       })
     }, 10),
     // 重置数据
     resetData(){
       this.hotelList = []
-      this.loading = false
       this.infiniteLoad = false
       this.pageNow = 1
     },
@@ -173,40 +179,39 @@ export default {
     expandSupplier(n){
       if(!n.supplierList){
         this.$api.qnb.syncQNBQuerySuppliers({hotelId: n.i}).then(res => {
-          n.supplierList = [
-            {suppId: '1', suppName: '供应商', hasAttention: false},
-            {suppId: '1', suppName: '供应商', hasAttention: false},
-            {suppId: '1', suppName: '供应商', hasAttention: false},
-            {suppId: '1', suppName: '供应商', hasAttention: true},
-          ]
-          n.expand = !n.expand
-
           if(res.returnCode === 1){
-            // TO DO
+            n.supplierList = res.dataList
+            n.expand = !n.expand
+            this.hotelList.splice(0, 0)
           }
         })
       }else{
         n.expand = !n.expand
+        this.hotelList.splice(0, 0)
       }
     },
     // 跳转到房型列表页，要先验证用户有没有操作权限
     gotoRoomListPage(n){
       let params = {infoId: n.infoId, suppId: n.suppId}
+
       this.$api.qnb.syncQNBHasAuthority(params).then(res => {
-
-        gotoPage(this.$router, 'qnbRoomList', {hname: encodeURIComponent(n.hname), mtype: this.mtype, hotelId: n.infoId, suppId: n.suppId})
-
         if(res.returnCode === 1){
-          // TO DO
+          if(!res.data){
+            Toast('您无权限操作此供应商！')
+          }else{
+            gotoPage(this.$router, 'qnbRoomList', {hname: encodeURIComponent(n.hname), mtype: this.mtype, hotelId: n.infoId, suppId: n.suppId})
+          }
         }
       })
     },
     // 添加关注
-    addConcernSupplier(n){
-      let params = {infoId: n.infoId, suppId: n.suppId}
+    addConcernSupplier(n, o){
+      let params = {infoId: n.i, suppId: o.suppId}
       this.$api.qnb.syncQNBAddConcern(params).then(res => {
         if(res.returnCode === 1){
-          // TO DO
+          Toast('已成功关注该供应商！')
+          o.hasAttention = true
+          this.hotelList.splice(0, 0)
         }
       })
     },
@@ -219,7 +224,7 @@ export default {
           Toast('已关注该供应商！')
 				  return true
         }
-        this.addConcernSupplier({infoId: n.i, suppId: o.suppId})
+        this.addConcernSupplier(n, o)
       }
     },
     enter: function(el, done) {
@@ -313,5 +318,11 @@ export default {
 
     }
   }
+}
+
+.no-data{
+  text-align: center;
+  margin: 0.3rem 0;
+  color: #ea2c2c;
 }
 </style>
