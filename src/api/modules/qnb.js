@@ -22,7 +22,7 @@ export const syncQNBQueryMyConcernList = (args, loading = false) => http.post("/
 
 
 // 判断用户对某供应商有无操作权限
-export const syncQNBHasAuthority = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/isHasAuthority.do", args, loading)
+export const syncQNBHasAuthority = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/isHasAuthority.do", args, loading)
 
 
 // 取消对某酒店供应商的关注
@@ -30,7 +30,7 @@ export const syncQNBCancleConcern = (args, loading = false) => http.post("/vue/q
 
 
 // 增加对某酒店供应商的关注
-export const syncQNBAddConcern = (args, loading = false) => http.post("/vue/qnbPersonalCenter/addAttenton.do", args, loading)
+export const syncQNBAddConcern = (args, loading = true) => http.post("/vue/qnbPersonalCenter/addAttenton.do", args, loading)
 
 
 // 查询某个酒店下的所有供应商
@@ -51,15 +51,15 @@ export const syncQNBQueryRoomStatusAndPriceForOneDay = (args, loading = false) =
 
 
 // 关房
-export const syncQNBCutHotelRoom = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/cutHotelRoom.do", args, loading)
+export const syncQNBCutHotelRoom = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/cutHotelRoom.do", args, loading)
 
 
 // 保存房态
-export const syncQNBSaveRoomStatus = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelRoom.do", args, loading)
+export const syncQNBSaveRoomStatus = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelRoom.do", args, loading)
 
 
 // 保存房价
-export const syncQNBSaveRoomPrice = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelPrice.do", args, loading)
+export const syncQNBSaveRoomPrice = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/supplierSaveHotelPrice.do", args, loading)
 
 
 
@@ -73,8 +73,8 @@ export const syncQNBQueryAlwaysType = (args, loading = false) => http.post("/vue
 
 
 // 批量保存房态
-export const syncQNBBatchSaveRoomStatus = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/queryShortcut.do", args, loading)
+export const syncQNBBatchSaveRoomStatus = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/queryShortcut.do", args, loading)
 
 
 // 批量保存房价
-export const syncQNBBatchSaveRoomPrice = (args, loading = false) => http.post("/vue/qnbHotelStatusManager/queryPriceShortcut.do", args, loading)
+export const syncQNBBatchSaveRoomPrice = (args, loading = true) => http.post("/vue/qnbHotelStatusManager/queryPriceShortcut.do", args, loading)

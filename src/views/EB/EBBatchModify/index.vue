@@ -37,8 +37,8 @@
         <div class="rsp-popup-title">适用星期</div>
         <div class="rsp-popup-block line-after">
           <ul class="rsp-popup-week-list">
-            <li class="rsp-popup-week-item" :class="weekActive(i)" 
-              v-for="(n, i) in 7" :key="n"  
+            <li class="rsp-popup-week-item" 
+              v-for="(n, i) in 7" :key="n" :class="weekActive(i + 1)" 
               @click="switchWeek(i)">{{ weekTextArr[i] }}</li>
           </ul>
         </div>
@@ -168,7 +168,7 @@ export default {
       basePrice: 0,
 
       // 选中的适用星期
-      checkedWeekArr: [0, 1, 2, 3, 4, 5, 6],
+      checkedWeekArr: [1, 2, 3, 4, 5, 6, 7],
 
       // 快速切换星期
       weekQuickSwitch: '全部',
@@ -226,16 +226,19 @@ export default {
     // 查询房型、价格类型
     queryAlwaysType(){
       this.$api.eb.syncEBQueryAlwaysType({staticInfoId: this.hotelId}).then(res => {
-        //***测试 */
-        this.roomTypes = [
-          {ratetypeName: '价格一', ratetypeId: '5454', label: '价格一', value: '5454'},
-          {ratetypeName: '价格二', ratetypeId: '5453', label: '价格二', value: '5453'},
-        ]
-        this.priceTypes = [
-          {roomTypeName: '房型一', roomTypeId: '545', label: '房型一', value: '545'},
-          {roomTypeName: '房型二', roomTypeId: '544', label: '房型二', value: '544'},
-        ]
-        if(res.returnCode === 1){
+        if(res.returnCode == 1){
+          res.data.roomtypeList.forEach(o => {
+            o.label = o.roomTypeName
+            o.value = o.roomTypeId + ''
+          });
+
+          res.data.ratetypeList.forEach(o => {
+            o.label = o.ratetypeName
+            o.value = o.ratetypeId + ''
+          });
+
+          this.roomTypes = res.data.roomtypeList
+          this.priceTypes = res.data.ratetypeList
         }
       })
     },
@@ -282,11 +285,11 @@ export default {
         : this.checkedWeekArr.splice(index, 1)
 
       let o = this.checkedWeekArr.sort().join(',')
-      if(o == '0,1,2,3,4'){
+      if(o == '1,2,3,4,5'){
         this.weekQuickSwitch = '工作日'
-      }else if(o == '5,6'){
+      }else if(o == '6,7'){
         this.weekQuickSwitch = '周末'
-      }else if(o == '0,1,2,3,4,5,6'){
+      }else if(o == '1,2,3,4,5,6,7'){
         this.weekQuickSwitch = '全部'
       }else{
         this.weekQuickSwitch = ''
@@ -300,11 +303,11 @@ export default {
         let o = _this.weekQuickSwitch
 
         if(o == '工作日'){
-            _this.checkedWeekArr = [0,1,2,3,4]
+            _this.checkedWeekArr = [1,2,3,4,5]
         }else if(o == '周末'){
-            _this.checkedWeekArr = [5,6]
+            _this.checkedWeekArr = [6,7]
         }else if(o == '全部'){
-            _this.checkedWeekArr = [0,1,2,3,4,5,6]
+            _this.checkedWeekArr = [1,2,3,4,5,6,7]
         }else{
             _this.checkedWeekArr = []
         }
@@ -386,6 +389,8 @@ export default {
         params.remainStock = this.showStock
 
         this.$api.eb.syncEBBatchSaveRoomStatus(params).then(res => {
+          console.log(res);
+          
           if(res.returnCode === 1){
             Toast('批量设置成功')
             goBackPage(this.$router)

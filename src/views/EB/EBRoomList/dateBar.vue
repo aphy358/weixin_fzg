@@ -114,7 +114,8 @@ export default {
       this.monthText1 = monthStr
       this.monthText2 = `(${monthArr[month]})`
 
-      var firstweek = _d.getDay() 	//计算当月第一天是星期几
+      var thisMonthFirstDay = new Date(year, month, 1)
+      var firstweek = thisMonthFirstDay.getDay() 	//计算当月第一天是星期几
       var dayArr = this.getDaysForeachMonth(year);	//今年所有月份日期数的数组
       var dayCount = dayArr[month]
       var width = 50 * dayCount

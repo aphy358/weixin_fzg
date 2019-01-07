@@ -69,7 +69,7 @@ export default {
     }
   },
   // formulaType：配额类型   typeFlag：房态、房价
-  props: ['visible', 'checkedPriceType', 'activeDay', 'formulaType', 'typeFlag', 'suppId'],
+  props: ['visible', 'checkedPriceType', 'activeDay', 'formulaType', 'typeFlag', 'suppId', 'hotelId'],
   components: {},
   watch: {
     visible(){
