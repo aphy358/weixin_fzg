@@ -12,7 +12,7 @@ export default [{
 		name: 'qnbindex',
 		component: () => import('@/views/QNB/QNBIndex.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'qnb',
 		},
 	},
@@ -21,7 +21,7 @@ export default [{
 		name: 'qnbMyConcernList',
 		component: () => import('@/views/QNB/QNBMyConcernList.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'qnb',
 		},
 	},
@@ -30,7 +30,7 @@ export default [{
 		name: 'qnbSupplierList',
 		component: () => import('@/views/QNB/QNBSupplierList.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'qnb',
 		},
 	},
@@ -39,7 +39,7 @@ export default [{
 		name: 'qnbRoomList',
 		component: () => import('@/views/QNB/QNBRoomList/index.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'qnb',
 		},
 	},
@@ -48,7 +48,7 @@ export default [{
 		name: 'qnbBatchModify',
 		component: () => import('@/views/QNB/QNBBatchModify/index.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'qnb',
 		},
 	},

@@ -12,7 +12,7 @@ export default [{
 		name: 'ebIndex',
 		component: () => import('@/views/EB/EBIndex.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},
@@ -21,7 +21,7 @@ export default [{
 		name: 'ebOrderList',
 		component: () => import('@/views/EB/EBOrderList/index.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},
@@ -30,7 +30,7 @@ export default [{
 		name: 'ebOrderToBeConfirm',
 		component: () => import('@/views/EB/EbOrderToBeConfirm.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},
@@ -39,7 +39,7 @@ export default [{
 		name: 'ebHotelList',
 		component: () => import('@/views/EB/EBHotelList.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},
@@ -48,7 +48,7 @@ export default [{
 		name: 'ebRoomList',
 		component: () => import('@/views/EB/EBRoomList/index.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},
@@ -57,7 +57,7 @@ export default [{
 		name: 'ebBatchModify',
 		component: () => import('@/views/EB/EBBatchModify/index.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},
