@@ -17,18 +17,18 @@
 		
 		<div class="my-center-content">
 			<div class="icon-area">
-				<div class="per-icon">
+				<div class="per-icon" @click="goPage('hotelOrderList')">
 					<i class="iconfont icon-jibenxinxi icon1"></i>
 					<span class="icon-txt">我的订单</span>
 				</div>
-				<div class="per-icon">
+				<div class="per-icon" @click="goPage('personalInfo')">
 					<i class="iconfont icon-gengduo icon2"></i>
 					<span class="icon-txt">个人信息</span>
 				</div>
-				<div class="per-icon">
-					<i class="iconfont icon-amount icon3"></i>
-					<span class="icon-txt">快速充值</span>
-				</div>
+				<!--<div class="per-icon">-->
+					<!--<i class="iconfont icon-amount icon3"></i>-->
+					<!--<span class="icon-txt">快速充值</span>-->
+				<!--</div>-->
 			</div>
 			
 			<div class="hot-line">
@@ -40,8 +40,22 @@
 			</div>
 			
 			<div class="cell-list">
-				<mt-cell title="重置密码" is-link></mt-cell>
-				<mt-cell title="退出登录" is-link></mt-cell>
+				<mt-cell title="关于捷旅" is-link to="/about"></mt-cell>
+				<!--<mt-cell title="退出登录" is-link @click="logout"></mt-cell>-->
+				<a class="mint-cell" @click="logout">
+					<span class="mint-cell-mask"></span>
+					<div class="mint-cell-left"></div>
+					<div class="mint-cell-wrapper">
+						<div class="mint-cell-title">
+							<span class="mint-cell-text">退出登录</span>
+						</div>
+						<div class="mint-cell-value is-link">
+							<span></span>
+						</div>
+						<i class="mint-cell-allow-right"></i>
+					</div>
+					<div class="mint-cell-right"></div>
+				</a>
 			</div>
 		</div>
 		
@@ -51,6 +65,8 @@
 <script>
   import noHeadPortrait from '@/assets/img/no-head-portrait.jpg'
   import GoBack from '@/components/GoBack.vue';
+  import {gotoPage} from '@/assets/util';
+  import {MessageBox, Toast} from 'mint-ui';
   
   export default {
     name: '',
@@ -73,7 +89,24 @@
       this.noHeadPortrait = noHeadPortrait;
     },
     
-    methods: {}
+    methods: {
+      goPage(aim){
+        gotoPage(this.$router, aim);
+      },
+      logout(){
+        let _this = this;
+        MessageBox.confirm('确定执行此操作?').then(action => {
+          _this.$api.myCenter.syncLogout().then(res => {
+            if (res.returnCode === 1){
+              Toast('退出成功');
+              setTimeout(function () {
+                gotoPage(this.$router, 'home')
+              },2000);
+            }
+          });
+        });
+      }
+    }
   }
 </script>
 
