@@ -178,7 +178,7 @@ export default {
 }
 
 .ebRoomStatusManagement-index-bottom .inner{
-  width: 2.2rem;
+  width: 2.25rem;
   overflow: hidden;
   margin: auto;
 }
