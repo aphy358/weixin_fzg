@@ -148,18 +148,17 @@ Vue.use(wechatPlugin, {
     // axios.post('/vue/autoLoginWx.do', { code: code, state: '' }).then(response => {
     api.common.syncAuthLogin({ code: code, state: '' }).then(response => {
       if(response.returnCode == 1){
-        debugger
+        
         let data = response.data
         let user_wx = data.customerUser
         let user_eb = data.supCustomerUser
         let user_qnb = data.qnbUser
 
-        if(user_wx)   window.sessionStorage.setItem('user_wx', JSON.stringify(user_wx))
-        if(user_eb)   window.sessionStorage.setItem('user_eb', JSON.stringify(user_eb))
-        if(user_qnb)   window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
+        if(user_wx)   window.localStorage.setItem('user_wx', JSON.stringify(user_wx))
+        if(user_eb)   window.localStorage.setItem('user_eb', JSON.stringify(user_eb))
+        if(user_qnb)   window.localStorage.setItem('user_qnb', JSON.stringify(user_qnb))
 
         if(pageType == 2){
-          alert(JSON.stringify(user_eb))
           user_eb ? next() : next('/ebLogin')
         }else if(pageType == 3){
           user_qnb ? next() : next('/qnblogin')

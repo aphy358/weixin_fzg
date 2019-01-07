@@ -15,8 +15,8 @@ export default {
                     to.matched[0].meta.pageType == 'qnb' ? 3 : 1
                 
                 let user = 
-                    pageType == 1 ? window.sessionStorage.getItem('user_wx') :
-                    pageType == 2 ? window.sessionStorage.getItem('user_eb') : window.sessionStorage.getItem('user_qnb')
+                    pageType == 1 ? window.localStorage.getItem('user_wx') :
+                    pageType == 2 ? window.localStorage.getItem('user_eb') : window.localStorage.getItem('user_qnb')
 
                 if (user) { // 判断是否已经有登录
                     next()
