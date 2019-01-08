@@ -47,7 +47,7 @@
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">订房类型</span>
-          <span class="eb-oc-block-content">预定</span>
+          <span class="eb-oc-block-content">预订</span>
         </div>
 
         <div class="eb-oc-block-row">
