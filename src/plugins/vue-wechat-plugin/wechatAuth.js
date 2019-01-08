@@ -25,8 +25,8 @@ class wechatAuth {
         }
     }
 
-    getCodeCallback(next, code, pageType, to) {
-        return this.config.getCodeCallback(this.next(next), code, pageType, to)
+    getCodeCallback(next, code, pageType) {
+        return this.config.getCodeCallback(this.next(next), code, pageType)
     }
 
 }

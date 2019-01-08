@@ -447,7 +447,6 @@ export default {
     cancelOrder(){
       let param = {"status": 3, "orderInfoId": this.orderId, "textVal": "", "isChange": ""}
       this.$api.eb.syncHandleOrder(param).then(res => {
-        debugger;
         if(res.returnCode === 1){
           // 已取消，俩按钮都不可操作
           this.orderStatus = '3'

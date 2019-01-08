@@ -11,7 +11,7 @@ export default function (Vue, router, api) {
 		responseType: 'code', // 返回类型，请填写code
 		scope: 'snsapi_userinfo', // 应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
 		// redirectUri: 'http://aphy358.natapp1.cc', //微信回调地址http://aphy358.natapp1.cc
-		getCodeCallback(next, code, pageType, to) {
+		getCodeCallback(next, code, pageType) {
 			// 用户同意授权后回调方法
 			// code：用户同意授权后，获得code值
 			// code说明： code作为换取access_token的票据，每次用户授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。
@@ -25,7 +25,6 @@ export default function (Vue, router, api) {
 				code: code,
 				state: ''
 			}).then(response => {
-				console.log(to.path.toLowerCase());
 				
 				if (response.returnCode == 1) {
 					let data = response.data
@@ -39,15 +38,12 @@ export default function (Vue, router, api) {
 					if (user_eb) window.sessionStorage.setItem('user_eb', JSON.stringify(user_eb))
 					if (user_qnb) window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
 
-					let path = to.path.toLowerCase()
-					let goNext = path == '/qnblogin' || path == '/login' || path == '/register' || path == '/eblogin'
-
 					if (pageType == 2) {
-						(user_eb || goNext) ? next() : next('/ebLogin')
+						user_eb ? next() : next('/ebLogin')
 					} else if (pageType == 3) {
-						(user_qnb || goNext) ? next() : next('/qnblogin')
+						user_qnb ? next() : next('/qnblogin')
 					} else {
-						(user_wx || goNext) ? next() : next('/login')
+						user_wx ? next() : next('/login')
 					}
 				}
 			}).catch((e) => {

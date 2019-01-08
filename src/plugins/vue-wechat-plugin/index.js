@@ -23,7 +23,7 @@ export default {
                 if (user || openid) { // 判断是否已经有登录
                     next()
                 } else if (to.query.code) { // 判断是否是微信的回调地址
-                    wechatPlugin.getCodeCallback(next, to.query.code, pageType, to)
+                    wechatPlugin.getCodeCallback(next, to.query.code, pageType)
                 } else { // 去获取code
                     wechatPlugin.getCode()
                 }
