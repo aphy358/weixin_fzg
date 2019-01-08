@@ -3,7 +3,7 @@ export default [{
 		name: 'ebLogin',
 		component: () => import('@/views/EB/EBLogin.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'eb',
 		},
 	},

@@ -13,9 +13,9 @@
       <i class="iconfont icon-shanchu eb-hotelList-keyword-del" v-show="keyWord" @click="clearKeyWord"></i>
     </div>
 
-    <div class="page-content" style="background-color: #efeff4;">
+    <div class="page-content" style="background-color: #efeff4;" ref="page_eb_hotel_list">
       
-      <ul class="eb-hotel-list">
+      <ul class="eb-hotel-list" v-if="hotelList.length > 0">
 				<li class="eb-hotel-item line-after" v-for="(n, i) in hotelList" :key="i" @click="gotoRoomListPage(n)">
 					<p class="eb-hotel-item-hname">{{ (i + 1) + '、' + n.infoName }}</p>
 					<p class="eb-hotel-item-addr">
@@ -31,11 +31,14 @@
       <div style="text-align: center;color: red;margin: 0.2rem 0;" v-if="!loading && hotelList.length < 1">无相关酒店</div>
 
     </div>
+
+    <ToTop :pageContent="$refs.page_eb_hotel_list" />
   </div>
 </template>
 
 <script>
 import GoBack from '@/components/GoBack.vue'
+import ToTop from '@/components/ToTop.vue'
 import Loading from '@/components/Loading.vue'
 import { gotoPage, queryString } from '@/assets/util'
 import { Toast } from 'mint-ui'
@@ -54,12 +57,15 @@ export default {
   props: {},
   components: {
     GoBack,
+    ToTop,
     Loading
   },
   watch: {},
   created(){},
   activated(){
-    this.queryHotelList()
+    if(!window.goBack){
+      this.queryHotelListFunc()
+    }
   },
   computed: {},
   mounted(){},
@@ -71,6 +77,9 @@ export default {
     },
     // 查询酒店列表
     queryHotelList: debounce(function(){
+      this.queryHotelListFunc()
+    }, 290),
+    queryHotelListFunc: debounce(function(){
       if(this.loading)  return
       this.loading = true
       this.hotelList = []
@@ -82,7 +91,7 @@ export default {
           this.hotelList = res.dataList
         }
       })
-    }, 300),
+    }, 10),
     // 跳转到房型列表页
     gotoRoomListPage(hotel){
       gotoPage(this.$router, 'ebRoomList', {hotelId: hotel.infoId, hname: encodeURIComponent(hotel.infoName), mtype: queryString('mtype')})

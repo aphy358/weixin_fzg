@@ -82,6 +82,7 @@ export default {
           if(res.returnCode === 1){
             // 跳转到微信 eb 登录页
             replacePage(this.$router, 'ebLogin')
+            window.sessionStorage.removeItem('user_eb')
           }
         })
       });
@@ -178,7 +179,7 @@ export default {
 }
 
 .ebRoomStatusManagement-index-bottom .inner{
-  width: 2.15rem;
+  width: 2.25rem;
   overflow: hidden;
   margin: auto;
 }

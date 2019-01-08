@@ -3,7 +3,7 @@ export default [{
 		name: 'qnblogin',
 		component: () => import('@/views/QNB/QNBLogin.vue'),
 		meta: {
-			wechatAuth: false,
+			wechatAuth: true,
 			pageType: 'qnb',
 		},
 	},

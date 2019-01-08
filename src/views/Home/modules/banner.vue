@@ -19,9 +19,9 @@ export default {
           hotelId: '193847',
           img: 'http://image.jladmin.cn/real_1537842489044.jpg'
         },
-        { // <!--苏梅岛喜来登度假酒店 36472   -->
-          hotelId: '36472',
-          img: 'http://image.jladmin.cn/real_1539249598955.jpg'
+        { // <!--迪士尼好莱坞酒店20190108 44153   -->
+          hotelId: '44153',
+          img: 'http://image.jladmin.cn/real_1546935858144.jpg'
         },
         { // <!--广州长隆香江酒店 254542   -->
           hotelId: '254542',

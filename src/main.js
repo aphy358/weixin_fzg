@@ -5,6 +5,7 @@ import store from './store'
 import Mint from 'mint-ui'
 import api from "./api"
 import wx from 'weixin-js-sdk'
+import authLogin from '@/plugins/vue-wechat-plugin/authLogin'
 
 import 'mint-ui/lib/style.css'
 import '@/assets/fonts/iconfont.css'
@@ -26,6 +27,9 @@ window.historyObj = {
 
 window.wx = wx
 window.router = router
+
+// 授权登录
+authLogin(Vue, router, api)
 
 new Vue({
   router,
