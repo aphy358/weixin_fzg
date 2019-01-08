@@ -18,7 +18,9 @@ export default {
                     pageType == 1 ? window.sessionStorage.getItem('user_wx') :
                     pageType == 2 ? window.sessionStorage.getItem('user_eb') : window.sessionStorage.getItem('user_qnb')
 
-                if (user) { // 判断是否已经有登录
+                let openid = window.sessionStorage.getItem('openid')
+                    
+                if (user || openid) { // 判断是否已经有登录
                     next()
                 } else if (to.query.code) { // 判断是否是微信的回调地址
                     wechatPlugin.getCodeCallback(next, to.query.code, pageType, to)

@@ -82,6 +82,7 @@ export default {
           if(res.returnCode === 1){
             // 跳转到微信 eb 登录页
             replacePage(this.$router, 'ebLogin')
+            window.sessionStorage.removeItem('user_eb')
           }
         })
       });
