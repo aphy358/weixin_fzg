@@ -112,10 +112,12 @@ export default {
   methods:{
     // 重新查询酒店价格
     reQueryHotelPrice: debounce(function(){
+      console.log('reQueryHotelPrice');
+      
       this.resetData()
       this.initQueryString()
       this.queryHotelPrice()
-    }, 300),
+    }, 10),
     // 重新设置数据
     resetData(){
       this.loadedPrice = false
@@ -125,7 +127,8 @@ export default {
     initQueryString(){
       let cityType = queryString('cityType')
 
-      if(cityType != this.$store.state.cityType){ // 如果 queryString 上传过来的 cityType 和 store 里存的 cityType 不相等，则说明这种情况不是从酒店列表页点击进的酒店详情页
+      // 如果 queryString 上传过来的 cityType 和 store 里存的 cityType 不相等，则说明这种情况不是从酒店列表页点击进的酒店详情页
+      if(cityType && cityType != this.$store.state.cityType){ 
         this.$store.commit(`setCityType`, cityType)
       }
     },

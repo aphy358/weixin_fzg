@@ -14,7 +14,7 @@ export const syncLogin = (args, loading = false) => http.post("/vue/login.do", a
 
 
 // 授权登录
-export const syncAuthLogin = (args, loading = false) => http.post("/vue/autoLoginWx.do", args, loading)
+export const syncAuthLogin = (args, loading = true) => http.post("/vue/autoLoginWx.do", args, loading)
 
 
 

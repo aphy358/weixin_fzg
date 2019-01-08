@@ -75,6 +75,7 @@ export default {
           if(res.returnCode === 1){
             // 跳转到微信 qnb 登录页
             replacePage(this.$router, 'qnblogin')
+            window.sessionStorage.removeItem('user_qnb')
           }
         })
       });

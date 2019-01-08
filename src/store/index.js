@@ -28,7 +28,7 @@ export default new Vuex.Store({
     childrenNum: '0',
     childrenStr: '',
     checkin: addDays(new Date),
-    checkout: addDays(new Date, 4),
+    checkout: addDays(new Date, 1),
     
     priceRange: '',
     checkedStar: '',
