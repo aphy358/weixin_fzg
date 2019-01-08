@@ -15,7 +15,7 @@ let router = new Router({
       name: 'home',
       component: Home,
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -31,7 +31,7 @@ let router = new Router({
       name: 'about',
       component: () => import('@/views/About.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -39,7 +39,7 @@ let router = new Router({
       name: 'citySelect',
       component: () => import('@/views/CitySelect/citySelect.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -47,7 +47,7 @@ let router = new Router({
       name: 'hotelList',
       component: () => import('@/views/HotelList/hotelList.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -55,7 +55,7 @@ let router = new Router({
       name: 'hotelDetail',
       component: () => import('@/views/HotelDetail/hotelDetail.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -63,7 +63,7 @@ let router = new Router({
       name: 'checkinCheckout',
       component: () => import('@/views/CheckinCheckout/CheckinCheckout.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -71,7 +71,7 @@ let router = new Router({
       name: 'orderWrite',
       component: () => import('@/views/orderWrite/orderWrite.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -79,7 +79,7 @@ let router = new Router({
       name: 'orderPay',
       component: () => import('@/views/orderPay/orderPay.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -87,7 +87,7 @@ let router = new Router({
       name: 'myCenter',
       component: () => import('@/views/myCenter/myCenter.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -95,7 +95,7 @@ let router = new Router({
       name: 'hotelOrderList',
       component: () => import('@/views/hotelOrderList/hotelOrderList.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -103,7 +103,7 @@ let router = new Router({
       name: 'orderDetail',
       component: () => import('@/views/orderDetail/orderDetail.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -111,7 +111,7 @@ let router = new Router({
       name: 'register',
       component: () => import('@/views/register/register.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {
@@ -132,7 +132,7 @@ Vue.use(Router)
 // 微信授权插件初始化
 Vue.use(wechatPlugin, {
   router, // 路由实例对象
-  appid: 'wx41041c8613e4b4b0', // 测试appid： wxdc97f923fbec8173
+  appid: 'wxdc97f923fbec8173', // 测试appid： wx41041c8613e4b4b0
   responseType: 'code', // 返回类型，请填写code
   scope: 'snsapi_userinfo', // 应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
   // redirectUri: 'http://aphy358.natapp1.cc', //微信回调地址http://aphy358.natapp1.cc

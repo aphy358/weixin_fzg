@@ -185,14 +185,14 @@
     created(){
       let _this = this;
       this.$api.myCenter.syncLogin({code: 8998,name: 'fenghan',password: 1}).then(outerRes => {
-        if(outerRes.success){
+//        if(outerRes.success){
 //          _this.getHotelOrderList();
 //          _this.$api.myCenter.syncHotelOrderList(_this.params).then(res => {
 //            if (res.returnCode === 1){
 //              _this.orderList = res.data.item;
 //            }
 //          });
-        }
+//        }
       })
 
     },
@@ -213,9 +213,11 @@
       },
       ensure(){
         this.filterVisible = false;
-        this.$api.myCenter.syncOrderList(this.params).then(res => {
-          console.log(res);
-        })
+        this.$set(this.params, 'currPage', 0);
+        this.orderList = [];
+        this.loadingContinue = true;
+        this.warningInfo = '查询中，请稍候......';
+        this.getHotelOrderList();
       },
       cancelOrder(){
         this.reasonVisible = true;
@@ -232,7 +234,7 @@
           let num = ++this.params.currPage;
           this.$set(this.params, 'currPage', num);
           let _this = this;
-          this.$api.myCenter.syncHotelOrderList(this.params).then(res => {
+          this.$api.myCenter.syncOrderList(this.params).then(res => {
             if (res.returnCode === 1){
               if (res.data.item.length <= 0){
                 _this.loadingContinue = false;
@@ -256,6 +258,7 @@
 <style scoped lang="scss">
 	.page-content{
 		background-color: #efeff4;
+		padding-bottom: 0.4rem;
 		
 		@at-root .no-order{
 			text-align: center;
@@ -265,7 +268,7 @@
 		}
 		
 		@at-root .order-list{
-			padding: 0.2rem 0.1rem;
+			padding: 0.2rem 0.1rem 0;
 			margin-bottom: 0.2rem;
 			
 			@at-root .per-order{

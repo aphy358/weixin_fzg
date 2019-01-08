@@ -12,7 +12,7 @@
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">个性化需求</span>
-				<span class="per-info-txt" @click="openSpecial">添加个性化需求</span>
+				<span class="per-info-txt" @click="openSpecial" style="overflow: hidden;width: 2.4rem;box-sizing: border-box">{{specialStr || '添加个性化需求'}}</span>
 				<mt-popup class="popup-bottom" v-model="specialVisible" position="bottom">
 					<OperationBtn @clear="clearSpecial" @confirm="confirmSpecial"/>
 					<mt-checklist v-model="specialReq" :options="specialReqList"></mt-checklist>
@@ -20,7 +20,7 @@
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">手机号</span>
-				<input v-validate="{required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/}" name="tel" type="tel" class="per-info-input" placeholder="用于接收通知" v-model="tel"/>
+				<input v-validate="'required|fzgMobilePhone'" name="tel" type="tel" class="per-info-input" placeholder="用于接收通知" v-model="tel"/>
 				<i v-show="telIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
@@ -61,7 +61,7 @@
 			</div>
 			<div class="per-line" style="margin: 0 0.3rem;">
 				<span>手机号：</span>
-				<input name="tel" type="tel" v-model="marketingTel" v-validate="marketingVisible ? {required:true, regex:/^[1][3,4,5,7,8][0-9]{9}$/} : ''" placeholder="必填" style="width: 2.3rem">
+				<input name="tel" type="tel" v-model="marketingTel" v-validate="marketingVisible ? 'required|fzgMobilePhone' : ''" placeholder="必填" style="width: 2.3rem">
 				<i v-show="marketingIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 		</div>
@@ -143,7 +143,8 @@
         nationalityIndex: 0, //由于所有国籍输入框共用一个国籍选择弹出框，而函数内部传参在此处不可行，所以使用一个变量指示每次选择国籍的index，以便赋值到对应地方
         feeDetailsVisible: false,
         marketingVisible: true,
-        marketingTel: ''
+        marketingTel: '',
+        specialStr: '',
       }
     },
     
@@ -209,6 +210,12 @@
         getMessage: field => field + '只能输入英文或拼音',
         validate: value => /^[a-zA-Z]*$/.test(value)
       });
+  
+      this.$validator.extend('fzgMobilePhone', {
+        //手机号
+        getMessage: field => '手机号格式错误',
+        validate: value => /^[1][3,4,5,7,8][0-9]{9}$/.test(value)
+      });
       
       //错误提示
       const dictionary = {
@@ -216,7 +223,7 @@
           messages:{
             required: () => '该项为必填项',
             tel: ()=> '手机号格式错误',
-            email: ()=> '邮箱格式错误'
+            email: ()=> '邮箱格式错误',
           }
         },
         ar: {
@@ -251,6 +258,12 @@
         this.specialReq = [];
       },
       confirmSpecial() {
+        let str = '';
+        for (let i = 0; i < this.specialReq.length; i++) {
+          let item = this.specialReq[i];
+          str += item + '，';
+        }
+        this.specialStr = str.replace(/，$/, '');
         this.specialVisible = false;
       },
       nextVisible(index){
@@ -287,18 +300,23 @@
           this.marketingIconVisible = true;
           if (result) {
             //弹出确认框
-//            let params = {
-//              hotelName: '深圳海燕大酒店',
-//              roomType: '豪华双床房[双床]',
-//              date: '2018-12-09/2018-12-10',
-//              roomNum: 1,
-//              name: '测试',
-//              confirmWay: '手机号：13537820062',
-//              payWay: '单结',
-//              specialReq: '',
-//              cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
-//              totalPay: 'RMB417.90元',
-//            };
+            let params = {
+              hotelName: '深圳海燕大酒店',
+              roomType: '豪华双床房[双床]',
+              date: '2018-12-09/2018-12-10',
+              roomNum: 1,
+              name: '测试',
+              confirmWay: '手机号：13537820062',
+              payWay: '单结',
+              specialReq: '',
+              cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
+              totalPay: 'RMB417.90元',
+            };
+  
+            this.$store.dispatch('orderWrite/confirmOrderInfo', {
+              k : 'orderInfo',
+              v : params
+            });
             
             this.confirmVisible = true;
           }else{
@@ -394,6 +412,7 @@
 					width: 0.8rem;
 					padding-left: 0.2rem;
 					color: #777a7c;
+					float: left;
 				}
 				
 				.per-info-txt{
