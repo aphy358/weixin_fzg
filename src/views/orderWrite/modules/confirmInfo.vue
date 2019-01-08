@@ -5,43 +5,43 @@
 		<div class="confirm-txt">
 			<div class="per-line">
 				<span class="per-line-title">酒店名</span>
-				<span class="per-line-txt">深圳海燕大酒店</span>
+				<span class="per-line-txt">{{orderInfo.hotelName}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">房型</span>
-				<span class="per-line-txt">豪华双床房[双床]</span>
+				<span class="per-line-txt">{{orderInfo.roomType}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">入住日期</span>
-				<span class="per-line-txt">2018-12-09/2018-12-10</span>
+				<span class="per-line-txt">{{orderInfo.date}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">预订间数</span>
-				<span class="per-line-txt">1间</span>
+				<span class="per-line-txt">{{orderInfo.roomNum}}间</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">入住人</span>
-				<span class="per-line-txt">测试</span>
+				<span class="per-line-txt">{{orderInfo.name}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">确认方式</span>
-				<span class="per-line-txt">手机号：13537820062</span>
+				<span class="per-line-txt">{{orderInfo.confirmWay}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">支付方式</span>
-				<span class="per-line-txt">单结</span>
+				<span class="per-line-txt">{{orderInfo.payWay}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">特殊需求</span>
-				<span class="per-line-txt"></span>
+				<span class="per-line-txt">{{orderInfo.specialReq}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">取消条款</span>
-				<span class="per-line-txt">此房即订即保，一旦预订，不可修改或取消</span>
+				<span class="per-line-txt">{{orderInfo.cancelInfo}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">订单金额</span>
-				<span class="per-line-txt">RMB<span class="total-pay orange">417.90</span>元</span>
+				<span class="per-line-txt">RMB<span class="total-pay orange">{{orderInfo.totalPay}}</span>元</span>
 			</div>
 		</div>
 		<div class="operation-btn">
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+  
   export default {
     name: 'confirmInfo',
     
@@ -66,7 +68,7 @@
         payWay: '单结',
         specialReq: '',
         cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
-        totalPay: 'RMB417.90元',
+        totalPay: '417.90',
       }
     },
     
@@ -74,7 +76,9 @@
     
     components: {},
     
-    computed: {},
+    computed: mapState({
+      orderInfo: state => state.orderWrite.orderInfo,
+    }),
     
     methods: {
       cancel(){

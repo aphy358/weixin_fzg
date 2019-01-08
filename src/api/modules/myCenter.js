@@ -19,8 +19,5 @@ export const syncLogin = (args, loading = false) => http.get("/analogLogin/qnbLo
 // 退出登录
 export const syncLogout = (args, loading = false) => http.post("/vue/logout.do", args, loading);
 
-// 我的订单列表
-export const syncHotelOrderList = (args, loading = false) => http.post("/vue/order/list.do", args, loading);
-
 // 订单详情
 export const syncOrderDetail = (args, loading = false) => http.post("/vue/order/detail.do", args, loading);

@@ -46,7 +46,7 @@ export default {
     //
     // dialogTableVisible : false,
     //
-    // orderInfo : {},
+    orderInfo : {},
   },
   
   
@@ -293,16 +293,16 @@ export default {
     // },
     //
     // //确认订单信息
-    // confirmOrderInfo({ commit, state, dispatch }, payload){
-    //   if (payload){
-    //     commit('setCommonState', payload);
-    //
-    //     commit('setCommonState', {
-    //       k : 'dialogTableVisible',
-    //       v : true
-    //     });
-    //   }
-    // },
+    confirmOrderInfo({ commit, state, dispatch }, payload){
+      if (payload){
+        commit('setCommonState', payload);
+
+        // commit('setCommonState', {
+        //   k : 'dialogTableVisible',
+        //   v : true
+        // });
+      }
+    },
     //
     // //成单
     // saveOrder({ commit, state, dispatch }, payload){

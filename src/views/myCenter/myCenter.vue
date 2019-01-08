@@ -99,6 +99,7 @@
           _this.$api.myCenter.syncLogout().then(res => {
             if (res.returnCode === 1){
               Toast('退出成功');
+              window.sessionStorage.removeItem('user_wx');
               setTimeout(function () {
                 gotoPage(this.$router, 'home')
               },2000);
