@@ -4,6 +4,8 @@ import wechatPlugin from '@/plugins/vue-wechat-plugin'
 
 // 授权登录
 export default function (Vue, router, api) {
+	return
+	
 	// 微信授权插件初始化
 	Vue.use(wechatPlugin, {
 		router, // 路由实例对象

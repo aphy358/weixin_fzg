@@ -99,11 +99,15 @@
       </mt-popup>
 
     </div>
+
+    <ToTop />
+
   </div>
 </template>
 
 <script>
 import GoBack from '@/components/GoBack.vue'
+import ToTop from '@/components/ToTop.vue'
 import END from '@/components/END.vue'
 import Loading from '@/components/Loading.vue'
 import LoadMore from '@/components/LoadMore.vue'
@@ -150,6 +154,7 @@ export default {
   props: {},
   components: {
     GoBack,
+    ToTop,
     END,
     Loading,
     LoadMore,

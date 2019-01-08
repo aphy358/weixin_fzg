@@ -1,6 +1,6 @@
 <template>
   <transition name="totop">
-    <div v-if="ifShow" class="totop-div" @click="goToTop">
+    <div v-show="ifShow" class="totop-div" @click="goToTop">
       <i class="iconfont icon-up-thin"></i>
     </div>
   </transition>
@@ -13,32 +13,45 @@ export default {
   data(){
     return {
       ifShow: false,
+      scrollWrap: null,
     }
   },
   props: ['pageContent'],
   components: {},
   watch: {
-    pageContent(){
-      if(this.pageContent){
+    scrollWrap(){
+      if(this.scrollWrap){
         // 注册事件
-        this.pageContent.addEventListener('scroll', this.addEvent, false)
+        this.scrollWrap.addEventListener('scroll', this.addEvent, false)
       }
     }
   },
   created(){
   },
   beforeDestroy(){
-    if(this.pageContent){
+    if(this.scrollWrap){
       // 卸载事件
-      this.pageContent.removeEventListener('scroll', this.addEvent, false)
+      this.scrollWrap.removeEventListener('scroll', this.addEvent, false)
     }
   },
   activated(){},
   computed: {},
-  mounted(){},
+  mounted(){
+    let _this = this
+
+    setTimeout(function(){
+      if(_this.pageContent){
+        _this.scrollWrap = document.querySelector(_this.pageContent)
+      }else{
+        let arr = document.querySelectorAll('.page-content')
+        _this.scrollWrap = arr[arr.length - 1]
+      }
+    }, 100)
+  },
   methods: {
     goToTop(){
-      this.pageContent.scrollTop = 0
+      this.scrollWrap.scrollTop = 0
+      this.ifShow = false
     },
     addEvent(e){
       this.ifShow = e.srcElement.scrollTop > 200
