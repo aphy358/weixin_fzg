@@ -1,7 +1,7 @@
 <template>
 
   <transition :name="transitionName" id="app">
-    <keep-alive :max="5">
+    <keep-alive>
       <router-view/>
     </keep-alive>
   </transition>
