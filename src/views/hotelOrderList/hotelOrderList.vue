@@ -12,10 +12,10 @@
 			<div class="no-order" v-show="orderList.length <= 0"><i class="iconfont icon-warning" style="margin-right: 0.05rem;line-height: 0.8rem;"></i>{{warningInfo}}</div>
 			
 			<div class="order-list" v-show="orderList.length > 0" v-infinite-scroll="getHotelOrderList" infinite-scroll-disabled="infiniteLoad" infinite-scroll-distance="0">
-				<div class="per-order" v-for="(item, index) in orderList" :key="index">
+				<div class="per-order" v-for="(item, index) in orderList" :key="index" @click="readDetail(item.orderInfoId)">
 					<p class="order-title clearfix">
 						<span class="hotel-name fl">{{item.itemName}}</span>
-						<span class="fr read-detail" @click="readDetail(item.orderInfoId)">查看详情<i class="fr iconfont icon-right-c1"></i></span>
+						<span class="fr read-detail">查看详情<i class="fr iconfont icon-right-thin" style="font-size: 0.12rem"></i></span>
 					</p>
 					<div class="order-info">
 						<p class="room-type">{{item.roomType}}</p>
@@ -27,11 +27,13 @@
 						</p>
 						<span class="order-total">￥{{item.salePrice}}</span>
 					</div>
-					<div class="operate-order">
-						<button @click="cancelOrder" v-show="item.canPayment">取消订单</button>
-						<button v-show="item.canCancle">去支付</button>
+					<div class="operate-order" v-if="item.canPayment || item.canCancle">
+						<button @click.stop="cancelOrder" v-if="item.canPayment">取消订单</button>
+						<button v-if="item.canCancle">去支付</button>
 					</div>
 				</div>
+				
+				<LoadMore v-if="loadingContinue"/>
 			</div>
 			
 			<END v-show="endVisible"/>
@@ -123,8 +125,9 @@
 <script>
   import GoBack from '@/components/GoBack.vue';
   import {gotoPage} from '@/assets/util';
-	import END from '@/components/END.vue'
-	import ToTop from '@/components/ToTop.vue'
+  import END from '@/components/END.vue';
+  import ToTop from '@/components/ToTop.vue';
+  import LoadMore from '@/components/LoadMore.vue';
   
   export default {
     name: '',
@@ -182,8 +185,9 @@
     
     components: {
       GoBack,
-			END,
-			ToTop
+      END,
+      ToTop,
+      LoadMore,
     },
     
     created(){
@@ -288,7 +292,7 @@
 					border-bottom: 0.5px solid #eeeeee;
 					
 					.read-detail{
-						margin-right: 0.1rem;
+						/*margin-right: 0.1rem;*/
 						color: #4293ff;
 					}
 				}

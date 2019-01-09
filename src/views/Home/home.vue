@@ -4,7 +4,7 @@
 
       <!-- 头部 -->
       <mt-header title="境内/境外酒店">
-        <mt-button class="iconfont icon-user" slot="right"></mt-button>
+        <mt-button class="iconfont icon-user" slot="right" @click="goMyCenter"></mt-button>
       </mt-header>
 
       <!-- banner -->
@@ -37,6 +37,7 @@ import Recommended from './modules/recommended.vue'
 import END from '@/components/END.vue'
 import GAP from '@/components/GAP.vue'
 import ToTop from '@/components/ToTop.vue'
+import {gotoPage} from '@/assets/util';
 
 export default {
   name: 'home',
@@ -54,6 +55,11 @@ export default {
   },
   mounted(){
   },
+  methods: {
+    goMyCenter(){
+      gotoPage(this.$router, 'myCenter');
+    }
+  }
 }
 </script>
 
