@@ -20,13 +20,13 @@
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">手机号</span>
-				<input v-validate="'required|fzgMobilePhone'" name="tel" type="tel" class="per-info-input" placeholder="用于接收通知" v-model="tel"/>
-				<i v-show="telIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
+				<input v-validate="'required|fzgMobilePhone'" name="手机号" type="tel" class="per-info-input" placeholder="用于接收通知" v-model="tel"/>
+				<i v-show="telIconVisible" class="validate-identifier mintui" :class="errors.has('手机号')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">Email</span>
-				<input v-validate="'required|email'" type="text" name="email" class="per-info-input" placeholder="用于接收通知" v-model="email">
-				<i v-show="emailIconVisible" class="validate-identifier mintui" :class="errors.has('email')?'mintui-field-error':'mintui-field-success'"></i>
+				<input v-validate="'required|email'" type="text" name="邮箱" class="per-info-input" placeholder="用于接收通知" v-model="email">
+				<i v-show="emailIconVisible" class="validate-identifier mintui" :class="errors.has('邮箱')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">结算方式</span>
@@ -44,7 +44,7 @@
 			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="'_inname' + item">
 				<input v-validate="nameRegArr[item]" name="lastName" type="text" class="username-input last-name" placeholder="姓 Last name" v-model="nameArr[item].l"/>/
 				<input v-validate="nameRegArr[item]" name="firstName" type="text" class="username-input first-name" placeholder="名 First name" v-model="nameArr[item].f"/>/
-				<span class="username-input nationality" v-html="nameArr[item].n || '国籍'" @click.prevent.stop="selectNationality(item)"></span>
+				<span class="username-input nationality" :class="nameArr[item].n ? '' : 'grey'" @click.prevent.stop="selectNationality(item)">{{nameArr[item].n || '国籍'}}</span>
 				<i v-if="item === 0 || item%maxPersonNum === 0" class="iconfont icon-plus2 username-icon purple" @click="nextVisible(item)"></i>
 				<i v-if="item !== 0 || item%maxPersonNum !== 0" class="iconfont icon-minus2 username-icon deep-orange" @click="hideName(item)"></i>
 			</div>
@@ -61,8 +61,8 @@
 			</div>
 			<div class="per-line" style="margin: 0 0.3rem;">
 				<span>手机号：</span>
-				<input name="tel" type="tel" v-model="marketingTel" v-validate="marketingVisible ? 'required|fzgMobilePhone' : ''" placeholder="必填" style="width: 2.3rem">
-				<i v-show="marketingIconVisible" class="validate-identifier mintui" :class="errors.has('tel')?'mintui-field-error':'mintui-field-success'"></i>
+				<input name="手机号" type="tel" v-model="marketingTel" v-validate="marketingVisible ? 'required|fzgMobilePhone' : ''" placeholder="必填" style="width: 2.3rem">
+				<i v-show="marketingIconVisible" class="validate-identifier mintui" :class="errors.has('手机号')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
 		</div>
 		
@@ -221,16 +221,9 @@
       const dictionary = {
         en: {
           messages:{
-            required: () => '该项为必填项',
-            tel: ()=> '手机号格式错误',
-            email: ()=> '邮箱格式错误',
-          }
-        },
-        ar: {
-          messages: {
-            required: () => '该项为必填项',
-            tel: ()=> '手机号格式错误',
-            email: ()=> '邮箱格式错误'
+            required: field => '请输入' + field,
+            tel: field => field + '格式错误',
+            email: field => field + '格式错误',
           }
         }
       };
@@ -320,44 +313,37 @@
             
             this.confirmVisible = true;
           }else{
-            if (!this.tel){
-              MessageBox('提示', '请输入手机号');
-            }else if (!this.email){
-              MessageBox('提示', '请输入邮箱');
-            }else{
-              //判断入住人
-              let flag = true;
-              for (let i = 0; i < 3; i++) {
-                if (i === 0 || i%3 === 0){
-                  //主入住人
-                  if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
-                    MessageBox('提示', '主入住人的姓、名和国籍均为必填');
-                    flag = false;
-                    break;
-                  }
-                }else{
-                  //附加入住人
-                  if (this.nameVisibleArr[i]){
-                    if (this.nameArr[i].l || this.nameArr[i].f || this.nameArr[i].n){
-                      if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
-                        MessageBox('提示', '附加入住人填了姓、名或国籍其中一个，则另一个也必填');
-                        flag = false;
-                        break;
-                      }
+            let flag = true;
+            for (let i = 0; i < 3; i++) {
+              if (i === 0 || i%3 === 0){
+                //主入住人
+                if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
+                  MessageBox('提示', '主入住人的姓、名和国籍均为必填');
+                  flag = false;
+                  break;
+                }
+              }else{
+                //附加入住人
+                if (this.nameVisibleArr[i]){
+                  if (this.nameArr[i].l || this.nameArr[i].f || this.nameArr[i].n){
+                    if (!(this.nameArr[i].l && this.nameArr[i].f && this.nameArr[i].n)){
+                      MessageBox('提示', '附加入住人填了姓、名或国籍其中一个，则该入住人的所有信息都为必填');
+                      flag = false;
+                      break;
                     }
                   }
                 }
               }
+            }
   
-              if (this.marketingVisible && !this.marketingTel){
-                MessageBox('提示', '小礼包中的手机号为必填');
-                return;
-              }
-              if (flag){MessageBox('提示', this.errors.first('tel') || this.errors.first('email') || this.errors.first('lastName') || this.errors.first('firstName'));}
+            if (this.marketingVisible && !this.marketingTel){
+              MessageBox('提示', '小礼包中的手机号为必填');
+              return;
+            }
+            if (flag){
+              MessageBox('提示', this.errors.first('手机号') || this.errors.first('邮箱') || this.errors.first('lastName') || this.errors.first('firstName'));
             }
           }
-  
-          
         });
       },
       closeConfirmMask(){
@@ -459,7 +445,10 @@
 						height: 0.14rem;
 						padding-left: 0;
 						display: inline-block;
-						color: #d8d8dc;
+						
+						&.grey{
+							color: #d8d8dc;
+						}
 					}
 				}
 				

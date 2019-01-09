@@ -171,90 +171,94 @@
     components: {
       GoBack
     },
-    
-    created(){
-      let _this = this;
-      this.$api.myCenter.syncOrderDetail({orderId: queryString('orderId')}).then(res => {
-        if (res.returnCode === 1){
-          _this.orderCode = res.data.orderCode;
-          _this.clauseDesc = res.data.clauseDesc;
-          _this.orderInfo = res.data.orderInfo;
-          _this.beginDate = res.data.orderInfo.beginDate;
-          _this.endDate = res.data.orderInfo.endDate;
-          _this.staticInfo = res.data.staticInfo;
-          _this.customerUser = res.data.customerUser;
-          //特殊需求
-          let specialArr = res.data.specialRequire;
-          if (specialArr && specialArr.length > 0){
-            for (let i = 0; i < specialArr.length; i++) {
-              let item = specialArr[i];
-              _this.specialStr += item + '，'
-            }
-            _this.specialStr = _this.specialStr.replace(/，$/, '');
-          }
-          
-          let orderDetailsArr = res.data.orderDetailsInfoList;
-          for (let index = 0; index < orderDetailsArr.length; index++) {
-            let outer = orderDetailsArr[index];
-            
-            //入住人信息
-            outer.userStr = '';
-            for (let i1 = 0; i1 < outer.orderUserList.length; i1++) {
-              let v1 = outer.orderUserList[i1];
-              if (v1.hasOwnProperty('nationality') && v1.nationality) {
-                outer.userStr += v1.userName + ' [ ' + v1.nationality + ' ] 、';
-              } else {
-                outer.userStr += v1.userName + '、';
-              }
-            }
-            outer.userStr = outer.userStr.replace(/、$/, '');
-            
-            //价格详情
-            outer.priceStr = '';
-            for (let i2 = 0; i2 < outer.detailsInfo.length; i2++) {
-              let v2 = outer.detailsInfo[i2];
-              outer.priceStr += v2['0'] + '（RMB ' + v2['1'] + ' * ' + v2['2'] + ' 间），'
-            }
-            outer.priceStr = outer.priceStr.replace(/，$/, '');
-            
-            //加早
-            outer.breakfastStr = '';
-            if (outer.orderSurchargeList['1'] && outer.orderSurchargeList['1'].length > 0){
-              for (let i3 = 0; i3 < outer.orderSurchargeList['1'].length; i3++) {
-                let v3 = outer.orderSurchargeList['1'][i3];
-                outer.breakfastStr += v3.startTime.split(' ')[0] + '至' + v3.endTime.split(' ')[0] + '（' + v3.breakfastName + v3.sellReal + '份），';
-              }
-              outer.breakfastStr = outer.breakfastStr.replace(/，$/, '');
-            }
-            
-            //加床
-            outer.bedStr = '';
-            if (outer.orderSurchargeList['2'] && outer.orderSurchargeList['2'].length > 0){
-              for (let i4 = 0; i4 < outer.orderSurchargeList['2'].length; i4++) {
-                let v4 = outer.orderSurchargeList['2'][i4];
-                outer.bedStr += v4.startTime.split(' ')[0] + '至' + v4.endTime.split(' ')[0] + '（' + v4.breakfastName + v4.sellReal + '份），';
-              }
-              outer.bedStr = outer.bedStr.replace(/，$/, '');
-            }
-            
-            //加宽带
-            outer.netStr = '';
-            if (outer.orderSurchargeList['3'] && outer.orderSurchargeList['3'].length > 0){
-              for (let i5 = 0; i5 < outer.orderSurchargeList['3'].length; i5++) {
-                let v5 = outer.orderSurchargeList['3'][i5];
-                outer.netStr += v5.startTime.split(' ')[0] + '至' + v5.endTime.split(' ')[0] + '（' + v5.sellReal + '份），';
-              }
-              outer.netStr = outer.netStr.replace(/，$/, '');
-            }
-          }
-          _this.orderDetailsInfoList = orderDetailsArr;
-        }
-      })
+  
+    activated(){
+      this.initData();
     },
     
     computed: {},
     
-    methods: {}
+    methods: {
+      initData(){
+        let _this = this;
+        this.$api.myCenter.syncOrderDetail({orderId: queryString('orderId')}).then(res => {
+          if (res.returnCode === 1){
+            _this.orderCode = res.data.orderCode;
+            _this.clauseDesc = res.data.clauseDesc;
+            _this.orderInfo = res.data.orderInfo;
+            _this.beginDate = res.data.orderInfo.beginDate;
+            _this.endDate = res.data.orderInfo.endDate;
+            _this.staticInfo = res.data.staticInfo;
+            _this.customerUser = res.data.customerUser;
+            //特殊需求
+            let specialArr = res.data.specialRequire;
+            if (specialArr && specialArr.length > 0){
+              for (let i = 0; i < specialArr.length; i++) {
+                let item = specialArr[i];
+                _this.specialStr += item + '，'
+              }
+              _this.specialStr = _this.specialStr.replace(/，$/, '');
+            }
+      
+            let orderDetailsArr = res.data.orderDetailsInfoList;
+            for (let index = 0; index < orderDetailsArr.length; index++) {
+              let outer = orderDetailsArr[index];
+        
+              //入住人信息
+              outer.userStr = '';
+              for (let i1 = 0; i1 < outer.orderUserList.length; i1++) {
+                let v1 = outer.orderUserList[i1];
+                if (v1.hasOwnProperty('nationality') && v1.nationality) {
+                  outer.userStr += v1.userName + ' [ ' + v1.nationality + ' ] 、';
+                } else {
+                  outer.userStr += v1.userName + '、';
+                }
+              }
+              outer.userStr = outer.userStr.replace(/、$/, '');
+        
+              //价格详情
+              outer.priceStr = '';
+              for (let i2 = 0; i2 < outer.detailsInfo.length; i2++) {
+                let v2 = outer.detailsInfo[i2];
+                outer.priceStr += v2['0'] + '（RMB ' + v2['1'] + ' * ' + v2['2'] + ' 间），'
+              }
+              outer.priceStr = outer.priceStr.replace(/，$/, '');
+        
+              //加早
+              outer.breakfastStr = '';
+              if (outer.orderSurchargeList['1'] && outer.orderSurchargeList['1'].length > 0){
+                for (let i3 = 0; i3 < outer.orderSurchargeList['1'].length; i3++) {
+                  let v3 = outer.orderSurchargeList['1'][i3];
+                  outer.breakfastStr += v3.startTime.split(' ')[0] + '至' + v3.endTime.split(' ')[0] + '（' + v3.breakfastName + v3.sellReal + '份），';
+                }
+                outer.breakfastStr = outer.breakfastStr.replace(/，$/, '');
+              }
+        
+              //加床
+              outer.bedStr = '';
+              if (outer.orderSurchargeList['2'] && outer.orderSurchargeList['2'].length > 0){
+                for (let i4 = 0; i4 < outer.orderSurchargeList['2'].length; i4++) {
+                  let v4 = outer.orderSurchargeList['2'][i4];
+                  outer.bedStr += v4.startTime.split(' ')[0] + '至' + v4.endTime.split(' ')[0] + '（' + v4.breakfastName + v4.sellReal + '份），';
+                }
+                outer.bedStr = outer.bedStr.replace(/，$/, '');
+              }
+        
+              //加宽带
+              outer.netStr = '';
+              if (outer.orderSurchargeList['3'] && outer.orderSurchargeList['3'].length > 0){
+                for (let i5 = 0; i5 < outer.orderSurchargeList['3'].length; i5++) {
+                  let v5 = outer.orderSurchargeList['3'][i5];
+                  outer.netStr += v5.startTime.split(' ')[0] + '至' + v5.endTime.split(' ')[0] + '（' + v5.sellReal + '份），';
+                }
+                outer.netStr = outer.netStr.replace(/，$/, '');
+              }
+            }
+            _this.orderDetailsInfoList = orderDetailsArr;
+          }
+        })
+      }
+    }
   }
 </script>
 
