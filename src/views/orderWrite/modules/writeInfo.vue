@@ -12,7 +12,7 @@
 			</div>
 			<div class="per-line">
 				<span class="per-info-title">个性化需求</span>
-				<span class="per-info-txt" @click="openSpecial" style="overflow: hidden;width: 2.4rem;box-sizing: border-box">{{specialStr || '添加个性化需求'}}</span>
+				<span class="per-info-txt" @click="openSpecial" style="overflow: hidden;width: 2.4rem;box-sizing: border-box;height: 100%;">{{specialStr || '添加个性化需求'}}</span>
 				<mt-popup class="popup-bottom" v-model="specialVisible" position="bottom">
 					<OperationBtn @clear="clearSpecial" @confirm="confirmSpecial"/>
 					<mt-checklist v-model="specialReq" :options="specialReqList"></mt-checklist>
@@ -310,7 +310,7 @@
               payWay: '单结',
               specialReq: '',
               cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
-              totalPay: 'RMB417.90元',
+              totalPay: '417.90',
             };
   
             this.$store.dispatch('orderWrite/confirmOrderInfo', {
@@ -418,12 +418,14 @@
 				.per-info-txt{
 					display: inline-block;
 					flex: 1;
-					padding: 0 0.2rem;
+					padding-left: 0.2rem;
 				}
 				
 				.per-info-input{
 					width: 2rem;
 					padding-left: 0.2rem;
+					height: 100%;
+					line-height: 100%;
 				}
 				
 				button{
