@@ -59,16 +59,16 @@
     
     data() {
       return {
-        hotelName: '深圳海燕大酒店',
-        roomType: '豪华双床房[双床]',
-        date: '2018-12-09/2018-12-10',
-        roomNum: 1,
-        name: '测试',
-        confirmWay: '手机号：13537820062',
-        payWay: '单结',
-        specialReq: '',
-        cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
-        totalPay: '417.90',
+//        hotelName: '深圳海燕大酒店',
+//        roomType: '豪华双床房[双床]',
+//        date: '2018-12-09/2018-12-10',
+//        roomNum: 1,
+//        name: '测试',
+//        confirmWay: '手机号：13537820062',
+//        payWay: '单结',
+//        specialReq: '',
+//        cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
+//        totalPay: '417.90',
       }
     },
     
