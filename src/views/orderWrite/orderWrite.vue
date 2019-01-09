@@ -52,7 +52,6 @@
     props: {},
     
     components: {
-//      GAP,
       hotelInfo,
       writeInfo,
       GoBack
@@ -60,10 +59,18 @@
     
     computed: {},
     
+    created(){
+      this.getProductInfo();
+    },
+    
     methods: {
       onSubmit () {
         this.validate = true;
-      }
+      },
+      getProductInfo() {
+        this.$store.dispatch('orderWrite/initData');
+        this.$store.dispatch('orderWrite/getProductInfo');
+      },
     }
   }
 </script>

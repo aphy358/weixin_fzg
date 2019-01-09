@@ -31,7 +31,7 @@
                       日均<span class="red">￥</span>
                       <span class="red price">{{ m.averagePriceRMB }}</span>
                     </div>
-                    <div v-if="m.isBook" class="book-btn">预订</div>
+                    <div v-if="m.isBook" class="book-btn" @click="goOrderWrite(m)">预订</div>
                     <div v-else class="book-btn disable">满房</div>
                   </div>
                 </li>
@@ -54,6 +54,7 @@ import END from '@/components/END.vue'
 import { queryString } from '@/assets/util'
 import Velocity from 'velocity-animate'
 import { debounce } from 'lodash'
+import { gotoPage } from '@/assets/util'
 
 export default {
   name: 'hotelPriceList',
@@ -112,8 +113,6 @@ export default {
   methods:{
     // 重新查询酒店价格
     reQueryHotelPrice: debounce(function(){
-      console.log('reQueryHotelPrice');
-      
       this.resetData()
       this.initQueryString()
       this.queryHotelPrice()
@@ -154,8 +153,6 @@ export default {
     },
     // 将返回的价格列表数据进一步的加工，以适用于 html 模板
     processRoomTypeBases(){
-      console.log(this.roomTypeBases);
-      
       for (let i = 0; i < this.roomTypeBases.length; i++) {
         const roomTypeBase = this.roomTypeBases[i];
 
@@ -251,6 +248,37 @@ export default {
       el.removeAttribute('style')
       el.style.display = 'none'
     },
+    goOrderWrite(m){
+      let obj = {
+        staticInfoId: m.hotelId,
+        hotelId: m.hotelId,
+        supplierId: m.supplierId,
+        roomId: m.roomId,
+        breakFastId: m.breakFastId,
+        paymentType: m.paymentType,
+        rateType: m.rateType,
+        isQueryPrice: true,
+        startDate: this.$store.state.checkin,
+        endDate: this.$store.state.checkout,
+        citytype: this.$store.state.cityType,
+        adultNum: this.$store.state.adultNum,
+        childrenNum: this.$store.state.childrenNum,
+        childrenAgeStr: this.$store.state.childrenStr,
+        roomNum: this.$store.state.roomNum,
+      };
+  
+      if (m.hasOwnProperty('isHasMarketing') && m.isHasMarketing === 1) {
+        obj.isHasMarketing = m.isHasMarketing;
+        obj.marketingPrice = m.marketing.marketingPrice;
+        obj.startTime = m.marketing.startTime;
+        obj.endTime = m.marketing.endTime;
+      }
+      
+      //设置hotelPriceStr
+      sessionStorage.setItem('hotelPriceStr', encodeURIComponent(window.JSON.stringify(m)));
+      gotoPage(this.$router, 'orderWrite', obj);
+      
+    }
   }
 }
 </script>

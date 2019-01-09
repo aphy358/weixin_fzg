@@ -9,3 +9,6 @@ export const syncSurchargeRoom = (args, loading = false) => http.post("/vue/orde
 
 //适用市场
 export const syncProperMarket = (args, loading = false) => http.get("/vue/order/properMarket.do", args, loading);
+
+//验价
+export const syncProductInfo = (args, loading = false) => http.post("/vue/order/write.do", args, loading);
