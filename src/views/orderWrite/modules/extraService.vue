@@ -289,7 +289,7 @@
               storeIndex = 'surchargeBed'; //需要改变的store中的值
               
               //判断是否已达最大加床数
-              let maxPersonNum = this.$store.state.maxPersonNum;
+              let maxPersonNum = this.$store.state.orderWrite.maxPersonNum;
               if (this.addBedNumObj[date] + num > maxPersonNum){
                 Toast(date + '最大加床数为' + maxPersonNum + '张');
                 return;

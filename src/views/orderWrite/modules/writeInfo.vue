@@ -160,7 +160,7 @@
     
     computed: {
       maxPersonNum(){
-        return this.$store.state.maxPersonNum;
+        return this.$store.state.orderWrite.maxPersonNum;
       },
       roomNumList(){
         let stock = this.$store.state.orderWrite.stock;
@@ -175,7 +175,7 @@
     
     activated(){
       //入住人显示与否、验证规则
-      let maxPersonNum = this.$store.state.maxPersonNum;
+      let maxPersonNum = this.$store.state.orderWrite.maxPersonNum;
       let roomNum = this.$store.state.roomNum;
       for (let i = 0; i < maxPersonNum * roomNum; i++) {
         this.$set(this.nameRank, i, i);
@@ -236,13 +236,7 @@
     
     methods: {
       handleScroll () {
-        let scrollTop = document.querySelector('.order-write-box-page .page-content').scrollTop
-        
-        if(scrollTop >= 20){
-          this.payVisible = true;
-        }else{
-          this.payVisible = false;
-        }
+        this.payVisible = document.querySelector('.order-write-box-page .page-content').scrollTop >= 20;
       },
       openSpecial(){
         this.specialVisible = true;

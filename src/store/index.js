@@ -35,9 +35,6 @@ export default new Vuex.Store({
 
     // 用于标记微信 jssdk 是否初始化成功
     wx_ready: false,
-  
-    //订单填写页
-    maxPersonNum: 3,
 
     // 最近一次被点击的酒店信息，用于酒店详情页的展示
     curHotel: null,

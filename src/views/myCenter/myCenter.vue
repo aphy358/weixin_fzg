@@ -16,48 +16,43 @@
 		</div>
 		
 		<div class="my-center-content">
-			<div class="icon-area">
-				<div class="per-icon" @click="goPage('hotelOrderList')">
-					<i class="iconfont icon-jibenxinxi icon1"></i>
-					<span class="icon-txt">我的订单</span>
-				</div>
-				<div class="per-icon" @click="goPage('personalInfo')">
-					<i class="iconfont icon-gengduo icon2"></i>
-					<span class="icon-txt">个人信息</span>
-				</div>
-				<!--<div class="per-icon">-->
-					<!--<i class="iconfont icon-amount icon3"></i>-->
-					<!--<span class="icon-txt">快速充值</span>-->
-				<!--</div>-->
-			</div>
-			
-			<div class="hot-line">
-				<p class="hot-line-title">
-					<i class="iconfont icon-dianhua"></i>
-					<span>预订热线</span>
-				</p>
-				<p>0755-33397777</p>
-			</div>
-			
 			<div class="cell-list">
-				<mt-cell title="关于捷旅" is-link to="/about"></mt-cell>
-				<!--<mt-cell title="退出登录" is-link @click="logout"></mt-cell>-->
-				<a class="mint-cell" @click="logout">
-					<span class="mint-cell-mask"></span>
-					<div class="mint-cell-left"></div>
-					<div class="mint-cell-wrapper">
-						<div class="mint-cell-title">
-							<span class="mint-cell-text">退出登录</span>
-						</div>
-						<div class="mint-cell-value is-link">
-							<span></span>
-						</div>
-						<i class="mint-cell-allow-right"></i>
-					</div>
-					<div class="mint-cell-right"></div>
-				</a>
+				<div class="per-cell" @click="goPage('hotelOrderList')">
+					<i class="iconfont icon-jibenxinxi icon-l blue"></i>
+					<span class="icon-txt">我的订单</span>
+					<i class="iconfont icon-right-thin icon-r"></i>
+				</div>
+				<div class="per-cell" @click="goPage('personalInfo')">
+					<i class="iconfont icon-wode icon-l jade-green"></i>
+					<span class="icon-txt no-border">个人信息</span>
+					<i class="iconfont icon-right-thin icon-r no-border"></i>
+				</div>
 			</div>
+			
+			<div class="cell-list" @click="logout">
+				<div class="per-cell" @click="goPage('about')">
+					<i class="iconfont icon-info icon-l deep-orange"></i>
+					<span class="icon-txt">关于捷旅</span>
+					<i class="iconfont icon-right-thin icon-r"></i>
+				</div>
+				<div class="per-cell">
+					<i class="iconfont icon-tuichu icon-l red"></i>
+					<span class="icon-txt no-border">退出登录</span>
+					<i class="iconfont icon-right-thin icon-r no-border"></i>
+				</div>
+			</div>
+			
+			<!--<div class="hot-line">-->
+				<!--<p class="hot-line-title">-->
+					<!--<i class="iconfont icon-dianhua"></i>-->
+					<!--<span>预订热线</span>-->
+				<!--</p>-->
+				<!--<p>0755-33397777</p>-->
+			<!--</div>-->
 		</div>
+		
+		
+		<p class="hot-line">预订热线：0755-33397777</p>
 		
 	</div>
 </template>
@@ -95,7 +90,7 @@
       },
       logout(){
         let _this = this;
-        MessageBox.confirm('确定执行此操作?').then(action => {
+        MessageBox.confirm('退出登录后需要重新登录，确定退出?').then(action => {
           _this.$api.myCenter.syncLogout().then(res => {
             if (res.returnCode === 1){
               Toast('退出成功');
@@ -112,6 +107,10 @@
 </script>
 
 <style scoped lang="scss">
+	.page{
+		position: relative;
+	}
+	
 	.my-center{
 		background-color: #efeff5;
 		
@@ -149,55 +148,57 @@
 		@at-root .my-center-content{
 			background-color: #f6f6f6;
 			
-			
-			@at-root .icon-area{
-				margin-bottom: 0.1rem;
+			@at-root .cell-list{
 				background-color: #fff;
-				display: flex;
-				
-				@at-root .per-icon{
-					flex: 1;
-					margin: 0.2rem;
-					float: left;
-					box-sizing: border-box;
-					text-align: center;
+				margin-bottom: 0.1rem;
+				.per-cell{
+					height: 0.5rem;
+					line-height: 0.5rem;
+					padding: 0 0.1rem;
+					display: flex;
 					
-					>i{
-						font-size: 0.34rem;
+					.iconfont{
 						
+						&.icon-l{
+							padding-right: 0.1rem;
+						}
 						
-						&.icon1{
-							color: #d18988;
-						}
-						&.icon2{
-							color: #92bddb;
-						}
-						&.icon3{
-							color: #d9c785;
+						&.icon-r{
+							float: right;
+							font-size: 0.12rem;
+							border-bottom: 0.5px solid #eeeeee;
+							
+							&.no-border{
+								border: none;
+							}
 						}
 					}
 					
-					>.icon-txt{
-						display: block;
-						font-size: 0.12rem;
-						color: #787878;
+					.icon-txt{
+						display: inline-block;
+						flex: 1;
+						border-bottom: 0.5px solid #eeeeee;
+						
+						&.no-border{
+							border: none;
+						}
 					}
 				}
 			}
 			
+			/*
 			@at-root .hot-line{
 				background-color: #fff;
-				font-size: 0.16rem;
-				padding: 0 0.2rem;
+				padding: 0 0.1rem;
 				color: #747477;
-				margin-bottom: 0.1rem;
+				margin: 0.1rem 0;
 				
 				>p{
 					line-height: 0.5rem;
 					
 					&.hot-line-title{
-						font-size: 0.16rem;
 						border-bottom: 0.5px solid #eeeeee;
+						color: #818a0b;
 						
 						>span{
 							margin-left: 0.1rem;
@@ -205,6 +206,20 @@
 					}
 				}
 			}
+			*/
+			
+			
+			@at-root .hot-line{
+				background-color: transparent;
+				position: absolute;
+				bottom: 0.4rem;
+				left: 0;
+				display: block;
+				width: 100%;
+				color: #747477;
+				text-align: center;
+			}
+
 		}
 	}
 </style>
@@ -220,5 +235,21 @@
 	
 	.fr{
 		float: right;
+	}
+	
+	.jade-green{
+		color: #818a0b;
+	}
+	
+	.blue{
+		color: #92bddb;
+	}
+	
+	.deep-orange{
+		color: #ff4400;
+	}
+	
+	.red{
+		color: #ff0000;
 	}
 </style>
