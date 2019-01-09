@@ -1,6 +1,6 @@
 <template>
   <div class="page hotelDetail-page">
-    <div class="page-content" style="background: #efeff4;">
+    <div class="page-content" style="background: #efeff4;" >
 
       <!-- banner -->
       <Banner />
@@ -25,6 +25,9 @@
       <HotelMapPopup />
       
     </div>
+
+    <ToTop />
+
   </div>
 </template>
 
@@ -36,6 +39,7 @@ import AdultChildPopup from './modules/adultChildPopup.vue'
 import HotelInfoPopup from './modules/hotelInfoPopup.vue'
 import HotelMapPopup from './modules/hotelMapPopup.vue'
 import GAP from '@/components/GAP.vue'
+import ToTop from '@/components/ToTop.vue'
 
 
 export default {
@@ -55,6 +59,7 @@ export default {
     HotelInfoPopup,
     HotelMapPopup,
     GAP,
+    ToTop
   },
   watch: {
     getCurHotel(){
@@ -91,7 +96,8 @@ export default {
       return this.$store.state.wx_ready
     }
   },
-  mounted(){},
+  mounted(){
+  },
   methods:{
     initHotelShare(){
       if(this.getCurHotel){

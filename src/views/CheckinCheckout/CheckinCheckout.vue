@@ -75,11 +75,15 @@
       <END />
       
     </div>
+
+    <ToTop />
+
   </div>
 </template>
 
 <script>
 import GoBack from '@/components/GoBack.vue'
+import ToTop from '@/components/ToTop.vue'
 import END from '@/components/END.vue'
 import { getMonthsData } from './getMonthsData.js'
 import { addDays, formatDateTwo } from '@/assets/util'
@@ -97,6 +101,7 @@ export default {
   props: {},
   components: {
     GoBack,
+    ToTop,
     END
   },
   watch: {},

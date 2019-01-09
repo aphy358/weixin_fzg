@@ -33,11 +33,15 @@
       <END v-if="!loading && roomList.length > 0" />
       
     </div>
+
+    <ToTop />
+
   </div>
 </template>
 
 <script>
 import GoBack from '@/components/GoBack.vue'
+import ToTop from '@/components/ToTop.vue'
 import Loading from '@/components/Loading.vue'
 import END from "@/components/END.vue";
 import { gotoPage, queryString } from '@/assets/util'
@@ -76,6 +80,7 @@ export default {
   props: {},
   components: {
     GoBack,
+    ToTop,
     END,
     Loading,
     Head,

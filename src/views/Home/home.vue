@@ -23,6 +23,9 @@
       <END />
       
     </div>
+
+    <ToTop />
+
   </div>
 </template>
 
@@ -33,6 +36,7 @@ import SearchSection from './modules/searchSection.vue'
 import Recommended from './modules/recommended.vue'
 import END from '@/components/END.vue'
 import GAP from '@/components/GAP.vue'
+import ToTop from '@/components/ToTop.vue'
 
 export default {
   name: 'home',
@@ -45,8 +49,11 @@ export default {
     SearchSection,
     END,
     GAP,
+    ToTop,
     Recommended
-  }
+  },
+  mounted(){
+  },
 }
 </script>
 

@@ -60,12 +60,16 @@
       <div v-if="hotelList.length == 0 && infiniteLoad" class="no-data">无数据</div>
 
     </div>
+
+    <ToTop  />
+
   </div>
 </template>
 
 <script>
 import { Toast, MessageBox } from 'mint-ui'
 import GoBack from '@/components/GoBack.vue'
+import ToTop from '@/components/ToTop.vue'
 import Loading from '@/components/Loading.vue'
 import LoadMore from '@/components/LoadMore.vue'
 import END from '@/components/END.vue'
@@ -98,6 +102,7 @@ export default {
   props: {},
   components: {
     GoBack,
+    ToTop,
     Loading,
     LoadMore,
     END
