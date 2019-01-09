@@ -152,6 +152,8 @@ export default {
 
       let _state = _this.$store.state
       let param = {
+        // countryId: _state.countryId,
+        // stateId: _state.stateId,
         cityId: _state.cityId,
         type: _state.cityType,
         pageNow: _this.pageNow,
