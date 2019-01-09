@@ -82,7 +82,7 @@ export default {
   text-align: center;
   margin-left: -0.15rem;
   border-radius: 100%;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.5);
   line-height: 0.3rem;
   color: white;
   z-index: 9999;
