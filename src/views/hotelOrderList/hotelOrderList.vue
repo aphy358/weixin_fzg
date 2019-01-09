@@ -36,6 +36,8 @@
 			
 			<END v-show="endVisible"/>
 		</div>
+
+		<ToTop />
 		
 		
 		<div class="filter-mask" v-show="filterVisible || reasonVisible" @click="hideFilter"></div>
@@ -121,7 +123,8 @@
 <script>
   import GoBack from '@/components/GoBack.vue';
   import {gotoPage} from '@/assets/util';
-  import END from '@/components/END.vue'
+	import END from '@/components/END.vue'
+	import ToTop from '@/components/ToTop.vue'
   
   export default {
     name: '',
@@ -179,7 +182,8 @@
     
     components: {
       GoBack,
-      END,
+			END,
+			ToTop
     },
     
     created(){
