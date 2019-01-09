@@ -119,7 +119,7 @@ import { gotoPage, queryString, formatDateTwo, addDays, goBackPage } from '@/ass
 import { Toast } from 'mint-ui'
 import { debounce } from 'lodash'
 
-import '../components/roomStatusPriceEditItems.scss'
+// import '../components/roomStatusPriceEditItems.scss'
 import '../components/srpChecklistRadio.scss'
 import Head from '../components/head'
 import RoomTypePopup from './roomTypePopup'
