@@ -192,8 +192,8 @@ export default {
       hotelCode: '',
       checkedFinallyOrderArr: [],
       finallyOrderArr: [{label: '末单确认', value: '末单确认'},],
-      refuseDisable: false,
-      acceptDisable: false,
+      refuseDisable: true,
+      acceptDisable: true,
 
       // 以下是订单页面基础信息字段
       orderInfo: {},      // 订单信息（部分）
@@ -278,17 +278,8 @@ export default {
         o == '4'  ? '不可取消' :
         o == '5'  ? '申请取消' : '未知状态'
 
-      this.refuseDisable = false
-      this.acceptDisable = false
-
-      if(o == '1'){ // 已确认订单只能修改确认号
-        this.refuseDisable = true
-      }
-
-      if(o == '2' || o == '3' || o == '4'){ // 已拒单、已取消、不可取消 都不可以再有任何操作
-        this.refuseDisable = true
-        this.acceptDisable = true
-      }
+      this.refuseDisable = true
+      this.acceptDisable = true
     },
     // 查询订单信息
     queryOrderInfo(){
@@ -322,8 +313,26 @@ export default {
 
           // 获取订单日志
           this.getOrderLogs(res.data.logs)
+
+          // 设置底部俩按钮的状态：'拒绝'、'接受'
+          this.setOperatorBtnStatus(res.data.orderInfo)
         }
       })
+    },
+    // 设置底部俩按钮的状态：'拒绝'、'接受'
+    setOperatorBtnStatus(orderInfo){
+      // 供应商状态(status) -1:待处理 0已发送 5申请取消 (待确认)    1已确认 2已拒单 3已取消 4不取消
+      if(orderInfo.status == 5){
+        if(orderInfo.innerStatus == 2 || orderInfo.innerStatus == 4){
+          this.refuseDisable = false
+          this.acceptDisable = false
+        }
+      }else if(orderInfo.status == -1 || orderInfo.status  == 0){
+        this.refuseDisable = false
+        this.acceptDisable = false
+      }else if(orderInfo.status == 1){
+        this.acceptDisable = false
+      }
     },
     // 获取订单日志
     getOrderLogs(logs){
