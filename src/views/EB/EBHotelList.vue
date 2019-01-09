@@ -13,7 +13,7 @@
       <i class="iconfont icon-shanchu eb-hotelList-keyword-del" v-show="keyWord" @click="clearKeyWord"></i>
     </div>
 
-    <div class="page-content" style="background-color: #efeff4;" ref="page_eb_hotel_list">
+    <div class="page-content" style="background-color: #efeff4;">
       
       <ul class="eb-hotel-list" v-if="hotelList.length > 0">
 				<li class="eb-hotel-item line-after" v-for="(n, i) in hotelList" :key="i" @click="gotoRoomListPage(n)">
@@ -32,7 +32,8 @@
 
     </div>
 
-    <ToTop :pageContent="$refs.page_eb_hotel_list" />
+    <ToTop />
+    
   </div>
 </template>
 

@@ -21,6 +21,8 @@
 
       </div>
 
+      <ToTop  />
+
     </div>
 
     <KeywordBoard v-show="showKeywordBoard" @hideKeywordBoard="showKeywordBoard = false" :showBoard="showKeywordBoard" />
@@ -36,6 +38,7 @@ import SearchFilter from './modules/searchFilter'
 import StarPricePopup from '@/components/StarPricePopup.vue'
 import AreaBizPopup from './modules/areaBizPopup'
 import HotelListInfinite from './modules/hotelListInfinite'
+import ToTop from '@/components/ToTop.vue'
 
 import { addDays, formatDateOne, formatDateTwo } from '@/assets/util'
 
@@ -58,6 +61,7 @@ export default {
     StarPricePopup,
     AreaBizPopup,
     HotelListInfinite,
+    ToTop
   },
   created(){
   },
