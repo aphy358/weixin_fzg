@@ -28,7 +28,7 @@
     </div>
 
     
-    <div class="page-content">
+    <div class="page-content" style="background: #efeff4;">
 
       <div class="calendar-body-wrap">
 
@@ -244,6 +244,7 @@ export default {
 
 .calendar-body-wrap{
   margin-top: 0.65rem;
+  background: white;
 
   .calendar-body{
 
