@@ -64,6 +64,10 @@ export default {
       }
 
       window.historyObj.preLen = window.historyObj.arr.length
+
+      if(to.path.toLowerCase() != '/hoteldetail'){
+        this.initPageShare()
+      }
     }
   },
   components: {},
@@ -79,7 +83,7 @@ export default {
           timestamp : data.timestamp, // 必填，生成签名的时间戳
           nonceStr : data.nonceStr, // 必填，生成签名的随机串
           signature : data.signature,// 必填，签名，见附录1
-          jsApiList : ['updateAppMessageShareData', 'updateTimelineShareData', 'openLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList : ['updateAppMessageShareData', 'updateTimelineShareData', 'openLocation', 'getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
       }
     })
@@ -91,7 +95,27 @@ export default {
   },
   computed: {},
   mounted() {},
-  methods: {}
+  methods: {
+    // 初始化页面分享事件
+    initPageShare(){
+      wx.updateAppMessageShareData({
+        title: '房掌柜',  // 分享标题
+        desc: '房掌柜',   // 分享描述
+        link: location.href.split('#')[0],    // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: 'https://qnb.oss-cn-shenzhen.aliyuncs.com/real_1540195277203.png',   // 分享图标
+        success: function () {},
+        fail: function (res) {}
+      });
+
+      wx.updateTimelineShareData({
+        title: '房掌柜',  // 分享标题
+        link: location.href.split('#')[0],    // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: 'https://qnb.oss-cn-shenzhen.aliyuncs.com/real_1540195277203.png',   // 分享图标
+        success: function () {},
+        fail: function (res) {}
+      });
+    }
+  }
 };
 </script>
 

@@ -13,7 +13,7 @@ let router = new Router({
       name: 'home',
       component: Home,
       meta: {
-        wechatAuth: false
+        wechatAuth: true
       },
     },
     {
@@ -29,7 +29,7 @@ let router = new Router({
       name: 'about',
       component: () => import('@/views/About.vue'),
       meta: {
-        wechatAuth: false
+        wechatAuth: true
       },
     },
     {
@@ -37,7 +37,7 @@ let router = new Router({
       name: 'citySelect',
       component: () => import('@/views/CitySelect/citySelect.vue'),
       meta: {
-        wechatAuth: false
+        wechatAuth: true
       },
     },
     {
@@ -45,7 +45,7 @@ let router = new Router({
       name: 'hotelList',
       component: () => import('@/views/HotelList/hotelList.vue'),
       meta: {
-        wechatAuth: false
+        wechatAuth: true
       },
     },
     {
@@ -53,7 +53,7 @@ let router = new Router({
       name: 'hotelDetail',
       component: () => import('@/views/HotelDetail/hotelDetail.vue'),
       meta: {
-        wechatAuth: false
+        wechatAuth: true
       },
     },
     {
@@ -61,7 +61,7 @@ let router = new Router({
       name: 'checkinCheckout',
       component: () => import('@/views/CheckinCheckout/CheckinCheckout.vue'),
       meta: {
-        wechatAuth: false
+        wechatAuth: true
       },
     },
     {

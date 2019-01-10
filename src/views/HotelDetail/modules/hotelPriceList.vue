@@ -1,6 +1,6 @@
 <template>
-  <div style="background: white;" class="">
-    <Loading v-if="!loadedPrice" />
+  <div class="">
+    <Loading v-if="loading" />
 
     <div class="hotel-price-wrap">
       <ul class="hotel-roomtype-list">
@@ -43,7 +43,9 @@
       </ul>
     </div>
 
-    <END v-if="loadedPrice && roomTypeBases.length > 0" />
+    <div v-if="roomTypeBases.length < 1 && !loading" style="text-align: center;margin: 0.3rem 0;color: #ea2c2c;">无可预订房间！</div>
+
+    <END v-if="!loading && roomTypeBases.length > 0" />
 
   </div>
 </template>
@@ -61,8 +63,9 @@ export default {
   data(){
     return {
       // 用于标记是否已经查过价了
-      loadedPrice: false,
+      loading: false,
       roomTypeBases: [],
+      hotelId: null,
     }
   },
   props: {},
@@ -88,9 +91,11 @@ export default {
     }
   },
   created(){
-    this.reQueryHotelPrice()
   },
   activated(){
+    if(!window.goBack){
+      this.initQueryString()
+    }
   },
   computed: {
     getCheckin(){
@@ -114,16 +119,16 @@ export default {
     // 重新查询酒店价格
     reQueryHotelPrice: debounce(function(){
       this.resetData()
-      this.initQueryString()
       this.queryHotelPrice()
     }, 10),
     // 重新设置数据
     resetData(){
-      this.loadedPrice = false
+      this.loading = false
       this.roomTypeBases = []
     },
     // 处理 queryString 带过来的参数
     initQueryString(){
+      this.hotelId = queryString('hotelId')
       let cityType = queryString('cityType')
 
       // 如果 queryString 上传过来的 cityType 和 store 里存的 cityType 不相等，则说明这种情况不是从酒店列表页点击进的酒店详情页
@@ -133,10 +138,13 @@ export default {
     },
     // 查询酒店价格
     queryHotelPrice(){
+      if(this.loading) return
+      this.loading = true
+
       let param = {
         startDate: this.getCheckin,
         endDate: this.getCheckout,
-        hotelId: queryString('hotelId'),
+        hotelId: this.hotelId,
         roomNum: 1,
         adultNum: 2,
         childrenNum: 0,
@@ -144,7 +152,7 @@ export default {
       }
 
       this.$api.hotelDetail.syncGetHotelPriceList(param).then(res => {
-        this.loadedPrice = true
+        this.loading = false
         if(res.returnCode === 1){
           this.roomTypeBases = res.data.roomTypeBases || []
           this.processRoomTypeBases()
@@ -155,6 +163,12 @@ export default {
     processRoomTypeBases(){
       for (let i = 0; i < this.roomTypeBases.length; i++) {
         const roomTypeBase = this.roomTypeBases[i];
+
+        roomTypeBase.roomTypePrices = roomTypeBase.roomTypePrices.filter(n => n.isBook) // 过滤掉所有不可预订的价格
+        if(roomTypeBase.roomTypePrices.length < 1){
+          this.roomTypeBases.splice(i--, 1)
+          continue
+        }
 
         roomTypeBase.ifShow = i == 0 ? true : false
         roomTypeBase.lowestAverage = Math.min.apply(null, roomTypeBase.roomTypePrices.map(n => n.averagePriceRMB))
@@ -287,6 +301,7 @@ export default {
 .hotel-price-wrap{
 
   @at-root .hotel-roomtype-list{
+    background: white;
 
     @at-root .hotel-roomtype-item{
       position: relative;

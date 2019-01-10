@@ -8,7 +8,7 @@
       <!-- 搜索条件过滤 -->
       <SearchFilter />
 
-      <div class="page-content">
+      <div class="page-content" style="background: #efeff4;">
 
         <!-- 酒店列表组件 -->
         <HotelListInfinite :showKeywordBoard="showKeywordBoard" />

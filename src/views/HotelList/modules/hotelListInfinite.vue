@@ -14,7 +14,7 @@
       infinite-scroll-disabled="infiniteLoad"
       infinite-scroll-distance="10">
 
-      <li v-for="n in hotelList" :key="n.infoId" class="item-content" @click="gotoHotelDetail(n)">
+      <li v-for="(n, i) in hotelList" :key="i" class="item-content" @click="gotoHotelDetail(n)">
           <div class="item-media">
             <img :src="n.picSrc.indexOf('nopic') != -1 ? logo : n.picSrc" :class="{'nopic': n.picSrc.indexOf('nopic') != -1}">
           </div>
@@ -229,6 +229,7 @@ export default {
     position: relative;
     margin: 0;
     padding: 0 0.1rem;
+    background: white;
 
     .item-content {
       box-sizing: border-box;
