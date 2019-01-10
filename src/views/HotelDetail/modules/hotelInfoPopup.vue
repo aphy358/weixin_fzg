@@ -1,14 +1,13 @@
 <template>
   <mt-popup
     v-model="getHotelInfoPopupVisible"
-    position="right">
+    position="bottom">
   
     <div class="hotel-info-wrap">
       <!-- 头部 -->
-      <mt-header title="酒店信息"></mt-header>
-
-      <!-- 返回 -->
-      <GoBack _style="top: 0.02rem" :onClick="clickGoBack" />
+      <mt-header title="酒店信息" @click.native="hidePopup">
+        <mt-button class="iconfont icon-delete2" slot="right"></mt-button>
+      </mt-header>
 
       <div class="h-i-wrap" v-if="getCurHotel">
 
@@ -32,6 +31,7 @@
           <p class="h-i-block-content">{{ getCurHotel.bookingPhone || '无' }}</p>
         </div>
 
+
       </div>
 
     </div>
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import GoBack from '@/components/GoBack.vue'
 
 export default {
   name: 'hotelInfoPopup',
@@ -50,7 +49,6 @@ export default {
   },
   props: {},
   components: {
-    GoBack
   },
   watch: {
     $route(to, from) {
@@ -75,10 +73,6 @@ export default {
   },
   mounted(){},
   methods:{
-    // 点击回退按钮
-    clickGoBack(){
-      this.hidePopup()
-    },
     // 隐藏 popup
     hidePopup(){
       this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: false})
@@ -90,6 +84,7 @@ export default {
 <style lang="scss">
 .hotel-info-wrap{
   overflow: hidden;
+  height: 3rem;
 
   .h-i-wrap{
     position: relative;
@@ -97,6 +92,7 @@ export default {
     box-sizing: border-box;
     overflow: auto;
     padding: 0 0.1rem;
+    padding-bottom: 0.5rem;
     overflow-x: hidden;
 
     .h-i-block-wrap{
