@@ -4,7 +4,7 @@
 
     <div class="hotel-price-wrap">
       <ul class="hotel-roomtype-list">
-        <li v-for="(n, i) in roomTypeBases" :key="i" class="hotel-roomtype-item line-after">
+        <li v-for="(n, i) in roomTypeBases" :key="i" class="hotel-roomtype-item">
           <div class="hotel-roomtype-name-head" @click="switchPriceShow(i)">
             <p class="roomtype-name">{{ n.roomName }}</p>
             <div class="roomtype-price-wrap">
@@ -299,12 +299,14 @@ export default {
 
 <style lang="scss">
 .hotel-price-wrap{
+  margin: 0 0.05rem;
 
   @at-root .hotel-roomtype-list{
-    background: white;
 
     @at-root .hotel-roomtype-item{
       position: relative;
+      background: white;
+      margin-bottom: 0.05rem;
 
       @at-root .hotel-roomtype-name-head{
         position: relative;
@@ -346,27 +348,18 @@ export default {
       }
 
       @at-root .hotel-roomtype-price-wrap{
-        background: #FAFAFA;
         overflow: hidden;
+        padding-bottom: 0.05rem;
 
         @at-root .hotel-roomtype-price-list{
 
           @at-root .hotel-roomtype-price-item{
             position: relative;
-            padding: 0.12rem 0.15rem;
+            padding: 0.1rem;
             box-sizing: border-box;
-
-            &:before{
-              content: '';
-              position: absolute;
-              left: 0;
-              top: 0;
-              border-bottom: 0.01rem solid #e2e2e2;
-              width: 100%;
-              transform: scaleY(0.5);
-              transform-origin: 50% 100%;
-              z-index: 15;
-            }
+            background: #FAFAFA;
+            margin: 0 0.1rem 0.05rem;
+            border-radius: 0.03rem;
 
             .breakfast-bedtype{
               color: #666;
@@ -390,8 +383,11 @@ export default {
             .right-outer{
               position: absolute;
               top: 0.3rem;
-              right: 0.15rem;
+              right: 0.1rem;
+              width: 0.8rem;
               text-align: right;
+              box-shadow: 0 0 0.1rem 0.1rem #FAFAFA;
+              background: #FAFAFA;
 
               .price-wrap{
                 font-size: 0.1rem;
