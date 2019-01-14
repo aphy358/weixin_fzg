@@ -37,9 +37,9 @@
 </template>
 
 <script>
-  
   import GoBack from '@/components/GoBack.vue';
   import { Toast } from 'mint-ui'
+  import {mapState} from 'vuex';
   
   export default {
     name: 'orderPay',
@@ -59,7 +59,9 @@
       GoBack
     },
     
-    computed: {},
+    computed: mapState({
+        orderInfo: state => state.orderWrite.orderInfo,
+    }),
     
     methods: {
       payOrder(){

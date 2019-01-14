@@ -25,13 +25,13 @@
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">确认方式</span>
-				<span class="per-line-txt">{{orderInfo.confirmWay}}</span>
+				<span class="per-line-txt">手机号：{{orderInfo.tel}}</span>
 			</div>
 			<div class="per-line">
 				<span class="per-line-title">支付方式</span>
 				<span class="per-line-txt">{{orderInfo.payWay}}</span>
 			</div>
-			<div class="per-line">
+			<div class="per-line" v-if="orderInfo.specialReq">
 				<span class="per-line-title">特殊需求</span>
 				<span class="per-line-txt">{{orderInfo.specialReq}}</span>
 			</div>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="operation-btn">
-			<button class="confirm">确认</button>
+			<button class="confirm" @click="confirm">确认</button>
 			<button class="cancel" @click="cancel">取消</button>
 		</div>
 	</div>
@@ -53,23 +53,13 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { gotoPage } from '@/assets/util';
   
   export default {
     name: 'confirmInfo',
     
     data() {
-      return {
-//        hotelName: '深圳海燕大酒店',
-//        roomType: '豪华双床房[双床]',
-//        date: '2018-12-09/2018-12-10',
-//        roomNum: 1,
-//        name: '测试',
-//        confirmWay: '手机号：13537820062',
-//        payWay: '单结',
-//        specialReq: '',
-//        cancelInfo: '此房即订即保，一旦预订，不可修改或取消',
-//        totalPay: '417.90',
-      }
+      return {}
     },
     
     props: {},
@@ -81,6 +71,10 @@
     }),
     
     methods: {
+      confirm(){
+        this.$store.dispatch('orderWrite/checkOrder');
+//        gotoPage(this.$router, 'orderPay', {type: 'hotelOrder'})
+      },
       cancel(){
         this.$emit('close');
       }
@@ -92,6 +86,7 @@
 	.confirm-info{
 		width: 96%;
 		height: auto;
+		max-height: 9rem;
 		margin: 0 auto;
 		background-color: #fff;
 		border-radius: 4px;

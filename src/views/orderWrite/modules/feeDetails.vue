@@ -7,7 +7,7 @@
 		<div class="fee-details-list">
 			<div class="per-part-total">
 				<span class="fl">房费</span>
-				<span class="fr deep-orange">￥700</span>
+				<span class="fr deep-orange">￥{{payTotalMoney}}</span>
 			</div>
 			
 			<div class="per-part-total" v-show="surchargeBref.length > 0">
@@ -46,21 +46,23 @@
 				<span class="fr light-gray">￥{{item.price}}</span>
 			</div>
 			
-			<div class="per-part-total">
+			<div class="per-part-total" v-if="taxesAndFeesRMB">
 				<span class="fl">税和服务费</span>
-				<span class="fr deep-orange">￥100</span>
+				<span class="fr deep-orange">￥{{taxesAndFeesRMB}}</span>
 			</div>
 			
-			<div class="per-part-detail">
-				<span>（已包含的销售税：￥34）</span>
+			<div class="per-part-detail" v-if="salesTaxRMB">
+				<span>（已包含的销售税：￥{{salesTaxRMB}}）</span>
 			</div>
 			
-			<p class="red">*上述报价不包含服务费，到酒店后另外支付给酒店（因汇率问题可能存在波动）</p>
+			<p class="red" v-if="extraTaxesAndFeesDesc">*上述报价不包含{{extraTaxesAndFeesDesc}}到酒店后另外支付给酒店（因汇率问题可能存在波动）</p>
 		</div>
 	</div>
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+  
   export default {
     name: '',
     
@@ -76,23 +78,30 @@
     
     components: {},
     
-    computed: {
+    computed: mapState({
+      payTotalMoney: state => state.orderWrite.payTotalMoney,
+      taxesAndFeesRMB: state => state.orderWrite.taxesAndFeesRMB,
+      salesTaxRMB: state => state.orderWrite.isExpediaSupplier && state.orderWrite.isExpediaSupplier === 1 ? state.orderWrite.hotelPrice.salesTaxRMB : 0,
+      extraTaxesAndFeesDesc: state => state.orderWrite.hotelPrice.extraTaxesAndFeesDesc,
       surchargeBref(){
         let list = this.$store.state.orderWrite.surchargeBref;
         this.countPrice(list, 'totalBreakfastPrice');
+        this.$store.commit('orderWrite/setCommonState', {k: 'totalBreakfastPrice', v: this.totalBreakfastPrice});
         return list;
       },
       surchargeBed(){
         let list = this.$store.state.orderWrite.surchargeBed;
         this.countPrice(list, 'totalBedPrice');
+        this.$store.commit('orderWrite/setCommonState', {k: 'totalBedPrice', v: this.totalBedPrice});
         return list;
       },
       surchargeInternet(){
         let list = this.$store.state.orderWrite.surchargeInternet;
         this.countPrice(list, 'totalNetworkPrice');
+        this.$store.commit('orderWrite/setCommonState', {k: 'totalNetworkPrice', v: this.totalNetworkPrice});
         return list;
       }
-    },
+    }),
     
     methods: {
       hideFeeDetails(){
@@ -172,5 +181,9 @@
 	
 	.light-gray{
 		color: #747477;
+	}
+	
+	.red{
+		color: #9ba5f9;
 	}
 </style>
