@@ -11,7 +11,10 @@
               {{ n.roomName }}
             </p>
             <div class="roomtype-price-wrap">
-              日均<span class="red">￥</span><span class="red price">{{ n.lowestAverage }}</span>起
+              日均
+              <span class="red" style="margin-left: 0.02rem;">￥</span>
+              <span class="red price" style="margin-right: 0.02rem;">{{ n.lowestAverage }}</span>
+              起
               <i class="iconfont" :class="[n.ifShow ? 'icon-up-thin' : 'icon-down-thin']"></i>
             </div>
           </div>
@@ -170,7 +173,7 @@ export default {
           this.roomTypeBasesRecommend = res.data.roomTypeBasesRecommend || []
 
           this.roomTypeBasesRecommend.forEach(n => n.recommend = true)
-          this.roomTypeBasesShow = this.roomTypeBases.concat(this.roomTypeBasesRecommend)
+          this.roomTypeBasesShow = this.roomTypeBasesRecommend.concat(this.roomTypeBases)
 
           this.processRoomTypeBases()
         }
