@@ -2,11 +2,13 @@ import http from '../http'
 
 
 // 查询酒店价格，(实查)
-export const syncGetHotelPriceList = (args, loading = false) => http.post("/vue/hotel/price.do", args, loading)
+// export const syncGetHotelPriceList = (args, loading = false) => http.post("/vue/hotel/price.do", args, loading)
+export const syncGetHotelPriceList = (args, loading = false) => http.post("/vue/hotel/getHotelPriceList.do", args, loading)
 
 
 // 根据 hotelId 查询酒店信息
-export const syncGetHotelInfo = (args, loading = false) => http.get("/vue/hotel/info.do", args, loading)
+// export const syncGetHotelInfo = (args, loading = false) => http.get("/vue/hotel/info.do", args, loading)
+export const syncGetHotelInfo = (args, loading = false) => http.get("/vue/hotel/getHotelInfoList.do", args, loading)
 
 
 

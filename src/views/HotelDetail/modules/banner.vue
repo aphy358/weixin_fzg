@@ -73,6 +73,13 @@ export default {
           if(res.returnCode === 1){
             getStarText(res.dataList[0])
             this.curHotel = res.dataList[0]
+
+            // 设置酒店图片
+            this.curHotel.picList = this.curHotel.picList || [];
+            let picArr = this.curHotel.picSrc.split('|');
+            if(!this.curHotel.picList.length)	this.curHotel.picList = picArr;
+            this.curHotel.picSrc = picArr[0];
+
             this.$store.commit(`setCommonState`, {k: 'curHotel', v: res.dataList[0]})
           }
         })
@@ -83,7 +90,15 @@ export default {
       this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: true})
     },
     showHotelMap(){
-      this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelMapPopupVisible', v: true})
+      wx.openLocation({
+        latitude: +this.curHotel.latitude,    // 纬度，浮点数，范围为90 ~ -90
+        longitude: +this.curHotel.longitude,  // 经度，浮点数，范围为180 ~ -180。
+        name: this.curHotel.infoName,         // 位置名
+        address: this.curHotel.infoName,      // 地址详情说明
+        scale: 16,                            // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: '',                          // 在查看位置界面底部显示的超链接,可点击跳转
+        fail: function (res) { alert('查看地图失败！') }
+      });
     }
   }
 }
@@ -114,10 +129,10 @@ export default {
   bottom: 0;
   font-size: 0.12rem;
   color: #576690;
-  box-shadow: 0 0 0.2rem 0.3rem white;
+  box-shadow: 0 0 0.1rem 0.1rem white;
   height: 0.5rem;
   line-height: 0.5rem;
-  width: 0.45rem;
+  width: 0.8rem;
   background: white;
   text-align: right;
   font-weight: bold;

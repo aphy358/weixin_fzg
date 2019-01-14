@@ -6,8 +6,9 @@
       <div class="h-s-f-icon">
         <i class="iconfont icon-baofang"></i>
       </div>
-      <div class="h-s-f-row-content" style="width: calc(100% - 1.1rem);" @click="gotoCitySelect">{{ getCityText }}</div>
-      <div class="icon-right-wrap" style="right: 0.5rem;">
+      <!-- style="width: calc(100% - 1.1rem);" -->
+      <div class="h-s-f-row-content" @click="gotoCitySelect">{{ getCityText }}</div>
+      <div class="icon-right-wrap">
         <i class="iconfont icon-right-thin"></i>
       </div>
       <div id="nearby">
@@ -319,6 +320,7 @@ export default {
     }
 
     #nearby {
+      display: none;
       font-size: 0.1rem;
       color: #ff7625;
       position: absolute;

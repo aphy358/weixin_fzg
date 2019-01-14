@@ -1,10 +1,10 @@
 <template>
-  <div style="background: white;" class="">
-    <Loading v-if="!loadedPrice" />
+  <div class="">
+    <Loading v-if="loading" />
 
     <div class="hotel-price-wrap">
       <ul class="hotel-roomtype-list">
-        <li v-for="(n, i) in roomTypeBases" :key="i" class="hotel-roomtype-item line-after">
+        <li v-for="(n, i) in roomTypeBases" :key="i" class="hotel-roomtype-item">
           <div class="hotel-roomtype-name-head" @click="switchPriceShow(i)">
             <p class="roomtype-name">{{ n.roomName }}</p>
             <div class="roomtype-price-wrap">
@@ -25,7 +25,7 @@
                   <div class="breakfast-bedtype">{{ m.rateTypeName }} {{ m.bedTypeName }}</div>
                   <div class="order-clause">{{ m.orderClauseText }}</div>
                   <div class="cancel-type">{{ m.cancellationText }}</div>
-                  <div class="room-status">{{ m.roomStatusText || '占位' }}</div>
+                  <div class="room-status"><span v-html="m.roomStatusText"></span></div>
                   <div class="right-outer">
                     <div class="price-wrap">
                       日均<span class="red">￥</span>
@@ -43,7 +43,9 @@
       </ul>
     </div>
 
-    <END v-if="loadedPrice && roomTypeBases.length > 0" />
+    <div v-if="roomTypeBases.length < 1 && !loading" style="text-align: center;margin: 0.3rem 0;color: #ea2c2c;">无可预订房间！</div>
+
+    <END v-if="!loading && roomTypeBases.length > 0" />
 
   </div>
 </template>
@@ -61,8 +63,9 @@ export default {
   data(){
     return {
       // 用于标记是否已经查过价了
-      loadedPrice: false,
+      loading: false,
       roomTypeBases: [],
+      hotelId: null,
     }
   },
   props: {},
@@ -88,9 +91,11 @@ export default {
     }
   },
   created(){
-    this.reQueryHotelPrice()
   },
   activated(){
+    if(!window.goBack){
+      this.initQueryString()
+    }
   },
   computed: {
     getCheckin(){
@@ -114,16 +119,16 @@ export default {
     // 重新查询酒店价格
     reQueryHotelPrice: debounce(function(){
       this.resetData()
-      this.initQueryString()
       this.queryHotelPrice()
     }, 10),
     // 重新设置数据
     resetData(){
-      this.loadedPrice = false
+      this.loading = false
       this.roomTypeBases = []
     },
     // 处理 queryString 带过来的参数
     initQueryString(){
+      this.hotelId = queryString('hotelId')
       let cityType = queryString('cityType')
 
       // 如果 queryString 上传过来的 cityType 和 store 里存的 cityType 不相等，则说明这种情况不是从酒店列表页点击进的酒店详情页
@@ -133,18 +138,22 @@ export default {
     },
     // 查询酒店价格
     queryHotelPrice(){
+      if(this.loading) return
+      this.loading = true
+
       let param = {
-        startDate: this.getCheckin,
-        endDate: this.getCheckout,
-        hotelId: queryString('hotelId'),
+        checkInDate: this.getCheckin,
+        checkOutDate: this.getCheckout,
+        hotelId: this.hotelId,
         roomNum: 1,
         adultNum: 2,
         childrenNum: 0,
-        childrenAgesStr: ''
+        childrenAgesStr: '',
+        isSearchSurcharge: 0
       }
 
       this.$api.hotelDetail.syncGetHotelPriceList(param).then(res => {
-        this.loadedPrice = true
+        this.loading = false
         if(res.returnCode === 1){
           this.roomTypeBases = res.data.roomTypeBases || []
           this.processRoomTypeBases()
@@ -155,6 +164,12 @@ export default {
     processRoomTypeBases(){
       for (let i = 0; i < this.roomTypeBases.length; i++) {
         const roomTypeBase = this.roomTypeBases[i];
+
+        roomTypeBase.roomTypePrices = roomTypeBase.roomTypePrices.filter(n => n.isBook) // 过滤掉所有不可预订的价格
+        if(roomTypeBase.roomTypePrices.length < 1){
+          this.roomTypeBases.splice(i--, 1)
+          continue
+        }
 
         roomTypeBase.ifShow = i == 0 ? true : false
         roomTypeBase.lowestAverage = Math.min.apply(null, roomTypeBase.roomTypePrices.map(n => n.averagePriceRMB))
@@ -285,11 +300,14 @@ export default {
 
 <style lang="scss">
 .hotel-price-wrap{
+  margin: 0 0.05rem;
 
   @at-root .hotel-roomtype-list{
 
     @at-root .hotel-roomtype-item{
       position: relative;
+      background: white;
+      margin-bottom: 0.05rem;
 
       @at-root .hotel-roomtype-name-head{
         position: relative;
@@ -331,27 +349,18 @@ export default {
       }
 
       @at-root .hotel-roomtype-price-wrap{
-        background: #FAFAFA;
         overflow: hidden;
+        padding-bottom: 0.05rem;
 
         @at-root .hotel-roomtype-price-list{
 
           @at-root .hotel-roomtype-price-item{
             position: relative;
-            padding: 0.12rem 0.15rem;
+            padding: 0.1rem;
             box-sizing: border-box;
-
-            &:before{
-              content: '';
-              position: absolute;
-              left: 0;
-              top: 0;
-              border-bottom: 0.01rem solid #e2e2e2;
-              width: 100%;
-              transform: scaleY(0.5);
-              transform-origin: 50% 100%;
-              z-index: 15;
-            }
+            background: #FAFAFA;
+            margin: 0 0.1rem 0.05rem;
+            border-radius: 0.03rem;
 
             .breakfast-bedtype{
               color: #666;
@@ -369,14 +378,36 @@ export default {
             }
 
             .room-status{
-              color: #3CAC84;
+
+              .red{
+                  color: #ff6666;
+              }
+
+              .purple{
+                  color: #ffa825;
+              }
+
+              .orange{
+                  color: orange;
+              }
+
+              .blue{
+                  color: #3366cc;
+              }
+
+              .green{
+                  color: #4cba92;
+              }
             }
 
             .right-outer{
               position: absolute;
               top: 0.3rem;
-              right: 0.15rem;
+              right: 0.1rem;
+              width: 0.8rem;
               text-align: right;
+              box-shadow: 0 0 0.1rem 0.1rem #FAFAFA;
+              background: #FAFAFA;
 
               .price-wrap{
                 font-size: 0.1rem;
