@@ -1,25 +1,26 @@
 <!-- 组件说明 -->
 <template>
 	<div class="hotel-info">
-		<div class="hotel-name">桂林香格里拉大酒店</div>
+		<div class="hotel-name">{{staticInfo.infoName}}</div>
 		<div class="additional-info">
 			<p>
 				入住
-				<span class="stare-black">12月4日(今天)</span>
+				<span class="stare-black">{{checkin}}</span>
 				离店
-				<span class="stare-black">12月5日(明天)</span>
-				<span class="stare-black">共1晚</span>
+				<span class="stare-black">{{checkout}}</span>
+				<span class="stare-black">共{{dateNum}}晚</span>
 			</p>
 			<p>
-				豪华大床房
-				<span class="breakfast-type">不含早</span>
+				{{hotelPrice.roomName}}
+				<span class="breakfast-type" v-if="hotelPrice.breakFastName">{{hotelPrice.breakFastName}}</span>
 			</p>
 		</div>
 	</div>
 </template>
 
 <script>
-	
+  import { mapState } from 'vuex'
+  
   export default {
     name: '',
     
@@ -31,7 +32,13 @@
     
     components: {},
     
-    computed: {},
+    computed: mapState('orderWrite', [
+      'staticInfo',
+      'checkin',
+      'checkout',
+      'hotelPrice',
+      'dateNum',
+    ]),
     
     methods: {}
   }
@@ -39,13 +46,11 @@
 
 <style scoped lang="scss">
 	.hotel-info{
-		/*margin: 0.1rem 0.1rem;*/
 		margin: 0.5rem 0.1rem 0.1rem;
 		background-color: #fff;
 		padding: 0 0.2rem;
 		font-size: 0.14rem;
 		position: relative;
-		/*position: absolute;*/
 	}
 	
 	.hotel-info:before, .hotel-info:after{

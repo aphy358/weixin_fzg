@@ -1,20 +1,22 @@
 import { _setCommonState,queryString } from "@/assets/util"
 import API from '@/api'
+import { gotoPage,goBackPage } from '@/assets/util'
+import { MessageBox, Toast } from 'mint-ui'
 
 export default {
   namespaced: true,
   
   state : {
-    checkin : '',
-    checkout : '',
+    checkin: '',
+    checkout: '',
     // supplierId : '',
-    roomNum : 1,
-    // dateNum : 1,
-    stock : 7,
-    // roomCost : '',
-    // taxesAndFeesRMB : 0,
-    // payTotalMoney : 0,
-    // balance : 0,
+    roomNum: 1,
+    dateNum: 1,
+    stock: 7,
+    roomCost: '',
+    taxesAndFeesRMB: 0,
+    payTotalMoney: 0,
+    balance: 0,
     // willUsedBalance: 0,
     //
     // breakfastData : {},
@@ -24,32 +26,29 @@ export default {
     // netData : {},
     // netDates : [],
     
-    surchargeBref : [],
-    surchargeBed : [],
-    surchargeInternet : [],
-  
+    surchargeBref: [],
+    surchargeBed: [],
+    surchargeInternet: [],
   
     maxPersonNum: 3,
+  
+    totalBreakfastPrice : 0,
+    totalBedPrice : 0,
+    totalNetworkPrice : 0,
     
-    // bedTotalPrice : 0,
-    // brefTotalPrice : 0,
-    // netTotalPrice : 0,
     
-    
-    // content : {},
-    // distributor : {},
-    // hotelPrice : {},
-    // staticInfo : {},
-    // isHasMarketing : 0,
-    // marketing : {},
-    //
-    // specialConditions : [],
+    content: {},
+    distributor: {},
+    hotelPrice: {},
+    staticInfo: {},
+    isHasMarketing : 0,
+    marketing: {},
+    specialConditions: [],
     // specialReq : [],
-    // paymentType : 1,
-    //
+    paymentTerm: 1,
     // dialogTableVisible : false,
-    //
-    orderInfo : {},
+    orderInfo: {},
+    bedTypeList: [],
   },
   
   
@@ -64,101 +63,124 @@ export default {
   
   actions : {
     //验价
-    // checkOrder({ commit, state, dispatch }, payload){
-    //   state.checkin = queryString("startDate");
-    //   state.checkout = queryString("endDate");
-    //   state.roomNum = queryString("roomNum");
-    //   state.supplierId = queryString("supplierId");
-    //
-    //   let hotelPriceStrsKey = queryString("hotelPriceStrsKey");
-    //   let hotelPriceStrs    = decodeURIComponent(sessionStorage.getItem(hotelPriceStrsKey));
-    //
-    //   let params = {
-    //     staticInfoId   : queryString("staticInfoId"),
-    //     adultNum       : queryString("adultNum"),
-    //     hotelId        : queryString("staticInfoId"),
-    //     supplierId     : state.supplierId,
-    //     roomId         : queryString("roomId"),
-    //     startDate      : state.checkin,
-    //     endDate        : state.checkout,
-    //     paymentType    : queryString("paymentType"),
-    //     roomNum        : state.roomNum,
-    //     childrenNum    : queryString("childrenNum"),
-    //     childrenAgeStr : queryString("childrenAgeStr"),
-    //     hotelPriceStrs : hotelPriceStrs,
-    //     isHasMarketing : queryString('isHasMarketing') || 0
-    //   };
-    //
-    //   let isHasMarketing = queryString("isHasMarketing") || 0;
-    //
-    //   if(isHasMarketing === '1'){
-    //     params['marketing.marketingPrice'] = queryString('marketingPrice') || 0;
-    //     params['marketing.startTime']      = queryString('startTime').replace(/\s+/g, ' ');
-    //     params['marketing.endTime']        = queryString('endTime').replace(/\s+/g, ' ');
-    //   }
-    //
-    //   if (queryString("breakFastId")) params['breakFastId'] = queryString("breakFastId");
-    //
-    //   if (queryString("rateType")) params['rateType'] = queryString("rateType");
-    //
-    //   API.orderWrite.checkOrder(params).then(function (data) {
-    //     if (typeof data === 'string') {
-    //       data = window.JSON.parse(data);
-    //     }
-    //
-    //     if (data.success) {
-    //       //如果有错误信息，则提示用户
-    //       if (data.content.result !== 'success') {
-    //         payload.$alert(data.content.errinfo, '系统提示', {
-    //           confirmButtonText: '确定',
-    //           callback: action => {
-    //             payload.$router.push('hotelList')
-    //           }
-    //         });
-    //       }else{
-    //         dispatch('getOrderInfo');
-    //       }
-    //
-    //     } else {
-    //       //用户登录状态已丢失时，提示用户
-    //       if (data.errcode === 'notLogin') {
-    //         payload.$alert('请先登录', '系统提示', {
-    //           confirmButtonText: '确定',
-    //           callback: action => {
-    //             payload.$router.push('/')
-    //           }
-    //         });
-    //       } else {
-    //         //提示用户错误信息，然后跳转到酒店详情页面
-    //         payload.$alert(data.errinfo, '系统提示', {
-    //           confirmButtonText: '确定',
-    //           callback: action => {
-    //             payload.$router.push('hotelList')
-    //           }
-    //         });
-    //       }
-    //     }
-    //   })
-    // },
-    //
+    checkOrder({ commit, state, dispatch }, payload){
+  
+      let content = state.content;
+      let orderInfo = state.orderInfo;
+      let bedTypeStrs = '';
+      if (orderInfo.bedType){
+        bedTypeStrs = window.JSON.stringify({
+          bedTypeId: orderInfo.bedType,
+          bedTypeName: orderInfo.bedTypeName
+        });
+      }else{
+        bedTypeStrs = content.bedTypeStrs;
+      }
+      let params = {
+        roomNum: state.roomNum,
+        checkType: 3,
+        voucherEmail: orderInfo.email,
+        voucherFax: '',
+        voucherMobile: orderInfo.tel,
+        customerOrderCode: '',
+        staticInfoId: content.staticInfo.staticInfoId,
+        country: content.staticInfo.country,
+        supplierId: content.supplierId,
+        hotelName: content.staticInfo.infoName,
+        adultNum: content.adultNum,
+        childrenNum: +content.childrenNum,
+        childrenAgeStr: content.childrenAgeStr,
+        isQueryPrice: '',
+        roomId: content.roomId,
+        startDate: content.startDate,
+        endDate: content.endDate,
+        dateNum: content.dateNum,
+        rateType: content.rateType,
+        paymentType: content.paymentType,
+        paymentTerm: orderInfo.paymentTerm,
+//          willUsedBalance: 0,
+        surchargeBref: window.JSON.stringify(state.surchargeBref),
+        surchargeBed: window.JSON.stringify(state.surchargeBed),
+        surchargeInternet: window.JSON.stringify(state.surchargeInternet),
+        userNames: orderInfo.name,
+        payTotalMoney: content.payTotalMoney,
+        toatlBasePrice: content.toatlBasePrice,
+        totalNowPrice: content.nowTotalMoney,
+        specialRequire: orderInfo.specialReq,
+        bedTypeStrs: bedTypeStrs,
+        hotelPriceStrs: window.JSON.stringify(content.hotelPrice || null),
+//          timeToHotel: 18,
+        isHasMarketing: content.isHasMarketing || 0,
+        isJustCheckSameOrder: 1
+      };
+  
+      if(params.isHasMarketing === 1){
+        params['marketing.marketingPrice'] = content.marketingObj.marketingPrice || 0;
+        params['marketing.startTime'] = content.marketingObj.startTime;
+        params['marketing.endTime'] = content.marketingObj.endTime;
+    
+        if (content.marketing.isPack === 1){
+          //小礼包客户填写的信息
+          params['marketingRemark'] = '客户手机号码：' + orderInfo.marketingTel;
+        }
+      }
+  
+      console.log(params);
+      API.orderWrite.syncProductCheck(params).then(function (res) {
+        // if (typeof data === 'string') {
+        //   data = window.JSON.parse(data);
+        // }
+        //
+        if (res.success) {
+          //如果有错误信息，则提示用户
+          // dispatch('saveOrder');
+          API.orderWrite.syncSaveOrder(params).then(function (data) {
+            console.log(data);
+          })
+          
+        //
+        // } else {
+        //   //用户登录状态已丢失时，提示用户
+        //   if (data.errcode === 'notLogin') {
+        //     payload.$alert('请先登录', '系统提示', {
+        //       confirmButtonText: '确定',
+        //       callback: action => {
+        //         payload.$router.push('/')
+        //       }
+        //     });
+        //   } else {
+        //     //提示用户错误信息，然后跳转到酒店详情页面
+        //     payload.$alert(data.errinfo, '系统提示', {
+        //       confirmButtonText: '确定',
+        //       callback: action => {
+        //         payload.$router.push('hotelList')
+        //       }
+        //     });
+        //   }
+        }
+      })
+    },
     
     //初始化部分数据
     initData({ commit, state, dispatch }, payload){
       state.checkin = queryString("startDate");
       state.checkout = queryString("endDate");
-      state.roomNum = queryString("roomNum");
+      state.roomNum = +queryString("roomNum");
       // state.supplierId = queryString("supplierId");
     },
     // //查价
     getProductInfo({ commit, state, dispatch }, payload){
-      
       let isRoomNumChange = 0;
 
       if (payload && payload.k === 'roomNum'){
-        commit('setCommonState', payload);
+        commit('setCommonState', {
+          roomNum: payload.v.roomNum
+        });
 
         isRoomNumChange = 1;
       }
+  
+      let vueCase = payload.v.vueCase;
       //请求页面中用于显示信息的数据
       let params = {
         childrenAgeStr : queryString('childrenAgeStr'),
@@ -187,39 +209,34 @@ export default {
         params['marketing.endTime'] = queryString('endTime').replace(/\s+/g, ' ');
       }
 
-      API.orderWrite.syncProductInfo(params).then(function (data) {
-        if (data.success === true) {
+      API.orderWrite.syncProductInfo(params).then(function (res) {
+        if (res.returnCode === 1) {
           //如果请求成功，先判断content有没有报错信息
-          if (data.content.errorMsg) {
-            payload.$alert(data.errinfo, '系统提示', {
-              confirmButtonText: '确定',
-              callback: action => {
-                payload.$router.push('hotelList')
-              }
-            });
-          }else if (data.content.hasOwnProperty('isAveragePriceRMBChange') && data.content.isAveragePriceRMBChange === 1){
+          if (res.data.errorMsg) {
+            MessageBox.confirm(res.errinfo).then(() => {
+              gotoPage(vueCase, 'hotelList');
+            })
+          }else if (res.data.isAveragePriceRMBChange && res.data.isAveragePriceRMBChange === 1){
             //价格有变动时提醒客户（特殊情况（查价接口没有错误信息返回，但属于提示的一种，且不是弹出框，而是确认框））
-            payload.$alert('最新价格为：￥' + data.content.payTotalMoney + '，是否需要继续预订？', '系统提示', {
-              confirmButtonText: '确定',
-            });
+            MessageBox.confirm('最新价格为：￥' + res.data.payTotalMoney + '，是否需要继续预订？').then(() => {
+              goBackPage(vueCase.$router)
+            })
           }
 
           //再判断酒店是否为客人前台现付方式，如果是，不让客户进入页面
-          if (data.content.paymentType === 1) {
-            payload.$alert('该产品已下线，请选择其他产品', '系统提示', {
-              confirmButtonText: '确定',
-              callback: action => {
-                payload.$router.push('hotelList')
-              }
-            });
+          if (res.data.paymentType === 1) {
+            MessageBox.confirm('该产品已下线，请选择其他产品').then(() => {
+              gotoPage(vueCase, 'hotelList');
+            })
           }
 
 
-          let content = data.content;
+          let content = res.data;
           state.content = content;
           state.hotelPrice = content.hotelPrice;
           state.distributor = content.distributor;
           state.staticInfo = content.staticInfo;
+          state.bedTypeList = content.hotelPrice.bedTypeList;
 
           state.dateNum = content.dateNum;
           state.stock = content.stock;
@@ -236,13 +253,10 @@ export default {
             state.marketing = content.marketing;
           }
 
-        } else {
-          // payload.$alert(data.errinfo, '系统提示', {
-          //   confirmButtonText: '确定',
-          //   callback: action => {
-          //     payload.$router.push('hotelList')
-          //   }
-          // });
+        }else{
+          MessageBox.alert(res.returnMsg).then(() => {
+            gotoPage(vueCase, 'hotelList');
+          });
         }
 
       })
@@ -307,19 +321,19 @@ export default {
       if (payload){
         commit('setCommonState', payload);
 
-        // commit('setCommonState', {
-        //   k : 'dialogTableVisible',
-        //   v : true
-        // });
+        commit('setCommonState', {
+          k : 'dialogTableVisible',
+          v : true
+        });
       }
     },
     //
     // //成单
-    // saveOrder({ commit, state, dispatch }, payload){
-    //   API.orderWrite.saveOrder(state.orderInfo).then(function (data) {
-    //     console.log(data);
-    //   })
-    // }
+    saveOrder({ commit, state, dispatch }, payload){
+      API.orderWrite.syncSaveOrder(state.orderInfo).then(function (data) {
+        console.log(data);
+      })
+    }
     
   },
   

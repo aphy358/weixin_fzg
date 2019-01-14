@@ -1,80 +1,86 @@
 <!-- 组件说明 -->
 <template>
-	<div class="extra-service">
+	<div class="extra-service" v-if="breakfastVisible || bedVisible || netVisible">
 		<h6 class="extra-service-title purple"><i class="iconfont icon-pack"></i>杂费</h6>
-		<div class="per-service add-breakfast" @click="changeBreakfast">
-			<p class="per-service-title">加早信息</p>
-			<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
-		</div>
-		<div class="per-service-open clearfix" :style="'height:' + breakfastHeight + 'rem;'">
-			<div class="condition-box">
-				<label>
-					<select class="per-service-date" v-model="dateValue1" @change="changeDate(0)">
-						<option v-for="(item, index) in dateList" :key="'_1date' + index" :value="item">{{item}}</option>
-					</select>
-				</label>
-				<label>
-					<select v-model="breakfastType">
-						<option v-for="(item, index) in breakfastTypeList" :key="'_1type' + index" :value="item.type" :price="item.price">{{item.name}}</option>
-					</select>
-				</label>
-				<input class="add-num" type="number" v-model="breakfastNum" placeholder="份数">
-				<button class="add-service-icon" @click="addExtrafee(0)">添加</button>
+		<div class="per-service-box" v-if="breakfastVisible">
+			<div class="per-service add-breakfast" @click="changeBreakfast">
+				<p class="per-service-title">加早信息</p>
+				<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
 			</div>
-			
-			<ul class="add-service-list">
-				<li v-for="(item, index) in addBreakfastList" :key="'_1add' + index">
-					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(0, index)"></i>
-				</li>
-			</ul>
-		</div>
-		<div class="per-service" @click="changeBed">
-			<p class="per-service-title">加床信息</p>
-			<p class="per-service-ins">儿童床<span class="orange">50/张</span>成人床<span class="orange">￥101/张</span></p>
-			<p class="purple">该房型每间房最多加床2张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
-		</div>
-		<div class="per-service-open clearfix" :style="'height:' + bedHeight + 'rem;'">
-			<div class="condition-box">
-				<label>
-					<select class="per-service-date" v-model="dateValue2" @change="changeDate(1)">
-						<option v-for="(item, index) in dateList" :key="'_2date' + index" :value="item">{{item}}</option>
-					</select>
-				</label>
-				<label>
-					<select v-model="bedType">
-						<option v-for="(item, index) in bedTypeList" :key="'_2type' + index" :value="item.type" :price="item.price">{{item.name}}</option>
-					</select>
-				</label>
-				<input class="add-num" type="number" v-model="bedNum" placeholder="份数">
-				<button class="add-service-icon" @click="addExtrafee(1)">添加</button>
+			<div class="per-service-open clearfix" :style="'height:' + breakfastHeight + 'rem;'">
+				<div class="condition-box">
+					<label>
+						<select class="per-service-date" v-model="dateValue1" @change="changeDate(0)">
+							<option v-for="(item, index) in dateList" :key="'_1date' + index" :value="item">{{item}}</option>
+						</select>
+					</label>
+					<label>
+						<select v-model="breakfastType">
+							<option v-for="(item, index) in breakfastTypeList" :key="'_1type' + index" :value="item.type" :price="item.price">{{item.name}}</option>
+						</select>
+					</label>
+					<input class="add-num" type="number" v-model="breakfastNum" placeholder="份数">
+					<button class="add-service-icon" @click="addExtrafee(0)">添加</button>
+				</div>
+				
+				<ul class="add-service-list">
+					<li v-for="(item, index) in addBreakfastList" :key="'_1add' + index">
+						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(0, index)"></i>
+					</li>
+				</ul>
 			</div>
-			
-			<ul class="add-service-list">
-				<li v-for="(item, index) in addBedList" :key="'_2add' + index">
-					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(1, index)"></i>
-				</li>
-			</ul>
 		</div>
-		<div class="per-service" @click="changeNetwork">
-			<p class="per-service-title">加宽带信息</p>
-			<p class="per-service-ins" style="padding-bottom: 0.1rem;"><span class="orange">￥{{networkPrice}}/间/日</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
-		</div>
-		<div class="per-service-open clearfix" :style="'height:' + networkHeight + 'rem;'">
-			<div class="condition-box">
-				<label>
-					<select class="per-service-date" v-model="dateValue3" @change="changeDate(2)">
-						<option v-for="(item, index) in dateList" :key="'_3date' + index" :value="item">{{item}}</option>
-					</select>
-				</label>
-				<input class="add-num" type="number" v-model="networkNum" placeholder="份数">
-				<button class="add-service-icon" @click="addExtrafee(2)">添加</button>
+		<div class="per-service-box" v-if="bedVisible">
+			<div class="per-service" @click="changeBed">
+				<p class="per-service-title">加床信息</p>
+				<p class="per-service-ins">儿童床<span class="orange">50/张</span>成人床<span class="orange">￥101/张</span></p>
+				<p class="purple">该房型每间房最多加床2张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
 			</div>
-			
-			<ul class="add-service-list">
-				<li v-for="(item, index) in addNetworkList" :key="'_3add' + index">
-					<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(2, index)"></i>
-				</li>
-			</ul>
+			<div class="per-service-open clearfix" :style="'height:' + bedHeight + 'rem;'">
+				<div class="condition-box">
+					<label>
+						<select class="per-service-date" v-model="dateValue2" @change="changeDate(1)">
+							<option v-for="(item, index) in dateList" :key="'_2date' + index" :value="item">{{item}}</option>
+						</select>
+					</label>
+					<label>
+						<select v-model="bedType">
+							<option v-for="(item, index) in bedTypeList" :key="'_2type' + index" :value="item.type" :price="item.price">{{item.name}}</option>
+						</select>
+					</label>
+					<input class="add-num" type="number" v-model="bedNum" placeholder="份数">
+					<button class="add-service-icon" @click="addExtrafee(1)">添加</button>
+				</div>
+				
+				<ul class="add-service-list">
+					<li v-for="(item, index) in addBedList" :key="'_2add' + index">
+						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(1, index)"></i>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="per-service-box" v-if="netVisible">
+			<div class="per-service" @click="changeNetwork">
+				<p class="per-service-title">加宽带信息</p>
+				<p class="per-service-ins" style="padding-bottom: 0.1rem;"><span class="orange">￥{{networkPrice}}/间/日</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
+			</div>
+			<div class="per-service-open clearfix" :style="'height:' + networkHeight + 'rem;'">
+				<div class="condition-box">
+					<label>
+						<select class="per-service-date" v-model="dateValue3" @change="changeDate(2)">
+							<option v-for="(item, index) in dateList" :key="'_3date' + index" :value="item">{{item}}</option>
+						</select>
+					</label>
+					<input class="add-num" type="number" v-model="networkNum" placeholder="份数">
+					<button class="add-service-icon" @click="addExtrafee(2)">添加</button>
+				</div>
+				
+				<ul class="add-service-list">
+					<li v-for="(item, index) in addNetworkList" :key="'_3add' + index">
+						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(2, index)"></i>
+					</li>
+				</ul>
+			</div>
 		</div>
 		
 	</div>
@@ -104,9 +110,7 @@
         networkPrice: 40,
         extrafeeParams: {
           startDate: this.$store.state.checkin,
-//          startDate: '2018-12-18',
           endDate: this.$store.state.checkout,
-//          endDate: '2018-12-20',
           infoId: 171840,
           suppId: 40160,
           roomtypeId: 29,
@@ -124,7 +128,10 @@
         addBreakfastList: [],
         addBedList: [],
         addNetworkList: [],
-        addBedNumObj: {}
+        addBedNumObj: {},
+        breakfastVisible: false,
+        bedVisible: false,
+        netVisible: false,
       }
     },
     
@@ -158,6 +165,7 @@
       let obj1 = {};
       this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
         if(res.returnCode === 1 && res.data.length > 0){
+          _this.breakfastVisible = true;
       
           for (let i = 0; i < res.data.length; i++) {
             let outer = res.data[i];
@@ -185,6 +193,7 @@
       let obj2 = {};
       this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
         if(res.returnCode === 1 && res.data.length > 0){
+          _this.bedVisible = true;
       
           for (let i = 0; i < res.data.length; i++) {
             let outer = res.data[i];
@@ -213,6 +222,7 @@
       let obj3 = {};
       this.$api.orderWrite.syncSurchargeRoom(params).then(res => {
         if(res.returnCode === 1 && res.data.length > 0){
+          _this.netVisible = true;
       
           for (let i = 0; i < res.data.length; i++) {
             let outer = res.data[i];

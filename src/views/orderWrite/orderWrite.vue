@@ -59,7 +59,7 @@
     
     computed: {},
     
-    created(){
+    activated(){
       this.getProductInfo();
     },
     
@@ -68,8 +68,14 @@
         this.validate = true;
       },
       getProductInfo() {
+        let _this = this;
         this.$store.dispatch('orderWrite/initData');
-        this.$store.dispatch('orderWrite/getProductInfo');
+        this.$store.dispatch('orderWrite/getProductInfo', {
+          k: 'firstQueryPrice',
+          v: {
+            vueCase: _this
+          }
+        });
       },
     }
   }
