@@ -125,6 +125,8 @@ export default {
             if(res.returnCode === 1){
               // TO DO 跳转到微信 eb 首页
               replacePage(this.$router, 'ebIndex')
+            }else if(res.returnCode === 0 && res.returnMsg == '当前微信号已绑定用户!'){
+              replacePage(this.$router, 'ebIndex')
             }
           })
         }
