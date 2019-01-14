@@ -72,8 +72,12 @@
     
     methods: {
       confirm(){
-        this.$store.dispatch('orderWrite/checkOrder');
-//        gotoPage(this.$router, 'orderPay', {type: 'hotelOrder'})
+        if (this.$store.state.orderWrite.content.paymentType === 0 && this.orderInfo.paymentTerm !== 0){
+          //如果用户的结算类型为非单结而且本次选择的也是非单结的结算方式，则直接成单
+          this.$store.dispatch('orderWrite/checkOrder');
+        }else{
+          gotoPage(this.$router, 'orderPay', {type: 'hotelOrder'})
+        }
       },
       cancel(){
         this.$emit('close');

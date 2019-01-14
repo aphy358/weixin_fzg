@@ -6,26 +6,26 @@
 		
 		<div class="page-content">
 			<div class="order-info">
-				<p class="info-title">订单编号</p>
-				<p class="info-txt">{{orderCode}}</p>
+				<!--<p class="info-title">订单编号</p>-->
+				<!--<p class="info-txt">{{orderCode}}</p>-->
 				<p class="info-title">付款时限</p>
 				<p class="info-txt">2018-12-20 18:00:00</p>
 				<p class="info-title">订单金额</p>
-				<p class="info-txt deep-orange bold">￥{{total}}</p>
+				<p class="info-txt deep-orange bold">￥{{orderInfo.totalPay}}</p>
 				<p class="info-title">收款方</p>
 				<p class="info-txt">深圳市捷旅国际旅行社有限公司[深圳捷旅假期]</p>
 				<p class="info-title">付款方</p>
-				<p class="info-txt">测试</p>
+				<p class="info-txt">{{distributor.allName}}</p>
 				<p class="info-title">预收款总金额</p>
-				<p class="info-txt">{{balance}}</p>
+				<p class="info-txt">{{content.balance}}</p>
 			</div>
 			
 			<div class="pay-num">
-				<label>
+				<label v-if="distributor.paymentTerm == 0">
 					<span>本次共需支付：</span>
-					<span class="total-pay deep-orange">￥{{total}}</span>
+					<span class="total-pay deep-orange">￥{{orderInfo.totalPay}}</span>
 				</label>
-				<label>
+				<label v-if="distributor.paymentTerm == 0">
 					<span>使用预收款：</span>
 					<input type="number" class="use-balance" v-model="useBalance">
 				</label>
@@ -46,10 +46,10 @@
     
     data() {
       return {
-        orderCode: 'F489367073360',
+//        orderCode: 'F489367073360',
         useBalance: '',
         total: 321.32,
-        balance: 9999
+//        balance: 9999
       }
     },
     
@@ -60,46 +60,32 @@
     },
     
     computed: mapState({
-        orderInfo: state => state.orderWrite.orderInfo,
+      orderInfo: state => state.orderWrite.orderInfo,
+      content: state => state.orderWrite.content,
+      distributor: state => state.orderWrite.distributor,
     }),
     
     methods: {
       payOrder(){
         if (this.useBalance < 0){
           Toast('使用的预收款金额不能为负数')
-        }else if (this.useBalance > this.balance){
+        }else if (this.useBalance > this.content.balance){
           Toast('使用金额超出预收款额度');
-        }else if (this.useBalance > this.total){
+        }else if (this.useBalance > this.orderInfo.totalPay){
           Toast('支付金额不能多于订单金额');
+        }else if (!/^\d+(\.\d{0,2})?$/.test(this.useBalance)){
+          Toast('支付金额最多只能输入小数点后两位');
+        }else if (this.orderInfo.useBalance *100 === this.orderInfo.totalPay * 100){
+          //直接成单
         }else{
-          //进入支付
-          let param = {
-            orderCode: this.orderCode,
-            fee: 321.32,
-            balance: this.balance
-          };
-          this.$api.orderPay.syncPayStart(param).then(res => {
-            if(res.success){
-              let payParam = {
-                "appId": res.content.appId,     //公众号名称，由商户传入
-                "timeStamp": res.content.timeStamp,         //时间戳，自1970年以来的秒数
-                "nonceStr": res.content.nonceStr, //随机串
-                "package": res.content.prepayId,
-                "signType":"MD5",         //微信签名方式：
-                "paySign": res.content.paySign //微信签名
-              };
-              WeixinJSBridge.invoke('getBrandWCPayRequest', payParam, function(res){
-                
-                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-                if(res.err_msg === "get_brand_wcpay_request：ok" ) {
-                }
-              });
-              //显示支付成功
-              Toast('支付成功');
-            }else{
-              Toast(res.errinfo);
-            }
+          //验价、下单
+          let _this = this;
+          this.$store.dispatch('orderWrite/checkOrder', {
+            k: 'useBalance',
+            v: _this.useBalance
           });
+          
+         
         }
       }
     }
