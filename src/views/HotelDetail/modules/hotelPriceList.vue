@@ -4,9 +4,12 @@
 
     <div class="hotel-price-wrap">
       <ul class="hotel-roomtype-list">
-        <li v-for="(n, i) in roomTypeBases" :key="i" class="hotel-roomtype-item">
+        <li v-for="(n, i) in roomTypeBasesShow" :key="i" class="hotel-roomtype-item">
           <div class="hotel-roomtype-name-head" @click="switchPriceShow(i)">
-            <p class="roomtype-name">{{ n.roomName }}</p>
+            <p class="roomtype-name">
+              <i v-if="n.recommend" class="iconfont icon-hot" style="color: orange;font-size: 0.14rem;"></i>
+              {{ n.roomName }}
+            </p>
             <div class="roomtype-price-wrap">
               日均<span class="red">￥</span><span class="red price">{{ n.lowestAverage }}</span>起
               <i class="iconfont" :class="[n.ifShow ? 'icon-up-thin' : 'icon-down-thin']"></i>
@@ -43,9 +46,9 @@
       </ul>
     </div>
 
-    <div v-if="roomTypeBases.length < 1 && !loading" style="text-align: center;margin: 0.3rem 0;color: #ea2c2c;">无可预订房间！</div>
+    <div v-if="roomTypeBasesShow.length < 1 && !loading" style="text-align: center;margin: 0.3rem 0;color: #ea2c2c;">无可预订房间！</div>
 
-    <END v-if="!loading && roomTypeBases.length > 0" />
+    <END v-if="!loading && roomTypeBasesShow.length > 0" />
 
   </div>
 </template>
@@ -64,7 +67,12 @@ export default {
     return {
       // 用于标记是否已经查过价了
       loading: false,
+      // 普通的房型价格
       roomTypeBases: [],
+      // 推荐的房型价格
+      roomTypeBasesRecommend: [],
+      // 全部显示的房型价格，包含普通房型和推荐房型
+      roomTypeBasesShow: [],
       hotelId: null,
     }
   },
@@ -95,6 +103,7 @@ export default {
   activated(){
     if(!window.goBack){
       this.initQueryString()
+      this.reQueryHotelPrice()
     }
   },
   computed: {
@@ -120,11 +129,13 @@ export default {
     reQueryHotelPrice: debounce(function(){
       this.resetData()
       this.queryHotelPrice()
-    }, 10),
+    }, 100),
     // 重新设置数据
     resetData(){
       this.loading = false
       this.roomTypeBases = []
+      this.roomTypeBasesRecommend = []
+      this.roomTypeBasesShow = []
     },
     // 处理 queryString 带过来的参数
     initQueryString(){
@@ -156,18 +167,23 @@ export default {
         this.loading = false
         if(res.returnCode === 1){
           this.roomTypeBases = res.data.roomTypeBases || []
+          this.roomTypeBasesRecommend = res.data.roomTypeBasesRecommend || []
+
+          this.roomTypeBasesRecommend.forEach(n => n.recommend = true)
+          this.roomTypeBasesShow = this.roomTypeBases.concat(this.roomTypeBasesRecommend)
+
           this.processRoomTypeBases()
         }
       })
     },
     // 将返回的价格列表数据进一步的加工，以适用于 html 模板
     processRoomTypeBases(){
-      for (let i = 0; i < this.roomTypeBases.length; i++) {
-        const roomTypeBase = this.roomTypeBases[i];
+      for (let i = 0; i < this.roomTypeBasesShow.length; i++) {
+        const roomTypeBase = this.roomTypeBasesShow[i];
 
         roomTypeBase.roomTypePrices = roomTypeBase.roomTypePrices.filter(n => n.isBook) // 过滤掉所有不可预订的价格
         if(roomTypeBase.roomTypePrices.length < 1){
-          this.roomTypeBases.splice(i--, 1)
+          this.roomTypeBasesShow.splice(i--, 1)
           continue
         }
 
@@ -179,14 +195,13 @@ export default {
           p.cancellationText = p.cancellationType ? '可取消' : '不可取消'
           this.setRoomStatusText(p)
           this.setOrderClause(p)
-          
         }
       }
     },
     switchPriceShow(i){
-      const roomTypeBase = this.roomTypeBases[i]
+      const roomTypeBase = this.roomTypeBasesShow[i]
       roomTypeBase.ifShow = !roomTypeBase.ifShow
-      this.roomTypeBases.splice(0, 0)
+      this.roomTypeBasesShow.splice(0, 0)
     },
     // 设置预订条款的显示
     setOrderClause(roomTypePrice) {
