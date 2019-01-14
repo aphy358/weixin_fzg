@@ -25,7 +25,7 @@
                   <div class="breakfast-bedtype">{{ m.rateTypeName }} {{ m.bedTypeName }}</div>
                   <div class="order-clause">{{ m.orderClauseText }}</div>
                   <div class="cancel-type">{{ m.cancellationText }}</div>
-                  <div class="room-status">{{ m.roomStatusText || '占位' }}</div>
+                  <div class="room-status"><span v-html="m.roomStatusText"></span></div>
                   <div class="right-outer">
                     <div class="price-wrap">
                       日均<span class="red">￥</span>
@@ -142,13 +142,14 @@ export default {
       this.loading = true
 
       let param = {
-        startDate: this.getCheckin,
-        endDate: this.getCheckout,
+        checkInDate: this.getCheckin,
+        checkOutDate: this.getCheckout,
         hotelId: this.hotelId,
         roomNum: 1,
         adultNum: 2,
         childrenNum: 0,
-        childrenAgesStr: ''
+        childrenAgesStr: '',
+        isSearchSurcharge: 0
       }
 
       this.$api.hotelDetail.syncGetHotelPriceList(param).then(res => {
@@ -377,7 +378,26 @@ export default {
             }
 
             .room-status{
-              color: #3CAC84;
+
+              .red{
+                  color: #ff6666;
+              }
+
+              .purple{
+                  color: #ffa825;
+              }
+
+              .orange{
+                  color: orange;
+              }
+
+              .blue{
+                  color: #3366cc;
+              }
+
+              .green{
+                  color: #4cba92;
+              }
             }
 
             .right-outer{

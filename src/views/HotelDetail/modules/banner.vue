@@ -73,6 +73,13 @@ export default {
           if(res.returnCode === 1){
             getStarText(res.dataList[0])
             this.curHotel = res.dataList[0]
+
+            // 设置酒店图片
+            this.curHotel.picList = this.curHotel.picList || [];
+            let picArr = this.curHotel.picSrc.split('|');
+            if(!this.curHotel.picList.length)	this.curHotel.picList = picArr;
+            this.curHotel.picSrc = picArr[0];
+
             this.$store.commit(`setCommonState`, {k: 'curHotel', v: res.dataList[0]})
           }
         })
