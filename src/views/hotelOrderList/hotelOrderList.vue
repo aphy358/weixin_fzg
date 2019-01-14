@@ -192,7 +192,7 @@
     
     created(){
       let _this = this;
-      this.$api.myCenter.syncLogin({code: 8998,name: 'fenghan',password: 1}).then(outerRes => {
+      this.$api.myCenter.syncLogin({code: 8998,name: 'huangqian',password: 1}).then(outerRes => {
 //        if(outerRes.success){
 //          _this.getHotelOrderList();
 //          _this.$api.myCenter.syncHotelOrderList(_this.params).then(res => {

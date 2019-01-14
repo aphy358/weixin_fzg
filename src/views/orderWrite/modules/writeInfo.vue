@@ -252,13 +252,13 @@
       },
       paymentList() {
         let paymentTerm = this.$store.state.orderWrite.distributor.paymentTerm;
+        this.paymentType = paymentTerm;
         if (paymentTerm === 0) {
           return [{
             label: '单结',
             value: 0
           }];
         } else {
-          this.paymentType = paymentTerm;
           return [
             {
               label: '单结',
@@ -408,10 +408,12 @@
             if (result) {
               //弹出确认框
               let name = '';
+              let nameParams = '';
               for (let i = 0; i < this.nameArr.length; i++) {
                 let item = this.nameArr[i];
-                if (item.l && item.f & item.n){
+                if (item.l && item.f && item.n){
                   name += item.l + item.f + '[' + item.n + ']，';
+                  nameParams += (i + 1) + '#' + (i%this.maxPersonNum === 0 ? 'main' : 'other') + '#' + item.l + '#' + item.f + '#' + item.n;
                 }
               }
               name = name.replace(/，$/, '');
@@ -421,6 +423,7 @@
                 date: this.$store.state.orderWrite.checkin + '/' + this.$store.state.orderWrite.checkout,
                 roomNum: this.roomNum,
                 name: name,
+                nameParams: nameParams,
                 tel: this.tel,
                 email: this.email,
                 paymentTerm: this.paymentType,
@@ -592,6 +595,7 @@
 				.username-input {
 					padding-left: 0.2rem;
 					width: 1rem;
+					height: 100%;
 					
 					&.nationality {
 						width: 0.4rem;

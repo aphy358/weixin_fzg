@@ -3,7 +3,6 @@ import * as hotelList from './modules/hotelList'
 import * as hotelDetail from './modules/hotelDetail'
 import * as citySelect from './modules/citySelect'
 import * as orderWrite from './modules/orderWrite'
-import * as orderPay from './modules/orderPay'
 import * as myCenter from './modules/myCenter'
 import * as eb from './modules/eb'
 import * as qnb from './modules/qnb'
@@ -15,7 +14,6 @@ const api = {
   hotelDetail,
   citySelect,
   orderWrite,
-  orderPay,
   myCenter,
   eb,
   qnb,

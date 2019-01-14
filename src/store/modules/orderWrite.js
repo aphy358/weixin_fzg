@@ -49,6 +49,8 @@ export default {
     // dialogTableVisible : false,
     orderInfo: {},
     bedTypeList: [],
+  
+    orderParams: {}
   },
   
   
@@ -102,7 +104,7 @@ export default {
         surchargeBref: window.JSON.stringify(state.surchargeBref),
         surchargeBed: window.JSON.stringify(state.surchargeBed),
         surchargeInternet: window.JSON.stringify(state.surchargeInternet),
-        userNames: orderInfo.name,
+        userNames: orderInfo.nameParams,
         payTotalMoney: content.payTotalMoney,
         toatlBasePrice: content.toatlBasePrice,
         totalNowPrice: content.nowTotalMoney,
@@ -111,7 +113,8 @@ export default {
         hotelPriceStrs: window.JSON.stringify(content.hotelPrice || null),
 //          timeToHotel: 18,
         isHasMarketing: content.isHasMarketing || 0,
-        isJustCheckSameOrder: 1
+        isJustCheckSameOrder: 1,
+        willUsedBalance: payload ? payload.v : 0
       };
   
       if(params.isHasMarketing === 1){
@@ -125,7 +128,7 @@ export default {
         }
       }
   
-      console.log(params);
+      state.orderParams = params;
       API.orderWrite.syncProductCheck(params).then(function (res) {
         // if (typeof data === 'string') {
         //   data = window.JSON.parse(data);
@@ -134,9 +137,8 @@ export default {
         if (res.success) {
           //如果有错误信息，则提示用户
           // dispatch('saveOrder');
-          API.orderWrite.syncSaveOrder(params).then(function (data) {
-            console.log(data);
-          })
+          dispatch('saveOrder');
+          
           
         //
         // } else {
@@ -330,8 +332,42 @@ export default {
     //
     // //成单
     saveOrder({ commit, state, dispatch }, payload){
-      API.orderWrite.syncSaveOrder(state.orderInfo).then(function (data) {
-        console.log(data);
+      state.orderParams.isJustCheckSameOrder = 0;
+      API.orderWrite.syncSaveOrder(state.orderParams).then(function (data) {
+        if (data.returnCode === 1){
+          if (state.content.paymentType === 0 && state.orderInfo.paymentTerm !== 0){
+            //直接成单
+          }else{
+            //进入支付
+            let param = {
+              orderCode: data.data.orderInfo.parentOrderCode,
+              fee: state.orderInfo.totalPay * 100,
+              balance: window.parseInt(state.orderParams.willUsedBalance * 100)
+            };
+            API.orderWrite.syncPayStart(param).then(res => {
+              if(res.success){
+                let payParam = {
+                  appId: res.content.appId,     //公众号名称，由商户传入
+                  timeStamp: res.content.timeStamp,         //时间戳，自1970年以来的秒数
+                  nonceStr: res.content.nonceStr, //随机串
+                  package: res.content.prepayId,
+                  signType:"MD5",         //微信签名方式：
+                  paySign: res.content.paySign //微信签名
+                };
+                window.WeixinJSBridge.invoke('getBrandWCPayRequest', payParam, function(res){
+              
+                  // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                  if(res.err_msg === "get_brand_wcpay_request：ok" ) {
+                  }
+                });
+                //显示支付成功
+                Toast('支付成功');
+              }else{
+                Toast(res.errinfo);
+              }
+            });
+          }
+        }
       })
     }
     
