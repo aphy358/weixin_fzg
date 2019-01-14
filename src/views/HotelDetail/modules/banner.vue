@@ -64,8 +64,10 @@ export default {
     // 初始化酒店基本信息的显示
     initHotelInfo(){
       let _curHotel = this.$store.state.curHotel
+
       if(_curHotel){
         this.curHotel = _curHotel
+        this.setHotelPic(this.curHotel)
       }else{
         let hotelId = queryString('hotelId')
 
@@ -73,18 +75,19 @@ export default {
           if(res.returnCode === 1){
             getStarText(res.dataList[0])
             this.curHotel = res.dataList[0]
-
-            // 设置酒店图片
-            this.curHotel.picList = this.curHotel.picList || [];
-            let picArr = this.curHotel.picSrc.split('|');
-            if(!this.curHotel.picList.length)	this.curHotel.picList = picArr;
-            this.curHotel.picSrc = picArr[0];
-
+            this.setHotelPic(this.curHotel)
             this.$store.commit(`setCommonState`, {k: 'curHotel', v: res.dataList[0]})
           }
         })
       }
       
+    },
+    // 设置酒店图片
+    setHotelPic(hotel){
+      hotel.picList = hotel.picList || [];
+      let picArr = hotel.picSrc.split('|');
+      if(!hotel.picList.length)	hotel.picList = picArr;
+      hotel.picSrc = picArr[0];
     },
     showHotelInfo(){
       this.$store.commit(`hotelDetail/setCommonState`, {k: 'hotelInfoPopupVisible', v: true})
