@@ -88,17 +88,17 @@ export const HotCity = [
   {
     cityId: '30000898',
     cityName: '香港',
-    cityType: '0'
+    cityType: '2'
   },
   {
     cityId: '70139',
     cityName: '澳门',
-    cityType: '0'
+    cityType: '2'
   },
   {
     cityId: '30001017',
     cityName: '台北',
-    cityType: '0'
+    cityType: '2'
   },
 
 
@@ -106,81 +106,81 @@ export const HotCity = [
   {
     countryId: '70229',
     cityName: '新加坡',
-    cityType: '1'
+    cityType: '3'
   },
   {
     countryId: '70096',
     stateId: '83397',
     cityName: '首尔',
-    cityType: '1'
+    cityType: '3'
   },
   {
     countryId: '70205',
     stateId: '83378',
     cityName: '曼谷',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155957',
     cityName: '普吉岛',
-    cityType: '1'
+    cityType: '3'
   },
   {
     countryId: '70176',
     stateId: '83429',
     cityName: '东京',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155991',
     cityName: '吉隆坡',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155972',
     cityName: '清迈',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155970',
     cityName: '大阪',
-    cityType: '1'
+    cityType: '3'
   },
   {
     countryId: '70242',
     stateId: '83376',
     cityName: '巴厘岛',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155973',
     cityName: '兰卡威',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30156019',
     cityName: '济州岛',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155901',
     cityName: '迪拜',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155956',
     cityName: '巴黎',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30155838',
     cityName: '伦敦',
-    cityType: '1'
+    cityType: '3'
   },
   {
     cityId: '30156283',
     cityName: '温哥华',
-    cityType: '1'
+    cityType: '3'
   },
 ]
 

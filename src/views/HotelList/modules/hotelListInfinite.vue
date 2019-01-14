@@ -7,14 +7,18 @@
       <div>建议更换关键字进行搜索</div>
     </div>
 
+    <div v-if="dataType != 0" class="line-after" style="background: white;line-height: 0.4rem;padding-left: 0.1rem;">
+      <i class="iconfont icon-hot" style="margin-right: 0.05rem;color: orange;font-size: 0.14rem;"></i>
+      <span>您可能对如下酒店感兴趣</span>
+    </div>
     <ul
-      v-else
+      v-if="hotelList.length > 0"
       class="hotel-list-result-ul"
       v-infinite-scroll="queryHotel"
       infinite-scroll-disabled="infiniteLoad"
       infinite-scroll-distance="10">
 
-      <li v-for="n in hotelList" :key="n.infoId" class="item-content" @click="gotoHotelDetail(n)">
+      <li v-for="(n, i) in hotelList" :key="i" class="item-content" @click="gotoHotelDetail(n)">
           <div class="item-media">
             <img :src="n.picSrc.indexOf('nopic') != -1 ? logo : n.picSrc" :class="{'nopic': n.picSrc.indexOf('nopic') != -1}">
           </div>
@@ -26,7 +30,7 @@
               <span class="star-group">
                 <span class="iconfont">{{ n.starText }}</span>
               </span>
-              <span class="fr">
+              <span class="fr" v-if="n.lowest > 0">
                 <span class="currency">¥</span>
                 <span class="price">{{ n.lowest }}</span>
                 <span class="price-text">起</span>
@@ -74,6 +78,9 @@ export default {
       loading: false,
       infiniteLoad: false,
       pageNow: 1,
+
+      // 2:热门推荐，   0：普通数据
+      dataType: 0,
     }
   },
   props: ['showKeywordBoard'],
@@ -152,38 +159,46 @@ export default {
 
       let _state = _this.$store.state
       let param = {
+        countryId: _state.countryId,
+        stateId: _state.stateId,
         cityId: _state.cityId,
         type: _state.cityType,
         pageNow: _this.pageNow,
         startDate: _state.checkin,
         endDate: _state.checkout,
         keyWords: _state.keyword,
+
         star: _state.checkedStar,
         priceRange: _state.priceRange,
         bizCircleId: _state.hotelList.checkedBiz.join(','),
         zoneId: _state.hotelList.checkedArea.join(','),
+
+        selRoomNum: 1,
+        adultNum: 2,
+        childrenNum: 0,
+        childrenAgesStr: '',
       }
 
       this.$api.hotelList.syncGetHotelList(param).then(res => {
         // 将这个变量设置为 false，表示允许再次查询酒店列表
         _this.loading = false
 
-        if(res.returnCode === 1 && res.data){
-          let content = res.data
-          if(content.pageCount <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
+        if(res.returnCode === 1 && res.dataList){
+          _this.dataType = res.data
+
+          if(res.pageTotal <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
           }else{
             _this.infiniteLoad = false
             _this.pageNow++
           }
 
-          if(content.data){
-            for (let i = 0; i < content.data.length; i++) {
-              const n = content.data[i];
-              getStarText(n)
+          if(res.dataList){
+            for (let i = 0; i < res.dataList.length; i++) {
+              getStarText(res.dataList[i])
             }
   
-            _this.hotelList = _this.hotelList.concat(content.data)
+            _this.hotelList = _this.hotelList.concat(res.dataList)
           }
         }
       })
@@ -227,6 +242,7 @@ export default {
     position: relative;
     margin: 0;
     padding: 0 0.1rem;
+    background: white;
 
     .item-content {
       box-sizing: border-box;

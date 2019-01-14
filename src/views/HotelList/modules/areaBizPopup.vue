@@ -62,6 +62,17 @@ export default {
         this.checkedArea = this.$store.state.hotelList.checkedArea
         this.checkedBiz = this.$store.state.hotelList.checkedBiz
       }
+    },
+    getCityId(){
+      // 先清空勾选的商圈、行政区
+      this.$store.commit(`hotelList/setCommonState`, {k: 'checkedArea', v: []})
+      this.$store.commit(`hotelList/setCommonState`, {k: 'checkedBiz', v: []})
+      
+      this.areaArr = []
+      this.bizArr = []
+      this.checkedArea = []
+      this.checkedBiz = []
+      this.getAreaBiz()
     }
   },
   components: {
@@ -80,13 +91,16 @@ export default {
         this.$store.commit(`hotelList/setCommonState`, {k: 'areaBizPopupVisible', v: newValue})
       }
     },
+    getCityId(){
+      return this.$store.state.cityId
+    }
   },
   mounted(){
   },
   methods:{
     // 查询行政区、商圈
     getAreaBiz(){
-      let param = {cityid: this.$store.state.cityId}
+      let param = {cityid: this.getCityId}
 
       this.$api.hotelList.syncGetAreaBiz(param).then(res => {
         if(res.returnCode === 1 && res.data){

@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="calendar-page-content calendar-body-wrap">
+      <div class="calendar-page-content calendar-body-wrap" style="background: #efeff4;">
         <div v-for="(m, i) in showMonths" :key="i" class="calendar-body">
           <table>
             <thead>
@@ -242,6 +242,7 @@ export default {
   .calendar-body-wrap {
     margin-top: 0.65rem;
     padding-bottom: 0.65rem;
+    background: white;
 
     .calendar-body {
 

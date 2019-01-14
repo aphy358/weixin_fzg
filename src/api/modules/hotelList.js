@@ -9,8 +9,9 @@ export const syncGetAreaBiz = (args, loading = false) => http.post("/vue/hotel/g
 export const syncGetHotels = (args, loading = false) => http.post("/vue/hotel/suggest.do", args, loading)
 
 
-// 查询酒店列表
-export const syncGetHotelList = (args, loading = false) => http.post("/vue/hotel/query.do", args, loading)
+// 查询酒店列表  /vue/hotel/query.do
+export const syncGetHotelList = (args, loading = false) => http.post("/vue/hotel/queryHotelListNew.do", args, loading)
+// export const syncGetHotelList = (args, loading = false) => http.post("/vue/hotel/query.do", args, loading)
 
 
 

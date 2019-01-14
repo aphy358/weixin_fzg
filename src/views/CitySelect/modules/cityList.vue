@@ -77,8 +77,8 @@ export default {
   },
   created(){
     if(HotCity){
-      this.hotCity0 = HotCity.filter(n => n.cityType === '0')
-      this.hotCity1 = HotCity.filter(n => n.cityType === '1')
+      this.hotCity0 = HotCity.filter(n => n.cityType !== '3')
+      this.hotCity1 = HotCity.filter(n => n.cityType === '3')
     }
 
     this.cities = Cities
