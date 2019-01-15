@@ -35,7 +35,7 @@
 				</label>
 			</div>
 		</div>
-		<div class="per-module name-module" v-if="nameArr.length > 0" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
+		<div class="per-module name-module" v-if="nameArr.length > 0 && nameRegArr.length > 0" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
 			<div class="per-line">
 				<span class="per-info-title purple"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
@@ -595,7 +595,9 @@
 				.username-input {
 					padding-left: 0.2rem;
 					width: 1rem;
-					height: 100%;
+					height: 98%;
+					/*line-height: normal;*/
+					/*user-select: text !important;*/
 					
 					&.nationality {
 						width: 0.4rem;

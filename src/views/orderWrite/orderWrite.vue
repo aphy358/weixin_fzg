@@ -165,7 +165,7 @@
 		}
 		
 		.mint-checklist{
-			margin: 0.4rem 0;
+			margin-bottom: 0.5rem;
 			zoom: 1
 		}
 		

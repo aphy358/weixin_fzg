@@ -73,7 +73,7 @@
           Toast('使用金额超出预收款额度');
         }else if (this.useBalance > this.orderInfo.totalPay){
           Toast('支付金额不能多于订单金额');
-        }else if (!/^\d+(\.\d{0,2})?$/.test(this.useBalance)){
+        }else if (this.useBalance && !/^\d+(\.\d{0,2})?$/.test(this.useBalance)){
           Toast('支付金额最多只能输入小数点后两位');
         }else if (this.orderInfo.useBalance *100 === this.orderInfo.totalPay * 100){
           //直接成单

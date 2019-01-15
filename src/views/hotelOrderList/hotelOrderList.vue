@@ -28,8 +28,8 @@
 						<span class="order-total">￥{{item.salePrice}}</span>
 					</div>
 					<div class="operate-order" v-if="item.canPayment || item.canCancle">
-						<button @click.stop="cancelOrder" v-if="item.canPayment">取消订单</button>
-						<button v-if="item.canCancle">去支付</button>
+						<button @click.stop="cancelOrder" v-if="item.canCancle">取消订单</button>
+						<button v-if="item.canPayment">去支付</button>
 					</div>
 				</div>
 				
@@ -190,20 +190,7 @@
       LoadMore,
     },
     
-    created(){
-      let _this = this;
-      this.$api.myCenter.syncLogin({code: 8998,name: 'huangqian',password: 1}).then(outerRes => {
-//        if(outerRes.success){
-//          _this.getHotelOrderList();
-//          _this.$api.myCenter.syncHotelOrderList(_this.params).then(res => {
-//            if (res.returnCode === 1){
-//              _this.orderList = res.data.item;
-//            }
-//          });
-//        }
-      })
-
-    },
+    created(){},
     
     computed: {},
     
