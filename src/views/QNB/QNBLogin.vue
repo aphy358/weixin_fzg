@@ -59,17 +59,16 @@ export default {
   components: {
   },
   created(){
-
     //*** 模拟登录，测试 */
     // let params = {
     //   code: '8998',
-    //   name: 'hejinmei',
+    //   name: 'fenghan',
     //   password: '1'
     // }
+
     // this.$api.qnb.syncQNBLoginForTest(params).then(res => {
     //   console.log(res);
     // })
-
 
     this.logo = logo
     this.configValidation()
@@ -103,6 +102,8 @@ export default {
           this.$api.qnb.syncQNBLogin(param).then(res => {
             if(res.returnCode === 1){
               // TO DO 跳转到微信 qnb 首页
+              replacePage(this.$router, 'qnbindex')
+            }else if(res.returnCode === 0 && res.returnMsg == '当前微信号已绑定用户!'){
               replacePage(this.$router, 'qnbindex')
             }
           })

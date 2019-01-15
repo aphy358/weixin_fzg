@@ -82,6 +82,7 @@ export default {
     //   name: 'HJM1',
     //   password: '1'
     // }
+    
     // this.$api.eb.syncEBLoginForTest(params).then(res => {
     //   console.log(res);
     // })
