@@ -32,7 +32,7 @@
 
         <div v-show="resultList.length > 0">
           <ul>
-            <li v-for="n in resultList" :key="n.i">
+            <li v-for="n in resultList" :key="n.i" @click="queryHotelInfo(n)">
               <div class="kw-r-row">
                 <div class="kw-r-icon">
                   <span class="iconfont icon-baofang"></span>
@@ -55,6 +55,7 @@
 // 城市选择 顶部关键字输入区域
 import GoBack from '@/components/GoBack.vue'
 import { debounce } from 'lodash'
+import { gotoPage } from '@/assets/util'
 
 export default {
   name: 'keywordBoard',
@@ -82,6 +83,7 @@ export default {
   mounted(){
   },
   methods:{
+    // 输入关键字
     inputKeyword: debounce(function(){
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
 
@@ -102,17 +104,30 @@ export default {
         })
       }
     }, 300),
+    // 隐藏关键字输入面板
     hideKeywordBoard(){
       this.keywords = ''
       this.resultList = []
       this.$emit('hideKeywordBoard')
     },
+    // 清空关键字
     clearKeyword(){
       this.keywords = ''
       this.resultList = []
     },
+    // 点击返回按钮
     clickGoBack(){
       this.hideKeywordBoard()
+    },
+    // 查询酒店信息
+    queryHotelInfo(n){
+      this.$api.hotelDetail.syncGetHotelInfo({infoIds: n.i, type: n.t}).then(res => {
+        if(res.returnCode === 1){
+          let hotel = res.dataList[0]
+          this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
+          gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: this.$store.state.cityType})
+        }
+      })
     }
   }
 }

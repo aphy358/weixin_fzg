@@ -8,7 +8,7 @@ export const syncGetHotelPriceList = (args, loading = false) => http.post("/vue/
 
 // 根据 hotelId 查询酒店信息
 // export const syncGetHotelInfo = (args, loading = false) => http.get("/vue/hotel/info.do", args, loading)
-export const syncGetHotelInfo = (args, loading = false) => http.get("/vue/hotel/getHotelInfoList.do", args, loading)
+export const syncGetHotelInfo = (args, loading = true) => http.get("/vue/hotel/getHotelInfoList.do", args, loading)
 
 
 

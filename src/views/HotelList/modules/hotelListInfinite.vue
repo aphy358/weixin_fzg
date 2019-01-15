@@ -211,7 +211,7 @@ export default {
     // 跳转到酒店详情页（或分销页？）
     gotoHotelDetail(hotel){
       this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
-      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: hotel.type})
+      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: this.$store.state.cityType})
     }
   }
 }
