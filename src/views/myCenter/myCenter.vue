@@ -225,10 +225,12 @@
 </style>
 
 <style lang="scss">
-	
-	.mint-cell-wrapper{
-		font-size: 0.16rem;
+	.my-center{
+		.mint-cell-wrapper{
+			font-size: 0.16rem;
+		}
 	}
+	
 	.fl{
 		float: left;
 	}
