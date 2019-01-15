@@ -70,8 +70,9 @@ export default {
         this.setHotelPic(this.curHotel)
       }else{
         let hotelId = queryString('hotelId')
+        let cityType = queryString('cityType')
 
-        this.$api.hotelDetail.syncGetHotelInfo({infoIds: hotelId}).then(res => {
+        this.$api.hotelDetail.syncGetHotelInfo({infoIds: hotelId, type: cityType}).then(res => {
           if(res.returnCode === 1){
             getStarText(res.dataList[0])
             this.curHotel = res.dataList[0]
