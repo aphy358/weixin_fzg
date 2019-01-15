@@ -6,9 +6,9 @@
 		
 		<div class="page-content head-background clearfix">
 			<div class="head-txt fl">
-				<p class="nick-name">李白</p>
-				<span class="status">管理员</span>
-				<span class="payment-type">周结</span>
+				<p class="nick-name">{{nickName}}</p>
+				<span class="department">{{department}}</span>
+				<span class="status">{{status}}</span>
 			</div>
 			<div class="head-box fr">
 				<img :src="noHeadPortrait" alt="">
@@ -68,7 +68,9 @@
     
     data() {
       return {
-        noHeadPortrait: ''
+        noHeadPortrait: '',
+        department: '',
+        status: '',
       }
     },
     
@@ -78,7 +80,17 @@
       GoBack
     },
     
-    computed: {},
+    computed: {
+      nickName(){
+        let customerUser = window.sessionStorage.getItem('user_wx');
+        console.log(customerUser);
+        if (customerUser){
+          this.department = customerUser.department;
+          this.status = customerUser.station;
+        }
+        return customerUser ? customerUser.customerUserName : '';
+      }
+    },
     
     created(){
       this.noHeadPortrait = noHeadPortrait;
@@ -131,7 +143,7 @@
 					font-weight: bold;
 				}
 				
-				.status{
+				.department{
 					margin-right: 0.2rem;
 				}
 			}

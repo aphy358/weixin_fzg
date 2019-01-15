@@ -93,13 +93,13 @@
   
     beforeCreate(){
       let _this = this;
-      this.$api.myCenter.syncLogin({code: 8998,name: 'fenghan',password: 1}).then(outerRes => {
+//      this.$api.myCenter.syncLogin({code: 8998,name: 'fenghan',password: 1}).then(outerRes => {
         _this.$api.myCenter.syncPersonalInfo().then(innerRes => {
           _this.customerUser = innerRes.data.customerUser;
           _this.distributor = innerRes.data.distributor;
           _this.distributorAccount = innerRes.data.distributorAccount;
         });
-      })
+//      })
     },
     
     methods: {}
