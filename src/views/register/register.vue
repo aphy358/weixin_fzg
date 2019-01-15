@@ -411,6 +411,16 @@
 <style scoped lang="scss">
 	.register-content {
 		padding: 0.2rem 0 0.4rem 0;
+		
+		.mintui-field-success {
+			color: #0bc16f;
+			border-bottom: 0.5px solid #eeeeee;
+		}
+		
+		.mintui-field-error {
+			color: #f44336;
+			border-bottom: 0.5px solid #eeeeee;
+		}
 	}
 	
 	.per-module {
@@ -507,15 +517,5 @@
 		border: none;
 		border-radius: 4px;
 		color: #ffffff;
-	}
-	
-	.mintui-field-success {
-		color: #0bc16f;
-		border-bottom: 0.5px solid #eeeeee;
-	}
-	
-	.mintui-field-error {
-		color: #f44336;
-		border-bottom: 0.5px solid #eeeeee;
 	}
 </style>

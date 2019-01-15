@@ -534,37 +534,39 @@
 	
 </style>
 
-<style lane="scss">
-	.fl{
-		float: left;
-	}
-	
-	.fr{
-		float: right;
-	}
-	
-	.mint-cell-wrapper{
-		background: none;
-		line-height: 0.34rem;
-		font-size: 0.12rem;
-	}
-	
-	.mint-cell{
-		min-height: 0.34rem;
-	}
-	
-	.mint-cell:last-child{
-		background: none;
-	}
-	
-	.mint-radio-core{
-		width: 0.16rem;
-		height: 0.16rem;
-	}
-	.mint-radio-core::after{
-		width: 0.06rem;
-		height: 0.06rem;
-		top: 0.04rem;
-		left: 0.04rem;
+<style lang="scss">
+	.hotel-order-list{
+		.fl{
+			float: left;
+		}
+		
+		.fr{
+			float: right;
+		}
+		
+		.mint-cell-wrapper{
+			background: none;
+			line-height: 0.34rem;
+			font-size: 0.12rem;
+		}
+		
+		.mint-cell{
+			min-height: 0.34rem;
+		}
+		
+		.mint-cell:last-child{
+			background: none;
+		}
+		
+		.mint-radio-core{
+			width: 0.16rem;
+			height: 0.16rem;
+		}
+		.mint-radio-core::after{
+			width: 0.06rem;
+			height: 0.06rem;
+			top: 0.04rem;
+			left: 0.04rem;
+		}
 	}
 </style>

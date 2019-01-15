@@ -139,77 +139,79 @@
 </style>
 
 <style lang="scss">
-	.fl{
-		float: left;
-	}
-	
-	.fr{
-		float: right;
-	}
-	
-	.orange{
-		color: #ff7625;
-	}
-	
-	.deep-orange{
-		color: #ff4400;
-	}
-	
-	.green{
-		color: #0bc16f;
-	}
-	
-	.gray{
-		color: #747477;
-	}
-	
-	.mint-checklist{
-		margin: 0.4rem 0;
-		zoom: 1
-	}
-	
-	.mint-checklist:after {
-		content: '';
-		display: block;
-		width: 0;
-		height: 0;
-		clear: both;
-	}
-	
-	.mint-checkbox-core{
-		width: 0.14rem;
-		height: 0.14rem;
-		
-		&:after{
-			top: 0.015rem;
-			left: 0.045rem;
-			width: 0.03rem;
-			height: 0.07rem;
+	.order-write-box-page{
+		.fl{
+			float: left;
 		}
-	}
-	
-	.mint-checkbox-label{
-		color: #333333;
-		margin-left: 0.03rem;
-	}
-	.mint-cell-wrapper{
-		font-size: 0.15rem;
-		background-image: none;
-	}
-	.mint-cell{
-		min-height: 0.35rem;
-		display: inline-block;
-		width: 50%;
-		float: left;
-	}
-	
-	.mint-checkbox-input:checked + .mint-checkbox-core {
-		background-color: #ff7625;
-		border-color: #ff7625;
-	}
-	
-	.mint-cell:last-child{
-		background-image: none;
+		
+		.fr{
+			float: right;
+		}
+		
+		.orange{
+			color: #ff7625;
+		}
+		
+		.deep-orange{
+			color: #ff4400;
+		}
+		
+		.green{
+			color: #0bc16f;
+		}
+		
+		.gray{
+			color: #747477;
+		}
+		
+		.mint-checklist{
+			margin: 0.4rem 0;
+			zoom: 1
+		}
+		
+		.mint-checklist:after {
+			content: '';
+			display: block;
+			width: 0;
+			height: 0;
+			clear: both;
+		}
+		
+		.mint-checkbox-core{
+			width: 0.14rem;
+			height: 0.14rem;
+			
+			&:after{
+				top: 0.015rem;
+				left: 0.045rem;
+				width: 0.03rem;
+				height: 0.07rem;
+			}
+		}
+		
+		.mint-checkbox-label{
+			color: #333333;
+			margin-left: 0.03rem;
+		}
+		.mint-cell-wrapper{
+			font-size: 0.15rem;
+			background-image: none;
+		}
+		.mint-cell{
+			min-height: 0.35rem;
+			display: inline-block;
+			width: 50%;
+			float: left;
+		}
+		
+		.mint-checkbox-input:checked + .mint-checkbox-core {
+			background-color: #ff7625;
+			border-color: #ff7625;
+		}
+		
+		.mint-cell:last-child{
+			background-image: none;
+		}
 	}
 	
 	
