@@ -1,6 +1,6 @@
 <!-- 组件说明 -->
 <template>
-	<div class="page my-center">
+	<div class="page my-center-page">
 		
 		<GoBack/>
 		
@@ -23,7 +23,7 @@
 					<i class="iconfont icon-right-thin icon-r"></i>
 				</div>
 				<div class="per-cell" @click="goPage('personalInfo')">
-					<i class="iconfont icon-wode icon-l jade-green"></i>
+					<i class="iconfont icon-shuoming icon-l jade-green"></i>
 					<span class="icon-txt no-border">个人信息</span>
 					<i class="iconfont icon-right-thin icon-r no-border"></i>
 				</div>
@@ -31,12 +31,12 @@
 			
 			<div class="cell-list">
 				<div class="per-cell" @click="goPage('about')">
-					<i class="iconfont icon-info icon-l deep-orange"></i>
+					<i class="iconfont icon-info icon-l blue"></i>
 					<span class="icon-txt">关于捷旅</span>
 					<i class="iconfont icon-right-thin icon-r"></i>
 				</div>
 				<div class="per-cell" @click="goPage('login')">
-					<i class="iconfont icon-tuichu icon-l red"></i>
+					<i class="iconfont icon-wode icon-l green"></i>
 					<span class="icon-txt no-border">登录房掌柜</span>
 					<i class="iconfont icon-right-thin icon-r no-border"></i>
 				</div>
@@ -113,11 +113,13 @@
         MessageBox.confirm('退出登录后需要重新登录，确定退出?').then(action => {
           _this.$api.myCenter.syncLogout().then(res => {
             if (res.returnCode === 1){
-              Toast('退出成功');
-              window.sessionStorage.removeItem('user_wx');
-              setTimeout(function () {
-                gotoPage(this.$router, 'home')
-              },2000);
+							Toast('退出成功');
+							window.sessionStorage.setItem('user_wx', JSON.stringify(res.data.customerUser))
+
+							// let _this = this
+              // setTimeout(function () {
+              //   gotoPage(_this.$router, '/')
+              // },2000);
             }
           });
         });
@@ -131,7 +133,7 @@
 		position: relative;
 	}
 	
-	.my-center{
+	.my-center-page{
 		background-color: #efeff5;
 		
 		@at-root .head-background{
@@ -245,6 +247,8 @@
 </style>
 
 <style lang="scss">
+.my-center-page{
+
 	.my-center{
 		.mint-cell-wrapper{
 			font-size: 0.16rem;
@@ -262,16 +266,17 @@
 	.jade-green{
 		color: #818a0b;
 	}
+
+	.green{
+		color: green;
+	}
 	
 	.blue{
 		color: #92bddb;
 	}
 	
-	.deep-orange{
-		color: #ff4400;
-	}
-	
 	.red{
 		color: #ff0000;
 	}
+}
 </style>

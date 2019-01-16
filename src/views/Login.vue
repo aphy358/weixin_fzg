@@ -53,7 +53,7 @@
 <script>
 import logo from '@/assets/img/fzglogo.jpg'
 import { Toast } from 'mint-ui';
-import { gotoPage, replacePage } from '@/assets/util'
+import { gotoPage, goBackPage } from '@/assets/util'
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
@@ -105,6 +105,8 @@ export default {
 
           this.$api.common.syncLogin(param).then(res => {
             if(res.returnCode === 1){
+              Toast('登录成功！')
+              window.sessionStorage.setItem('user_wx', JSON.stringify(res.data.customerUser))
               goBackPage(this.$router)
             }
           })
