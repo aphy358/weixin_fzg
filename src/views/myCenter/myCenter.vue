@@ -35,6 +35,14 @@
 					<span class="icon-txt">关于捷旅</span>
 					<i class="iconfont icon-right-thin icon-r"></i>
 				</div>
+				<div class="per-cell" @click="goPage('login')">
+					<i class="iconfont icon-tuichu icon-l red"></i>
+					<span class="icon-txt no-border">登录房掌柜</span>
+					<i class="iconfont icon-right-thin icon-r no-border"></i>
+				</div>
+			</div>
+
+			<div class="cell-list">
 				<div class="per-cell" @click="logout">
 					<i class="iconfont icon-tuichu icon-l red"></i>
 					<span class="icon-txt no-border">退出登录</span>
@@ -113,7 +121,7 @@
             }
           });
         });
-      }
+			},
     }
   }
 </script>
