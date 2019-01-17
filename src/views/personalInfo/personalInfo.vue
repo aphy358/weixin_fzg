@@ -55,7 +55,7 @@
 					</li>
 					<li>
 						<span class="item-txt">当前预收款</span>
-						<span class="item-con deep-orange">{{distributorAccount.balance || 0}}元</span>
+						<span class="item-con deep-orange">{{distributorAccount.balance || 0}}{{ distributorAccount.currency }}</span>
 					</li>
 					<li>
 						<span class="item-txt">公司电话</span>
@@ -97,7 +97,7 @@
         _this.$api.myCenter.syncPersonalInfo().then(innerRes => {
           _this.customerUser = innerRes.data.customerUser;
           _this.distributor = innerRes.data.distributor;
-          _this.distributorAccount = innerRes.data.distributorAccount;
+		  _this.distributorAccount = innerRes.data.distributorAccount;
         });
 //      })
     },
