@@ -52,21 +52,26 @@ export default {
   mounted() {},
   methods: {
     inputKeyword: debounce(function(n){
-      if(this.loading)   return
-      this.loading = true
-
+      
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
-      this.cities = []
 
-      this.$api.citySelect.syncGetCities({type: 0, key: this.keywords}).then(res => {
-        this.loading = false
+      if(this.keywords){
 
-        if(res.returnCode === 1){
-          this.cities = res.data.cityList
-            .concat(res.data.stateList)
-            .concat(res.data.countryList)
-        }
-      })
+        if(this.loading)   return
+        this.loading = true
+        
+        this.cities = []
+  
+        this.$api.citySelect.syncGetCities({key: this.keywords}).then(res => {
+          this.loading = false
+  
+          if(res.returnCode === 1){
+            this.cities = res.data.cityList
+              .concat(res.data.stateList)
+              .concat(res.data.countryList)
+          }
+        })
+      }
 
     }, 300),
     // 点击了某个城市
