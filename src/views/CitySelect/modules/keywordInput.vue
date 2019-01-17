@@ -14,9 +14,12 @@
 			<div class="card-content">
 				<div class="list-block">
 					<ul id="cityUl" v-if="cities.length > 0">
-            <li class="city-li" v-for="n in cities" :key="n.cityId" data-ctype="0">{{ n.cityName }}</li>
+            <li class="city-li" v-for="(n, i) in cities" :key="i" @click="selectOneCity(n)">{{ n.aname || n.name }}</li>
           </ul>
-          <ul id="cityUl" v-if="cities.length <= 0">
+          <ul id="cityUl" v-if="loading">
+            <li class="city-li" >正在查询...</li>
+          </ul>
+          <ul id="cityUl" v-if="cities.length <= 0 && !loading">
             <li class="city-li no-data" >无相关城市</li>
           </ul>
 				</div>
@@ -28,15 +31,16 @@
 <script>
 // 城市选择 顶部关键字输入区域
 import GoBack from '@/components/GoBack.vue'
+import { debounce } from 'lodash'
 
 export default {
   name: "keywordInput",
   data() {
     return {
       cities: [
-        {cityName: '深圳', cityId: '70002', cityType: '0'},
       ],
       keywords: '',
+      loading: false,
     }
   },
   props: {},
@@ -47,9 +51,34 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    inputKeyword($event){
+    inputKeyword: debounce(function(n){
+      if(this.loading)   return
+      this.loading = true
+
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
-    },
+      this.cities = []
+
+      this.$api.citySelect.syncGetCities({type: 0, key: this.keywords}).then(res => {
+        this.loading = false
+
+        if(res.returnCode === 1){
+          this.cities = res.data.cityList
+            .concat(res.data.stateList)
+            .concat(res.data.countryList)
+        }
+      })
+
+    }, 300),
+    // 点击了某个城市
+    selectOneCity(n){
+      this.$store.commit(`setCityType`, n.type)   // 这里的 type 怎么感觉有点乱
+      this.$store.commit(`setCommonState`, {k: 'countryId', v: n.countryid})
+      this.$store.commit(`setCommonState`, {k: 'stateId', v: n.stateid})
+      this.$store.commit(`setCommonState`, {k: 'cityId', v: n.cityid})
+      this.$store.commit(`setCommonState`, {k: 'cityText', v: n.aname || n.name})
+      
+      this.$router.go(-1)
+    }
   }
 };
 </script>

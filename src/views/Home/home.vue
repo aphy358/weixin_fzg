@@ -53,6 +53,18 @@ export default {
     ToTop,
     Recommended
   },
+  created(){
+    //*** 模拟登录，测试 */
+    // let params = {
+    //   code: '8998',
+    //   name: 'fenghan',
+    //   password: '1'
+    // }
+
+    // this.$api.qnb.syncQNBLoginForTest(params).then(res => {
+    //   console.log(res);
+    // })
+  },
   mounted(){
   },
   created(){

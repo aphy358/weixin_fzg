@@ -29,7 +29,7 @@ let router = new Router({
       name: 'about',
       component: () => import('@/views/About.vue'),
       meta: {
-        wechatAuth: true
+        wechatAuth: false
       },
     },
     {

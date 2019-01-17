@@ -98,6 +98,8 @@ export default {
     },
     selectOneCity(city){
       this.$store.commit(`setCityType`, city.cityType)
+      this.$store.commit(`setCommonState`, {k: 'countryId', v: city.countryId})
+      this.$store.commit(`setCommonState`, {k: 'stateId', v: city.stateId})
       this.$store.commit(`setCommonState`, {k: 'cityId', v: city.cityId})
       this.$store.commit(`setCommonState`, {k: 'cityText', v: city.cityName})
       this.$router.go(-1)

@@ -125,6 +125,7 @@ export default {
         if(res.returnCode === 1){
           let hotel = res.dataList[0]
           this.$store.commit(`setCommonState`, {k: 'curHotel', v: hotel})
+          this.hideKeywordBoard()
           gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.infoId, cityType: this.$store.state.cityType})
         }
       })

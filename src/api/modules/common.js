@@ -8,7 +8,7 @@ export const syncInitJSSDK = (args, loading = false) => http.post("/vue/wx/js/si
 
 
 // 登录
-export const syncLogin = (args, loading = false) => http.post("/vue/login.do", args, loading)
+export const syncLogin = (args, loading = true) => http.post("/vue/login.do", args, loading)
 
 
 
