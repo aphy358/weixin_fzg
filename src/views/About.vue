@@ -1,6 +1,6 @@
 <template>
   <div class="page about-page">
-    <div class="page-content">
+    <div class="page-content" style="background: #efeff4;">
       <div class="content-block">
         <div class="about-title">捷旅简介</div>
         <p>2001年,深圳市捷旅国际旅行社有限公司成立于深圳，地处全国境内游客接待量最大的广东省，毗邻港澳。公司初期以广东省、香港、澳门酒店批发为核心，逐步扩展到全国乃至全球范围。经过十几年发展，深圳捷旅已成为中国地区最先进和最具规模的酒店B2B分销平台。</p>	

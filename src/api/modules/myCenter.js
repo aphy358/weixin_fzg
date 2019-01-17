@@ -17,7 +17,7 @@ export const syncPersonalInfo = (args, loading = false) => http.post("/vue/userI
 export const syncLogin = (args, loading = false) => http.get("/analogLogin/qnbLogin.do", args, loading);
 
 // 退出登录
-export const syncLogout = (args, loading = false) => http.post("/vue/logout.do", args, loading);
+export const syncLogout = (args, loading = true) => http.post("/vue/logout.do", args, loading);
 
 // 订单详情
 export const syncOrderDetail = (args, loading = false) => http.post("/vue/order/detail.do", args, loading);

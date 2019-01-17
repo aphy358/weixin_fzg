@@ -215,11 +215,13 @@ export default {
       for (var j = 0; j < reserveShowArr.length; j++) {
         var o = reserveShowArr[j];
         ~o.indexOf('限住') ? clauses.push({name: '限制晚数', tip: o}) :
-          ~o.indexOf('提前') ? clauses.push({name: '提前预订', tip: o}) :
-            ~o.indexOf('连住') ? clauses.push({name: '连住多晚', tip: o}) :
-              ~o.indexOf('时间') ? clauses.push({name: '限时预订', tip: o}) :
-                ~o.indexOf('间数') ? clauses.push({name: '限制间数', tip: o}) :
-                  ~o.indexOf('没有') ? clauses.push({name: '无预订条款', tip: o}) : ''
+        ~o.indexOf('提前') ? clauses.push({name: '提前预订', tip: o}) :
+        ~o.indexOf('至少连住') ? clauses.push({name: '至少连住', tip: o}) :
+				~o.indexOf('最大连住') ? clauses.push({name: '最大连住', tip: o}) :
+        ~o.indexOf('连住') ? clauses.push({name: '连住多晚', tip: o}) :
+        ~o.indexOf('时间') ? clauses.push({name: '限时预订', tip: o}) :
+        ~o.indexOf('间数') ? clauses.push({name: '限制间数', tip: o}) :
+        ~o.indexOf('没有') ? clauses.push({name: '无预订条款', tip: o}) : ''
       }
 
       roomTypePrice.orderClauses = clauses
@@ -379,9 +381,11 @@ export default {
             background: #FAFAFA;
             margin: 0 0.1rem 0.05rem;
             border-radius: 0.03rem;
+            overflow: hidden;
 
             .breakfast-bedtype{
               color: #666;
+              width: 500%;
               margin-bottom: 0.05rem;
             }
 
@@ -420,9 +424,10 @@ export default {
 
             .right-outer{
               position: absolute;
-              top: 0.3rem;
-              right: 0.1rem;
+              top: 0;
+              right: 0;
               width: 0.8rem;
+              padding: 0.3rem 0.1rem 0.3rem 0;
               text-align: right;
               box-shadow: 0 0 0.1rem 0.1rem #FAFAFA;
               background: #FAFAFA;

@@ -1,7 +1,7 @@
 <template>
   <div class="hotel-list-result-wrap">
 
-    <div class="hotellist-nodata" v-if="hotelList.length == 0 && infiniteLoad">
+    <div class="hotellist-nodata" v-if="hotelList.length == 0 && !loading">
       <img :src="noHotel">
       <div>暂无相关酒店</div>
       <div>建议更换关键字进行搜索</div>
@@ -50,7 +50,7 @@
 
     </ul>
 
-    <Loading v-if="hotelList.length == 0 && !infiniteLoad" />
+    <Loading v-if="hotelList.length == 0 && !infiniteLoad && loading" />
 
     <LoadMore v-if="hotelList.length > 0 && !infiniteLoad" />
 
@@ -183,8 +183,8 @@ export default {
         // 将这个变量设置为 false，表示允许再次查询酒店列表
         _this.loading = false
 
-        if(res.returnCode === 1 && res.dataList){
-          _this.dataType = res.data
+        if(res.returnCode === 1){
+          _this.dataType = res.data || 0
 
           if(res.pageTotal <= _this.pageNow){ // 如果所有页面都加载完了，则终止无限加载
             _this.infiniteLoad = true
@@ -193,13 +193,13 @@ export default {
             _this.pageNow++
           }
 
-          if(res.dataList){
-            for (let i = 0; i < res.dataList.length; i++) {
-              getStarText(res.dataList[i])
-            }
-  
-            _this.hotelList = _this.hotelList.concat(res.dataList)
+          res.dataList = res.dataList || []
+
+          for (let i = 0; i < res.dataList.length; i++) {
+            getStarText(res.dataList[i])
           }
+  
+          _this.hotelList = _this.hotelList.concat(res.dataList)
         }
       })
     }, 10),
