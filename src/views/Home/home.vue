@@ -55,6 +55,9 @@ export default {
   },
   mounted(){
   },
+  created(){
+    this.$api.myCenter.syncLogin({code: 8998,name: 'huangqian',password: 1}).then(outerRes => {});
+  },
   methods: {
     goMyCenter(){
       gotoPage(this.$router, 'myCenter');
