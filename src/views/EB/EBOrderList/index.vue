@@ -445,9 +445,10 @@ export default {
 }
 
 .eol-pop-row-subdiv{
-	position: relative;
+  position: relative;
+  margin-top: 0.01rem;
     float: left;
-    height: 0.4rem;
+    height: 0.38rem;
     width: calc(50% - 0.05rem);
     overflow: hidden;
 }
@@ -457,14 +458,15 @@ export default {
     padding: 0 0.1rem;
     width: calc(100% - 0.2rem);
     background: white;
-    height: 0.4rem;
+    height: 0.38rem;
     line-height: 0.16rem;
     border: none;
     font-size: 0.14rem;
 }
 
 .eol-pop-row-subdiv input[type='date']{
-    margin-top: -40px;
+    width: 200%;
+    margin-top: -0.4rem;
     color: transparent;
     background: transparent;
 }
