@@ -7,7 +7,7 @@
           <span class="eb-rsm-month-text1">{{ monthText1 }}</span>
           <span class="eb-rsm-month-text2 color-gray">{{ monthText2 }}</span>
           <i class="iconfont icon-triangle-down" style="position: relative;top: 0.02rem;"></i>
-          <input type="date" class="date" v-model="datePick">
+          <input type="date" class="date" v-model="datePick" style="background: transparent;color: transparent;">
         </div>
       </div>
       <button @click="gotoBatchModifyPage">批量修改</button>
@@ -69,7 +69,7 @@ export default {
 
     }
   },
-  props: ['mtype', 'formulaType', 'hotelId'],
+  props: ['formulaType', 'hotelId'],
   components: {},
   watch: {
     datePick(){
@@ -94,7 +94,8 @@ export default {
     },
     // 获取 url 参数
     getQueryParams(){
-      this.mtypeText = this.mtype == '1' ? '房态管理' : '房价管理'
+      this.mtype = queryString('mtype')
+      this.mtypeText = this.mtype == 1 ? '房态管理' : '房价管理'
     },
     // 初始化本月的日期 DOM
     initCurrentMonth(){
@@ -241,6 +242,7 @@ export default {
   height: 0.5rem;
   box-sizing: border-box;
   width: 1.2rem;
+  top: 0;
   left: 0.1rem;
   border: none;
   background: transparent;

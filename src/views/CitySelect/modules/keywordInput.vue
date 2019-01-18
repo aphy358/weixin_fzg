@@ -7,7 +7,7 @@
       
       <i class="iconfont icon-search0 searchIcon"></i>
       <i class="iconfont icon-shanchu kw_del" v-if="keywords != ''" @click="keywords = ''"></i>
-      <input type="text" id="getCity" class="keyw-input has-city" placeholder="城市关键字" v-model="keywords" @keyup="inputKeyword" />
+      <input type="text" id="getCity" class="keyw-input has-city" placeholder="城市关键字" v-model="keywords" />
     </div>
         
     <div class="card" id="cityCard" v-show="keywords != ''">
@@ -44,6 +44,11 @@ export default {
     }
   },
   props: {},
+  watch: {
+    keywords(){
+      this.inputKeyword()
+    }
+  },
   components: {
     GoBack
   },
@@ -51,22 +56,27 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    inputKeyword: debounce(function(n){
-      if(this.loading)   return
-      this.loading = true
-
+    inputKeyword: debounce(function(){
+      
       this.keywords = this.keywords.replace(/^\s+|\s+$/g, '')
-      this.cities = []
 
-      this.$api.citySelect.syncGetCities({type: 0, key: this.keywords}).then(res => {
-        this.loading = false
+      if(this.keywords){
 
-        if(res.returnCode === 1){
-          this.cities = res.data.cityList
-            .concat(res.data.stateList)
-            .concat(res.data.countryList)
-        }
-      })
+        if(this.loading)   return
+        this.loading = true
+
+        this.cities = []
+  
+        this.$api.citySelect.syncGetCities({key: this.keywords}).then(res => {
+          this.loading = false
+  
+          if(res.returnCode === 1){
+            this.cities = res.data.cityList
+              .concat(res.data.stateList)
+              .concat(res.data.countryList)
+          }
+        })
+      }
 
     }, 300),
     // 点击了某个城市

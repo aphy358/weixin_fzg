@@ -19,5 +19,5 @@ export const syncAuthLogin = (args, loading = true) => http.post("/vue/autoLogin
 
 
 
-// 退出
-// export const syncLogout = (args, loading = true) => http.get("/user/logoutShop.do", args, loading)
+// 查询当前用户登录态
+export const syncGetCurUser = (args, loading = true) => http.post("/vue/indexInit.do", args, loading)

@@ -146,7 +146,7 @@
 
       <div style="margin: 0.2rem 0.3rem;">
         <div>
-          <input type="text" placeholder="请输入确认号，如无可不填" v-model="hotelCode" class="accept-pop-input">
+          <input type="text" placeholder="请输入确认号，如无可不填" v-model="hotelCode" @keyup="hotelCodeInput" @input="hotelCodeInput" class="accept-pop-input">
         </div>
         <mt-checklist v-model="checkedFinallyOrderArr" :options="finallyOrderArr" style="padding: 0;margin-left: -0.1rem;"></mt-checklist>
       </div>
@@ -559,6 +559,10 @@ export default {
       this.hideAcceptPopup()
       this.confirmOrder()
     },
+    // 输入确认号
+    hotelCodeInput($event){
+      this.hotelCode = $event.srcElement.value.replace(/[\u4E00-\u9FA5]/g, '')
+    }
   }
 };
 </script>
