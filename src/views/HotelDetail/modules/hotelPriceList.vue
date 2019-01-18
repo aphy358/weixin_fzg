@@ -86,18 +86,23 @@ export default {
   },
   watch: {
     getCheckin(){
+      this.initQueryString()
       this.reQueryHotelPrice()
     },
     getCheckout(){
+      this.initQueryString()
       this.reQueryHotelPrice()
     },
     getAdultNum(){
+      this.initQueryString()
       this.reQueryHotelPrice()
     },
     getChildrenStr(){
+      this.initQueryString()
       this.reQueryHotelPrice()
     },
     getCurHotel(){
+      this.initQueryString()
       this.reQueryHotelPrice()
     }
   },
@@ -142,8 +147,9 @@ export default {
     },
     // 处理 queryString 带过来的参数
     initQueryString(){
-      this.hotelId = queryString('hotelId')
-      let cityType = queryString('cityType')
+      let infoId = this.$store.state.curHotel ? this.$store.state.curHotel.infoId : null
+      this.hotelId = queryString('hotelId') || infoId
+      let cityType = queryString('cityType') || this.$store.state.cityType
 
       // 如果 queryString 上传过来的 cityType 和 store 里存的 cityType 不相等，则说明这种情况不是从酒店列表页点击进的酒店详情页
       if(cityType && cityType != this.$store.state.cityType){ 
