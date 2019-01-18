@@ -7,12 +7,12 @@
 		<!--<GoBack _style="top: 0.02rem" />-->
 		
 		<div class="page-content">
-			<!--<div class="order-write-title-box">-->
-				<!--<h6 class="order-write-title">订单填写</h6>-->
-				<!--<div class="go-back-box">-->
-					<!--<GoBack _style="top: 0.02rem" />-->
-				<!--</div>-->
-			<!--</div>-->
+			<div class="order-write-title-box">
+				<h6 class="order-write-title">订单填写</h6>
+				<div class="go-back-box">
+					<GoBack _style="top: 0.02rem" />
+				</div>
+			</div>
 			
 			<!--<div class="title-gap">-->
 				<!--<h6 class="order-write-title">订单填写</h6>-->
@@ -22,8 +22,8 @@
 			<!--</div>-->
 			
 			
-			<mt-header title="订单填写"></mt-header>
-			<GoBack _style="top: 0.02rem" />
+			<!--<mt-header title="订单填写"></mt-header>-->
+			<!--<GoBack _style="top: 0.02rem" />-->
 			
 			<hotelInfo/>
 			
@@ -38,6 +38,7 @@
   import hotelInfo from './modules/hotelInfo.vue';
   import writeInfo from './modules/writeInfo.vue';
   import GoBack from '@/components/GoBack.vue';
+  import { Indicator } from 'mint-ui'
 	
   export default {
     name: '',
@@ -69,6 +70,7 @@
       },
       getProductInfo() {
         let _this = this;
+        Indicator.open('加载中...');
         this.$store.dispatch('orderWrite/initData');
         this.$store.dispatch('orderWrite/getProductInfo', {
           k: 'firstQueryPrice',
@@ -76,6 +78,7 @@
             vueCase: _this
           }
         });
+  
       },
     }
   }

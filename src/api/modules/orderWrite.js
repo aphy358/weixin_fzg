@@ -18,6 +18,3 @@ export const syncProductCheck = (args, loading = false) => http.post("/vue/order
 
 //下单
 export const syncSaveOrder = (args, loading = false) => http.post("/vue/order/saveOrder.do", args, loading);
-
-// 支付
-export const syncPayStart = (args, loading = false) => http.post("/vue/pay/wx/start.do", args, loading);

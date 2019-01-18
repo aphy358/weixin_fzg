@@ -55,20 +55,17 @@ export default {
   },
   created(){
     //*** 模拟登录，测试 */
-    // let params = {
-    //   code: '8998',
-    //   name: 'fenghan',
-    //   password: '1'
-    // }
-
-    // this.$api.qnb.syncQNBLoginForTest(params).then(res => {
-    //   console.log(res);
-    // })
+//     let params = {
+//       code: '8998',
+//       name: 'fenghan',
+//       password: '1'
+//     }
+//
+//     this.$api.qnb.syncQNBLoginForTest(params).then(res => {
+//       console.log(res);
+//     })
   },
   mounted(){
-  },
-  created(){
-    this.$api.myCenter.syncLogin({code: 8998,name: 'huangqian',password: 1}).then(outerRes => {});
   },
   methods: {
     goMyCenter(){
