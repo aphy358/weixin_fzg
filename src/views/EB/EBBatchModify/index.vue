@@ -26,10 +26,10 @@
 
           <i class="iconfont icon-rili"></i>
           <input class="calendar-input-fake" type="text" v-model="timeZoneArr[i].start" placeholder="起始日期" >
-          <input type="date" v-model="timeZoneArr[i].start" @change="timeZoneChange(i, 'start')" class="calendar-input">
+          <input type="date" v-model="timeZoneArr[i].start" @change="timeZoneChange(i, 'start')" class="calendar-input" style="background: transparent;color: transparent;">
           <span>至</span>
           <input class="calendar-input-fake" type="text" v-model="timeZoneArr[i].end" placeholder="终止日期" >
-          <input type="date" v-model="timeZoneArr[i].end" @change="timeZoneChange(i, 'end')" class="calendar-input">
+          <input type="date" v-model="timeZoneArr[i].end" @change="timeZoneChange(i, 'end')" class="calendar-input" style="background: transparent;color: transparent;">
           <i class="iconfont" :class="[i == 0 ? 'icon-plus2' : 'icon-minus2']" @click="addOrReduceTimeZoneArr(i)"></i>
         </div>
 
