@@ -68,9 +68,7 @@ export default {
   watch: {},
   created(){},
   activated(){
-    if(!window.goBack){
-      this.initCurrency()
-    }
+    this.initCurrency()
   },
   computed: {},
   mounted(){},
