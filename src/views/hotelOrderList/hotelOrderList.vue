@@ -135,6 +135,7 @@
   import noOrder from '@/assets/img/no-order.png'
   import Loading from '@/components/Loading.vue'
   import { Indicator } from 'mint-ui'
+  import { debounce } from 'lodash'
   
   export default {
     name: '',
@@ -202,6 +203,12 @@
       this.noOrder = noOrder;
     },
     
+    activated(){
+      if(!window.goBack){
+        this.getHotelOrderList();
+      }
+    },
+    
     computed: {},
     
     methods: {
@@ -239,7 +246,7 @@
       ensureCancelOrder(){
         this.reasonVisible = false;
       },
-      getHotelOrderList(){
+      getHotelOrderList: debounce(function () {
         if (this.loadingContinue){
           this.infiniteLoad = true;
           let num = ++this.params.currPage;
@@ -260,7 +267,7 @@
             }
           });
         }
-      },
+      }),
       readDetail(orderId){
         gotoPage(this.$router, 'orderDetail', {orderId: orderId})
       }
