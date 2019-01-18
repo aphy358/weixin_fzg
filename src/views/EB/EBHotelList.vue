@@ -64,9 +64,7 @@ export default {
   watch: {},
   created(){},
   activated(){
-    if(!window.goBack){
-      this.queryHotelListFunc()
-    }
+    this.queryHotelListFunc()
   },
   computed: {},
   mounted(){},
