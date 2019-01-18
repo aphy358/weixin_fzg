@@ -465,7 +465,6 @@ export default {
 }
 
 .eol-pop-row-subdiv input[type='date']{
-    width: 200%;
     margin-top: -0.4rem;
     color: transparent;
     background: transparent;

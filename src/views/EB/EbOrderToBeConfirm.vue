@@ -367,6 +367,8 @@ export default {
         for (let i = 0; i < subOrderList.length; i++) {
           const subOrder = subOrderList[i]
 
+          this.totalPrice += subOrder.basePrice   // 这个字段就应该是保存了该子单的总费用，包含杂费，也扣除了房劵等，我是这么想的
+
           for (let j = 0; j < subOrder.orderDetails.length; j++) {
             const orderDetail = subOrder.orderDetails[j];
             if(orderDetail.ifValid == '1')  continue
@@ -378,10 +380,10 @@ export default {
 
             let subTotal = (+orderDetail.basePrice) * (+orderDetail.sellAmout)
 
-            // 如果有房券，则总价需要扣除这部分价格
-            if(orderDetail.orderVouchers){
-              this.totalPrice -= (orderDetail.basePrice - orderDetail.orderVouchers.basePrice) * orderDetail.orderVouchers.vouchersNum
-            }
+            // 如果有房券，则总价需要扣除这部分价格（不应该这么麻烦的计算订单总额，注释掉）
+            // if(orderDetail.orderVouchers){
+            //   this.totalPrice -= (orderDetail.basePrice - orderDetail.orderVouchers.basePrice) * orderDetail.orderVouchers.vouchersNum
+            // }
 
             // 计算杂费..杂费金额加入总计，加入小计
             if(orderSurchargeList){
@@ -399,7 +401,7 @@ export default {
                     wifiNum += (+orderSurcharge.sellReal)
                   }
 
-                  subTotal += orderSurcharge.orderSurcharge * orderSurcharge.sellReal
+                  subTotal += orderSurcharge.basePrice * orderSurcharge.sellReal
                 }
               }
             }
@@ -414,7 +416,7 @@ export default {
               subTotal: subTotal
             })
 
-            this.totalPrice += subTotal   // 订单总价叠加
+            // this.totalPrice += subTotal   // 订单总价叠加（不应该这么麻烦的计算订单总额，注释掉）
           }
         }
       }
