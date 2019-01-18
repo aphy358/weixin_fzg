@@ -354,7 +354,7 @@
       delExtrafee(type, index){
         if (type === 0){
           //加早
-          this.addBreakfastList.length === 1 ? this.addBreakfastList.length = 0 : this.addBreakfastList.splice(index, 1);
+          this.addBreakfastList.length === 1 ? this.addBreakfastList = [] : this.addBreakfastList.splice(index, 1);
           this.breakfastHeight -= 0.4;
           this.$store.commit('orderWrite/setCommonState', {
             k : 'surchargeBref',
@@ -364,7 +364,7 @@
           //加床
           let num = this.addBedList[index].num;
           let date = this.addBedList[index].date;
-          this.addBedList.length === 1 ? this.addBedList.length = 0 : this.addBedList.splice(index, 1);
+          this.addBedList.length === 1 ? this.addBedList = [] : this.addBedList.splice(index, 1);
           
           //更改对应日期内的总加床数
           this.$set(this.addBedNumObj, date, this.addBedNumObj[date] - num);
@@ -375,7 +375,7 @@
           });
         }else if (type === 2){
           //加宽带
-          this.addNetworkList.length === 1 ? this.addNetworkList.length = 0 : this.addNetworkList.splice(index, 1);
+          this.addNetworkList.length === 1 ? this.addNetworkList = [] : this.addNetworkList.splice(index, 1);
           this.networkHeight -= 0.4;
           this.$store.commit('orderWrite/setCommonState', {
             k : 'surchargeInternet',

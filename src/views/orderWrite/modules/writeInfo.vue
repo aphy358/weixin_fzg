@@ -29,10 +29,15 @@
 				<span class="per-info-title">结算方式</span>
 				<label class="per-info-txt">
 					<select name="payment" id="payment" style="width: 2rem;" v-model="paymentType">
-						<option v-for="(item, index) in paymentList" :key="'_payment' + index" :value="item.value">{{item.label}}
-						</option>
+						<option v-for="(item, index) in paymentList" :key="'_payment' + index" :value="item.value">{{item.label}}</option>
 					</select>
 				</label>
+			</div>
+			<div class="per-line" v-if="balanceVisible">
+				<span class="per-info-title">使用预收款</span>
+				<input class="per-info-input" type="number" v-model="useBalance" :placeholder="'剩余：￥' + (content.balance || 0)" @blur="checkBalance">
+				<i v-show="balanceIconVisible" class="validate-identifier mintui"
+				   :class="useBalanceTips ?'mintui-field-success':'mintui-field-error'"></i>
 			</div>
 		</div>
 		<div class="per-module name-module" v-if="nameArr.length > 0 && nameRegArr.length > 0" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
@@ -114,9 +119,9 @@
 			<p class="rule-txt" v-if="hotelPrice.specialCheckInInstructions">{{hotelPrice.specialCheckInInstructions}}</p>
 		</div>
 		
-		<div class="total-pay clearfix" :class="payVisible ? 'show-animate' : 'hide-animated'">
+		<div class="total-pay clearfix" :class="payVisible && !confirmVisible ? 'show-animate' : 'hide-animated'">
 			<span class="fl orange">订单总额：￥</span>
-			<span class="fl orange total-money">{{payTotalMoney + totalBreakfastPrice + totalBedPrice + totalNetworkPrice}}</span>
+			<span class="fl orange total-money">{{+payTotalMoney + +totalBreakfastPrice + +totalBedPrice + +totalNetworkPrice}}</span>
 			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
 			<span class="fr gray" style="margin-right: 0.2rem;font-size: 0.12rem" @click="showFeeDetails">明细</span>
 		</div>
@@ -141,12 +146,17 @@
   import nationality from '../modules/nationality.vue';
   import extraService from '../modules/extraService.vue';
   import feeDetails from '../modules/feeDetails.vue';
-  import {MessageBox} from 'mint-ui';
+  import {MessageBox, Toast} from 'mint-ui';
   
   import Vue from 'vue';
   import VeeValidate from 'vee-validate';
-  
-  Vue.use(VeeValidate, {validity: true});
+
+
+  const config = {
+    locale: 'zh_CN',
+    events: 'blur',
+  };
+  Vue.use(VeeValidate, config);
   
   export default {
     name: '',
@@ -163,8 +173,6 @@
         email: '',
         tel: '',
         specialReq: [],
-//        specialReqList: ['立即到店', '原房续住', '安静房间', '吸烟楼层', '连通房间', '相同楼层', '尽量有窗', '尽量无烟楼层', '尽量相邻房间', '尽量高层楼房', '残疾设施房间', '尽量大床房', '尽量双床房'],
-//        paymentList: ["客人前台现付", '单结', '周结', '半月结', '月结', '不固定', '三日结', '十日结', '额度结'],
         nameArr: [],
         nameRank: [],
         country: 70007,
@@ -176,6 +184,10 @@
         marketingTel: '',
         specialStr: '',
         paymentType: 0,
+        useBalance: '',
+        balanceIconVisible: false,
+        useBalanceTips: false,
+        balanceVisible: false,
       }
     },
     
@@ -254,6 +266,7 @@
         let paymentTerm = this.$store.state.orderWrite.distributor.paymentTerm;
         this.paymentType = paymentTerm;
         if (paymentTerm === 0) {
+          this.balanceVisible = true;
           return [{
             label: '单结',
             value: 0
@@ -404,6 +417,12 @@
             }
           }
           
+          if (!flag){
+            return;
+          }else{
+            flag = this.checkBalance();
+          }
+          
           if (flag){
             if (result) {
               //弹出确认框
@@ -432,6 +451,7 @@
                 totalPay: this.payTotalMoney + this.totalBreakfastPrice + this.totalBedPrice + this.totalNetworkPrice,
                 bedType: this.bedType || '',
                 marketingTel: this.marketingTel,
+                useBalance: this.useBalance
               };
               
               if (this.bedType){
@@ -514,16 +534,39 @@
             } else {
               nameRegArr[i] = 'outer';
             }
-            
           }
         }
-        
+  
         this.nameArr = nameArr;
         this.nameRank = nameRank;
         this.nameVisibleArr = nameVisibleArr;
         this.nameRegArr = nameRegArr;
         this.nameModuleHeight = 0.5 + (roomNum * 0.5);
-      }
+      },
+      checkBalance(){
+        let flag = true;
+        let useBalance = this.useBalance;
+        if (useBalance){
+          flag = false;
+          this.useBalanceTips = false;
+          if (useBalance < 0){
+            Toast('使用的预收款金额不能为负数');
+          }else if (useBalance > this.content.balance){
+            Toast('使用金额超出预收款额度');
+          }else if (useBalance > (+this.payTotalMoney + +this.totalBreakfastPrice + +this.totalBedPrice + +this.totalNetworkPrice)){
+            Toast('支付金额不能多于订单金额');
+          }else if (!/^\d+(\.\d{0,2})?$/.test(useBalance)){
+            Toast('支付金额最多只能输入小数点后两位');
+          }else{
+            //通过验证
+            this.useBalanceTips = true;
+            flag = true;
+          }
+  
+          this.balanceIconVisible = true;
+        }
+        return flag;
+      },
     }
   }
 </script>
@@ -566,8 +609,6 @@
 				.per-info-input {
 					width: 2rem;
 					padding-left: 0.2rem;
-					height: 100%;
-					line-height: 100%;
 				}
 				
 				button {

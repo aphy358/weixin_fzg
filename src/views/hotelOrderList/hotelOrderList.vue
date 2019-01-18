@@ -9,8 +9,6 @@
 		
 		
 		<div class="page-content">
-			<div class="no-order" v-show="orderList.length <= 0"><i class="iconfont icon-warning" style="margin-right: 0.05rem;line-height: 0.8rem;"></i>{{warningInfo}}</div>
-			
 			<div class="order-list" v-show="orderList.length > 0" v-infinite-scroll="getHotelOrderList" infinite-scroll-disabled="infiniteLoad" infinite-scroll-distance="0">
 				<div class="per-order" v-for="(item, index) in orderList" :key="index" @click="readDetail(item.orderInfoId)">
 					<p class="order-title clearfix">
@@ -29,14 +27,20 @@
 					</div>
 					<div class="operate-order" v-if="item.canPayment || item.canCancle">
 						<button @click.stop="cancelOrder" v-if="item.canCancle">取消订单</button>
-						<button v-if="item.canPayment">去支付</button>
+						<button @click.stop="payOrder(item.orderCode, item.salePrice)" v-if="item.canPayment">去支付</button>
 					</div>
 				</div>
 				
 				<LoadMore v-if="loadingContinue"/>
 			</div>
 			
-			<END v-show="endVisible"/>
+			<END v-show="endVisible && orderList.length > 0"/>
+			
+			<div class="orderList-no-data" v-if="orderList.length <= 0 && noDataVisible">
+				<img :src="noOrder">
+				<div>暂无相关订单</div>
+				<div>建议更换筛选条件进行搜索</div>
+			</div>
 		</div>
 
 		<ToTop />
@@ -111,7 +115,7 @@
 			</li>
 		</ul>
 		
-		<div class="cancel-reason" :class="reasonVisible ? 'reason-shown' : 'reason-hidden'">
+		<div class="cancel-reason" v-show="reasonVisible" :class="reasonVisible ? 'reason-shown' : 'reason-hidden'">
 			<p class="cancel-reason-title">请选择取消订单的原因：</p>
 			<mt-radio v-model="cancelReasonId" :options="reasonList"></mt-radio>
 			<div class="button-box">
@@ -128,6 +132,9 @@
   import END from '@/components/END.vue';
   import ToTop from '@/components/ToTop.vue';
   import LoadMore from '@/components/LoadMore.vue';
+  import noOrder from '@/assets/img/no-order.png'
+  import Loading from '@/components/Loading.vue'
+  import { Indicator } from 'mint-ui'
   
   export default {
     name: '',
@@ -176,8 +183,9 @@
         ],
         loadingContinue: true,
         infiniteLoad: false,
-        warningInfo: '查询中，请稍候......',
         endVisible: false,
+        noOrder: '',
+        noDataVisible: false,
       }
     },
     
@@ -190,7 +198,9 @@
       LoadMore,
     },
     
-    created(){},
+    created(){
+      this.noOrder = noOrder;
+    },
     
     computed: {},
     
@@ -211,11 +221,17 @@
         this.$set(this.params, 'currPage', 0);
         this.orderList = [];
         this.loadingContinue = true;
-        this.warningInfo = '查询中，请稍候......';
         this.getHotelOrderList();
       },
       cancelOrder(){
         this.reasonVisible = true;
+      },
+      payOrder(orderCode, salePrice){
+        gotoPage(this.$router, 'orderPay', {
+          type: 'payAgain',
+          orderCode: orderCode,
+          salePrice: salePrice
+        })
       },
       unCancelOrder(){
         this.reasonVisible = false;
@@ -229,13 +245,15 @@
           let num = ++this.params.currPage;
           this.$set(this.params, 'currPage', num);
           let _this = this;
+          Indicator.open('查询中...');
           this.$api.myCenter.syncOrderList(this.params).then(res => {
+            Indicator.close();
             if (res.returnCode === 1){
+              _this.noDataVisible = true;
               if (res.data.item.length <= 0){
                 _this.loadingContinue = false;
                 _this.endVisible = true;
               }else{
-                _this.warningInfo = '暂无订单';
                 _this.orderList = Object.assign(_this.orderList.concat(res.data.item));
                 _this.infiniteLoad = false;
               }
@@ -254,13 +272,6 @@
 	.page-content{
 		background-color: #efeff4;
 		padding-bottom: 0.4rem;
-		
-		@at-root .no-order{
-			text-align: center;
-			line-height: 0.8rem;
-			color: #92bddb;
-			font-size: 0.16rem;
-		}
 		
 		@at-root .order-list{
 			padding: 0.2rem 0.1rem 0;
@@ -354,6 +365,22 @@
 			&.green{
 				color: #4da52f;
 				background-color: rgba(77, 165, 47, 0.21);
+			}
+		}
+		
+		@at-root .orderList-no-data {
+			text-align: center;
+			padding: 0.8rem 0;
+			color: gray;
+			font-size: 0.12rem;
+			
+			img{
+				width: 1.5rem;
+				margin-bottom: 0.1rem;
+			}
+			
+			div{
+				margin-top: 0.05rem;
 			}
 		}
 	}
@@ -454,9 +481,7 @@
 		position: fixed;
 		top: 1.2rem;
 		left: 50%;
-		width: 3rem;
 		margin-left: -1.5rem;
-		height: auto;
 		background-color: #fff;
 		z-index: 10002;
 		/*padding-bottom: 0.1rem;*/
@@ -464,6 +489,8 @@
 		transition: all 0.2s;
 		font-size: 0.12rem;
 		border-radius: 4px;
+		width: 3rem;
+		height: auto;
 		
 		&.reason-shown{
 			animation: bigger .3s ease-out forwards;
