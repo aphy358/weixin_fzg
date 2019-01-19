@@ -1,4 +1,6 @@
 import wechatAuth from './wechatAuth';
+import api from "@/api"
+import { Indicator } from 'mint-ui'
 
 export default {
     install(Vue, options) {
@@ -24,6 +26,36 @@ export default {
                     next()
                 } else if (to.query.code) { // 判断是否是微信的回调地址
                     wechatPlugin.getCodeCallback(next, to.query.code, pageType)
+
+                    api.common.syncGetCurUser({}).then(res => {
+                        if(res.returnCode == 1){
+                            let user_wx = res.data.customerUser
+                            let user_eb = res.data.supCustomerUser
+                            let user_qnb = res.data.qnbUser
+
+                            if (user_wx) window.sessionStorage.setItem('user_wx', JSON.stringify(user_wx))
+                            if (user_eb) window.sessionStorage.setItem('user_eb', JSON.stringify(user_eb))
+                            if (user_qnb) window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
+
+                            if (pageType == 2) {
+                                if(user_eb){
+                                    Indicator.close()
+                                    next()
+                                }
+                            } else if (pageType == 3) {
+                                if(user_qnb){
+                                    Indicator.close()
+                                    next()
+                                }
+                            } else {
+                                if(user_wx){
+                                    Indicator.close()
+                                    next()
+                                }
+                            }
+                        }
+                    })
+
                 } else { // 去获取code
                     wechatPlugin.getCode()
                 }

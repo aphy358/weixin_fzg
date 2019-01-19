@@ -205,7 +205,7 @@
     
     activated(){
       if(!window.goBack){
-        this.getHotelOrderList();
+        this.getHotelOrderList(1);
       }
     },
     
@@ -224,12 +224,14 @@
         this.$set(this.params, 'paymentStatus', '');
       },
       ensure(){
-        this.filterVisible = false;
+        this.getHotelOrderList(1);
+			},
+			resetData(){
+				this.filterVisible = false;
         this.$set(this.params, 'currPage', 0);
         this.orderList = [];
         this.loadingContinue = true;
-        this.getHotelOrderList();
-      },
+			},
       cancelOrder(){
         this.reasonVisible = true;
       },
@@ -246,7 +248,9 @@
       ensureCancelOrder(){
         this.reasonVisible = false;
       },
-      getHotelOrderList: debounce(function () {
+      getHotelOrderList: debounce(function (flag) {
+				if(flag){ this.resetData() }
+
         if (this.loadingContinue){
           this.infiniteLoad = true;
           let num = ++this.params.currPage;
@@ -267,7 +271,7 @@
             }
           });
         }
-      }),
+      }, 10),
       readDetail(orderId){
         gotoPage(this.$router, 'orderDetail', {orderId: orderId})
       }
