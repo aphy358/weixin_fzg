@@ -5,7 +5,12 @@
 		<div class="per-service-box" v-if="breakfastVisible">
 			<div class="per-service add-breakfast" @click="changeBreakfast">
 				<p class="per-service-title">加早信息</p>
-				<p class="per-service-ins">儿童早<span class="orange">￥60/份</span>成人早<span class="orange">￥80/份</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
+				<p class="per-service-ins">
+					<span v-for="(item, index) in breakfastTypeList">
+						{{item.name}}<span class="orange">￥{{item.price}}/份</span>
+					</span>
+					<i class="iconfont per-service-icon icon-right-thin"></i>
+				</p>
 			</div>
 			<div class="per-service-open clearfix" :style="'height:' + breakfastHeight + 'rem;'">
 				<div class="condition-box">
@@ -33,8 +38,12 @@
 		<div class="per-service-box" v-if="bedVisible">
 			<div class="per-service" @click="changeBed">
 				<p class="per-service-title">加床信息</p>
-				<p class="per-service-ins">儿童床<span class="orange">50/张</span>成人床<span class="orange">￥101/张</span></p>
-				<p class="purple">该房型每间房最多加床2张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
+				<p class="per-service-ins">
+					<span v-for="(item, index) in bedTypeList">
+						{{item.name}}<span class="orange">￥{{item.price}}/张</span>
+					</span>
+				</p>
+				<p class="purple">该房型每间房最多加床{{bedTypeList[0].max}}张<i class="iconfont per-service-icon icon-right-thin" style="color: #666;"></i></p>
 			</div>
 			<div class="per-service-open clearfix" :style="'height:' + bedHeight + 'rem;'">
 				<div class="condition-box">
@@ -62,7 +71,7 @@
 		<div class="per-service-box" v-if="netVisible">
 			<div class="per-service" @click="changeNetwork">
 				<p class="per-service-title">加宽带信息</p>
-				<p class="per-service-ins" style="padding-bottom: 0.1rem;"><span class="orange">￥{{networkPrice}}/间/日</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
+				<p class="per-service-ins" style="padding-bottom: 0.1rem;"><span class="orange">￥{{networkPriceList[0].price}}/间/日</span><i class="iconfont per-service-icon icon-right-thin"></i></p>
 			</div>
 			<div class="per-service-open clearfix" :style="'height:' + networkHeight + 'rem;'">
 				<div class="condition-box">
@@ -88,7 +97,7 @@
 
 <script>
 	import StartEndDatePopup from '@/components/StartEndDatePopup';
-	import { addDays } from '@/assets/util';
+	import { addDays, queryString } from '@/assets/util';
 	import { Toast } from 'mint-ui';
 	
   export default {
@@ -107,13 +116,12 @@
         dateValue3: this.$store.state.checkin,
         breakfastType: '',
         bedType: '',
-        networkPrice: 40,
         extrafeeParams: {
           startDate: this.$store.state.checkin,
           endDate: this.$store.state.checkout,
-          infoId: 171840,
-          suppId: 40160,
-          roomtypeId: 29,
+          infoId: queryString('staticInfoId'),
+          suppId: queryString('supplierId'),
+          roomtypeId: queryString('roomId'),
           roomNum: this.$store.state.roomNum
         },
         breakfastPriceObj: {},
@@ -205,7 +213,8 @@
               arr.push({
                 name: inner.name,
                 type: inner.type,
-                price: inner.price
+                price: inner.price,
+                max: inner.max
               })
             }
             obj2[key] = arr;
