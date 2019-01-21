@@ -74,12 +74,12 @@
           </div>
           <div class="eol-pop-row">
             <div class="eol-pop-row-subdiv">
-              <input type="text" class="eol-pop-date-fake eol-pop-checkin" placeholder="起始日期" readonly :value="beginDate_c" >
+              <input type="text" class="eol-pop-date-fake eol-pop-checkin" placeholder="入住起始日期" readonly :value="beginDate_c" >
               <input type="date" v-model="beginDate_c" style="color: transparent;background: transparent;">
             </div>
             <span></span>
             <div class="eol-pop-row-subdiv">
-              <input type="text" class="eol-pop-date-fake eol-pop-checkout" placeholder="终止日期" readonly :value="endDate_c" style="text-align: right;">
+              <input type="text" class="eol-pop-date-fake eol-pop-checkout" placeholder="入住终止日期" readonly :value="endDate_c" style="text-align: right;">
               <input type="date" v-model="endDate_c" style="color: transparent;background: transparent;">
             </div>
           </div>

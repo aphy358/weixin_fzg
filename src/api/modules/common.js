@@ -20,4 +20,4 @@ export const syncAuthLogin = (args, loading = true) => http.post("/vue/autoLogin
 
 
 // 查询当前用户登录态
-export const syncGetCurUser = (args, loading = true) => http.post("/vue/indexInit.do", args, loading)
+export const syncGetCurUser = (args, loading = false) => http.post("/vue/indexInit.do", args, loading)
