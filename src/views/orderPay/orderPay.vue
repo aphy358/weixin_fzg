@@ -4,7 +4,7 @@
 		<mt-header title="订单支付"></mt-header>
 		<GoBack _style="top: 0.02rem" />
 		
-		<div class="page-content">
+		<div class="page-content" v-if="!orderSuccessVisible">
 			<div class="order-info">
 				<p class="info-title">订单编号</p>
 				<p class="info-txt">{{content.orderCode}}</p>
@@ -33,6 +33,17 @@
 				<button class="pay-order" @click="payOrder">支付</button>
 			</div>
 		</div>
+		
+		
+		
+		<div class="order-success" v-if="orderSuccessVisible">
+			<i class="iconfont icon-success order-success-icon"></i>
+			<p class="green">您已成功支付订单，请等待确认</p>
+			<p>客服电话：0755-33397777</p>
+			<button class="go-detail" @click="readDetail">查看订单详情</button>
+			<img class="fzg-erweima" :src="erweima" alt="">
+			<p>关注"房掌柜"公众号即可查询订单</p>
+		</div>
 	</div>
 </template>
 
@@ -40,7 +51,8 @@
   import GoBack from '@/components/GoBack.vue';
   import { Toast, Indicator, MessageBox } from 'mint-ui'
   import {mapState} from 'vuex';
-  import { queryString, gotoPage, replacePage } from '@/assets/util'
+  import { queryString, gotoPage, replacePage } from '@/assets/util';
+  import erweima from '@/assets/img/fzg_erweima.png';
   
   export default {
     name: 'orderPay',
@@ -48,6 +60,8 @@
     data() {
       return {
         content: {},
+        orderSuccessVisible: false,
+        erweima: '',
       }
     },
     
@@ -55,6 +69,10 @@
     
     components: {
       GoBack
+    },
+    
+    created(){
+      this.erweima = erweima;
     },
     
     activated(){
@@ -81,26 +99,32 @@
           orderCode: _this.content.orderCode,
           fee: _this.content.realReceiveMoney * 100
         };
+        Indicator.open('请求支付参数中...');
         _this.$api.orderPay.syncPayStart(params).then(res => {
+          Indicator.close();
           if (res.returnCode === 1){
             let payParam = {
-              appId: res.content.appId,     //公众号名称，由商户传入
-              timeStamp: res.content.timeStamp,         //时间戳，自1970年以来的秒数
-              nonceStr: res.content.nonceStr, //随机串
-              package: res.content.prepayId,
+              appId: res.data.appId,     //公众号名称，由商户传入
+              timeStamp: res.data.timeStamp,         //时间戳，自1970年以来的秒数
+              nonceStr: res.data.nonceStr, //随机串
+              package: res.data.prepayId,
               signType:"MD5",         //微信签名方式：
-              paySign: res.content.paySign //微信签名
+              paySign: res.data.paySign //微信签名
             };
             window.WeixinJSBridge.invoke('getBrandWCPayRequest', payParam, function(res){
     
               // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
               if(res.err_msg === "get_brand_wcpay_request：ok" ) {
+                //显示支付成功
+                this.orderSuccessVisible = true;
               }
             });
-            //显示支付成功
-            Toast('支付成功');
           }
         });
+      },
+      readDetail(){
+        replacePage(this.$router, 'orderDetail', {orderId: this.$store.state.orderWrite.orderId,});
+        this.orderSuccessVisible = false;
       }
     }
   }
@@ -158,6 +182,34 @@
 			height: 0.36rem;
 			font-size: 0.14rem;
 			line-height: 0.36rem;
+		}
+	}
+	
+	
+	.order-success{
+		width: 2.2rem;
+		margin: 0.2rem auto 0;
+		text-align: center;
+		
+		.order-success-icon{
+			display: block;
+			font-size: 1rem;
+			color: #00c285;
+		}
+		
+		.go-detail{
+			display: block;
+			color: #ffffff;
+			width: 1rem;
+			height: 0.4rem;
+			background-color: #ff7625;
+			border-radius: 4px;
+			border: none;
+			margin: 0.2rem auto;
+		}
+		
+		.fzg-erweima{
+			margin: 0.6rem 0 0.1rem;
 		}
 	}
 	

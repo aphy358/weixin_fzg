@@ -52,6 +52,9 @@ export default {
   
     orderParams: {},
     startParams: {},
+  
+    orderSuccessVisible: false,
+    orderId: '',
   },
   
   
@@ -172,11 +175,6 @@ export default {
     confirmOrderInfo({ commit, state, dispatch }, payload){
       if (payload){
         commit('setCommonState', payload);
-
-        commit('setCommonState', {
-          k : 'dialogTableVisible',
-          v : true
-        });
       }
     },
     

@@ -147,9 +147,9 @@
               //保存订单
               _this.saveOrder(params);
             } else {
-              if(res.content.errtype === "sameOrder"){
+              if(res.data.errtype === "sameOrder"){
                 //已有重复订单情况下，提示用户
-                MessageBox.confirm(res.data.errinfo).then(() => {
+                MessageBox.confirm(res.data.errinfo + '，是否继续下单？').then(() => {
                   _this.saveOrder(params);
                 });
               }else{
@@ -176,9 +176,12 @@
           if (data.returnCode === 1){
             if ((content.paymentType === 0 && orderInfo.paymentTerm !== 0) || +params.willUsedBalance === _this.orderInfo.totalPay){
               //直接成单
-              MessageBox.alert('下单成功').then(action => {
-                replacePage(_this.$router, 'orderDetail', {orderId: data.data.orderId,});
-              });
+//              MessageBox.alert('下单成功').then(action => {
+//                replacePage(_this.$router, 'orderDetail', {orderId: data.data.orderId,});
+//              });
+              
+              _this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: true});
+              _this.$store.commit('orderWrite/setCommonState', {k: 'orderId', v: data.data.orderId});
             }else{
               //进入支付
               replacePage(_this.$router, 'orderPay', {orderId: data.data.orderId,});

@@ -121,7 +121,7 @@
 		
 		<div class="total-pay clearfix" :class="payVisible && !confirmVisible ? 'show-animate' : 'hide-animated'">
 			<span class="fl orange">订单总额：￥</span>
-			<span class="fl orange total-money">{{+payTotalMoney + +totalBreakfastPrice + +totalBedPrice + +totalNetworkPrice}}</span>
+			<span class="fl orange total-money">{{+payTotalMoney + +totalBreakfastPrice + +totalBedPrice + +totalNetworkPrice + taxesAndFeesRMB}}</span>
 			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
 			<span class="fr gray" style="margin-right: 0.2rem;font-size: 0.12rem" @click="showFeeDetails">明细</span>
 		</div>
@@ -225,6 +225,9 @@
       },
       content() {
         return this.$store.state.orderWrite.content
+      },
+      taxesAndFeesRMB() {
+        return this.$store.state.orderWrite.taxesAndFeesRMB
       },
       totalBreakfastPrice() {
         return this.$store.state.orderWrite.totalBreakfastPrice
@@ -448,7 +451,7 @@
                 paymentTerm: this.paymentType,
                 specialReq: this.specialStr,
                 cancelInfo: this.hotelPrice.cancellationDesc,
-                totalPay: this.payTotalMoney + this.totalBreakfastPrice + this.totalBedPrice + this.totalNetworkPrice,
+                totalPay: this.payTotalMoney + this.totalBreakfastPrice + this.totalBedPrice + this.totalNetworkPrice + this.taxesAndFeesRMB,
                 bedType: this.bedType || '',
                 marketingTel: this.marketingTel,
                 useBalance: this.useBalance
@@ -553,7 +556,7 @@
             Toast('使用的预收款金额不能为负数');
           }else if (useBalance > this.content.balance){
             Toast('使用金额超出预收款额度');
-          }else if (useBalance > (+this.payTotalMoney + +this.totalBreakfastPrice + +this.totalBedPrice + +this.totalNetworkPrice)){
+          }else if (useBalance > (+this.payTotalMoney + +this.totalBreakfastPrice + +this.totalBedPrice + +this.totalNetworkPrice + this.taxesAndFeesRMB)){
             Toast('支付金额不能多于订单金额');
           }else if (!/^\d+(\.\d{0,2})?$/.test(useBalance)){
             Toast('支付金额最多只能输入小数点后两位');
@@ -636,9 +639,6 @@
 				.username-input {
 					padding-left: 0.2rem;
 					width: 1rem;
-					height: 98%;
-					/*line-height: normal;*/
-					/*user-select: text !important;*/
 					
 					&.nationality {
 						width: 0.4rem;
