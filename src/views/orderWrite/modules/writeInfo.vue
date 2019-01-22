@@ -328,7 +328,15 @@
     },
     
     mounted() {
-      document.querySelector('.order-write-box-page .page-content').addEventListener('scroll', this.handleScroll)
+      document.querySelector('.order-write-box-page .page-content').addEventListener('scroll', this.handleScroll);
+  
+      if(/Android [4-6]/.test(window.navigator.appVersion)) {
+        window.addEventListener("resize", function() {
+          if(document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
+            document.activeElement.scrollIntoViewIfNeeded();
+          }
+        })
+      }
     },
     
     watch: {

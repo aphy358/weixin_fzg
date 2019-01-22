@@ -2,7 +2,7 @@
 <template>
 	<div class="order-pay">
 		<mt-header title="订单支付"></mt-header>
-		<GoBack _style="top: 0.02rem" />
+		<GoBack _style="top: 0.02rem"  :onClick="clickGoBack"/>
 		
 		<div class="page-content" v-if="!orderSuccessVisible">
 			<div class="order-info">
@@ -33,14 +33,15 @@
 		</div>
 		
 		
-		
-		<div class="order-success" v-if="orderSuccessVisible">
-			<i class="iconfont icon-success order-success-icon"></i>
-			<p class="green">您已成功支付订单，请等待确认</p>
-			<p>客服电话：0755-33397777</p>
-			<button class="go-detail" @click="readDetail">查看订单详情</button>
-			<img class="fzg-erweima" :src="erweima" alt="">
-			<p>关注"房掌柜"公众号即可查询订单</p>
+		<div class="page-content" v-if="orderSuccessVisible">
+			<div class="order-success">
+				<i class="iconfont icon-success order-success-icon"></i>
+				<p class="green">您已成功支付订单，请等待确认</p>
+				<p>客服电话：0755-33397777</p>
+				<button class="go-detail" @click="readDetail">查看订单详情</button>
+				<img class="fzg-erweima" :src="erweima" alt="">
+				<p>关注"房掌柜"公众号即可查询订单</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -49,7 +50,7 @@
   import GoBack from '@/components/GoBack.vue';
   import { Toast, Indicator, MessageBox } from 'mint-ui'
   import {mapState} from 'vuex';
-  import { queryString, gotoPage, replacePage } from '@/assets/util';
+  import { queryString, gotoPage, replacePage, goBackPage } from '@/assets/util';
   import erweima from '@/assets/img/fzg_erweima.png';
   
   export default {
@@ -119,6 +120,10 @@
       readDetail(){
         replacePage(this.$router, 'orderDetail', {orderId: this.$store.state.orderWrite.orderId,});
         this.orderSuccessVisible = false;
+      },
+      clickGoBack(){
+        this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: false});
+        goBackPage(this.$router, -2);
       }
     }
   }
@@ -181,7 +186,7 @@
 	
 	
 	.order-success{
-		width: 2.2rem;
+		width: 3rem;
 		margin: 0.2rem auto 0;
 		text-align: center;
 		
@@ -203,7 +208,7 @@
 		}
 		
 		.fzg-erweima{
-			margin: 0.6rem 0 0.1rem;
+			margin: 0.5rem 0 0.1rem;
 		}
 	}
 	
