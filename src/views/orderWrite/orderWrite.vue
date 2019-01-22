@@ -2,28 +2,13 @@
 <template>
 	<div class="page order-write-box-page">
 		
-		<!-- 头部 -->
-		<!--<mt-header title="订单填写"></mt-header>-->
-		<!--<GoBack _style="top: 0.02rem" />-->
-		
 		<div class="page-content" v-if="!orderSuccessVisible">
 			<div class="order-write-title-box">
 				<h6 class="order-write-title">订单填写</h6>
 				<div class="go-back-box">
-					<GoBack _style="top: 0.02rem" />
+					<GoBack _style="top: 0.02rem" :onClick="clickGoBack"/>
 				</div>
 			</div>
-			
-			<!--<div class="title-gap">-->
-				<!--<h6 class="order-write-title">订单填写</h6>-->
-				<!--<div class="go-back-box">-->
-					<!--<GoBack _style="top: 0.02rem" />-->
-				<!--</div>-->
-			<!--</div>-->
-			
-			
-			<!--<mt-header title="订单填写"></mt-header>-->
-			<!--<GoBack _style="top: 0.02rem" />-->
 			
 			<hotelInfo/>
 			
@@ -31,13 +16,15 @@
 
 		</div>
 		
-		<div class="order-success" v-if="orderSuccessVisible">
-			<i class="iconfont icon-success order-success-icon"></i>
-			<p class="green">您已成功支付订单，请等待确认</p>
-			<p>客服电话：0755-33397777</p>
-			<button class="go-detail" @click="readDetail">查看订单详情</button>
-			<img class="fzg-erweima" :src="erweima" alt="">
-			<p>关注"房掌柜"公众号即可查询订单</p>
+		<div class="page-content" v-if="orderSuccessVisible">
+			<div class="order-success">
+				<i class="iconfont icon-success order-success-icon"></i>
+				<p class="green">您已成功支付订单，请等待确认</p>
+				<p>客服电话：0755-33397777</p>
+				<button class="go-detail" @click="readDetail">查看订单详情</button>
+				<img class="fzg-erweima" :src="erweima" alt="">
+				<p>关注"房掌柜"公众号即可查询订单</p>
+			</div>
 		</div>
 	</div>
 
@@ -49,7 +36,7 @@
   import GoBack from '@/components/GoBack.vue';
   import { Indicator, MessageBox } from 'mint-ui'
   import erweima from '@/assets/img/fzg_erweima.png';
-  import { replacePage } from '@/assets/util';
+  import { replacePage, goBackPage } from '@/assets/util';
 	
   export default {
     name: '',
@@ -104,6 +91,10 @@
       readDetail(){
         replacePage(this.$router, 'orderDetail', {orderId: this.$store.state.orderWrite.orderId,});
         this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: false});
+      },
+      clickGoBack(){
+        this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: false});
+        goBackPage(this.$router);
       }
     }
   }
