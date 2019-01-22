@@ -6,7 +6,7 @@
 			<div class="order-write-title-box">
 				<h6 class="order-write-title">订单填写</h6>
 				<div class="go-back-box">
-					<GoBack _style="top: 0.02rem" :onClick="clickGoBack"/>
+					<GoBack _style="top: 0.02rem"/>
 				</div>
 			</div>
 			
@@ -16,6 +16,12 @@
 
 		</div>
 		
+		<div class="order-write-title-box" v-if="orderSuccessVisible">
+			<h6 class="order-write-title">支付成功</h6>
+			<div class="go-back-box">
+				<GoBack _style="top: 0.02rem" :onClick="clickGoBack"/>
+			</div>
+		</div>
 		<div class="page-content" v-if="orderSuccessVisible">
 			<div class="order-success">
 				<i class="iconfont icon-success order-success-icon"></i>
@@ -155,8 +161,8 @@
 	}
 	
 	.order-success{
-		width: 2.2rem;
-		margin: 0.2rem auto 0;
+		width: 3rem;
+		margin: 0.5rem auto 0;
 		text-align: center;
 		
 		.order-success-icon{
@@ -177,7 +183,7 @@
 		}
 		
 		.fzg-erweima{
-			margin: 0.6rem 0 0.1rem;
+			margin: 0.5rem 0 0.1rem;
 		}
 	}
 	
