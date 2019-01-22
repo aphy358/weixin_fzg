@@ -75,7 +75,12 @@ export const replacePage = (router, pageStr, query) => {
 }
 
 // 回退一个页面
-export const goBackPage = (router) => {
-  window.historyObj.arr.pop()
-  router.go(-1)
+export const goBackPage = (router, step) => {
+  step = step || -1
+
+  for (let i = 0; i < Math.abs(step); i++) {
+    window.historyObj.arr.pop()
+  }
+  
+  router.go(step)
 }
