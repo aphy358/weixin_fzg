@@ -33,6 +33,13 @@ export default {
   created() {
     // 初始化 JSSDK
     this.initJSSDK()
+
+    // 解决部分 iphone 换页的时候，软键盘导致页面向上顶起而不收回的 bug
+    document.body.addEventListener('focusout', () => { //软键盘关闭事件
+      setTimeout(function(){
+        window.scroll(0, 0)
+      }, 10)
+    })
   },
   computed: {},
   mounted() {},
