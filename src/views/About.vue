@@ -1,5 +1,9 @@
 <template>
   <div class="page about-page">
+    
+    <mt-header title="关于捷旅"></mt-header>
+    <GoBack _style="top: 0.02rem" />
+    
     <div class="page-content" style="background: #efeff4;">
       <div class="content-block">
         <div class="about-title">捷旅简介</div>
@@ -20,6 +24,7 @@
 
 <script>
 import END from "@/components/END.vue"
+import GoBack from '@/components/GoBack.vue';
 
 export default {
   name: 'about',
@@ -28,7 +33,8 @@ export default {
   },
   props: {},
   components: {
-    END
+    END,
+    GoBack
   },
   watch: {},
   created(){},
