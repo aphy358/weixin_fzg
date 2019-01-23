@@ -20,6 +20,9 @@ export default {
   props: {},
   watch: {
     $route(to, from) {
+      // 解决部分 iphone 换页的时候，软键盘导致页面向上顶起而不收回的 bug
+      window.scroll(0, 0)
+
       // 设置或保存页面的 scrolltop
       this.initPageScrollTop(to, from)
       
