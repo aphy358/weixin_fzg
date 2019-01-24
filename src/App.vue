@@ -27,12 +27,6 @@ export default {
       if(to.path.toLowerCase() != '/hoteldetail'){
         this.initPageShare()
       }
-
-      // 解决部分 iphone 换页的时候，软键盘导致页面向上顶起而不收回的 bug，但如果不换页的情况下也执行 window.scroll(0, 0) 的话，就会在多个input框之间切换的情况下出现上下闪动的 bug，所以这里需要一个全局变量控制
-      window.changePage = true
-      setTimeout(function(){
-        window.changePage = false
-      }, 100)
     }
   },
   components: {},
@@ -43,11 +37,19 @@ export default {
     // 解决部分 iphone 换页的时候，软键盘导致页面向上顶起而不收回的 bug
     document.body.addEventListener('focusout', () => { //软键盘关闭事件
       setTimeout(function(){
-        if(window.changePage)(
+        if(!window.keyBoardShow)(
           window.scroll(0, 0)
         )
       }, 10)
     })
+
+    document.body.addEventListener('focusin', () => { //软键盘弹出事件
+      window.keyBoardShow = true
+      setTimeout(function(){
+        window.keyBoardShow = false
+      }, 100)
+    })
+
 
     // 解决安卓手机下点击输入框时，页面不随之向上滚动，导致弹起的软键盘遮住输入框的问题
     window.addEventListener("resize", function() {
