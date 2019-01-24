@@ -34,19 +34,21 @@ export default {
     // 初始化 JSSDK
     this.initJSSDK()
 
+    let keyBoardShow = false
+
     // 解决部分 iphone 换页的时候，软键盘导致页面向上顶起而不收回的 bug
     document.body.addEventListener('focusout', () => { //软键盘关闭事件
       setTimeout(function(){
-        if(!window.keyBoardShow)(
+        if(!keyBoardShow)(
           window.scroll(0, 0)
         )
       }, 10)
     })
 
     document.body.addEventListener('focusin', () => { //软键盘弹出事件
-      window.keyBoardShow = true
+      keyBoardShow = true
       setTimeout(function(){
-        window.keyBoardShow = false
+        keyBoardShow = false
       }, 100)
     })
 
