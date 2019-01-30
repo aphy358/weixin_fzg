@@ -57,7 +57,7 @@ export default {
     //*** 模拟登录，测试 */
 //     let params = {
 //       code: '8998',
-//       name: 'huangqian',
+//       name: 'fenghan',
 //       password: '1'
 //     }
 //

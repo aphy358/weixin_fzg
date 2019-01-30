@@ -37,21 +37,9 @@ export default {
                             if (user_eb) window.sessionStorage.setItem('user_eb', JSON.stringify(user_eb))
                             if (user_qnb) window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
 
-                            if (pageType == 2) {
-                                if(user_eb){
-                                    Indicator.close()
-                                    next()
-                                }
-                            } else if (pageType == 3) {
-                                if(user_qnb){
-                                    Indicator.close()
-                                    next()
-                                }
-                            } else {
-                                if(user_wx){
-                                    Indicator.close()
-                                    next()
-                                }
+                            if((pageType == 2 && user_eb) || (pageType == 3 && user_qnb) || (pageType == 1 && user_wx)){
+                                Indicator.close()
+                                next()
                             }
                         }
                     })

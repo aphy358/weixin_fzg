@@ -1,4 +1,5 @@
 import wechatPlugin from '@/plugins/vue-wechat-plugin'
+import { replacePage } from '@/assets/util'
 
 
 
@@ -41,11 +42,11 @@ export default function (Vue, router, api) {
 					if (user_qnb) window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
 
 					if (pageType == 2) {
-						user_eb ? next() : next('/ebLogin')
+						user_eb ? next() : replacePage(router, 'ebLogin')
 					} else if (pageType == 3) {
-						user_qnb ? next() : next('/qnblogin')
+						user_qnb ? next() : replacePage(router, 'qnblogin')
 					} else {
-						user_wx ? next() : next('/login')
+						user_wx ? next() : replacePage(router, 'login')
 					}
 				}
 			}).catch((e) => {
