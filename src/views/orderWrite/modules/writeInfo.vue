@@ -18,13 +18,13 @@
 				<i v-show="telIconVisible" class="validate-identifier mintui"
 				   :class="errors.has('手机号')?'mintui-field-error':'mintui-field-success'"></i>
 			</div>
-			<div class="per-line">
-				<span class="per-info-title">Email</span>
-				<input v-validate="'required|email'" type="text" name="邮箱" class="per-info-input" placeholder="用于接收通知"
-				       v-model="email">
-				<i v-show="emailIconVisible" class="validate-identifier mintui"
-				   :class="errors.has('邮箱')?'mintui-field-error':'mintui-field-success'"></i>
-			</div>
+			<!--<div class="per-line">-->
+				<!--<span class="per-info-title">Email</span>-->
+				<!--<input v-validate="'required|email'" type="text" name="邮箱" class="per-info-input" placeholder="用于接收通知"-->
+				       <!--v-model="email">-->
+				<!--<i v-show="emailIconVisible" class="validate-identifier mintui"-->
+				   <!--:class="errors.has('邮箱')?'mintui-field-error':'mintui-field-success'"></i>-->
+			<!--</div>-->
 			<div class="per-line">
 				<span class="per-info-title">结算方式</span>
 				<label class="per-info-txt">
@@ -328,7 +328,7 @@
     },
     
     mounted() {
-      document.querySelector('.order-write-box-page .page-content').addEventListener('scroll', this.handleScroll);
+//      document.querySelector('.order-write-box-page .page-content').addEventListener('scroll', this.handleScroll);
   
       // if(/Android [4-6]/.test(window.navigator.appVersion)) {
       //   window.addEventListener("resize", function() {
@@ -456,6 +456,7 @@
                 nameParams: nameParams,
                 tel: this.tel,
                 email: this.email,
+                payWay: this.paymentList[this.paymentType].label,
                 paymentTerm: this.paymentType,
                 specialReq: this.specialStr,
                 cancelInfo: this.hotelPrice.cancellationDesc,
@@ -486,7 +487,8 @@
                 return;
               }
               
-              MessageBox('提示', this.errors.first('手机号') || this.errors.first('邮箱') || this.errors.first('姓') || this.errors.first('名'));
+//              MessageBox('提示', this.errors.first('手机号') || this.errors.first('邮箱') || this.errors.first('姓') || this.errors.first('名'));
+              MessageBox('提示', this.errors.first('手机号') || this.errors.first('姓') || this.errors.first('名'));
             }
           }
           
@@ -499,7 +501,7 @@
         this.nationalityVisible = true;
         this.nationalityIndex = index;
         
-        this.payVisible = false;
+//        this.payVisible = false;
       },
       hideNationality() {
         this.nationalityVisible = false;
