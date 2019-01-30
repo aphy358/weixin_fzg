@@ -27,7 +27,7 @@
 					</div>
 					<div class="operate-order" v-if="item.canPayment || item.canCancle">
 						<button @click.stop="cancelOrder" v-if="item.canCancle">取消订单</button>
-						<button @click.stop="payOrder(item.orderCode, item.salePrice)" v-if="item.canPayment">去支付</button>
+						<button @click.stop="payOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.canPayment">去支付</button>
 					</div>
 				</div>
 				
@@ -150,8 +150,8 @@
 //          endDate: '',
 //          orderCode: '',
 //          userName: '',
-					innerStatus: '',
-					orderType: 2,
+          innerStatus: '',
+          orderType: 2,
           paymentStatus: '',
           currPage: 0,
         },
@@ -236,9 +236,10 @@
       cancelOrder(){
         this.reasonVisible = true;
       },
-      payOrder(orderCode, salePrice){
+      payOrder(orderId, orderCode, salePrice){
         gotoPage(this.$router, 'orderPay', {
           type: 'payAgain',
+          orderId: orderId,
           orderCode: orderCode,
           salePrice: salePrice
         })
@@ -294,7 +295,6 @@
 				padding: 0 0.1rem;
 				font-size: 0.14rem;
 				margin-bottom: 0.1rem;
-				/*box-shadow: 0 0 2px #b9b9bd;*/
 				
 				@at-root .order-title{
 					height: 0.5rem;
@@ -302,7 +302,6 @@
 					border-bottom: 0.5px solid #eeeeee;
 					
 					.read-detail{
-						/*margin-right: 0.1rem;*/
 						color: #4293ff;
 					}
 				}
