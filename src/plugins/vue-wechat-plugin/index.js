@@ -1,6 +1,7 @@
 import wechatAuth from './wechatAuth';
 import api from "@/api"
 import { Indicator } from 'mint-ui'
+import { replacePage, queryString } from '@/assets/util'
 
 export default {
     install(Vue, options) {
@@ -37,9 +38,18 @@ export default {
                             if (user_eb) window.sessionStorage.setItem('user_eb', JSON.stringify(user_eb))
                             if (user_qnb) window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
 
-                            if((pageType == 2 && user_eb) || (pageType == 3 && user_qnb) || (pageType == 1 && user_wx)){
+                            if((pageType == 2 && user_eb) || (pageType == 3 && user_qnb)){
                                 Indicator.close()
                                 next()
+                            }
+
+                            if(pageType == 1 && user_wx){
+                                // 获取用户类型，ut=corp 则表示是企业用户
+                                (queryString('ut') == 'corp' && user_wx.distrbId == 34354)
+                                    ? replacePage(router, 'login')
+                                    : next()
+
+                                Indicator.close()
                             }
                         }
                     })
