@@ -251,7 +251,7 @@
         this.reasonVisible = false;
       },
       getHotelOrderList: debounce(function (flag) {
-				if(flag){ this.resetData() }
+        if(flag){ this.resetData() }
 
         if (this.loadingContinue){
           this.infiniteLoad = true;

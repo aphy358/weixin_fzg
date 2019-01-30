@@ -456,7 +456,7 @@
                 nameParams: nameParams,
                 tel: this.tel,
                 email: this.email,
-                payWay: this.paymentList[this.paymentType].label,
+                payWay: ["客人前台现付", '单结', '周结', '半月结', '月结', '不固定', '三日结', '十日结', '额度结'][this.paymentType + 1],
                 paymentTerm: this.paymentType,
                 specialReq: this.specialStr,
                 cancelInfo: this.hotelPrice.cancellationDesc,
@@ -501,10 +501,11 @@
         this.nationalityVisible = true;
         this.nationalityIndex = index;
         
-//        this.payVisible = false;
+        this.payVisible = false;
       },
       hideNationality() {
         this.nationalityVisible = false;
+        this.payVisible = true;
       },
       getNationality($event) {
         let index = this.nationalityIndex;
