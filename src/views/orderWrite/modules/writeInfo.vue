@@ -121,7 +121,7 @@
 		
 		<div class="total-pay clearfix" :class="payVisible && !confirmVisible ? 'show-animate' : 'hide-animated'">
 			<span class="fl orange">订单总额：￥</span>
-			<span class="fl orange total-money">{{+payTotalMoney + +totalBreakfastPrice + +totalBedPrice + +totalNetworkPrice + taxesAndFeesRMB}}</span>
+			<span class="fl orange total-money">{{+(+payTotalMoney*100 + +totalBreakfastPrice*100 + +totalBedPrice*100 + +totalNetworkPrice*100 + taxesAndFeesRMB*100)/100}}</span>
 			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
 			<span class="fr gray" style="margin-right: 0.2rem;font-size: 0.12rem" @click="showFeeDetails">明细</span>
 		</div>
@@ -459,7 +459,7 @@
                 paymentTerm: this.paymentType,
                 specialReq: this.specialStr,
                 cancelInfo: this.hotelPrice.cancellationDesc,
-                totalPay: this.payTotalMoney + this.totalBreakfastPrice + this.totalBedPrice + this.totalNetworkPrice + this.taxesAndFeesRMB,
+                totalPay: +(this.payTotalMoney*100 + this.totalBreakfastPrice*100 + this.totalBedPrice*100 + this.totalNetworkPrice*100 + this.taxesAndFeesRMB*100)/100,
                 bedType: this.bedType || '',
                 marketingTel: this.marketingTel,
                 useBalance: this.useBalance
