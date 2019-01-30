@@ -34,11 +34,30 @@ export default {
     // 初始化 JSSDK
     this.initJSSDK()
 
+    let keyBoardShow = false
+
     // 解决部分 iphone 换页的时候，软键盘导致页面向上顶起而不收回的 bug
     document.body.addEventListener('focusout', () => { //软键盘关闭事件
       setTimeout(function(){
-        window.scroll(0, 0)
+        if(!keyBoardShow)(
+          window.scroll(0, 0)
+        )
       }, 10)
+    })
+
+    document.body.addEventListener('focusin', () => { //软键盘弹出事件
+      keyBoardShow = true
+      setTimeout(function(){
+        keyBoardShow = false
+      }, 100)
+    })
+
+
+    // 解决安卓手机下点击输入框时，页面不随之向上滚动，导致弹起的软键盘遮住输入框的问题
+    window.addEventListener("resize", function() {
+      if(document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
+        document.activeElement.scrollIntoViewIfNeeded()
+      }
     })
   },
   computed: {},
