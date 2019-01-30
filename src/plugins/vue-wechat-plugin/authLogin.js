@@ -1,5 +1,5 @@
 import wechatPlugin from '@/plugins/vue-wechat-plugin'
-import { replacePage } from '@/assets/util'
+import { replacePage, queryString } from '@/assets/util'
 
 
 
@@ -46,7 +46,13 @@ export default function (Vue, router, api) {
 					} else if (pageType == 3) {
 						user_qnb ? next() : replacePage(router, 'qnblogin')
 					} else {
-						user_wx ? next() : replacePage(router, 'login')
+						// 获取用户类型，ut=corp 则表示是企业用户
+						let ut = queryString('ut')
+						if(ut == 'corp' && user_wx && user_wx.distrbId == 34354){
+							replacePage(router, 'login')
+						}else{
+							next()
+						}
 					}
 				}
 			}).catch((e) => {
