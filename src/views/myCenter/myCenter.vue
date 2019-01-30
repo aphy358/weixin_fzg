@@ -106,21 +106,21 @@
         MessageBox.confirm('退出登录后需要重新登录，确定退出?').then(action => {
           _this.$api.myCenter.syncLogout().then(res => {
             if (res.returnCode === 1){
-							Toast('退出成功');
-							window.sessionStorage.setItem('user_wx', JSON.stringify(res.data.customerUser))
-							this.customerUser = res.data.customerUser
+              Toast('退出成功');
+              window.sessionStorage.setItem('user_wx', JSON.stringify(res.data.customerUser))
+              this.customerUser = res.data.customerUser
             }
           });
         });
-			},
-			// 获取用户信息
-			getCustomerUser(){
-				let customerUser = window.sessionStorage.getItem('user_wx');
+      },
+      // 获取用户信息
+      getCustomerUser(){
+        let customerUser = window.sessionStorage.getItem('user_wx');
 				
         if (customerUser){
-					this.customerUser = JSON.parse(customerUser)
+          this.customerUser = JSON.parse(customerUser)
         }
-			}
+      }
     }
   }
 </script>

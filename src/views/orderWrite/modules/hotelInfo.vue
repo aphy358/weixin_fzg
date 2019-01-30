@@ -78,6 +78,7 @@
 		color: #050505;
 		border-bottom: 0.01rem dashed #e3e3e3;
 		font-size: 0.14rem;
+		overflow: hidden;
 	}
 	
 	.additional-info p{
