@@ -36,6 +36,8 @@
         </li>
         
       </ul>
+
+      <div v-if="concernList.length == 0 && infiniteLoad" class="no-data">您还没有关注任何酒店！</div>
       
       <Loading v-if="concernList.length == 0 && loading" />
 
@@ -193,5 +195,11 @@ export default {
     }
 
   }
+}
+
+.no-data{
+  text-align: center;
+  margin: 0.3rem 0;
+  color: #ea2c2c;
 }
 </style>
