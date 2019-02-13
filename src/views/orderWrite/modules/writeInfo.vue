@@ -42,7 +42,7 @@
 		</div>
 		<div class="per-module name-module" v-if="nameArr.length > 0 && nameRegArr.length > 0" :max="maxPersonNum" :style="'height:' + nameModuleHeight + 'rem;'">
 			<div class="per-line">
-				<span class="per-info-title purple"><i class="iconfont icon-yonghu"></i>入住人</span>
+				<span class="per-info-title purple" style="float: none;"><i class="iconfont icon-yonghu"></i>入住人</span>
 			</div>
 			<div class="per-line" v-for="item in nameRank" v-show="nameVisibleArr[item]" :key="'_inname' + item">
 				<input v-validate="nameRegArr[item]" name="姓" type="text" class="username-input last-name"
@@ -171,7 +171,7 @@
         marketingIconVisible: false,
         emailIconVisible: false,
         email: '',
-        tel: '',
+//        tel: '',
         specialReq: [],
         nameArr: [],
         nameRank: [],
@@ -219,6 +219,9 @@
       },
       hotelPrice() {
         return this.$store.state.orderWrite.hotelPrice
+      },
+      tel() {
+        return this.$store.state.orderWrite.distributor.phone || '';
       },
       staticInfo() {
         return this.$store.state.orderWrite.staticInfo

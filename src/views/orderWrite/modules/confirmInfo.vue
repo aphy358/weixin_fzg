@@ -169,12 +169,13 @@
         let _this = this;
         let content = this.$store.state.orderWrite.content;
         let orderInfo = this.$store.state.orderWrite.orderInfo;
+        let agreement = this.$store.state.orderWrite.content.agreement;
         params.isJustCheckSameOrder = 0;
         Indicator.open('下单中...');
         _this.$api.orderWrite.syncSaveOrder(params).then(function (data) {
           Indicator.close();
           if (data.returnCode === 1){
-            if ((content.paymentType === 0 && orderInfo.paymentTerm !== 0) || +params.willUsedBalance === _this.orderInfo.totalPay){
+            if ((content.paymentType === 0 && orderInfo.paymentTerm !== 0 && agreement.status === 0) || +params.willUsedBalance === _this.orderInfo.totalPay){
               //直接成单
 //              MessageBox.alert('下单成功').then(action => {
 //                replacePage(_this.$router, 'orderDetail', {orderId: data.data.orderId,});
