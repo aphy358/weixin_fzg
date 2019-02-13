@@ -254,7 +254,7 @@ export default {
     color: #ff7625;
     border: none;
     border-radius: 0.02rem;
-    line-height: 0.4rem;
+    line-height: 0.41rem;
     box-shadow: 0 0 0.05rem 0 rgba(0, 0, 0, 0.1);
   }
 
