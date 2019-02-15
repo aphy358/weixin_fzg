@@ -98,7 +98,7 @@
           orderCode: _this.content.orderCode,
           fee: _this.content.realReceiveMoney * 100
         };
-        Indicator.open('请求支付参数中...');
+        Indicator.open('支付中...');
         _this.$api.orderPay.syncPayStart(params).then(res => {
           Indicator.close();
           if (res.returnCode === 1){
@@ -118,7 +118,8 @@
         });
       },
       readDetail(){
-        replacePage(this.$router, 'orderDetail', {orderId: this.$store.state.orderWrite.orderId,});
+        alert(this.$store.state.orderWrite.orderId);
+        replacePage(this.$router, 'orderDetail', {orderId: this.$store.state.orderWrite.orderId});
         this.orderSuccessVisible = false;
       },
       clickGoBack(){

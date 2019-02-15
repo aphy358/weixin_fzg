@@ -21,3 +21,6 @@ export const syncLogout = (args, loading = true) => http.post("/vue/logout.do", 
 
 // 订单详情
 export const syncOrderDetail = (args, loading = false) => http.post("/vue/order/detail.do", args, loading);
+
+//退款
+export const syncCancelHotelOrder = (args, loading = false) => http.post("/vue/myinfo/cancelHotelOrder.do", args, loading);

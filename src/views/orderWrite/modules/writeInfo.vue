@@ -64,7 +64,7 @@
 			<div class="per-line">
 				<span class="per-info-title">个性化需求</span>
 				<span class="per-info-txt" @click="openSpecial"
-				      style="overflow: hidden;width: 2.4rem;box-sizing: border-box;height: 100%;">{{specialStr || '添加个性化需求'}}</span>
+				      style="overflow: hidden;width: 2.4rem;box-sizing: border-box;height: 100%;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">{{specialStr || '添加个性化需求'}}</span>
 				<mt-popup class="popup-bottom" v-model="specialVisible" position="bottom">
 					<OperationBtn @clear="clearSpecial" @confirm="confirmSpecial"/>
 					<mt-checklist v-model="specialReq" :options="specialReqList"></mt-checklist>
@@ -108,7 +108,7 @@
 			<h6 class="rule-title">取消条款</h6>
 			<p class="rule-txt">{{hotelPrice.cancellationDesc}}</p>
 			<h6 class="rule-title">入住离店时间</h6>
-			<p class="rule-txt">酒店入住时间最早为{{hotelPrice.arriveStartTime || "14:00"}}，入住最晚时间为{{hotelPrice.arriveEndTime || (staticInfo.country == 70007 ? "12:00" : "24:00")}}。</p>
+			<p class="rule-txt">酒店入住时间最早为{{hotelPrice.arriveStartTime || "14:00"}}，{{staticInfo.country == 70007 ? ("退房时间最晚为次日" + (hotelPrice.arriveEndTime || '12:00')) : ("入住最晚时间为" + (hotelPrice.arriveEndTime || '24:00'))}}。</p>
 			<h6 class="rule-title" v-if="staticInfo.country == 70139">温馨提示</h6>
 			<p class="rule-txt" v-if="staticInfo.country == 70139">应马来西亚政府要求，所有星级的住宿场所和酒店将征收旅游税，外国游客需缴付MYR 10/房/晚，在客人办理离店时支付酒店前台！</p>
 			<h6 class="rule-title" v-if="hotelPrice.checkInInstructions">入住提示</h6>
@@ -171,7 +171,7 @@
         marketingIconVisible: false,
         emailIconVisible: false,
         email: '',
-//        tel: '',
+        tel: '',
         specialReq: [],
         nameArr: [],
         nameRank: [],
@@ -220,13 +220,12 @@
       hotelPrice() {
         return this.$store.state.orderWrite.hotelPrice
       },
-      tel() {
-        return this.$store.state.orderWrite.distributor.phone || '';
-      },
       staticInfo() {
         return this.$store.state.orderWrite.staticInfo
       },
       content() {
+        //设置电话号码
+        this.tel = this.$store.state.orderWrite.distributor.phone || '';
         return this.$store.state.orderWrite.content
       },
       taxesAndFeesRMB() {
@@ -251,6 +250,14 @@
           this.$store.commit('orderWrite/setCommonState', {k: 'roomNum', v: newValue});
         }
       },
+//      tel: {
+//        get: function () {
+//          return this.$store.state.orderWrite.distributor.phone || '';
+//        },
+//        set: function (newValue) {
+//          return newValue;
+//        }
+//      },
       specialReqList() {
         let arr = [];
         let specialConditions = this.$store.state.orderWrite.specialConditions;
@@ -442,14 +449,25 @@
               //弹出确认框
               let name = '';
               let nameParams = '';
+              //初始化入住人信息
+              let roomNoArr = [];
+              let v = 0;
+              for (let i = 0; i < this.nameArr.length; i++) {
+                if (i === 0 || i % this.maxPersonNum === 0){
+                  ++v;
+                }
+                roomNoArr[i] = v;
+              }
               for (let i = 0; i < this.nameArr.length; i++) {
                 let item = this.nameArr[i];
                 if (item.l && item.f && item.n){
                   name += item.l + item.f + '[' + item.n + ']，';
-                  nameParams += (i + 1) + '#' + (i%this.maxPersonNum === 0 ? 'main' : 'other') + '#' + item.l + '#' + item.f + '#' + item.n;
+                  nameParams += roomNoArr[i] + '#' + (i%this.maxPersonNum === 0 ? 'main' : 'other') + '#' + item.l + '#' + item.f + '#' + item.n + ',';
                 }
               }
               name = name.replace(/，$/, '');
+              nameParams = nameParams.replace(/,$/, '');
+              //组织参数
               let params = {
                 hotelName: this.$store.state.orderWrite.staticInfo.infoName,
                 roomType: this.$store.state.orderWrite.hotelPrice.roomName,

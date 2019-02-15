@@ -26,7 +26,7 @@
 						<span class="order-total">￥{{item.salePrice}}</span>
 					</div>
 					<div class="operate-order" v-if="item.canPayment || item.canCancle">
-						<button @click.stop="cancelOrder" v-if="item.canCancle">取消订单</button>
+						<button @click.stop="cancelOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.canCancle">取消订单</button>
 						<button @click.stop="payOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.canPayment">去支付</button>
 					</div>
 				</div>
@@ -53,14 +53,14 @@
 				<input type="text" class="hol-filter-input" placeholder="请输入酒店名" v-model="params.itemName">
 			</li>
 			<li class="hol-filter-item">
-				<span class="hol-filter-label">入住日期</span>
+				<span class="hol-filter-label">入住开始日期</span>
 				<div class="hol-filter-date-inner">
 					<input type="text" class="hol-filter-input" placeholder="选择入住日期" readonly :value="params.beginDate">
 					<input type="date" class="hol-filter-date" v-model="params.beginDate">
 				</div>
 			</li>
 			<li class="hol-filter-item">
-				<span class="hol-filter-label">离店日期</span>
+				<span class="hol-filter-label">入住结束日期</span>
 				<div class="hol-filter-date-inner">
 					<input type="text" class="hol-filter-input" placeholder="选择离店日期" readonly :value="params.endDate">
 					<input type="date" class="hol-filter-date" v-model="params.endDate">
@@ -134,7 +134,7 @@
   import LoadMore from '@/components/LoadMore.vue';
   import noOrder from '@/assets/img/no-order.png'
   import Loading from '@/components/Loading.vue'
-  import { Indicator } from 'mint-ui'
+  import { Indicator,MessageBox } from 'mint-ui'
   import { debounce } from 'lodash'
   
   export default {
@@ -158,10 +158,10 @@
         reasonVisible: false,
         cancelReasonId: '',
         reasonList: [
-          {
-            value: '-1',
-            label: '取消订单'
-          },
+//          {
+//            value: '-1',
+//            label: '取消订单'
+//          },
           {
             value: '0',
             label: '行程改变'
@@ -247,8 +247,45 @@
       unCancelOrder(){
         this.reasonVisible = false;
       },
-      ensureCancelOrder(){
-        this.reasonVisible = false;
+      ensureCancelOrder(orderId, orderCode, salePrice){
+        if (this.cancelReasonId){
+          this.reasonVisible = false;
+  
+          let reason = '';
+          if (this.cancelReasonId === 4){
+            MessageBox.prompt('请输入取消理由').then(({ value, action }) => {
+              reason = value;
+            });
+          }else{
+            for (let i = 0; i < this.reasonList.length; i++) {
+              let o = this.reasonList[i];
+              if (this.cancelReasonId === o.value){
+                reason = o.label;
+                break;
+              }
+            }
+          }
+          
+          let params = {
+            orderId: orderId,
+            reasonType: this.cancelReasonId,
+            reason: reason
+          };
+  
+          this.$api.myCenter.syncCancelOrder(params).then(res => {
+            if (res.returnCode === 1){
+              if (res.data){
+                MessageBox.alert('取消成功');
+              }else{
+                MessageBox.alert(res.returnMsg);
+              }
+            }else{
+              MessageBox.alert(res.returnMsg);
+            }
+          });
+        }else{
+          MessageBox.alert('请选择取消订单原因');
+        }
       },
       getHotelOrderList: debounce(function (flag) {
         if(flag){ this.resetData() }
@@ -412,7 +449,7 @@
 		position: fixed;
 		top: 0;
 		right: -2.9rem;
-		width: 2.5rem;
+		width: 2.6rem;
 		height: 100%;
 		background-color: #fff;
 		padding: 0.1rem;
@@ -429,14 +466,14 @@
 			}
 			
 			@at-root .hol-filter-label{
-				width: 0.62rem;
+				width: 0.72rem;
 				text-align: right;
 				line-height: 0.4rem;
 				margin-right: 0.1rem;
 			}
 
 			@at-root .hol-filter-input{
-				width: calc(100% - 0.72rem);
+				width: calc(100% - 0.82rem);
 				border: none;
 				height: 0.4rem;
 			}
@@ -447,7 +484,7 @@
 			}
 			
 			@at-root .hol-filter-date-inner{
-				width: calc(100% - 0.72rem);
+				width: calc(100% - 0.82rem);
 				height: 0.4rem;
 				overflow: hidden;
 

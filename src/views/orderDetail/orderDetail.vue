@@ -148,6 +148,7 @@
 <script>
   import GoBack from '@/components/GoBack.vue';
   import {queryString} from '@/assets/util';
+  import { Indicator } from 'mint-ui'
   
   export default {
     name: 'orderDetail',
@@ -181,7 +182,9 @@
     methods: {
       initData(){
         let _this = this;
+        Indicator.open('查询中...');
         this.$api.myCenter.syncOrderDetail({orderId: queryString('orderId')}).then(res => {
+          Indicator.close();
           if (res.returnCode === 1){
             _this.orderCode = res.data.orderCode;
             _this.clauseDesc = res.data.clauseDesc;
@@ -192,12 +195,13 @@
             _this.customerUser = res.data.customerUser;
             //特殊需求
             let specialArr = res.data.specialRequire;
+            let str = '';
             if (specialArr && specialArr.length > 0){
               for (let i = 0; i < specialArr.length; i++) {
                 let item = specialArr[i];
-                _this.specialStr += item + '，'
+                str += item + '，'
               }
-              _this.specialStr = _this.specialStr.replace(/，$/, '');
+              _this.specialStr = str.replace(/，$/, '');
             }
       
             let orderDetailsArr = res.data.orderDetailsInfoList;
