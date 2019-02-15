@@ -53,7 +53,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { gotoPage, goBackPage, replacePage } from '@/assets/util';
+  import { gotoPage, goBackPage, replacePage, addDays } from '@/assets/util';
   import { MessageBox, Indicator } from 'mint-ui'
   
   export default {
@@ -105,8 +105,8 @@
           childrenAgeStr: content.childrenAgeStr,
           isQueryPrice: '',
           roomId: content.roomId,
-          startDate: content.startDate,
-          endDate: content.endDate,
+          startDate: addDays(_this.$store.state.orderWrite.checkin),
+          endDate: addDays(_this.$store.state.orderWrite.checkout),
           dateNum: content.dateNum,
           rateType: content.rateType,
           paymentType: content.paymentType,

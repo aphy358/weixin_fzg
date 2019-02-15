@@ -58,7 +58,7 @@
         };
         this.$api.orderWrite.syncProperMarket(params).then(res => {
           if (res.inProperMarket){
-            MessageBox('提示', '当前价格，不适于该国籍客人，请联系捷旅客服后下单，电话33397777');
+            MessageBox.alert('当前价格，不适于该国籍客人，请联系捷旅客服后下单，电话33397777');
           }else{
             this.$emit('selectNationality', title);
             this.$emit('hideNationality');

@@ -38,7 +38,7 @@
       </div>
 
       <div class="login-bline">
-        <div class="login-registry">快速注册</div>
+        <div class="login-registry" @click="goRegister">快速注册</div>
         <!-- <div class="login-forget">忘记密码？</div> -->
       </div>
 
@@ -125,6 +125,9 @@ export default {
       };
 
       this.$validator.localize(dictionary);
+    },
+    goRegister(){
+      gotoPage(this.$router, 'register');
     }
   }
 }
