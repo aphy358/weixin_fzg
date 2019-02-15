@@ -134,7 +134,7 @@ export default {
     clickOneDay(disable, m, _day){
       if(disable) return false;
 
-      let dayStr = m.year + '-' + m.month + '-' + _day.day
+      let dayStr = addDays(m.year + '/' + m.month + '/' + _day.day)
 
       if(this.checkout){
         // 当入离日期都有的时候，则将当前被点击的日期设置为入住日期，同时清空离店日期
