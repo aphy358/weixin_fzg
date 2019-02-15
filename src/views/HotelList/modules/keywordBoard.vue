@@ -32,7 +32,7 @@
 
         <div v-show="resultList.length > 0">
           <ul>
-            <li v-for="n in resultList" :key="n.i" @click="queryHotelInfo(n)">
+            <li class="kpc-result-item" v-for="n in resultList" :key="n.i" @click="queryHotelInfo(n)">
               <div class="kw-r-row">
                 <div class="kw-r-icon">
                   <span class="iconfont icon-baofang"></span>
@@ -205,22 +205,15 @@ export default {
 <style lang="scss">
 .result-list-wrap{
   font-size: 0.14rem;
-  margin-top: 0.56rem;  
+  margin-top: 0.56rem;
+  
+  &>div{
+    overflow: hidden;
+  }
 
   @at-root .kw-r-row {
     position: relative;
-    line-height: 0.4rem;
-
-    &:before {
-      content: '';
-      position: absolute;
-      border-bottom: 0.01rem solid rgba(128, 128, 128, 0.32);
-      transform: scaleY(.5);
-      transform-origin: 50% 100%;
-      width: 100%;
-      left: 0;
-      top: 0;
-    }
+    line-height: 0.4rem;   
 
     @at-root .kw-r-icon {
       float: left;
@@ -249,6 +242,22 @@ export default {
       @at-root .kw-hlight {
         color: #ff7625;
       }
+    }
+  }
+
+  @at-root .kpc-result-item{
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      border-bottom: 0.01rem solid rgba(128, 128, 128, 0.32);
+      transform: scaleY(.5);
+      transform-origin: 50% 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
     }
   }
 }
