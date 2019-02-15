@@ -392,11 +392,11 @@ export default {
                 let surDate = addDays(new Date(formatDateOne(orderSurcharge.startTime)), 0)
 
                 if(checkinDate == surDate){
-                  // 统计加床.加早.加宽带数量
+                  // 统计加床.加早.加宽带数量，附加费类型 1为加早 2为加床 3为宽带
                   if(orderSurcharge.typeId == 1){
-                    bedNum += (+orderSurcharge.sellReal)
-                  }else if(orderSurcharge.typeId == 2){
                     brfNum += (+orderSurcharge.sellReal)
+                  }else if(orderSurcharge.typeId == 2){
+                    bedNum += (+orderSurcharge.sellReal)
                   }else if(orderSurcharge.typeId == 3){
                     wifiNum += (+orderSurcharge.sellReal)
                   }
