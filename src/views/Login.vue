@@ -22,7 +22,7 @@
               <span class="iconfont icon-user"></span>
             </div>
             <div class="login-item">
-              <input type="text" placeholder="用户名" e="'required'" v-model="userName" name="用户名" :class="{'error': errors.has('用户名')}" />
+              <input type="text" placeholder="用户名" v-validate="'required'" v-model="userName" name="用户名" :class="{'error': errors.has('用户名')}" />
             </div>
           </div>
           
