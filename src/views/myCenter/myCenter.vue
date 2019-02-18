@@ -214,7 +214,7 @@
 			@at-root .hot-line{
 				background-color: transparent;
 				position: fixed;
-    		bottom: 0.1rem;
+				bottom: 0.1rem;
 				left: 0;
 				display: block;
 				width: 100%;

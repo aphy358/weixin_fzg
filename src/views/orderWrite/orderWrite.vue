@@ -45,7 +45,7 @@
   import { replacePage, goBackPage } from '@/assets/util';
 	
   export default {
-    name: '',
+    name: 'orderWrite',
     
     data() {
       return {

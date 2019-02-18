@@ -30,7 +30,7 @@
 					</li>
 					<li>
 						<span class="item-txt">订单状态</span>
-						<span class="item-con deep-orange">{{orderInfo.innerStatus === -1 ? '未向客户确认' : orderInfo.innerStatus === 0 ? '已向客户确认' : orderInfo.innerStatus === 1 ? '已向客户拒单' : orderInfo.innerStatus === 2 ? '申请取消中' : orderInfo.innerStatus === 3 ? '不能取消' : orderInfo.innerStatus === 4 ? '已取消' : ''}}</span>
+						<span class="item-con deep-orange">{{['待确认','已确认','已拒单','取消申请中','无法取消','已取消'][orderInfo.innerStatus + 1]}}</span>
 					</li>
 					<li>
 						<span class="item-txt">取消条款</span>
