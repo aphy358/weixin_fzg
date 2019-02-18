@@ -392,11 +392,11 @@ export default {
                 let surDate = addDays(new Date(formatDateOne(orderSurcharge.startTime)), 0)
 
                 if(checkinDate == surDate){
-                  // 统计加床.加早.加宽带数量
+                  // 统计加床.加早.加宽带数量，附加费类型 1为加早 2为加床 3为宽带
                   if(orderSurcharge.typeId == 1){
-                    bedNum += (+orderSurcharge.sellReal)
-                  }else if(orderSurcharge.typeId == 2){
                     brfNum += (+orderSurcharge.sellReal)
+                  }else if(orderSurcharge.typeId == 2){
+                    bedNum += (+orderSurcharge.sellReal)
                   }else if(orderSurcharge.typeId == 3){
                     wifiNum += (+orderSurcharge.sellReal)
                   }
@@ -490,6 +490,23 @@ export default {
     },
     // 确认订单
     confirmOrder(){
+      let pattern
+
+      // 去哪儿确认号，只能是数字、大小写字母、逗号
+      if(this.orderInfo.suppId == '31334'){
+        pattern = new RegExp("^[a-zA-Z 0-9  ， ,]+$")
+        if(!pattern.test(this.hotelCode)){
+          Toast('去哪儿客户确认号 只能输入数字、 大小字母或逗号！')
+          return false
+        }
+      }else{
+        pattern = new RegExp("^[a-zA-Z 0-9  ， % \\- _ () ‘ ’ '' & @ ,]+$")
+        if(!pattern.test(this.hotelCode)){
+          Toast('确认号格式有误！')
+          return false
+        }
+      }
+
       let param = {"status": 1, "orderInfoId": this.orderId, "textVal": this.hotelCode, "isChange": this.hotelCode != this.hotelOrderCode ? 1 : ""}
 
       this.$api.eb.syncHandleOrder(param).then(res => {
@@ -502,6 +519,8 @@ export default {
           }
         }
       })
+
+      this.hideAcceptPopup()
     },
     // 更新供应商 Remark（修改确认号？）
     updateOrderSuppRemark(){
@@ -558,7 +577,6 @@ export default {
     },
     // 提交接受
     submitAccept(){
-      this.hideAcceptPopup()
       this.confirmOrder()
     },
     // 输入确认号
