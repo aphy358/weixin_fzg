@@ -39,7 +39,7 @@
           <ul class="rsp-popup-week-list">
             <li class="rsp-popup-week-item" 
               v-for="(n, i) in 7" :key="n" :class="weekActive(i + 1)" 
-              @click="switchWeek(i)">{{ weekTextArr[i] }}</li>
+              @click="switchWeek(i + 1)">{{ weekTextArr[i] }}</li>
           </ul>
         </div>
         <div class="rsp-popup-block">
