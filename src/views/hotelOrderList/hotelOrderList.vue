@@ -21,12 +21,13 @@
 						<p>入住日期：{{item.beginDate}}</p>
 						<p>离店日期：{{item.endDate}}</p>
 						<p>
-							<span class="canceled" :class="item.innerStatus === -1 ? 'purple' : item.innerStatus === 0 ? 'green' : item.innerStatus === 1 ? 'red' : item.innerStatus === 2 ? 'orange' : item.innerStatus === 3 ? 'red' : ''">{{item.innerStatus === -1 ? '待确认' : item.innerStatus === 0 ? '已确认' : item.innerStatus === 1 ? '已拒单' : item.innerStatus === 2 ? '取消申请中' : item.innerStatus === 3 ? '无法取消' : '已取消'}}</span>
+							<span class="canceled" :class="item.innerStatusClass">{{item.innerStatusText}}</span>
+							<span class="pay-status" :class="item.payStatusClass">{{item.payStatusText}}</span>
 						</p>
 						<span class="order-total">￥{{item.salePrice}}</span>
 					</div>
 					<div class="operate-order" v-if="item.canPayment || item.canCancle">
-						<button @click.stop="cancelOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.canCancle">取消订单</button>
+						<button @click.stop="cancelOrder(item.orderInfoId)" v-if="item.canCancle">取消订单</button>
 						<button @click.stop="payOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.canPayment">去支付</button>
 					</div>
 				</div>
@@ -134,7 +135,7 @@
   import LoadMore from '@/components/LoadMore.vue';
   import noOrder from '@/assets/img/no-order.png'
   import Loading from '@/components/Loading.vue'
-  import { Indicator,MessageBox } from 'mint-ui'
+  import { Indicator,MessageBox,Toast } from 'mint-ui'
   import { debounce } from 'lodash'
   
   export default {
@@ -188,6 +189,7 @@
         endVisible: false,
         noOrder: '',
         noDataVisible: false,
+        cancelOrderId: ''
       }
     },
     
@@ -226,14 +228,15 @@
       },
       ensure(){
         this.getHotelOrderList(1);
-			},
-			resetData(){
-				this.filterVisible = false;
+      },
+      resetData(){
+        this.filterVisible = false;
         this.$set(this.params, 'currPage', 0);
         this.orderList = [];
         this.loadingContinue = true;
-			},
-      cancelOrder(){
+      },
+      cancelOrder(orderId){
+        this.cancelOrderId = orderId;
         this.reasonVisible = true;
       },
       payOrder(orderId, orderCode, salePrice){
@@ -247,45 +250,52 @@
       unCancelOrder(){
         this.reasonVisible = false;
       },
-      ensureCancelOrder(orderId, orderCode, salePrice){
+      ensureCancelOrder(){
         if (this.cancelReasonId){
           this.reasonVisible = false;
   
-          let reason = '';
-          if (this.cancelReasonId === 4){
+          let _this = this;
+          if (this.cancelReasonId == 4){
             MessageBox.prompt('请输入取消理由').then(({ value, action }) => {
-              reason = value;
+              if (value){
+                _this.sendCancelOrderRequest({
+                  orderId: _this.cancelOrderId,
+                  reasonType: _this.cancelReasonId,
+                  reason: value
+                })
+              }else{
+                Toast('请输入取消理由');
+              }
             });
           }else{
             for (let i = 0; i < this.reasonList.length; i++) {
               let o = this.reasonList[i];
               if (this.cancelReasonId === o.value){
-                reason = o.label;
+                _this.sendCancelOrderRequest({
+                  orderId: _this.cancelOrderId,
+                  reasonType: _this.cancelReasonId,
+                  reason: o.label
+                });
                 break;
               }
             }
           }
-          
-          let params = {
-            orderId: orderId,
-            reasonType: this.cancelReasonId,
-            reason: reason
-          };
-  
-          this.$api.myCenter.syncCancelOrder(params).then(res => {
-            if (res.returnCode === 1){
-              if (res.data){
-                MessageBox.alert('取消成功');
-              }else{
-                MessageBox.alert(res.returnMsg);
-              }
-            }else{
-              MessageBox.alert(res.returnMsg);
-            }
-          });
         }else{
           MessageBox.alert('请选择取消订单原因');
         }
+      },
+      sendCancelOrderRequest(params){
+        this.$api.myCenter.syncCancelOrder(params).then(res => {
+          if (res.returnCode === 1){
+            if (res.data){
+              MessageBox.alert('取消成功');
+            }else{
+              MessageBox.alert(res.returnMsg);
+            }
+          }else{
+            MessageBox.alert(res.returnMsg);
+          }
+        });
       },
       getHotelOrderList: debounce(function (flag) {
         if(flag){ this.resetData() }
@@ -300,11 +310,48 @@
             Indicator.close();
             if (res.returnCode === 1){
               _this.noDataVisible = true;
+              
+              let orderList = res.data.item;
+              for (let i = 0; i < orderList.length; i++) {
+                let o = orderList[i];
+                
+                //支付状态
+                let payStatusText = '';
+                let payStatusClass = '';
+                if (o.paymentRemark){
+                  payStatusClass = 'red';
+                  payStatusText = (o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账') + o.paymentRemark;
+                }else{
+                  if (o.paymentTerm != 0){
+                    payStatusClass = o.paymentStatus === 0 ? 'green' : o.paymentStatus === 1 ? 'red' : 'orange';
+                    payStatusText = o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账';
+                  }
+                  if (o.paymentTerm == 0 && o.refunded == null){
+                    payStatusClass = o.paymentStatus === 0 ? 'green' : o.paymentStatus === 1 ? 'red' : 'orange';
+                    payStatusText = o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账';
+                  }
+                  if (o.paymentTerm == 0 && o.refunded != null){
+                    let payObj = {'0':'未支付','1':'已退款','2':'已支付','3':'退款中','-1':'退款失败','-2':'支付失败','4':'已支付','-4':'支付失败','5':'已支付','-5':'支付失败'};
+                    payStatusClass = o.refunded == 0 || o.refunded == -1 || o.refunded == -2 ? 'red' : o.refunded == 1 || o.refunded == 2 || o.refunded == 4 || o.refunded == 5 || o.refunded == 3 ? 'green' : 'orange';
+                    payStatusText = payObj[o.refunded];
+                  }
+                }
+                
+                //订单状态
+                let innerStatusClass = o.innerStatus === -1 ? 'purple' : o.innerStatus === 0 ? 'green' : o.innerStatus === 1 ? 'red' : o.innerStatus === 2 ? 'orange' : o.innerStatus === 3 ? 'red' : '';
+                let innerStatusText = o.innerStatus === -1 ? '待确认' : o.innerStatus === 0 ? '已确认' : o.innerStatus === 1 ? '已拒单' : o.innerStatus === 2 ? '取消申请中' : o.innerStatus === 3 ? '无法取消' : '已取消';
+                
+                o.payStatusClass = payStatusClass;
+                o.payStatusText = payStatusText;
+                o.innerStatusClass = innerStatusClass;
+                o.innerStatusText = innerStatusText;
+              }
+              
               if (res.data.item.length <= 0){
                 _this.loadingContinue = false;
                 _this.endVisible = true;
               }else{
-                _this.orderList = Object.assign(_this.orderList.concat(res.data.item));
+                _this.orderList = Object.assign(_this.orderList.concat(orderList));
                 _this.infiniteLoad = false;
               }
             }
@@ -387,13 +434,14 @@
 			
 		}
 		
-		.canceled{
+		.canceled,.pay-status{
 			background-color: #fff5ec;
 			color: #ff592c;
 			display: inline-block;
 			height: 0.24rem;
 			line-height: 0.24rem;
 			padding: 0 0.1rem;
+			margin-right: 0.1rem;
 			
 			&.purple{
 				color: #666fb1;
@@ -449,7 +497,7 @@
 		position: fixed;
 		top: 0;
 		right: -2.9rem;
-		width: 2.6rem;
+		width: 2.7rem;
 		height: 100%;
 		background-color: #fff;
 		padding: 0.1rem;
@@ -466,14 +514,14 @@
 			}
 			
 			@at-root .hol-filter-label{
-				width: 0.72rem;
+				width: 0.82rem;
 				text-align: right;
 				line-height: 0.4rem;
 				margin-right: 0.1rem;
 			}
 
 			@at-root .hol-filter-input{
-				width: calc(100% - 0.82rem);
+				width: calc(100% - 0.92rem);
 				border: none;
 				height: 0.4rem;
 			}
@@ -484,7 +532,7 @@
 			}
 			
 			@at-root .hol-filter-date-inner{
-				width: calc(100% - 0.82rem);
+				width: calc(100% - 0.92rem);
 				height: 0.4rem;
 				overflow: hidden;
 

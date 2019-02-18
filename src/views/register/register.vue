@@ -360,7 +360,7 @@
             for (let i = 0; i < weekList.length; i++) {
               let item = weekList[i];
               if (item) {
-                weekStr += (i + 1) + ',';
+                weekStr += (i + 1);
               }
             }
             weekStr = weekStr.replace(/,$/, '');
@@ -384,11 +384,12 @@
               confirmWay: this.receiveInfo,
               registerPassWord: this.password
             };
+            let _this = this;
             this.$api.register.syncRegister(params).then(res => {
               if (res.returnCode === 1) {
                 Toast('注册成功，等待审核');
                 setTimeout(function () {
-                  gotoPage(this.$router, 'login')
+                  gotoPage(_this.$router, 'login')
                 }, 3000);
               } else {
                 Toast(res.returnMsg);

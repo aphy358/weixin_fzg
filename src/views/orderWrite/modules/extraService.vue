@@ -136,6 +136,9 @@
         addBreakfastList: [],
         addBedList: [],
         addNetworkList: [],
+        surchargeBref: [],
+        surchargeBed: [],
+        surchargeInternet: [],
         addBedNumObj: {},
         breakfastVisible: false,
         bedVisible: false,
@@ -164,7 +167,7 @@
       },
     },
     
-    activated(){
+    created(){
       let params = this.extrafeeParams;
       let _this = this;
       
@@ -289,7 +292,7 @@
         if (num){
           if (/^[0-9]+$/.test(num)){
             //通过校验
-            let list,selectType,addList,num,date,price,name,height,storeIndex;
+            let list,selectType,addList,num,date,addType,price,name,height,storeIndex;
             if (type === 0){
               list = this.breakfastTypeList; //类型列表，比如“儿童早、成人早”等
               selectType = this.breakfastType; //要添加的杂费的类型，比如儿童早
@@ -332,6 +335,7 @@
               if (item.type === selectType){
                 price = item.price;
                 name = item.name;
+                addType = item.type;
               }
             }
   
@@ -347,11 +351,23 @@
               price: price
             });
   
+            this.$set(this[storeIndex], this[storeIndex].length, {
+              date: date,
+              count: String(num),
+              type: addType,
+              name: name
+            });
+  
             this[height] += 0.4;
   
             this.$store.commit('orderWrite/setCommonState', {
-              k : storeIndex,
+              k : addList,
               v : this[addList]
+            });
+  
+            this.$store.commit('orderWrite/setCommonState', {
+              k : storeIndex,
+              v : this[storeIndex]
             });
           }else{
             Toast(msg + '份数必须为正整数');
