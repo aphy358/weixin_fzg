@@ -64,6 +64,9 @@ export default {
   },
   activated(){
   },
+  deactivated(){
+    this.hidePopup()
+  },
   computed: {},
   mounted(){},
   methods:{
