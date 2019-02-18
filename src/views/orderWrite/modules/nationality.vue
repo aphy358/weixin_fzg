@@ -25,7 +25,7 @@
         nationalityList: [
           {
             id: 70007,
-            title: '中国'
+            title: '中国大陆'
           }
         ]
       }
@@ -53,7 +53,7 @@
       },
       selectNationality(id, title){
         let params = {
-          suppId: 231,
+          suppId: this.$store.state.orderWrite.,
           countryId: id
         };
         this.$api.orderWrite.syncProperMarket(params).then(res => {

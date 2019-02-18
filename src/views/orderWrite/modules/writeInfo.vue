@@ -669,10 +669,13 @@
 					width: 1rem;
 					
 					&.nationality {
-						width: 0.4rem;
-						height: 0.14rem;
+						width: 0.6rem;
+						height: 0.16rem;
+						line-height: 0.16rem;
 						padding-left: 0;
 						display: inline-block;
+						overflow: hidden;
+						vertical-align: sub;
 						
 						&.grey {
 							color: #d8d8dc;
@@ -681,7 +684,7 @@
 				}
 				
 				.username-icon {
-					padding: 0.1rem 0.2rem;
+					padding: 0.1rem 0.1rem;
 					font-size: 0.16rem;
 				}
 				

@@ -1,13 +1,10 @@
 <template>
 
-  <transition-group :name="transitionName" id="app">
-    <div key="a">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"/>
+  <transition :name="transitionName" id="app">
+      <keep-alive exclude="orderWrite,orderPay,register">
+        <router-view/>
       </keep-alive>
-    </div>
-    <router-view v-if="!$route.meta.keepAlive" key="b"/>
-  </transition-group>
+  </transition>
 
 </template>
 
