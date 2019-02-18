@@ -15,6 +15,7 @@
 
 <script>
   import { MessageBox } from 'mint-ui';
+  import { queryString } from '@/assets/util';
   
   export default {
     name: 'nationality',
@@ -53,7 +54,7 @@
       },
       selectNationality(id, title){
         let params = {
-          suppId: this.$store.state.orderWrite.,
+          suppId: queryString('supplierId'),
           countryId: id
         };
         this.$api.orderWrite.syncProperMarket(params).then(res => {
