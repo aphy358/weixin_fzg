@@ -207,7 +207,7 @@ export default {
         this.starArr
           .filter(n => n.checked)
           .map(n => n.value)
-          .join('，')
+          .join(',')
 
       let showResultStar = 
         this.starArr
