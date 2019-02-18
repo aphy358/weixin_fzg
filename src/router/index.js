@@ -14,7 +14,6 @@ let router = new Router({
       component: Home,
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -23,7 +22,6 @@ let router = new Router({
       component: () => import('@/views/Login.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -32,7 +30,6 @@ let router = new Router({
       component: () => import('@/views/About.vue'),
       meta: {
         wechatAuth: false,
-        keepAlive: true
       },
     },
     {
@@ -41,7 +38,6 @@ let router = new Router({
       component: () => import('@/views/CitySelect/citySelect.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -50,7 +46,6 @@ let router = new Router({
       component: () => import('@/views/HotelList/hotelList.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -59,7 +54,6 @@ let router = new Router({
       component: () => import('@/views/HotelDetail/hotelDetail.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -68,7 +62,6 @@ let router = new Router({
       component: () => import('@/views/CheckinCheckout/CheckinCheckout.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -77,7 +70,6 @@ let router = new Router({
       component: () => import('@/views/orderWrite/orderWrite.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: false
       },
     },
     {
@@ -86,7 +78,6 @@ let router = new Router({
       component: () => import('@/views/orderPay/orderPay.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: false
       },
     },
     {
@@ -95,7 +86,6 @@ let router = new Router({
       component: () => import('@/views/myCenter/myCenter.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -104,7 +94,6 @@ let router = new Router({
       component: () => import('@/views/hotelOrderList/hotelOrderList.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -113,7 +102,6 @@ let router = new Router({
       component: () => import('@/views/orderDetail/orderDetail.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     },
     {
@@ -122,7 +110,6 @@ let router = new Router({
       component: () => import('@/views/register/register.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: false
       },
     },
     {
@@ -131,7 +118,6 @@ let router = new Router({
       component: () => import('@/views/personalInfo/personalInfo.vue'),
       meta: {
         wechatAuth: true,
-        keepAlive: true
       },
     }
   ].concat(ebRouter).concat(qnbRouter),
