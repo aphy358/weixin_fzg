@@ -297,6 +297,21 @@
 //    },
     
     created() {
+      //解决安卓手机下软键盘弹起时底部的总金额一栏会挡住某些
+      let _this = this;
+      let height = document.body.offsetHeight;
+      window.addEventListener("resize", function() {
+        if(document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
+          if (document.body.offsetHeight >= height){
+            _this.payVisible = true;
+          }
+  
+          if (document.body.offsetHeight < height){
+            _this.payVisible = false;
+          }
+        }
+      });
+      
       //新增验证规则
       this.$validator.extend('inner', {
         //中文或拼音
@@ -327,7 +342,6 @@
         }
       };
       this.$validator.localize(dictionary);
-  
   
       //设置入住人相关
       this.setUserName();
@@ -675,7 +689,7 @@
 						padding-left: 0;
 						display: inline-block;
 						overflow: hidden;
-						vertical-align: sub;
+						vertical-align: text-bottom;
 						
 						&.grey {
 							color: #d8d8dc;
@@ -754,7 +768,7 @@
 		background-color: #fff;
 		padding: 0 0.2rem;
 		box-sizing: border-box;
-		transition: all .5s;
+		/*transition: all .5s;*/
 	}
 	
 	.hide-animated {
