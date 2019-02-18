@@ -72,9 +72,7 @@
     
     created(){
       this.erweima = erweima;
-    },
-    
-    activated(){
+  
       Indicator.open('加载中...');
       let _this = this;
       this.$api.orderPay.syncPayInfo({orderId: queryString('orderId')}).then(res => {
@@ -89,6 +87,10 @@
           }
         }
       });
+    },
+    
+    activated(){
+    
     },
     
     methods: {

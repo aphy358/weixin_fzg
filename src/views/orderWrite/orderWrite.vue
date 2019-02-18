@@ -72,9 +72,6 @@
     
     created(){
       this.erweima = erweima;
-    },
-    
-    activated(){
       this.getProductInfo();
     },
     
@@ -102,7 +99,7 @@
         this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: false});
         goBackPage(this.$router);
       }
-    }
+    },
   }
 </script>
 

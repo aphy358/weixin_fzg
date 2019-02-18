@@ -250,14 +250,6 @@
           this.$store.commit('orderWrite/setCommonState', {k: 'roomNum', v: newValue});
         }
       },
-//      tel: {
-//        get: function () {
-//          return this.$store.state.orderWrite.distributor.phone || '';
-//        },
-//        set: function (newValue) {
-//          return newValue;
-//        }
-//      },
       specialReqList() {
         let arr = [];
         let specialConditions = this.$store.state.orderWrite.specialConditions;
@@ -299,10 +291,10 @@
       }
     },
     
-    activated() {
-      //设置入住人相关
-      this.setUserName();
-    },
+//    activated() {
+//      //设置入住人相关
+//      this.setUserName();
+//    },
     
     created() {
       //新增验证规则
@@ -335,6 +327,10 @@
         }
       };
       this.$validator.localize(dictionary);
+  
+  
+      //设置入住人相关
+      this.setUserName();
     },
     
     mounted() {

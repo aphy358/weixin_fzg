@@ -25,6 +25,9 @@ export default {
     // bedDates : [],
     // netData : {},
     // netDates : [],
+    addBreakfastList: [],
+    addBedList: [],
+    addNetworkList: [],
     
     surchargeBref: [],
     surchargeBed: [],
