@@ -5,7 +5,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 	{
@@ -15,7 +14,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 	{
@@ -25,7 +23,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 	{
@@ -35,7 +32,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 	{
@@ -45,7 +41,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 	{
@@ -55,7 +50,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 	{
@@ -65,7 +59,6 @@ export default [{
 		meta: {
 			wechatAuth: true,
 			pageType: 'eb',
-			keepAlive: true
 		},
 	},
 ]
