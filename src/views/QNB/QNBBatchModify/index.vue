@@ -290,7 +290,7 @@ export default {
         : this.checkedWeekArr.splice(index, 1)
 
       let o = this.checkedWeekArr.sort().join(',')
-      if(o == '7,1,2,3,4'){
+      if(o == '1,2,3,4,7'){
         this.weekQuickSwitch = '工作日'
       }else if(o == '5,6'){
         this.weekQuickSwitch = '周末'
