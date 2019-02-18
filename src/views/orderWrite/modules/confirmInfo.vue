@@ -45,8 +45,8 @@
 			</div>
 		</div>
 		<div class="operation-btn">
-			<button class="confirm" @click="confirm">确认</button>
 			<button class="cancel" @click="cancel">取消</button>
+			<button class="confirm" @click="confirm">确认</button>
 		</div>
 	</div>
 </template>
@@ -261,10 +261,10 @@
 				background-color: #fff;
 			}
 			.confirm{
-				border-right: 0.5px solid #c3c3c3;
 				border-radius: 0 0 0 4px;
 			}
 			.cancel{
+				border-right: 0.5px solid #c3c3c3;
 				border-radius: 0 0 4px 0;
 			}
 		}
