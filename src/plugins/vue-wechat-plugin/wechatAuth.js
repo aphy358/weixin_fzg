@@ -15,7 +15,7 @@ class wechatAuth {
     // 调取微信获取code接口
     getCode() {
         let authPageBaseUri = 'https://open.weixin.qq.com/connect/oauth2/authorize'
-        let authParams = `?appid=${this.config.appid}&redirect_uri=${window.location.href.split('#')[0]}&response_type=${this.config.responseType}&scope=${this.config.scope}#wechat_redirect`
+        let authParams = `?appid=${this.config.appid}&redirect_uri=${encodeURIComponent(window.location.href.split('#')[0])}&response_type=${this.config.responseType}&scope=${this.config.scope}#wechat_redirect`
         window.location.href = authPageBaseUri + authParams;
     }
 
