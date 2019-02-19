@@ -5,7 +5,7 @@ import qs from 'qs'
 
 // https://github.com/rstacruz/nprogress
 import { Indicator, Toast } from 'mint-ui'
-import { gotoPage, replacePage } from '@/assets/util'
+import { gotoPage, replacePage, queryString } from '@/assets/util'
 
 const printErrorInfo = info => {
   alert(info)
@@ -72,7 +72,7 @@ function _h(verb) {
 
           // 丢失登录态
           if(response.data.returnCode == -400001){
-            if(window.wechatPlugin){  // 重新授权登录
+            if(window.wechatPlugin && !queryString('code')){  // 重新授权登录
               window.wechatPlugin.getCode()
             }
           }
