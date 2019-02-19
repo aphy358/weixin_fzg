@@ -55,22 +55,9 @@ function _h(verb) {
         // close loading
         loading && loading.close();
 
-        // api拦截
-        if (response.data && (
-          response.data.returnCode == -400013 || response.data.returnCode == -400014
-        )) {
-          localStorage.removeItem('user')
-
-          if (Vue.$router && Vue.$router.push) {
-            Vue.$router.push(_loginurl)
-          } else {
-            window.location.href = _loginurl
-          }
-        }
-
         // 当请求出错或未登录时，在这里统一显示错误信息
         if(response.data){
-          if(response.data.returnCode == 0 || response.data.returnCode == -400001 || response.data.returnCode == -1){
+          if(response.data.returnCode == 0 || response.data.returnCode == -1){
             Toast(response.data.returnMsg)
           }
 
@@ -82,8 +69,14 @@ function _h(verb) {
           }else if(response.data.returnCode == -40003){
             replacePage(window.router, 'qnblogin')
           }
-        }
 
+          // 丢失登录态
+          if(response.data.returnCode == -400001){
+            if(window.wechatPlugin){  // 重新授权登录
+              window.wechatPlugin.getCode()
+            }
+          }
+        }
 
         // api拦截 登录超时
         if (restPath != "/login" && response.data && (response.data.errorCode == 'INVALID_USER' || response.data.errorCode == 'Expired_Token')) {
