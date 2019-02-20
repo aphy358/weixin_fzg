@@ -41,7 +41,7 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    // 设置城市类型，如：'国内'、'港澳台'、'国外'
+    // 设置城市类型，如：'国内0'、'港澳台2'、'国外3'
     setCityType(state, cityType){
       state.cityType = cityType
 
@@ -50,11 +50,11 @@ export default new Vuex.Store({
       state.childrenNum = '0'
       state.childrenStr = ''
 
-      state.checkin = cityType == 1
+      state.checkin = cityType == 3
         ? addDays(new Date, 1) 
         : addDays(new Date, 0)
 
-      state.checkout = cityType == 1
+      state.checkout = cityType == 3
         ? addDays(new Date, 2) 
         : addDays(new Date, 1)
     },

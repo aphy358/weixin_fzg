@@ -38,8 +38,8 @@
         <div class="rsp-popup-block line-after">
           <ul class="rsp-popup-week-list">
             <li class="rsp-popup-week-item" 
-              v-for="(n, i) in 7" :key="n" :class="weekActive(i + 1)" 
-              @click="switchWeek(i + 1)">{{ weekTextArr[i] }}</li>
+              v-for="(n, i) in 7" :key="n" :class="weekActive(weekNumberArr[i])" 
+              @click="switchWeek(weekNumberArr[i])">{{ weekTextArr[i] }}</li>
           </ul>
         </div>
         <div class="rsp-popup-block">
@@ -143,6 +143,7 @@ export default {
 
 
       weekTextArr: ['日', '一', '二', '三', '四', '五', '六'],
+      weekNumberArr: [7, 1, 2, 3, 4, 5, 6],
 
       titleText: '',
 
@@ -285,9 +286,9 @@ export default {
         : this.checkedWeekArr.splice(index, 1)
 
       let o = this.checkedWeekArr.sort().join(',')
-      if(o == '1,2,3,4,5'){
+      if(o == '1,2,3,4,7'){
         this.weekQuickSwitch = '工作日'
-      }else if(o == '6,7'){
+      }else if(o == '5,6'){
         this.weekQuickSwitch = '周末'
       }else if(o == '1,2,3,4,5,6,7'){
         this.weekQuickSwitch = '全部'
@@ -303,9 +304,9 @@ export default {
         let o = _this.weekQuickSwitch
 
         if(o == '工作日'){
-            _this.checkedWeekArr = [1,2,3,4,5]
+            _this.checkedWeekArr = [7,1,2,3,4]
         }else if(o == '周末'){
-            _this.checkedWeekArr = [6,7]
+            _this.checkedWeekArr = [5,6]
         }else if(o == '全部'){
             _this.checkedWeekArr = [1,2,3,4,5,6,7]
         }else{

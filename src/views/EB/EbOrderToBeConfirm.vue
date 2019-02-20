@@ -493,17 +493,19 @@ export default {
       let pattern
 
       // 去哪儿确认号，只能是数字、大小写字母、逗号
-      if(this.orderInfo.suppId == '31334'){
-        pattern = new RegExp("^[a-zA-Z 0-9  ， ,]+$")
-        if(!pattern.test(this.hotelCode)){
-          Toast('去哪儿客户确认号 只能输入数字、 大小字母或逗号！')
-          return false
-        }
-      }else{
-        pattern = new RegExp("^[a-zA-Z 0-9  ， % \\- _ () ‘ ’ '' & @ ,]+$")
-        if(!pattern.test(this.hotelCode)){
-          Toast('确认号格式有误！')
-          return false
+      if(!!this.hotelCode.replace(/^\s+|\s+$/g, '')){
+        if(this.orderInfo.suppId == '31334'){
+          pattern = new RegExp("^[a-zA-Z 0-9  ， ,]+$")
+          if(!pattern.test(this.hotelCode)){
+            Toast('去哪儿客户确认号 只能输入数字、 大小字母或逗号！')
+            return false
+          }
+        }else{
+          pattern = new RegExp("^[a-zA-Z 0-9  ， % \\- _ () ‘ ’ '' & @ ,]+$")
+          if(!pattern.test(this.hotelCode)){
+            Toast('确认号格式有误！')
+            return false
+          }
         }
       }
 
