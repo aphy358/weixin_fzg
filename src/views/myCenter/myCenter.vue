@@ -9,8 +9,8 @@
 			<div class="head-background">
 				<div class="head-txt fl" v-if="customerUser">
 					<p class="nick-name">{{ customerUser.distrbId == 34354 ? '散客用户' : customerUser.customerUserName }}</p>
-					<span class="head-brief-span">{{ customerUser.department }}</span>
-					<span class="head-brief-span">{{ customerUser.station }}</span>
+					<span class="head-brief-span">{{ customerUser.department === '请选择' ? '' : customerUser.department }}</span>
+					<span class="head-brief-span">{{ customerUser.station === '请选择' ? '' : customerUser.station }}</span>
 				</div>
 				<div class="head-box fr">
 					<img :src="noHeadPortrait" alt="">

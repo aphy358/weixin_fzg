@@ -209,6 +209,7 @@
     activated(){
       if(!window.goBack){
         this.getHotelOrderList(1);
+        this.getUserList();
       }
     },
     
@@ -360,6 +361,11 @@
       }, 10),
       readDetail(orderId){
         gotoPage(this.$router, 'orderDetail', {orderId: orderId})
+      },
+      getUserList(){
+        this.$api.myCenter.syncGetUserList().then(res => {
+          console.log(res);
+        })
       }
     }
   }

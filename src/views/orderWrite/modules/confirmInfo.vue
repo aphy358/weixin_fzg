@@ -261,11 +261,11 @@
 				background-color: #fff;
 			}
 			.confirm{
-				border-radius: 0 0 0 4px;
+				border-radius: 0 0 4px 0;
 			}
 			.cancel{
 				border-right: 0.5px solid #c3c3c3;
-				border-radius: 0 0 4px 0;
+				border-radius: 0 0 0 4px;
 			}
 		}
 	}
