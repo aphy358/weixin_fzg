@@ -25,3 +25,6 @@ export const syncOrderDetail = (args, loading = false) => http.post("/vue/order/
 
 //退款
 export const syncCancelHotelOrder = (args, loading = false) => http.post("/vue/myinfo/cancelHotelOrder.do", args, loading);
+
+//查预订员列表
+export const syncGetUserList = (args, loading = false) => http.post("/vue/userInfo/getMyCustomerUser.do", args, loading);
