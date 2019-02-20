@@ -7,6 +7,8 @@ export default {
     install(Vue, options) {
         let router = options.router
         let wechatPlugin = new wechatAuth(options)
+        window.wechatPlugin = wechatPlugin      // 保存到全局变量，后续调用
+        
         if (!router) return false
 
         //绑定到路由上

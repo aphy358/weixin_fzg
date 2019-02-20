@@ -168,7 +168,7 @@ export default {
     ifDisable(day){
       let dayStr = day.dayStr
       let minDate =  
-        this.getCityType == 1
+        this.getCityType == 3
           ? addDays(new Date, 1)
           : addDays(new Date)
 
