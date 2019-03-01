@@ -65,10 +65,10 @@
           <span class="eb-oc-block-content">{{ formulateType }}</span>
         </div>
 
-        <div class="eb-oc-block-row">
+        <!-- <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">客户要求</span>
           <span class="eb-oc-block-content">无</span>
-        </div>
+        </div> -->
 
         <div class="eb-oc-block-row">
           <span class="eb-oc-block-label">捷旅备注</span>
@@ -91,12 +91,12 @@
             <tr v-for="(n, i) in orderChargeList" :key="i">
               <td>{{ n.checkinDate }}</td>
               <td>
-                <span class="currency">￥</span>{{ n.basePrice }}
+                {{ n.basePrice }}
               </td>
               <td>{{ n.sellAmout }}</td>
               <td>{{ n.bedNum }}*{{ n.brfNum }}*{{ n.wifiNum }}</td>
               <td>
-                <span class="currency">￥</span>{{ n.subTotal }}
+                {{ n.subTotal }}
               </td>
             </tr>
           </tbody>
@@ -230,6 +230,10 @@ export default {
       this.queryOrderInfo()
     }
   },
+  deactivated(){
+    this.refuseDisable = true
+    this.acceptDisable = true
+  },
   computed: {},
   mounted() {},
   methods: {
@@ -277,9 +281,6 @@ export default {
         o == '3'  ? '已取消' :
         o == '4'  ? '不可取消' :
         o == '5'  ? '申请取消' : '未知状态'
-
-      this.refuseDisable = true
-      this.acceptDisable = true
     },
     // 查询订单信息
     queryOrderInfo(){
@@ -288,6 +289,8 @@ export default {
       this.$api.eb.syncQueryOrderInfo2(param).then(res => {
         if(res.returnCode === 1){
           this.orderInfo = res.data.orderInfo
+
+          this.orderStatus = this.orderInfo.status
 
           // 查询住客
           this.queryTenant({orderCode: res.data.orderInfo.parentOrderCode, orderId: this.orderId})
@@ -327,7 +330,7 @@ export default {
           this.refuseDisable = false
           this.acceptDisable = false
         }
-      }else if(orderInfo.status == -1 || orderInfo.status  == 0){
+      }else if(orderInfo.status == -1 || orderInfo.status == 0){
         this.refuseDisable = false
         this.acceptDisable = false
       }else if(orderInfo.status == 1){

@@ -175,14 +175,10 @@
         _this.$api.orderWrite.syncSaveOrder(params).then(function (data) {
           Indicator.close();
           if (data.returnCode === 1){
+            _this.$store.commit('orderWrite/setCommonState', {k: 'orderId', v: data.data.orderId});
             if ((content.paymentType === 0 && orderInfo.paymentTerm !== 0 && agreement.status === 0) || +params.willUsedBalance === _this.orderInfo.totalPay){
               //直接成单
-//              MessageBox.alert('下单成功').then(action => {
-//                replacePage(_this.$router, 'orderDetail', {orderId: data.data.orderId,});
-//              });
-              
               _this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: true});
-              _this.$store.commit('orderWrite/setCommonState', {k: 'orderId', v: data.data.orderId});
             }else{
               //进入支付
               replacePage(_this.$router, 'orderPay', {orderId: data.data.orderId,});
@@ -194,7 +190,9 @@
               MessageBox.alert(data.returnMsg);
             }else{
               //跳转到详情页
-              goBackPage(_this.$router);
+              MessageBox.alert(data.returnMsg).then(() => {
+                goBackPage(_this.$router);
+              });
             }
           }
         })
@@ -207,10 +205,13 @@
 	.confirm-info{
 		width: 96%;
 		height: auto;
-		max-height: 9rem;
+		max-height: 5.4rem;
+		box-sizing: border-box;
+		overflow: scroll;
 		margin: 0 auto;
 		background-color: #fff;
 		border-radius: 4px;
+		padding: 0.4rem 0;
 		
 		@at-root .confirm-title{
 			height: 0.4rem;
@@ -220,6 +221,10 @@
 			color: #ffffff;
 			border-radius: 4px 4px 0 0;
 			text-align: center;
+			position: fixed;
+			top: 0;
+			left: 2%;
+			width: 96%;
 		}
 		
 		@at-root .confirm-txt{
@@ -250,6 +255,10 @@
 		
 		@at-root .operation-btn{
 			border-top: 0.5px solid #c3c3c3;
+			position: fixed;
+			bottom: 0;
+			left: 2%;
+			width: 96%;
 			
 			button{
 				height: 0.4rem;

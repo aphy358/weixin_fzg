@@ -124,6 +124,9 @@ export default {
     getAdultNum(){
       return this.$store.state.adultNum
     },
+    getChildrenNum(){
+      return this.$store.state.childrenNum
+    },
     getChildrenStr(){
       return this.$store.state.childrenStr
     },
@@ -166,9 +169,9 @@ export default {
         checkOutDate: this.getCheckout,
         hotelId: this.hotelId,
         roomNum: 1,
-        adultNum: 2,
-        childrenNum: 0,
-        childrenAgesStr: '',
+        adultNum: this.getAdultNum || 2,
+        childrenNum: this.getChildrenNum || 0,
+        childrenAgesStr: this.getChildrenStr || '',
         isSearchSurcharge: 0
       }
 

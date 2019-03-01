@@ -55,7 +55,7 @@
 					</li>
 					<li>
 						<span class="item-txt">当前预收款</span>
-						<span class="item-con deep-orange">{{distributorAccount.balance || 0}}{{ distributorAccount.currency }}</span>
+						<span class="item-con deep-orange">{{distributorAccount.balance || 0}}</span>
 					</li>
 					<li>
 						<span class="item-txt">公司电话</span>
@@ -73,6 +73,7 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
+  import { Indicator } from 'mint-ui'
   
   export default {
     name: 'personalInfo',
@@ -93,10 +94,14 @@
   
     activated(){
       let _this = this;
-      this.$api.myCenter.syncPersonalInfo().then(innerRes => {
-        _this.customerUser = innerRes.data.customerUser;
-        _this.distributor = innerRes.data.distributor;
-        _this.distributorAccount = innerRes.data.distributorAccount;
+      Indicator.open('加载中...');
+      this.$api.myCenter.syncPersonalInfo().then(res => {
+        Indicator.close();
+        if (res.returnCode === 1){
+          _this.customerUser = res.data.customerUser;
+          _this.distributor = res.data.distributor;
+          _this.distributorAccount = res.data.distributorAccount;
+        }
       });
     },
     

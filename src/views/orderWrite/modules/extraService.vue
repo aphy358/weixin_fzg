@@ -30,7 +30,7 @@
 				
 				<ul class="add-service-list">
 					<li v-for="(item, index) in addBreakfastList" :key="'_1add' + index">
-						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(0, index)"></i>
+						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price * item.num}}</span><i class="iconfont icon-delete2" @click="delExtrafee(0, index)"></i>
 					</li>
 				</ul>
 			</div>
@@ -63,7 +63,7 @@
 				
 				<ul class="add-service-list">
 					<li v-for="(item, index) in addBedList" :key="'_2add' + index">
-						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(1, index)"></i>
+						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price * item.num}}</span><i class="iconfont icon-delete2" @click="delExtrafee(1, index)"></i>
 					</li>
 				</ul>
 			</div>
@@ -86,7 +86,7 @@
 				
 				<ul class="add-service-list">
 					<li v-for="(item, index) in addNetworkList" :key="'_3add' + index">
-						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price}}</span><i class="iconfont icon-delete2" @click="delExtrafee(2, index)"></i>
+						<span class="green">{{item.date}}</span><span class="orange">{{item.name}}</span><span>{{item.num}}份</span><span class="deep-orange">￥{{item.price * item.num}}</span><i class="iconfont icon-delete2" @click="delExtrafee(2, index)"></i>
 					</li>
 				</ul>
 			</div>
@@ -140,6 +140,7 @@
         surchargeBed: [],
         surchargeInternet: [],
         addBedNumObj: {},
+        addNetNumObj: {},
         breakfastVisible: false,
         bedVisible: false,
         netVisible: false,
@@ -165,6 +166,9 @@
         
         return arr;
       },
+      roomNum(){
+        return this.$store.state.orderWrite.roomNum;
+      }
     },
     
     created(){
@@ -297,9 +301,8 @@
               list = this.breakfastTypeList; //类型列表，比如“儿童早、成人早”等
               selectType = this.breakfastType; //要添加的杂费的类型，比如儿童早
               addList = 'addBreakfastList'; //存放单种杂费下的所有已添加杂费，比如加早项下的所有已添加杂费
-              num = this.breakfastNum; //添加的份数
+              num = +this.breakfastNum; //添加的份数
               date = this.dateValue1; //添加的日期
-              height = 'breakfastHeight'; //对应杂费模块的盒子总高
               storeIndex = 'surchargeBref'; //需要改变的store中的值
             }else if (type === 1){
               list = this.bedTypeList; //类型列表，比如“儿童床、成人床”等
@@ -307,17 +310,24 @@
               addList = 'addBedList'; //存放单种杂费下的所有已添加杂费，比如加床项下的所有已添加杂费
               num = +this.bedNum; //添加的份数
               date = this.dateValue2; //添加的日期
-              height = 'bedHeight'; //对应杂费模块的盒子总高
               storeIndex = 'surchargeBed'; //需要改变的store中的值
               
               //判断是否已达最大加床数
-              let maxPersonNum = this.$store.state.orderWrite.maxPersonNum;
-              if (this.addBedNumObj[date] + num > maxPersonNum){
-                Toast(date + '最大加床数为' + maxPersonNum + '张');
+              let max = 0;
+              for (let i = 0; i < list.length; i++) {
+                let item = list[i];
+                if (item.type === selectType){
+                  max = item.max
+                }
+              }
+              let maxAddNum = max * this.roomNum;
+              let oldNum = this.addBedNumObj[date] ? this.addBedNumObj[date] : 0;
+              if (oldNum + num > maxAddNum){
+                Toast(date + '最大加床数为' + maxAddNum + '张');
                 return;
               }else{
                 //存储每日已加的份数
-                this.$set(this.addBedNumObj, date, num + (this.addBedNumObj[date] || 0));
+                this.$set(this.addBedNumObj, date, num + (oldNum || 0));
               }
               
             }else if (type === 2){
@@ -326,8 +336,18 @@
               selectType = '-1';
               num = +this.networkNum; //添加的份数
               date = this.dateValue3; //添加的日期
-              height = 'networkHeight'; //对应杂费模块的盒子总高
               storeIndex = 'surchargeInternet'; //需要改变的store中的值
+  
+              //判断是否已达最大加宽带数
+              let maxAddNum = this.roomNum;//冯寒确定使用房间数作为最大加宽带数
+              let oldNum = this.addNetNumObj[date] ? this.addNetNumObj[date] : 0;
+              if (oldNum + num > maxAddNum){
+                Toast(date + '最大加宽带数为' + maxAddNum + '份');
+                return;
+              }else{
+                //存储每日已加的份数
+                this.$set(this.addNetNumObj, date, num + (oldNum || 0));
+              }
             }
             
             for (let i = 0; i < list.length; i++) {
@@ -358,8 +378,6 @@
               name: name
             });
   
-            this[height] += 0.4;
-  
             this.$store.commit('orderWrite/setCommonState', {
               k : addList,
               v : this[addList]
@@ -377,36 +395,46 @@
         }
       },
       delExtrafee(type, index){
+        let addList,storeIndex;
         if (type === 0){
           //加早
+          addList = 'addBreakfastList';
+          storeIndex = 'surchargeBref';
           this.addBreakfastList.length === 1 ? this.addBreakfastList = [] : this.addBreakfastList.splice(index, 1);
-          this.breakfastHeight -= 0.4;
-          this.$store.commit('orderWrite/setCommonState', {
-            k : 'surchargeBref',
-            v : this.addBreakfastList
-          });
+          this.surchargeBref.length === 1 ? this.surchargeBref = [] : this.surchargeBref.splice(index, 1);
         }else if (type === 1){
           //加床
+          addList = 'addBedList';
+          storeIndex = 'surchargeBed';
           let num = this.addBedList[index].num;
           let date = this.addBedList[index].date;
           this.addBedList.length === 1 ? this.addBedList = [] : this.addBedList.splice(index, 1);
+          this.surchargeBed.length === 1 ? this.surchargeBed = [] : this.surchargeBed.splice(index, 1);
           
           //更改对应日期内的总加床数
           this.$set(this.addBedNumObj, date, this.addBedNumObj[date] - num);
-          this.bedHeight -= 0.4;
-          this.$store.commit('orderWrite/setCommonState', {
-            k : 'surchargeBed',
-            v : this.addBedList
-          });
         }else if (type === 2){
           //加宽带
+          addList = 'addNetworkList';
+          storeIndex = 'surchargeInternet';
+          let num = this.addNetworkList[index].num;
+          let date = this.addNetworkList[index].date;
           this.addNetworkList.length === 1 ? this.addNetworkList = [] : this.addNetworkList.splice(index, 1);
-          this.networkHeight -= 0.4;
-          this.$store.commit('orderWrite/setCommonState', {
-            k : 'surchargeInternet',
-            v : this.addNetworkList
-          });
+          this.surchargeInternet.length === 1 ? this.surchargeInternet = [] : this.surchargeInternet.splice(index, 1);
+  
+          //更改对应日期内的总加宽带数
+          this.$set(this.addNetNumObj, date, this.addNetNumObj[date] - num);
         }
+  
+        this.$store.commit('orderWrite/setCommonState', {
+          k : addList,
+          v : this[addList]
+        });
+  
+        this.$store.commit('orderWrite/setCommonState', {
+          k : storeIndex,
+          v : this[storeIndex]
+        });
         
         return false;
       },
@@ -435,6 +463,33 @@
             break;
         }
       }
+    },
+    
+    watch: {
+      roomNum(){
+        this.addBedNumObj = [];
+        this.addNetNumObj = [];
+        
+        let arr = ['addBreakfastList','addBedList','addNetworkList','surchargeBref','surchargeBed','surchargeInternet'];
+        
+        for (let i = 0; i < arr.length; i++) {
+          let str = arr[i];
+          this[str] = [];
+          this.$store.commit('orderWrite/setCommonState', {
+            k : str,
+            v : []
+          });
+        }
+      },
+      addBreakfastList(){
+        this.breakfastHeight = this.breakfastHeight >= 0.8 ? 0.8 + (0.4*this.addBreakfastList.length) : 0;
+      },
+      addBedList(){
+        this.bedHeight = this.bedHeight >= 0.8 ? 0.8 + (0.4*this.addBedList.length) : 0;
+      },
+      addNetworkList(){
+        this.networkHeight = this.networkHeight >= 0.8 ? 0.8 + (0.4*this.addNetworkList.length) : 0;
+      }
     }
   }
 </script>
@@ -456,7 +511,6 @@
 		@at-root .per-service{
 			margin: 0 0.1rem;
 			padding: 0 0.2rem 0.2rem;
-			/*border-bottom: 0.5px solid #eeeeee;*/
 			font-size: 0.12rem;
 			
 			&.add-breakfast{
@@ -489,10 +543,7 @@
 		
 		@at-root .per-service-open{
 			background-color: #f4f4f9;
-			/*padding: 0.2rem 0 0.3rem 0.3rem;*/
-			/*padding: 0.2rem 0.3rem;*/
 			padding: 0 0 0 0.3rem;
-			/*border-bottom: 0.5px solid #e9e9eb;*/
 			line-height: 0.3rem;
 			font-size: 0.12rem;
 			overflow: hidden;
@@ -506,7 +557,6 @@
 					height: 0.3rem;
 					line-height: 0.3rem;
 					margin: 0.2rem 0.1rem 0 0;
-					/*margin-right: 0.06rem;*/
 					padding-left: 0.05rem;
 					border: none;
 					border-radius: 0;

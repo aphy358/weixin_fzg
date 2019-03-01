@@ -94,9 +94,21 @@
 					</div>
 					<div class="per-info" v-show="receiveType != '0'">
 						<p class="per-info-title"><i class="iconfont icon-mail"></i>联系方式</p>
-						<input type="text" name="receiveInfo"
-						       :v-validate="receiveType != 0 ? {required:true, regex:receiveType == '1' ? '/^[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/' : receiveType == '2' ? '/^\d{1,}$/' : '/^[0-9]{11}$/'} : ''"
-						       :placeholder="receiveType == '1' ? '请填写邮箱信息（必填）' : receiveType == '2' ? '请填写传真信息（必填）' : '请填写手机号码（必填）'"
+						<!--<input type="text" name="receiveInfo"-->
+						       <!--:v-validate="receiveType != 0 ? '{required:true, regex:' + (receiveType == 1 ? this.emailRegex : receiveType == 2 ? this.faxRegex : this.phoneRegex) + '}' : ''"-->
+						       <!--:placeholder="receiveType == '1' ? '请填写邮箱信息（必填）' : receiveType == '2' ? '请填写传真信息（必填）' : '请填写手机号码（必填）'"-->
+						       <!--v-model="receiveInfo" @blur="checkReceiveWay">-->
+						<input v-if="receiveType != 0 && receiveType == 1" type="text" name="receiveInfo"
+						       v-validate="{required:true, regex:/^[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/}"
+						       placeholder="请填写邮箱信息（必填）"
+						       v-model="receiveInfo" @blur="checkReceiveWay">
+						<input v-if="receiveType != 0 && receiveType == 2" type="text" name="receiveInfo"
+						       v-validate="{required:true, regex:/^\d{1,}$/}"
+						       placeholder="请填写传真信息（必填）"
+						       v-model="receiveInfo" @blur="checkReceiveWay">
+						<input v-if="receiveType != 0 && receiveType == 3" type="text" name="receiveInfo"
+						       v-validate="{required:true, regex:/^[0-9]{11}$/}"
+						       placeholder="请填写手机号码（必填）"
 						       v-model="receiveInfo" @blur="checkReceiveWay">
 						<i v-show="markVisible || markObj.receiveInfo" class="mintui"
 						   :class="errors.has('receiveInfo') || checkErrors.receiveInfo ?'mintui-field-error':'mintui-field-success'"></i>
@@ -176,7 +188,7 @@
 
 <script>
   import GoBack from '@/components/GoBack.vue';
-  import {MessageBox, Toast} from 'mint-ui';
+  import {MessageBox, Toast, Indicator} from 'mint-ui';
   import {gotoPage} from '@/assets/util';
   import Velocity from 'velocity-animate';
   
@@ -289,6 +301,8 @@
       //更换收单方式时，原来已填的收单联系方式置空
       changeReceiveType() {
         this.receiveInfo = '';
+        this.$set(this.markObj, 'receiveInfo', true);
+        this.$set(this.checkErrors, 'receiveInfo', true);
       },
       //企业名称、企业电话、企业传真、手机、邮箱重复校验
       checkRepeat(key) {
@@ -354,47 +368,70 @@
         this.$validator.validateAll().then((result) => {
           this.markVisible = true;
           if (result) {
-            //发送注册请求
-            let weekList = this.sdWeekArr;
-            let weekStr = '';
-            for (let i = 0; i < weekList.length; i++) {
-              let item = weekList[i];
-              if (item) {
-                weekStr += (i + 1);
+            //判断页面上是否还有错误提示标志
+            let flag = true;
+            let obj = this.checkErrors;
+            for(let k in obj){
+              if (obj[k]){
+                flag = false;
+                MessageBox('提示', '请检查所有必填项是否已填且格式是否正确');
+                Velocity(document.querySelector('.per-module'), 'scroll', {container: document.querySelector('.page-content')})
+                break;
               }
             }
-            weekStr = weekStr.replace(/,$/, '');
-            let params = {
-              registercountry: this.country,
-              registerProvince: this.province,
-              registerCity: this.city,
-              registerCompanyName: this.allName,
-              registerAccount: this.userName,
-              registerAddress: this.companyAddress,
-              registerName: this.fullName,
-              registerEmail: this.email,
-              registerMobile: this.mobilePhone,
-              registerTel: this.companyPhone,
-              registerFax: this.companyFax,
-              registerReference: this.recommendMessage,
-              confirmStart: this.startTime,
-              confirmEnd: this.endTime,
-              confirmWeek: weekStr,
-              confirmType: this.receiveType,
-              confirmWay: this.receiveInfo,
-              registerPassWord: this.password
-            };
-            let _this = this;
-            this.$api.register.syncRegister(params).then(res => {
-              if (res.returnCode === 1) {
-                Toast('注册成功，等待审核');
-                setTimeout(function () {
-                  gotoPage(_this.$router, 'login')
-                }, 3000);
-              } else {
-                Toast(res.returnMsg);
+            
+            if (flag){
+              let weekList = this.sdWeekArr;
+              let weekStr = '';
+              for (let i = 0; i < weekList.length; i++) {
+                let item = weekList[i];
+                if (item) {
+                  weekStr += (i + 1);
+                }
               }
-            });
+              weekStr = weekStr.replace(/,$/, '');
+              
+              if (!weekStr){
+                MessageBox('提示', '收单适用星期为必选项');
+                return;
+              }
+              
+              //发送注册请求
+              Indicator.open('注册中...');
+              let params = {
+                registercountry: this.country,
+                registerProvince: this.province,
+                registerCity: this.city,
+                registerCompanyName: this.allName,
+                registerAccount: this.userName,
+                registerAddress: this.companyAddress,
+                registerName: this.fullName,
+                registerEmail: this.email,
+                registerMobile: this.mobilePhone,
+                registerTel: this.companyPhone,
+                registerFax: this.companyFax,
+                registerReference: this.recommendMessage,
+                confirmStart: this.startTime,
+                confirmEnd: this.endTime,
+                confirmWeek: weekStr,
+                confirmType: this.receiveType,
+                confirmWay: this.receiveInfo,
+                registerPassWord: this.password
+              };
+              let _this = this;
+              this.$api.register.syncRegister(params).then(res => {
+                if (res.returnCode === 1) {
+                  Toast('注册成功，等待审核');
+                  setTimeout(function () {
+                    Indicator.close();
+                    gotoPage(_this.$router, 'login')
+                  }, 3000);
+                } else {
+                  Indicator.close();
+                  Toast(res.returnMsg);
+                }
+              });
+            }
           } else {
             MessageBox('提示', '请检查所有必填项是否已填且格式是否正确');
             Velocity(document.querySelector('.per-module'), 'scroll', {container: document.querySelector('.page-content')})

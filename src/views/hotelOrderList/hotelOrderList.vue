@@ -26,9 +26,9 @@
 						</p>
 						<span class="order-total">￥{{item.salePrice}}</span>
 					</div>
-					<div class="operate-order" v-if="item.canPayment || item.canCancle">
-						<button @click.stop="cancelOrder(item.orderInfoId)" v-if="item.canCancle">取消订单</button>
-						<button @click.stop="payOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.canPayment">去支付</button>
+					<div class="operate-order" v-if="(item.paymentStatus == 1 && item.paymentTerm == 0 && item.innerStatus != 4) || item.canCancle">
+						<!--<button @click.stop="cancelOrder(item.orderInfoId)" v-if="item.canCancle">取消订单</button>-->
+						<button @click.stop="payOrder(item.orderInfoId, item.orderCode, item.salePrice)" v-if="item.paymentStatus == 1 && item.paymentTerm == 0 && item.innerStatus != 4">去支付</button>
 					</div>
 				</div>
 				
@@ -81,9 +81,8 @@
 			</li>
 			<li class="hol-filter-item">
 				<span class="hol-filter-label">预订员</span>
-				<select name="orderMan" id="orderMan" title="预订员" v-model="params.bookMan">
-					<option value="0">全选</option>
-					<option value="1">测试</option>
+				<select name="orderMan" id="orderMan" title="预订员" v-model="params.createBy">
+					<option v-for="(item, index) in userList" :value="item.value">{{item.label}}</option>
 				</select>
 			</li>
 			<li class="hol-filter-item">
@@ -94,7 +93,7 @@
 					<option value="0">已确认</option>
 					<option value="1">已拒单</option>
 					<option value="2">申请取消中</option>
-					<option value="3">不能取消</option>
+					<option value="3">无法取消</option>
 					<option value="4">已取消</option>
 				</select>
 			</li>
@@ -154,8 +153,11 @@
           innerStatus: '',
           orderType: 2,
           paymentStatus: '',
-          currPage: 0,
+          createBy: '',
+          pageNum: 0,
+          pageSize: 10
         },
+        userList: [],
         reasonVisible: false,
         cancelReasonId: '',
         reasonList: [
@@ -226,13 +228,14 @@
         this.params = {};
         this.$set(this.params, 'innerStatus', '');
         this.$set(this.params, 'paymentStatus', '');
+        this.$set(this.params, 'createBy', '');
       },
       ensure(){
         this.getHotelOrderList(1);
       },
       resetData(){
         this.filterVisible = false;
-        this.$set(this.params, 'currPage', 0);
+        this.$set(this.params, 'pageNum', 0);
         this.orderList = [];
         this.loadingContinue = true;
       },
@@ -303,16 +306,16 @@
 
         if (this.loadingContinue){
           this.infiniteLoad = true;
-          let num = ++this.params.currPage;
-          this.$set(this.params, 'currPage', num);
+          let num = ++this.params.pageNum;
+          this.$set(this.params, 'pageNum', num);
           let _this = this;
           Indicator.open('查询中...');
-          this.$api.myCenter.syncOrderList(this.params).then(res => {
+          this.$api.myCenter.syncSearchOrderList(this.params).then(res => {
             Indicator.close();
             if (res.returnCode === 1){
               _this.noDataVisible = true;
               
-              let orderList = res.data.item;
+              let orderList = res.dataList;
               for (let i = 0; i < orderList.length; i++) {
                 let o = orderList[i];
                 
@@ -326,21 +329,22 @@
                   if (o.paymentTerm != 0){
                     payStatusClass = o.paymentStatus === 0 ? 'green' : o.paymentStatus === 1 ? 'red' : 'orange';
                     payStatusText = o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账';
+                  }else{
+                    if (o.refunded == null){
+                      payStatusClass = o.paymentStatus === 0 ? 'green' : o.paymentStatus === 1 ? 'red' : 'orange';
+                      payStatusText = o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账';
+                    }else{
+                      let payObj = {'0':'未支付','1':'已退款','2':'已支付','3':'退款中','-1':'退款失败','-2':'支付失败','4':'已支付','-4':'支付失败','5':'已支付','-5':'支付失败'};
+                      payStatusClass = o.refunded == 0 || o.refunded == -1 || o.refunded == -2 ? 'red' : o.refunded == 1 || o.refunded == 2 || o.refunded == 4 || o.refunded == 5 || o.refunded == 3 ? 'green' : 'orange';
+                      payStatusText = payObj[o.refunded];
+                    }
                   }
-                  if (o.paymentTerm == 0 && o.refunded == null){
-                    payStatusClass = o.paymentStatus === 0 ? 'green' : o.paymentStatus === 1 ? 'red' : 'orange';
-                    payStatusText = o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账';
-                  }
-                  if (o.paymentTerm == 0 && o.refunded != null){
-                    let payObj = {'0':'未支付','1':'已退款','2':'已支付','3':'退款中','-1':'退款失败','-2':'支付失败','4':'已支付','-4':'支付失败','5':'已支付','-5':'支付失败'};
-                    payStatusClass = o.refunded == 0 || o.refunded == -1 || o.refunded == -2 ? 'red' : o.refunded == 1 || o.refunded == 2 || o.refunded == 4 || o.refunded == 5 || o.refunded == 3 ? 'green' : 'orange';
-                    payStatusText = payObj[o.refunded];
-                  }
+                  
                 }
                 
                 //订单状态
                 let innerStatusClass = o.innerStatus === -1 ? 'purple' : o.innerStatus === 0 ? 'green' : o.innerStatus === 1 ? 'red' : o.innerStatus === 2 ? 'orange' : o.innerStatus === 3 ? 'red' : '';
-                let innerStatusText = o.innerStatus === -1 ? '待确认' : o.innerStatus === 0 ? '已确认' : o.innerStatus === 1 ? '已拒单' : o.innerStatus === 2 ? '取消申请中' : o.innerStatus === 3 ? '无法取消' : '已取消';
+                let innerStatusText = o.innerStatus === -1 ? '待处理' : o.innerStatus === 0 ? '已确认' : o.innerStatus === 1 ? '已拒单' : o.innerStatus === 2 ? '申请取消中' : o.innerStatus === 3 ? '无法取消' : '已取消';
                 
                 o.payStatusClass = payStatusClass;
                 o.payStatusText = payStatusText;
@@ -348,7 +352,7 @@
                 o.innerStatusText = innerStatusText;
               }
               
-              if (res.data.item.length <= 0){
+              if (res.dataList.length <= 0){
                 _this.loadingContinue = false;
                 _this.endVisible = true;
               }else{
@@ -363,9 +367,23 @@
         gotoPage(this.$router, 'orderDetail', {orderId: orderId})
       },
       getUserList(){
+        let _this = this;
+        let arr = [{
+          label: '全部',
+          value: ''
+        }];
         this.$api.myCenter.syncGetUserList().then(res => {
-          console.log(res);
-        })
+          for (let i = 0; i < res.dataList.length; i++) {
+            let o = res.dataList[i];
+            if (o.isAdmin === 0 || o.isAdmin === 1){
+              arr.push({
+                label: o.customerUserName,
+                value: o.loginName + '|' + o.customerUserName
+              })
+            }
+          }
+        });
+        this.userList = arr;
       }
     }
   }

@@ -175,7 +175,7 @@
         specialReq: [],
         nameArr: [],
         nameRank: [],
-        country: 70007,
+//        country: 70007,
         confirmVisible: false,
         nationalityVisible: false,
         nameModuleHeight: 1,
@@ -202,6 +202,9 @@
     },
     
     computed: {
+      country() {
+        return this.$store.state.orderWrite.staticInfo.country;
+      },
       bedTypeList() {
         return this.$store.state.orderWrite.bedTypeList;
       },
@@ -291,24 +294,17 @@
       }
     },
     
-//    activated() {
-//      //设置入住人相关
-//      this.setUserName();
-//    },
-    
     created() {
       //解决安卓手机下软键盘弹起时底部的总金额一栏会挡住某些
       let _this = this;
       let height = document.body.offsetHeight;
       window.addEventListener("resize", function() {
-        if(document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
-          if (document.body.offsetHeight >= height){
-            _this.payVisible = true;
-          }
+        if (document.body.offsetHeight >= height){
+          _this.payVisible = true;
+        }
   
-          if (document.body.offsetHeight < height){
-            _this.payVisible = false;
-          }
+        if (document.body.offsetHeight < height){
+          _this.payVisible = false;
         }
       });
       
@@ -347,18 +343,6 @@
       this.setUserName();
     },
     
-    mounted() {
-//      document.querySelector('.order-write-box-page .page-content').addEventListener('scroll', this.handleScroll);
-  
-      // if(/Android [4-6]/.test(window.navigator.appVersion)) {
-      //   window.addEventListener("resize", function() {
-      //     if(document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
-      //       document.activeElement.scrollIntoViewIfNeeded();
-      //     }
-      //   })
-      // }
-    },
-    
     watch: {
       roomNum() {
         this.$store.dispatch('orderWrite/getProductInfo', {
@@ -385,9 +369,9 @@
         let str = '';
         for (let i = 0; i < this.specialReq.length; i++) {
           let item = this.specialReq[i];
-          str += item + '，';
+          str += item + ',';
         }
-        this.specialStr = str.replace(/，$/, '');
+        this.specialStr = str.replace(/,$/, '');
         this.specialVisible = false;
       },
       nextVisible(index) {
@@ -517,8 +501,6 @@
                 MessageBox('提示', '小礼包中的手机号为必填');
                 return;
               }
-              
-//              MessageBox('提示', this.errors.first('手机号') || this.errors.first('邮箱') || this.errors.first('姓') || this.errors.first('名'));
               MessageBox('提示', this.errors.first('手机号') || this.errors.first('姓') || this.errors.first('名'));
             }
           }
@@ -569,7 +551,7 @@
             if (this.country === 70007) {
               nameRegArr[i] = 'required|inner';
             } else {
-              nameRegArr[i] = {required: true, regex: /^[a-zA-Z]*$/};
+//              nameRegArr[i] = {required: true, regex: /^[a-zA-Z]*$/};
               nameRegArr[i] = 'required|outer';
             }
           } else {
@@ -718,7 +700,6 @@
 			
 			.operation-btn {
 				line-height: 0.4rem;
-				/*margin: 0 0.1rem;*/
 			}
 		}
 		
@@ -768,7 +749,6 @@
 		background-color: #fff;
 		padding: 0 0.2rem;
 		box-sizing: border-box;
-		/*transition: all .5s;*/
 	}
 	
 	.hide-animated {

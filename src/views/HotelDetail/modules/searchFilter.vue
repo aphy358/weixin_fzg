@@ -52,7 +52,9 @@ export default {
       this.resetCheckinCheckout()
     }
   },
-  created(){},
+  created(){
+    this.resetCheckinCheckout()
+  },
   computed: {
     getCheckin(){
       return this.$store.state.checkin

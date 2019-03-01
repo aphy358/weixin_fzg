@@ -9,7 +9,6 @@ export default {
   state : {
     checkin: '',
     checkout: '',
-    // supplierId : '',
     roomNum: 1,
     dateNum: 1,
     stock: 7,
@@ -17,14 +16,6 @@ export default {
     taxesAndFeesRMB: 0,
     payTotalMoney: 0,
     balance: 0,
-    // willUsedBalance: 0,
-    //
-    // breakfastData : {},
-    // breakfastDates : [],
-    // bedData : {},
-    // bedDates : [],
-    // netData : {},
-    // netDates : [],
     addBreakfastList: [],
     addBedList: [],
     addNetworkList: [],
@@ -47,9 +38,7 @@ export default {
     isHasMarketing : 0,
     marketing: {},
     specialConditions: [],
-    // specialReq : [],
     paymentTerm: '',
-    // dialogTableVisible : false,
     orderInfo: {},
     bedTypeList: [],
   
@@ -124,7 +113,7 @@ export default {
         if (res.returnCode === 1) {
           //如果请求成功，先判断content有没有报错信息
           if (res.data.errorMsg) {
-            MessageBox.confirm(res.data.errorMsg).then(() => {
+            MessageBox.alert(res.data.errorMsg).then(() => {
               gotoPage(vueCase.$router, 'hotelList');
             })
           }else if (res.data.isAveragePriceRMBChange && res.data.isAveragePriceRMBChange === 1){
@@ -138,7 +127,7 @@ export default {
 
           //再判断酒店是否为客人前台现付方式，如果是，不让客户进入页面
           if (res.data.paymentType === 1) {
-            MessageBox.confirm('该产品已下线，请选择其他产品').then(() => {
+            MessageBox.alert('该产品已下线，请选择其他产品').then(() => {
               gotoPage(vueCase.$router, 'hotelList');
             })
           }

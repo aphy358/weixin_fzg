@@ -379,6 +379,21 @@ export default {
     saveAll(){
       if(!this.validate())  return
 
+      // 验证时段是否重叠
+      this.timeZoneArr.sort(function(n1, n2){
+        let t1 = +new Date(n1.start.replace(/-/g, '/') + ' 00:00:00')
+        let t2 = +new Date(n2.start.replace(/-/g, '/') + ' 00:00:00')
+        return t1 > t2
+      })
+
+      for (let i = 0; i < this.timeZoneArr.length - 1; i++) {
+        let t1 = +new Date(this.timeZoneArr[i].end.replace(/-/g, '/') + ' 00:00:00')
+        let t2 = +new Date(this.timeZoneArr[i + 1].start.replace(/-/g, '/') + ' 00:00:00')
+        if(t1 >= t2){
+          return Toast('时段重叠，请重新设置')
+        }
+      }
+
       let params = {
         staticInfoId:   this.hotelId,
 				checkInDates:   this.timeZoneArr.map(n => n.start).join(','),

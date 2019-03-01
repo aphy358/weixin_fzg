@@ -30,7 +30,11 @@
 					</li>
 					<li>
 						<span class="item-txt">订单状态</span>
-						<span class="item-con deep-orange">{{['待确认','已确认','已拒单','取消申请中','无法取消','已取消'][orderInfo.innerStatus + 1]}}</span>
+						<span class="item-con deep-orange">{{['待处理','已确认','已拒单','申请取消中','无法取消','已取消'][orderInfo.innerStatus + 1]}}</span>
+					</li>
+					<li v-if="payStatusVisible">
+						<span class="item-txt">支付状态</span>
+						<span class="item-con deep-orange">{{payStatusText}}</span>
 					</li>
 					<li>
 						<span class="item-txt">取消条款</span>
@@ -164,6 +168,8 @@
         orderDetailsInfoList: [],
         customerUser: {},
         specialStr: '',
+        payStatusText: '',
+        payStatusVisible: true
       }
     },
     
@@ -202,6 +208,19 @@
                 str += item + '，'
               }
               _this.specialStr = str.replace(/，$/, '');
+            }
+            
+            //支付状态
+            let o = res.data.orderInfo;
+            if (o.paymentTerm == 0){
+              if (o.refunded == null){
+                _this.payStatusText = o.paymentStatus === 0 ? '已支付' : o.paymentStatus === 1 ? '未支付' : '挂账';
+              }else{
+                let payObj = {'0':'未支付','1':'已退款','2':'已支付','3':'退款中','-1':'退款失败','-2':'支付失败','4':'已支付','-4':'支付失败','5':'已支付','-5':'支付失败'};
+                _this.payStatusText = payObj[o.refunded];
+              }
+            }else{
+              _this.payStatusVisible = false;
             }
       
             let orderDetailsArr = res.data.orderDetailsInfoList;

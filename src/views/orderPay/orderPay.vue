@@ -120,13 +120,12 @@
         });
       },
       readDetail(){
-        alert(this.$store.state.orderWrite.orderId);
-        replacePage(this.$router, 'orderDetail', {orderId: this.$store.state.orderWrite.orderId});
+        replacePage(this.$router, 'orderDetail', {orderId: queryString('orderId')});
         this.orderSuccessVisible = false;
       },
       clickGoBack(){
         this.$store.commit('orderWrite/setCommonState', {k: 'orderSuccessVisible', v: false});
-        goBackPage(this.$router, -2);
+        goBackPage(this.$router, -1);
       }
     }
   }

@@ -10,40 +10,40 @@
 				<span class="fr deep-orange">￥{{payTotalMoney}}</span>
 			</div>
 			
-			<div class="per-part-total" v-show="surchargeBref.length > 0">
+			<div class="per-part-total" v-show="addBreakfastList.length > 0">
 				<span class="fl">加早</span>
 				<span class="fr deep-orange">￥{{totalBreakfastPrice}}</span>
 			</div>
 			
-			<div class="per-part-detail" v-for="(item, index) in surchargeBref" :key="'_1detail' + index">
+			<div class="per-part-detail" v-for="(item, index) in addBreakfastList" :key="'_1detail' + index">
 				<span class="fl">{{item.date}}</span>
 				<span class="fl">{{item.name}}</span>
 				<span class="fl">{{+item.num}}份</span>
-				<span class="fr light-gray">￥{{item.price}}</span>
+				<span class="fr light-gray">￥{{item.price  * item.num}}</span>
 			</div>
 			
-			<div class="per-part-total" v-show="surchargeBed.length > 0">
+			<div class="per-part-total" v-show="addBedList.length > 0">
 				<span class="fl">加床</span>
 				<span class="fr deep-orange">￥{{totalBedPrice}}</span>
 			</div>
 			
-			<div class="per-part-detail" v-for="(item, index) in surchargeBed" :key="'_2detail' + index">
+			<div class="per-part-detail" v-for="(item, index) in addBedList" :key="'_2detail' + index">
 				<span class="fl">{{item.date}}</span>
 				<span class="fl">{{item.name}}</span>
 				<span class="fl">{{+item.num}}份</span>
-				<span class="fr light-gray">￥{{item.price}}</span>
+				<span class="fr light-gray">￥{{item.price * item.num}}</span>
 			</div>
 			
-			<div class="per-part-total" v-show="surchargeInternet.length > 0">
+			<div class="per-part-total" v-show="addNetworkList.length > 0">
 				<span class="fl">加宽带</span>
 				<span class="fr deep-orange">￥{{totalNetworkPrice}}</span>
 			</div>
 			
-			<div class="per-part-detail" v-for="(item, index) in surchargeInternet" :key="'_3detail' + index">
+			<div class="per-part-detail" v-for="(item, index) in addNetworkList" :key="'_3detail' + index">
 				<span class="fl">{{item.date}}</span>
 				<span class="fl">{{item.name}}</span>
 				<span class="fl">{{+item.num}}份</span>
-				<span class="fr light-gray">￥{{item.price}}</span>
+				<span class="fr light-gray">￥{{item.price * item.num}}</span>
 			</div>
 			
 			<div class="per-part-total" v-if="taxesAndFeesRMB">
@@ -83,24 +83,10 @@
       taxesAndFeesRMB: state => state.orderWrite.taxesAndFeesRMB,
       salesTaxRMB: state => state.orderWrite.isExpediaSupplier && state.orderWrite.isExpediaSupplier === 1 ? state.orderWrite.hotelPrice.salesTaxRMB : 0,
       extraTaxesAndFeesDesc: state => state.orderWrite.hotelPrice.extraTaxesAndFeesDesc,
-      surchargeBref(){
-        let list = this.$store.state.orderWrite.addBreakfastList;
-        this.countPrice(list, 'totalBreakfastPrice');
-        this.$store.commit('orderWrite/setCommonState', {k: 'totalBreakfastPrice', v: this.totalBreakfastPrice});
-        return list;
-      },
-      surchargeBed(){
-        let list = this.$store.state.orderWrite.addBedList;
-        this.countPrice(list, 'totalBedPrice');
-        this.$store.commit('orderWrite/setCommonState', {k: 'totalBedPrice', v: this.totalBedPrice});
-        return list;
-      },
-      surchargeInternet(){
-        let list = this.$store.state.orderWrite.addNetworkList;
-        this.countPrice(list, 'totalNetworkPrice');
-        this.$store.commit('orderWrite/setCommonState', {k: 'totalNetworkPrice', v: this.totalNetworkPrice});
-        return list;
-      }
+      addBreakfastList: state => state.orderWrite.addBreakfastList,
+      addBedList: state => state.orderWrite.addBedList,
+      addNetworkList: state => state.orderWrite.addNetworkList,
+      
     }),
     
     methods: {
@@ -112,10 +98,28 @@
         if (list.length > 0){
           for (let i = 0; i < list.length; i++) {
             let item = list[i];
-            totalPrice += +item.price;
+            totalPrice += +item.price * item.num;
           }
         }
         this[aim] = totalPrice;
+      }
+    },
+    
+    watch: {
+      'addBreakfastList': function(){
+        let list = this.addBreakfastList;
+        this.countPrice(list, 'totalBreakfastPrice');
+        this.$store.commit('orderWrite/setCommonState', {k: 'totalBreakfastPrice', v: this.totalBreakfastPrice});
+      },
+      'addBedList': function(){
+        let list = this.addBedList;
+        this.countPrice(list, 'totalBedPrice');
+        this.$store.commit('orderWrite/setCommonState', {k: 'totalBedPrice', v: this.totalBedPrice});
+      },
+      'addNetworkList': function(){
+        let list = this.addNetworkList;
+        this.countPrice(list, 'totalNetworkPrice');
+        this.$store.commit('orderWrite/setCommonState', {k: 'totalNetworkPrice', v: this.totalNetworkPrice});
       }
     }
   }

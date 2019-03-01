@@ -40,7 +40,7 @@
   import hotelInfo from './modules/hotelInfo.vue';
   import writeInfo from './modules/writeInfo.vue';
   import GoBack from '@/components/GoBack.vue';
-  import { Indicator, MessageBox } from 'mint-ui'
+  import { Indicator, MessageBox } from 'mint-ui';
   import erweima from '@/assets/img/fzg_erweima.png';
   import { replacePage, goBackPage } from '@/assets/util';
 	
@@ -71,6 +71,15 @@
     },
     
     created(){
+      //由于订单填写页填写的东西过多，所以在进入该页面时将orderWrite的store中的state重置
+      let getStore = JSON.parse(sessionStorage.getItem('orderWriteStore'));
+      if (getStore){
+        let store = this.$store.state;
+        store.orderWrite = getStore;
+        this.$store.replaceState(store);
+      }else{
+        sessionStorage.setItem('orderWriteStore', JSON.stringify(this.$store.state.orderWrite));
+      }
       this.erweima = erweima;
       this.getProductInfo();
     },

@@ -5,7 +5,7 @@
 		<GoBack/>
 		
 		<div class="page-content clearfix">
-
+			
 			<div class="head-background">
 				<div class="head-txt fl" v-if="customerUser">
 					<p class="nick-name">{{ customerUser.distrbId == 34354 ? '散客用户' : customerUser.customerUserName }}</p>
@@ -43,7 +43,7 @@
 						<i class="iconfont icon-right-thin icon-r no-border"></i>
 					</div>
 				</div>
-
+				
 				<div class="cell-list">
 					<div class="per-cell" @click="logout">
 						<i class="iconfont icon-tuichu icon-l red"></i>
@@ -51,13 +51,13 @@
 						<i class="iconfont icon-right-thin icon-r no-border"></i>
 					</div>
 				</div>
-				
+			
 			</div>
 			
 			<p class="hot-line">预订热线：0755-33397777</p>
-
-		</div>
 		
+		</div>
+	
 	</div>
 </template>
 
@@ -65,9 +65,9 @@
   import noHeadPortrait from '@/assets/img/no-head-portrait.jpg'
   import GoBack from '@/components/GoBack.vue';
   import {gotoPage} from '@/assets/util';
-	import {MessageBox, Toast} from 'mint-ui';
-	import { user } from './user.js';
-	
+  import {MessageBox, Toast} from 'mint-ui';
+  import {user} from './user.js';
+  
   
   export default {
     name: '',
@@ -75,7 +75,7 @@
     data() {
       return {
         noHeadPortrait: '',
-				customerUser: null,
+        customerUser: null,
       }
     },
     
@@ -85,27 +85,26 @@
       GoBack
     },
     
-    computed: {
-		},
-		
-		activated(){
-			this.getCustomerUser()
-		},
+    computed: {},
     
-    created(){
-			this.noHeadPortrait = noHeadPortrait;
-			// this.customerUser = user.data.customerUser
+    activated() {
+      this.getCustomerUser()
+    },
+    
+    created() {
+      this.noHeadPortrait = noHeadPortrait;
+      // this.customerUser = user.data.customerUser
     },
     
     methods: {
-      goPage(aim){
+      goPage(aim) {
         gotoPage(this.$router, aim);
       },
-      logout(){
+      logout() {
         let _this = this;
         MessageBox.confirm('退出登录后需要重新登录，确定退出?').then(action => {
           _this.$api.myCenter.syncLogout().then(res => {
-            if (res.returnCode === 1){
+            if (res.returnCode === 1) {
               Toast('退出成功');
               window.sessionStorage.setItem('user_wx', JSON.stringify(res.data.customerUser))
               this.customerUser = res.data.customerUser
@@ -114,10 +113,10 @@
         });
       },
       // 获取用户信息
-      getCustomerUser(){
+      getCustomerUser() {
         let customerUser = window.sessionStorage.getItem('user_wx');
-				
-        if (customerUser){
+        
+        if (customerUser) {
           this.customerUser = JSON.parse(customerUser)
         }
       }
@@ -126,35 +125,35 @@
 </script>
 
 <style scoped lang="scss">
-	.page{
+	.page {
 		position: relative;
 	}
 	
-	.my-center-page{
+	.my-center-page {
 		background-color: #efeff5;
 		
-		@at-root .head-background{
+		@at-root .head-background {
 			height: 1.2rem;
 			padding: 0.3rem;
 			background-image: linear-gradient(to bottom, rgba(53, 101, 132, 0.5), rgba(247, 216, 226, 0.3));
 			overflow: hidden;
-
-			> *{
+			
+			> * {
 				width: 50%;
 				overflow: hidden;
 			}
 			
-			.head-txt{
+			.head-txt {
 				color: #818a0b;
 				padding-top: 0.1rem;
 				
-				.nick-name{
+				.nick-name {
 					font-size: 0.28rem;
 					line-height: 0.7rem;
 					font-weight: bold;
 				}
 				
-				.head-brief-span{
+				.head-brief-span {
 					float: left;
 					height: 0.2rem;
 					line-height: 0.2rem;
@@ -163,55 +162,55 @@
 				}
 			}
 			
-			.head-box{
+			.head-box {
 				width: 1.2rem;
 				height: 1.2rem;
 				border-radius: 50%;
 			}
 		}
 		
-		@at-root .my-center-content{
+		@at-root .my-center-content {
 			background-color: #f6f6f6;
 			
-			@at-root .cell-list{
+			@at-root .cell-list {
 				background-color: #fff;
 				margin-bottom: 0.1rem;
-				.per-cell{
+				.per-cell {
 					height: 0.5rem;
 					line-height: 0.5rem;
 					padding: 0 0.1rem;
 					display: flex;
 					
-					.iconfont{
+					.iconfont {
 						
-						&.icon-l{
+						&.icon-l {
 							padding-right: 0.1rem;
 						}
 						
-						&.icon-r{
+						&.icon-r {
 							float: right;
 							font-size: 0.12rem;
 							border-bottom: 0.5px solid #eeeeee;
 							
-							&.no-border{
+							&.no-border {
 								border: none;
 							}
 						}
 					}
 					
-					.icon-txt{
+					.icon-txt {
 						display: inline-block;
 						flex: 1;
 						border-bottom: 0.5px solid #eeeeee;
 						
-						&.no-border{
+						&.no-border {
 							border: none;
 						}
 					}
 				}
 			}
 			
-			@at-root .hot-line{
+			@at-root .hot-line {
 				background-color: transparent;
 				position: fixed;
 				bottom: 0.1rem;
@@ -221,42 +220,42 @@
 				color: #747477;
 				text-align: center;
 			}
-
+			
 		}
 	}
 </style>
 
 <style lang="scss">
-.my-center-page{
-
-	.my-center{
-		.mint-cell-wrapper{
-			font-size: 0.16rem;
+	.my-center-page {
+		
+		.my-center {
+			.mint-cell-wrapper {
+				font-size: 0.16rem;
+			}
+		}
+		
+		.fl {
+			float: left;
+		}
+		
+		.fr {
+			float: right;
+		}
+		
+		.jade-green {
+			color: #818a0b;
+		}
+		
+		.green {
+			color: green;
+		}
+		
+		.blue {
+			color: #92bddb;
+		}
+		
+		.red {
+			color: #ff0000;
 		}
 	}
-	
-	.fl{
-		float: left;
-	}
-	
-	.fr{
-		float: right;
-	}
-	
-	.jade-green{
-		color: #818a0b;
-	}
-
-	.green{
-		color: green;
-	}
-	
-	.blue{
-		color: #92bddb;
-	}
-	
-	.red{
-		color: #ff0000;
-	}
-}
 </style>

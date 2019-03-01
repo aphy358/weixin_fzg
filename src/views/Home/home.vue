@@ -27,7 +27,7 @@
     <ToTop />
 
   </div>
-</template>
+</template>cvnbv
 
 <script>
 // @ is an alias to /src
@@ -55,15 +55,15 @@ export default {
   },
   created(){
     //*** 模拟登录，测试 */
-//     let params = {
-//       code: '8998',
-//       name: 'fenghan',
-//       password: '1'
-//     }
-//
-//     this.$api.qnb.syncQNBLoginForTest(params).then(res => {
-//       console.log(res);
-//     })
+    // let params = {
+    //   code: '8998',
+    //   name: 'fenghan',
+    //   password: '1'
+    // }
+
+    // this.$api.qnb.syncQNBLoginForTest(params).then(res => {
+    //   console.log(res);
+    // })
   },
   mounted(){
   },
