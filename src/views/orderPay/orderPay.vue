@@ -201,7 +201,6 @@
 		.go-detail{
 			display: block;
 			color: #ffffff;
-			/*width: 1rem;*/
 			height: 0.4rem;
 			background-color: #ff7625;
 			border-radius: 4px;

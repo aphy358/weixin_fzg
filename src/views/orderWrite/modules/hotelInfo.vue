@@ -11,8 +11,8 @@
 				<span class="stare-black">共{{dateNum}}晚</span>
 			</p>
 			<p>
-				{{hotelPrice.roomName}}
-				<span class="breakfast-type" v-if="hotelPrice.breakFastName">{{hotelPrice.breakFastName}}</span>
+				<span class="type-span">{{hotelPrice.roomName}}</span>
+				<span class="type-span breakfast-type" v-if="hotelPrice.breakFastName">{{hotelPrice.breakFastName}}</span>
 			</p>
 		</div>
 	</div>
@@ -93,6 +93,15 @@
 	}
 	
 	.breakfast-type{
-		margin-left: 0.1rem;
+		padding-left: 0.1rem;
+		box-sizing: border-box;
+	}
+	
+	.type-span{
+		display: inline-block;
+		max-width: 50%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>

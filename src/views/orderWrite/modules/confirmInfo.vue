@@ -53,7 +53,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { gotoPage, goBackPage, replacePage, addDays } from '@/assets/util';
+  import { gotoPage, goBackPage, replacePage, addDays, queryString } from '@/assets/util';
   import { MessageBox, Indicator } from 'mint-ui'
   
   export default {
@@ -123,16 +123,16 @@
           bedTypeStrs: bedTypeStrs,
           hotelPriceStrs: window.JSON.stringify(content.hotelPrice || null),
 //          timeToHotel: 18,
-          isHasMarketing: content.isHasMarketing || 0,
+          isHasMarketing: queryString('isHasMarketing') || 0,
           isJustCheckSameOrder: 1,
         };
   
-        if(params.isHasMarketing === 1){
+        if(params.isHasMarketing == 1){
           params['marketing.marketingPrice'] = content.marketingObj.marketingPrice || 0;
           params['marketing.startTime'] = content.marketingObj.startTime;
           params['marketing.endTime'] = content.marketingObj.endTime;
     
-          if (content.marketing.isPack === 1){
+          if (content.marketingObj.isPack === 1){
             //小礼包客户填写的信息
             params['marketingRemark'] = '客户手机号码：' + orderInfo.marketingTel;
           }
@@ -205,9 +205,8 @@
 	.confirm-info{
 		width: 96%;
 		height: auto;
-		max-height: 5.4rem;
+		max-height: 5.2rem;
 		box-sizing: border-box;
-		overflow: scroll;
 		margin: 0 auto;
 		background-color: #fff;
 		border-radius: 4px;
@@ -229,6 +228,8 @@
 		
 		@at-root .confirm-txt{
 			padding: 0.2rem;
+			overflow: scroll;
+			max-height: 4rem;
 			
 			.per-line{
 				line-height: 0.32rem;

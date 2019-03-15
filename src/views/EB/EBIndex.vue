@@ -2,7 +2,7 @@
   <div class="page eb-index-page">
 
     <!-- 头部 -->
-    <mt-header title="eb菜单页">
+    <mt-header :title="suppName || 'eb菜单页'">
       <mt-button class="iconfont icon-user" slot="right" style="font-size: 0.22rem;" @click="unBind"></mt-button>
     </mt-header>
     
@@ -61,6 +61,12 @@ export default {
       permissionOrderList: false,
       permissionRoomStatus: false,
       permissionRoomPrice: false,
+
+      // 供应商名称
+      suppName: '',
+
+      // 如果是直采用户，则接口 syncSupplierInfo 会返回一个酒店 ID
+      infoId: '',
     }
   },
   props: {},
@@ -106,6 +112,14 @@ export default {
               if(permission.indexOf('3') != -1){ this.permissionRoomStatus = true }
               if(permission.indexOf('4') != -1){ this.permissionRoomPrice = true }
             }
+
+            if(res.data.supplierAccount.suppName){
+              this.suppName = res.data.supplierAccount.suppName
+            }
+
+            if(res.data.infoId){
+              this.infoId = res.data.infoId
+            }
           }
         }
       })
@@ -116,8 +130,12 @@ export default {
     },
     // 跳转到 eb 酒店列表页，flag： 1：房态管理   2：房价管理
     goEBHotelList(flag){
-      gotoPage(this.$router, 'ebHotelList', {mtype: flag})
-    }
+      if(this.infoId){  // 如果是直采用户，那么就只可能是一个酒店，就不需要进酒店列表页
+        gotoPage(this.$router, 'ebRoomList', {hotelId: this.infoId, hname: encodeURIComponent(this.suppName), mtype: flag})
+      }else{
+        gotoPage(this.$router, 'ebHotelList', {mtype: flag})
+      }
+    },
   }
 }
 </script>

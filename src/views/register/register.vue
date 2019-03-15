@@ -94,10 +94,6 @@
 					</div>
 					<div class="per-info" v-show="receiveType != '0'">
 						<p class="per-info-title"><i class="iconfont icon-mail"></i>联系方式</p>
-						<!--<input type="text" name="receiveInfo"-->
-						       <!--:v-validate="receiveType != 0 ? '{required:true, regex:' + (receiveType == 1 ? this.emailRegex : receiveType == 2 ? this.faxRegex : this.phoneRegex) + '}' : ''"-->
-						       <!--:placeholder="receiveType == '1' ? '请填写邮箱信息（必填）' : receiveType == '2' ? '请填写传真信息（必填）' : '请填写手机号码（必填）'"-->
-						       <!--v-model="receiveInfo" @blur="checkReceiveWay">-->
 						<input v-if="receiveType != 0 && receiveType == 1" type="text" name="receiveInfo"
 						       v-validate="{required:true, regex:/^[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$/}"
 						       placeholder="请填写邮箱信息（必填）"

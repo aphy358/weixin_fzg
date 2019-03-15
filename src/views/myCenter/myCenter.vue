@@ -93,7 +93,6 @@
     
     created() {
       this.noHeadPortrait = noHeadPortrait;
-      // this.customerUser = user.data.customerUser
     },
     
     methods: {

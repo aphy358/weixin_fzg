@@ -126,7 +126,7 @@ export default {
           checkInDates: this.activeDay,
           roomTypes: n.roomType,
           priceTypes: n.hotelPriceEbDtoList.map(o => o.priceType).join(','),
-          formulaTypes: this.typeFlag,
+          formulaTypes: this.formulaType,
         }
 
         this.$api.eb.syncEBCutHotelRoom(params).then(res => {

@@ -11,7 +11,7 @@ export default function (Vue, router, api) {
 	// 微信授权插件初始化
 	Vue.use(wechatPlugin, {
 		router, // 路由实例对象
-		// appid: 'wx41041c8613e4b4b0', // 测试appid： wxdc97f923fbec8173    趣程appid： wx41041c8613e4b4b0
+		appid: 'wx41041c8613e4b4b0', // 测试appid： wxdc97f923fbec8173    趣程appid： wx41041c8613e4b4b0
 		responseType: 'code', // 返回类型，请填写code
 		scope: 'snsapi_userinfo', // 应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
 		// redirectUri: 'http://aphy358.natapp1.cc', //微信回调地址http://aphy358.natapp1.cc

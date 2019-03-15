@@ -72,9 +72,13 @@ export default {
   },
   methods:{
     // 跳转到酒店详情页
-    gotoHotelDetailPage(hotel){
-      this.$store.commit(`setCommonState`, {k: 'curHotel', v: null})
-      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.hotelId, cityType: hotel.type || '0'})
+    gotoHotelDetailPage(n){
+      this.$api.hotelDetail.syncGetHotelInfo({infoIds: n.hotelId}).then(res => {
+        if(res.returnCode === 1 && res.dataList.length){
+          this.$store.commit(`setCommonState`, {k: 'curHotel', v: res.dataList[0]})
+          gotoPage(this.$router, 'hotelDetail', {hotelId: n.hotelId, cityType: n.type || '0'})
+        }
+      })
     }
   }
 }

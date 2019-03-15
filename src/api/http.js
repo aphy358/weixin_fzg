@@ -8,12 +8,12 @@ import { Indicator, Toast } from 'mint-ui'
 import { gotoPage, replacePage, queryString } from '@/assets/util'
 
 const printErrorInfo = info => {
-  alert(info)
+  Toast(info)
 };
 
 // https://github.com/mzabriskie/axios
 const http = axios.create({
-  timeout: 1000 * 20,
+  timeout: 1000 * 620,
   headers: { "X-Requested-With": "XMLHttpRequest"}
   // headers: { "Content-type": "application/x-www-form-urlencoded"}
 });
@@ -104,7 +104,8 @@ function _h(verb) {
         // 网络问题
         if (error && ~error.message.indexOf("Network Error")) {
           // 没有网络 离线
-          printErrorInfo("请求出错,请检查网络连接!");
+          // printErrorInfo("请求出错,请检查网络连接!");
+          console.log('请求出错,请检查网络连接!');
           return Promise.resolve(result);
         }
 

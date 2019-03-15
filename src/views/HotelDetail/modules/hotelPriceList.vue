@@ -1,6 +1,11 @@
 <template>
   <div class="">
-    <Loading v-if="loading" />
+
+    <transition @leave="loadLeave">
+      <div v-if="slowLoading || roomTypeBasesShow.length < 1" class="slow-load">{{ slowLoading ? '正在加载最新价格...' : '无可预订房间！' }}</div>
+    </transition>
+
+    <!-- <Loading v-if="loading" /> -->
 
     <div class="hotel-price-wrap">
       <ul class="hotel-roomtype-list">
@@ -28,7 +33,10 @@
             <div class="hotel-roomtype-price-wrap" v-show="n.ifShow">
               <ul class="hotel-roomtype-price-list">
                 <li v-for="(m, j) in n.roomTypePrices" :key="j" class="hotel-roomtype-price-item">
-                  <div class="breakfast-bedtype">{{ m.rateTypeName }} {{ m.bedTypeName }}</div>
+                  <div class="breakfast-bedtype">
+                    <i v-if="m.isHasMarketing" class="iconfont icon-gift" style="color:#FE4BB7;"></i>
+                    {{ m.rateTypeName }} {{ m.bedTypeName }}
+                  </div>
                   <div class="order-clause">{{ m.orderClauseText }}</div>
                   <div class="cancel-type">{{ m.cancellationText }}</div>
                   <div class="room-status"><span v-html="m.roomStatusText"></span></div>
@@ -36,6 +44,10 @@
                     <div class="price-wrap">
                       日均<span class="red">￥</span>
                       <span class="red price">{{ m.averagePriceRMB }}</span>
+                    </div>
+                    <div class="price-wrap">
+                      总价<span>￥</span>
+                      <span class="price gray">{{ m.totalPriceRMB }}</span>
                     </div>
                     <div v-if="m.isBook" class="book-btn" @click="goOrderWrite(m)">预订</div>
                     <div v-else class="book-btn disable">满房</div>
@@ -49,7 +61,7 @@
       </ul>
     </div>
 
-    <div v-if="roomTypeBasesShow.length < 1 && !loading" style="text-align: center;margin: 0.3rem 0;color: #ea2c2c;">无可预订房间！</div>
+    <!-- <div v-if="roomTypeBasesShow.length < 1 && !loading && !slowLoading" style="text-align: center;margin: 0.3rem 0;color: #ea2c2c;">无可预订房间！</div> -->
 
     <END v-if="!loading && roomTypeBasesShow.length > 0" />
 
@@ -70,6 +82,8 @@ export default {
     return {
       // 用于标记是否已经查过价了
       loading: false,
+      // 用于标记是否在实查
+      slowLoading: false,
       // 普通的房型价格
       roomTypeBases: [],
       // 推荐的房型价格
@@ -144,6 +158,7 @@ export default {
     // 重新设置数据
     resetData(){
       this.loading = false
+      this.slowLoading = false
       this.roomTypeBases = []
       this.roomTypeBasesRecommend = []
       this.roomTypeBasesShow = []
@@ -163,6 +178,7 @@ export default {
     queryHotelPrice(){
       if(this.loading) return
       this.loading = true
+      this.slowLoading = true
 
       let param = {
         checkInDate: this.getCheckin,
@@ -175,8 +191,23 @@ export default {
         isSearchSurcharge: 0
       }
 
-      this.$api.hotelDetail.syncGetHotelPriceList(param).then(res => {
+      // 查落地
+      this.$api.hotelDetail.syncGetHotelPriceListInStock(param).then(res => {
         this.loading = false
+        if(res.returnCode === 1){
+          this.roomTypeBases = res.data.roomTypeBases || []
+          this.roomTypeBasesRecommend = res.data.roomTypeBasesRecommend || []
+
+          this.roomTypeBasesRecommend.forEach(n => n.recommend = true)
+          this.roomTypeBasesShow = this.roomTypeBasesRecommend.concat(this.roomTypeBases)
+
+          this.processRoomTypeBases()
+        }
+      })
+
+      // 实查
+      this.$api.hotelDetail.syncGetHotelPriceList(param).then(res => {
+        this.slowLoading = false
         if(res.returnCode === 1){
           this.roomTypeBases = res.data.roomTypeBases || []
           this.roomTypeBasesRecommend = res.data.roomTypeBasesRecommend || []
@@ -322,12 +353,24 @@ export default {
       sessionStorage.setItem('hotelPriceStr', encodeURIComponent(window.JSON.stringify(m)));
       gotoPage(this.$router, 'orderWrite', obj);
       
-    }
+    },
+
+    loadLeave: function (el, done) {
+      Velocity(el, {height: '0rem'}, {duration: 300, complete: done})
+    },
   }
 }
 </script>
 
 <style lang="scss">
+.slow-load{
+  text-align: center;
+  color: orangered;
+  padding-bottom: 0.05rem;
+  height: 0.2rem;
+  line-height: 0.2rem;
+}
+
 .hotel-price-wrap{
   margin: 0 0.05rem;
 
@@ -436,7 +479,7 @@ export default {
               top: 0;
               right: 0;
               width: 0.8rem;
-              padding: 0.3rem 0.1rem 0.3rem 0;
+              padding: 0.2rem 0.1rem 0.2rem 0;
               text-align: right;
               box-shadow: 0 0 0.1rem 0.1rem #FAFAFA;
               background: #FAFAFA;
@@ -451,6 +494,10 @@ export default {
 
                 .price{
                   font-size: 0.16rem;
+
+                  &.gray{
+                    font-size: 0.12rem;
+                  }
                 }
 
               }

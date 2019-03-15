@@ -3,7 +3,7 @@ import http from '../http'
 
 
 // 登录
-export const syncEBLogin = (args, loading = false) => http.post("/vue/supBind.do", args, loading)
+export const syncEBLogin = (args, loading = true) => http.post("/vue/supBind.do", args, loading)
 
 
 // 模拟登录
@@ -90,9 +90,3 @@ export const syncEBBatchSaveRoomStatus = (args, loading = true) => http.post("/v
 // 批量保存房价
 export const syncEBBatchSaveRoomPrice = (args, loading = true) => http.post("/vue/ebHotel/queryPriceShortcut.do", args, loading)
 
-
-
-
-
-
-// 这里有个问题，查询订单相关信息怎么用了三个接口？可否整合到一个接口？

@@ -45,8 +45,6 @@ export default {
   name: 'hotelDetail',
   data(){
     return {
-      // 如果是通过分享页面直接进入的酒店详情页，就会用到这个 flag
-      initShareFlag: 0,
     }
   },
   props: {},
@@ -60,96 +58,21 @@ export default {
     ToTop
   },
   watch: {
-    getCurHotel(){
-      if(this.getCurHotel){
-        this.initShareFlag++
-      }
-    },
-    getWXReady(){
-      if(this.getWXReady){
-        this.initShareFlag++
-      }
-    },
-    initShareFlag(){
-      if(this.initShareFlag == 2){
-        this.initHotelShare()
-      }
-    },
   },
   created(){
   },
   activated(){
-    this.initJSSDK()
-    
   },
   deactivated(){
-    this.initShareFlag = 0
   },
   computed: {
-    getCurHotel(){
-      return this.$store.state.curHotel
-    },
-    getWXReady(){
-      return this.$store.state.wx_ready
-    }
   },
   mounted(){
   },
   methods:{
-    initHotelShare(){
-      if(this.getCurHotel){
-        let hotel = this.getCurHotel
-
-        wx.updateAppMessageShareData({
-          title: hotel.infoName,  // 分享标题
-          desc: hotel.infoName,   // 分享描述
-          link: location.href,    // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: hotel.picSrc,   // 分享图标
-          success: function () {},
-          fail: function (res) {}
-        });
-
-        wx.updateTimelineShareData({
-          title: hotel.infoName,  // 分享标题
-          link: location.href,    // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: hotel.picSrc,   // 分享图标
-          success: function () {},
-          fail: function (res) {}
-        });
-      }
-    },
     gobackPage(){
       goBackPage(this.$router)
     },
-    // 初始化 JSSDK
-    initJSSDK(){
-      this.$api.common.syncInitJSSDK({url: encodeURIComponent(location.href.split('#')[0])}).then(res => {
-        if(res.returnCode == 1){
-          let data = res.data
-
-          wx.config({
-            debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId : data.appId, // 必填，公众号的唯一标识
-            timestamp : data.timestamp, // 必填，生成签名的时间戳
-            nonceStr : data.nonceStr, // 必填，生成签名的随机串
-            signature : data.signature,// 必填，签名，见附录1
-            jsApiList : [
-              'updateAppMessageShareData', 
-              'updateTimelineShareData', 
-              'openLocation', 
-              'getLocation',
-              'chooseWXPay'
-            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-          });
-        }
-      })
-
-      let _this = this
-      wx.ready(function(){
-        _this.$store.commit('setCommonState', {k: 'wx_ready', v: true})
-        _this.initHotelShare()
-      });
-    }
   }
 }
 </script>

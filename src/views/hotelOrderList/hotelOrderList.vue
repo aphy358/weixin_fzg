@@ -79,9 +79,9 @@
 				<span class="hol-filter-label">入住人</span>
 				<input type="text" class="hol-filter-input" placeholder="请输入入住人" v-model="params.userName">
 			</li>
-			<li class="hol-filter-item">
+			<li class="hol-filter-item" v-if="distrbId">
 				<span class="hol-filter-label">预订员</span>
-				<select name="orderMan" id="orderMan" title="预订员" v-model="params.createBy">
+				<select name="orderMan" id="orderMan" class="hol-filter-input" title="预订员" v-model="params.createBy">
 					<option v-for="(item, index) in userList" :value="item.value">{{item.label}}</option>
 				</select>
 			</li>
@@ -145,11 +145,6 @@
         filterVisible: false,
         orderList: [],
         params: {
-//          itemName: '',
-//          beginDate: '',
-//          endDate: '',
-//          orderCode: '',
-//          userName: '',
           innerStatus: '',
           orderType: 2,
           paymentStatus: '',
@@ -191,7 +186,8 @@
         endVisible: false,
         noOrder: '',
         noDataVisible: false,
-        cancelOrderId: ''
+        cancelOrderId: '',
+        distrbId: ''
       }
     },
     
@@ -209,9 +205,17 @@
     },
     
     activated(){
+      let customerUser = JSON.parse(window.sessionStorage.getItem('user_wx'));
+  
+      if (customerUser.distrbId != 34354) {
+        this.distrbId = customerUser.distrbId
+      }
+      
       if(!window.goBack){
         this.getHotelOrderList(1);
-        this.getUserList();
+        if (customerUser.distrbId != 34354) {
+          this.getUserList();
+        }
       }
     },
     
@@ -604,7 +608,6 @@
 		margin-left: -1.5rem;
 		background-color: #fff;
 		z-index: 10002;
-		/*padding-bottom: 0.1rem;*/
 		box-sizing: border-box;
 		transition: all 0.2s;
 		font-size: 0.12rem;

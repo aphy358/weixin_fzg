@@ -24,7 +24,7 @@ export default {
     surchargeBed: [],
     surchargeInternet: [],
   
-    maxPersonNum: 3,
+    maxPersonNum: 0,
   
     totalBreakfastPrice : 0,
     totalBedPrice : 0,
@@ -36,7 +36,6 @@ export default {
     hotelPrice: {},
     staticInfo: {},
     isHasMarketing : 0,
-    marketing: {},
     specialConditions: [],
     paymentTerm: '',
     orderInfo: {},
@@ -102,11 +101,11 @@ export default {
         hotelPriceStrs : decodeURIComponent(sessionStorage.getItem('hotelPriceStr')),
       };
 
-      if (params.isHasMarketing === '1'){
-        params['marketing.marketingPrice'] = queryString('marketingPrice');
-        params['marketing.startTime'] = queryString('startTime').replace(/\s+/g, ' ');
-        params['marketing.endTime'] = queryString('endTime').replace(/\s+/g, ' ');
-      }
+      // if (params.isHasMarketing === '1'){
+      //   params['marketing.marketingPrice'] = queryString('marketingPrice');
+      //   params['marketing.startTime'] = queryString('startTime').replace(/\s+/g, ' ');
+      //   params['marketing.endTime'] = queryString('endTime').replace(/\s+/g, ' ');
+      // }
 
       API.orderWrite.syncProductInfo(params).then(function (res) {
         Indicator.close();
@@ -139,6 +138,7 @@ export default {
           state.distributor = content.distributor;
           state.staticInfo = content.staticInfo;
           state.bedTypeList = content.hotelPrice.bedTypeList;
+          state.maxPersonNum = content.hotelPrice.maxPersonNum;
 
           state.dateNum = content.dateNum;
           state.stock = content.stock;
@@ -149,11 +149,8 @@ export default {
           state.balance = content.balance;
 
           state.roomCost = Math.round((content.payTotalMoney - content.taxesAndFeesRMB)*100)/100;
-
-          if (content.hasOwnProperty('isHasMarketing') && content.isHasMarketing === '1'){
-            state.isHasMarketing = 1;
-            state.marketing = content.marketing;
-          }
+  
+          state.isHasMarketing = queryString('isHasMarketing') || 0;
 
         }else{
           setTimeout(function () {

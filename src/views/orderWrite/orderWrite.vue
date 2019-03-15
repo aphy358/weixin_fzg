@@ -51,7 +51,6 @@
       return {
         scrollTop: 0,
         validate: false,
-//        orderSuccessVisible: true,
         erweima: '',
       }
     },
@@ -148,7 +147,6 @@
 			width: 100%;
 			height: 0.4rem;
 			line-height: 0.4rem;
-			/*position: relative;*/
 		}
 		
 		.mint-header{

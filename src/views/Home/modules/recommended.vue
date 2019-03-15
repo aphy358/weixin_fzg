@@ -129,9 +129,13 @@ export default {
   },
   methods:{
     // 跳转到酒店详情页
-    gotoHotelDetailPage(hotel){
-      this.$store.commit(`setCommonState`, {k: 'curHotel', v: null})
-      gotoPage(this.$router, 'hotelDetail', {hotelId: hotel.hotelId, cityType: hotel.type || '0'})
+    gotoHotelDetailPage(n){
+      this.$api.hotelDetail.syncGetHotelInfo({infoIds: n.hotelId}).then(res => {
+        if(res.returnCode === 1 && res.dataList.length){
+          this.$store.commit(`setCommonState`, {k: 'curHotel', v: res.dataList[0]})
+          gotoPage(this.$router, 'hotelDetail', {hotelId: n.hotelId, cityType: n.type || '0'})
+        }
+      })
     }
   }
 }
@@ -149,10 +153,23 @@ export default {
     }
 
     @at-root .hotel-block-item {
+      position: relative;
       background: white;
       color: #0A329E;
-      border: 1px solid rgb(232, 231, 231);
       margin-bottom: 0.1rem;
+
+      &:after{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        border: 1px solid rgb(232, 231, 231);
+        content: "";
+        box-sizing: border-box;
+        transform: scale(.5);
+        transform-origin: left top;
+      }
 
       &:last-child{
         margin-bottom: 0;

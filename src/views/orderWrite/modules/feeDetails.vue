@@ -155,7 +155,6 @@
 			@at-root .per-part-total{
 				height: 0.3rem;
 				line-height: 0.3rem;
-				/*border-bottom: 0.5px solid #eeeeee;*/
 				margin-top: 0.1rem;
 				font-size: 0.14rem;
 				

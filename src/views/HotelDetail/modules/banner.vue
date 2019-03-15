@@ -38,7 +38,7 @@
 
 <script>
 import logo from '@/assets/img/fzglogo.jpg'
-import { queryString, getStarText } from '@/assets/util'
+import { queryString, getStarText, initPageShare, initJSSDK } from '@/assets/util'
 
 export default {
   name: 'banner',
@@ -50,17 +50,34 @@ export default {
   },
   props: {},
   components: {},
-  watch: {},
+  watch: {
+    curHotel(){
+      this.initPageShare()
+    }
+  },
   created(){
     this.logo = logo
   },
   activated(){
+    initJSSDK(this)
     this.initHotelInfo()
+    this.initPageShare()
   },
   computed: {
   },
   mounted(){},
   methods:{
+    initPageShare(){
+      let _this = this
+      
+      if(_this.curHotel){
+        setTimeout(function(){
+          wx.ready(function(){
+            initPageShare(_this.curHotel)
+          })
+        }, 500)
+      }
+    },
     // 初始化酒店基本信息的显示
     initHotelInfo(){
       let _curHotel = this.$store.state.curHotel
@@ -101,7 +118,7 @@ export default {
         address: this.curHotel.infoName,      // 地址详情说明
         scale: 16,                            // 地图缩放级别,整形值,范围从1~28。默认为最大
         infoUrl: '',                          // 在查看位置界面底部显示的超链接,可点击跳转
-        fail: function (res) { alert('查看地图失败！') }
+        fail: function (res) { alert(JSON.stringify(res)) }
       });
     }
   }

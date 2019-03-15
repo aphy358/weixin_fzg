@@ -15,7 +15,7 @@ export const syncRefundOrder = (args, loading = false) => http.post("/vue/payref
 export const syncPersonalInfo = (args, loading = false) => http.post("/vue/userInfo/getFzgAllUserInfo.do", args, loading);
 
 // 模拟全能宝登录
-export const syncLogin = (args, loading = false) => http.post("/analogLogin/qnbLogin.do", args, loading);
+export const syncLogin = (args, loading = true) => http.post("/analogLogin/qnbLogin.do", args, loading);
 
 // 退出登录
 export const syncLogout = (args, loading = true) => http.post("/vue/logout.do", args, loading);

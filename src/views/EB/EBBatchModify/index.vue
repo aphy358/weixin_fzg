@@ -194,12 +194,10 @@ export default {
   },
   watch: {},
   created(){
+    this.getQueryParams()
+    this.queryAlwaysType()
   },
   activated(){
-    if(!window.goBack){
-      this.getQueryParams()
-      this.queryAlwaysType()
-    }
   },
   computed: {
     getSupplierCurrency(){
@@ -401,8 +399,11 @@ export default {
       }
 
       if(this.mtype == 1){
-				params.status = this.roomStatus
-        params.remainStock = this.showStock
+        params.status = this.roomStatus
+        
+        if(this.roomStatus == 0 || this.roomStatus == 5){   // 只有在不可超售和剩余库存的时候才才传这个参数
+          params.remainStock = this.showStock
+        }
 
         this.$api.eb.syncEBBatchSaveRoomStatus(params).then(res => {
           console.log(res);
@@ -437,14 +438,14 @@ export default {
       if(key == 'start'){
         let end = +new Date( formatDateTwo(this.timeZoneArr[i]['end']) )
         if(picked > end){
-          this.timeZoneArr[i]['end'] = ''
+          // this.timeZoneArr[i]['end'] = ''
         }
       }
 
       if(key == 'end'){
         let start = +new Date( formatDateTwo(this.timeZoneArr[i]['start']) )
         if(picked < start){
-          this.timeZoneArr[i]['start'] = ''
+          // this.timeZoneArr[i]['start'] = ''
         }
       }
     }

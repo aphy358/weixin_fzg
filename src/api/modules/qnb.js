@@ -3,7 +3,7 @@ import http from '../http'
 
 
 // 登录
-export const syncQNBLogin = (args, loading = false) => http.post("/vue/qnbBind.do", args, loading)
+export const syncQNBLogin = (args, loading = true) => http.post("/vue/qnbBind.do", args, loading)
 
 // 模拟登录
 export const syncQNBLoginForTest = (args, loading = false) => http.post("/vue/analogLogin/qnbLogin.do", args, loading)

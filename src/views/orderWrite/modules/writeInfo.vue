@@ -91,7 +91,7 @@
 			<div class="per-line">
 				<span class="per-info-title purple"><i class="iconfont icon-gift"></i>小礼包</span>
 			</div>
-			<div class="per-line" style="margin: 0 0.3rem;">
+			<div class="per-line" style="margin: 0 0.3rem;height:auto;">
 				<span>礼包信息：{{marketingInfo}}</span>
 			</div>
 			<div class="per-line" style="margin: 0 0.3rem;">
@@ -112,7 +112,7 @@
 			<h6 class="rule-title" v-if="staticInfo.country == 70139">温馨提示</h6>
 			<p class="rule-txt" v-if="staticInfo.country == 70139">应马来西亚政府要求，所有星级的住宿场所和酒店将征收旅游税，外国游客需缴付MYR 10/房/晚，在客人办理离店时支付酒店前台！</p>
 			<h6 class="rule-title" v-if="hotelPrice.checkInInstructions">入住提示</h6>
-			<p class="rule-txt" v-if="hotelPrice.checkInInstructions">{{hotelPrice.checkInInstructions}}</p>
+			<div class="expedia-tips-box" v-if="hotelPrice.checkInInstructions" v-html="hotelPrice.checkInInstructions"></div>
 			<h6 class="rule-title" v-if="content.specialHintsSuppids && content.specialHintsSuppids.indexOf(content.supplierId) !== -1">预订提示</h6>
 			<p class="rule-txt" v-if="content.specialHintsSuppids && content.specialHintsSuppids.indexOf(content.supplierId) !== -1">此房价为2人入住价格，若多人入住，则需在酒店前台支付相应费用</p>
 			<h6 class="rule-title" v-if="hotelPrice.specialCheckInInstructions">特殊入住提示</h6>
@@ -121,7 +121,7 @@
 		
 		<div class="total-pay clearfix" :class="payVisible && !confirmVisible ? 'show-animate' : 'hide-animated'">
 			<span class="fl orange">订单总额：￥</span>
-			<span class="fl orange total-money">{{+(+payTotalMoney*100 + +totalBreakfastPrice*100 + +totalBedPrice*100 + +totalNetworkPrice*100 + taxesAndFeesRMB*100)/100}}</span>
+			<span class="fl orange total-money">{{totalPay}}</span>
 			<button class="fr next-step" @click="onSubmit" type="submit">下一步</button>
 			<span class="fr gray" style="margin-right: 0.2rem;font-size: 0.12rem" @click="showFeeDetails">明细</span>
 		</div>
@@ -175,7 +175,7 @@
         specialReq: [],
         nameArr: [],
         nameRank: [],
-//        country: 70007,
+        country: '',
         confirmVisible: false,
         nationalityVisible: false,
         nameModuleHeight: 1,
@@ -202,17 +202,15 @@
     },
     
     computed: {
-      country() {
-        return this.$store.state.orderWrite.staticInfo.country;
-      },
       bedTypeList() {
-        return this.$store.state.orderWrite.bedTypeList;
+        return this.$store.state.orderWrite.bedTypeList || [];
       },
       marketingInfo() {
-        return this.$store.state.orderWrite.content.marketingObj ? state.orderWrite.content.marketingObj.marketingInfo : '';
+        return this.$store.state.orderWrite.content.marketingObj ? this.$store.state.orderWrite.content.marketingObj.marketingInfo : '';
       },
       bedType() {
-        return this.$store.state.orderWrite.bedTypeList[0].bedTypeId;
+        let bedTypeList = this.$store.state.orderWrite.bedTypeList;
+        return bedTypeList ? bedTypeList[0].bedTypeId : '';
       },
       payTotalMoney() {
         return this.$store.state.orderWrite.payTotalMoney;
@@ -224,7 +222,11 @@
         return this.$store.state.orderWrite.hotelPrice
       },
       staticInfo() {
-        return this.$store.state.orderWrite.staticInfo
+        let staticInfo = this.$store.state.orderWrite.staticInfo;
+        this.country = staticInfo.country;
+        //设置入住人相关
+        this.setUserName();
+        return staticInfo;
       },
       content() {
         //设置电话号码
@@ -246,6 +248,7 @@
       roomNum: {
         // getter
         get: function () {
+          this.setWillUsedBalance();
           return this.$store.state.orderWrite.roomNum
         },
         // setter
@@ -274,7 +277,13 @@
         let paymentTerm = this.$store.state.orderWrite.distributor.paymentTerm;
         this.paymentType = paymentTerm;
         if (paymentTerm === 0) {
-          this.balanceVisible = true;
+          let customerUser = window.sessionStorage.getItem('user_wx');
+          if (customerUser) {
+            let user = JSON.parse(customerUser);
+            if (user.distrbId != 34354){
+              this.balanceVisible = true;
+            }
+          }
           return [{
             label: '单结',
             value: 0
@@ -291,6 +300,13 @@
             }
           ]
         }
+      },
+      totalPay(){
+        let totalPay = +(+this.payTotalMoney*100 + +this.totalBreakfastPrice*100 + +this.totalBedPrice*100 + +this.totalNetworkPrice*100 + this.taxesAndFeesRMB*100)/100;
+        if (this.$store.state.orderWrite.distributor.paymentTerm == 0){
+          this.useBalance = this.content.balance >= totalPay ? totalPay : this.content.balance;
+        }
+        return totalPay;
       }
     },
     
@@ -338,9 +354,6 @@
         }
       };
       this.$validator.localize(dictionary);
-  
-      //设置入住人相关
-      this.setUserName();
     },
     
     watch: {
@@ -376,7 +389,6 @@
       },
       nextVisible(index) {
         let maxPersonNum = this.maxPersonNum;
-        let roomNum = this.roomNum;
         for (let i = index + 1; i <= (index + maxPersonNum); i++) {
           if (i > (index + maxPersonNum - 1)) {
             MessageBox('提示', '无法继续增加入住人信息');
@@ -475,7 +487,7 @@
                 paymentTerm: this.paymentType,
                 specialReq: this.specialStr,
                 cancelInfo: this.hotelPrice.cancellationDesc,
-                totalPay: +(this.payTotalMoney*100 + this.totalBreakfastPrice*100 + this.totalBedPrice*100 + this.totalNetworkPrice*100 + this.taxesAndFeesRMB*100)/100,
+                totalPay: this.totalPay,
                 bedType: this.bedType || '',
                 marketingTel: this.marketingTel,
                 useBalance: this.useBalance
@@ -551,7 +563,6 @@
             if (this.country === 70007) {
               nameRegArr[i] = 'required|inner';
             } else {
-//              nameRegArr[i] = {required: true, regex: /^[a-zA-Z]*$/};
               nameRegArr[i] = 'required|outer';
             }
           } else {
@@ -594,6 +605,11 @@
         }
         return flag;
       },
+      setWillUsedBalance(){
+        if (this.$store.state.orderWrite.distributor.paymentTerm == 0){
+          this.useBalance = this.content.balance >= this.totalPay ? this.totalPay : this.content.balance;
+        }
+      }
     }
   }
 </script>
@@ -611,6 +627,7 @@
 			
 			@at-root .per-line {
 				height: 0.5rem;
+				overflow: hidden;
 				line-height: 0.5rem;
 				border-bottom: 1px solid #ececec;
 				margin: 0 0.1rem;
@@ -714,6 +731,12 @@
 			
 			.rule-txt {
 				color: #777a7c;
+				line-height: 0.3rem;
+			}
+			
+			@at-root .expedia-tips-box{
+				color: #777a7c;
+				font-size: 0.12rem;
 				line-height: 0.3rem;
 			}
 		}

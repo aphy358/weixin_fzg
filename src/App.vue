@@ -1,14 +1,15 @@
 <template>
 
   <transition :name="transitionName" id="app">
-      <keep-alive exclude="orderWrite,orderPay,register">
-        <router-view/>
-      </keep-alive>
+    <keep-alive exclude="orderWrite,orderPay,register,ebBatchModify,qnbBatchModify">
+      <router-view/>
+    </keep-alive>
   </transition>
 
 </template>
 
 <script>
+import { initPageShare, initJSSDK } from '@/assets/util'
 
 export default {
   name: "",
@@ -22,17 +23,30 @@ export default {
     $route(to, from) {
       // 设置或保存页面的 scrolltop
       this.initPageScrollTop(to, from)
-      
-      // 初始化页面分享
-      if(to.path.toLowerCase() != '/hoteldetail'){
-        this.initPageShare()
-      }
+
+      // 初始化 JSSDK
+      let _this = this
+      setTimeout(function(){
+        initJSSDK(_this)
+
+        // 针对非酒店详情页做统一的自定义分享，酒店详情页有它自己的自定义分享
+        if(to.path.toLowerCase() != '/hoteldetail'){
+          setTimeout(function(){
+            wx.ready(function(){
+              initPageShare()
+            })
+          }, 360)
+        }
+      }, 360)
     }
   },
   components: {},
   created() {
-    // 初始化 JSSDK
-    this.initJSSDK()
+    // 记录进入 app 时的 url，并存入全局变量
+    if (typeof window.entryUrl === 'undefined' || window.entryUrl === '') {
+      window.entryUrl = location.href.split('#')[0]
+    }
+
 
     let keyBoardShow = false
 
@@ -51,7 +65,6 @@ export default {
         keyBoardShow = false
       }, 100)
     })
-
 
     // 解决安卓手机下点击输入框时，页面不随之向上滚动，导致弹起的软键盘遮住输入框的问题
     window.addEventListener("resize", function() {
@@ -110,53 +123,6 @@ export default {
 
       window.historyObj.preLen = window.historyObj.arr.length
     },
-    // 初始化页面分享事件
-    initPageShare(){
-      wx.updateAppMessageShareData({
-        title: '房掌柜',  // 分享标题
-        desc: '房掌柜',   // 分享描述
-        link: location.href.split('#')[0],    // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: 'https://qnb.oss-cn-shenzhen.aliyuncs.com/real_1540195277203.png',   // 分享图标
-        success: function () {},
-        fail: function (res) {}
-      });
-
-      wx.updateTimelineShareData({
-        title: '房掌柜',  // 分享标题
-        link: location.href.split('#')[0],    // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: 'https://qnb.oss-cn-shenzhen.aliyuncs.com/real_1540195277203.png',   // 分享图标
-        success: function () {},
-        fail: function (res) {}
-      });
-    },
-    // 初始化 JSSDK
-    initJSSDK(){
-      this.$api.common.syncInitJSSDK({url: encodeURIComponent(location.href.split('#')[0])}).then(res => {
-        if(res.returnCode == 1){
-          let data = res.data
-
-          wx.config({
-            debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId : data.appId, // 必填，公众号的唯一标识
-            timestamp : data.timestamp, // 必填，生成签名的时间戳
-            nonceStr : data.nonceStr, // 必填，生成签名的随机串
-            signature : data.signature,// 必填，签名，见附录1
-            jsApiList : [
-              'updateAppMessageShareData', 
-              'updateTimelineShareData', 
-              'openLocation', 
-              'getLocation',
-              'chooseWXPay'
-            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-          });
-        }
-      })
-
-      let _this = this
-      wx.ready(function(){
-        _this.$store.commit('setCommonState', {k: 'wx_ready', v: true})
-      });
-    }
   }
 };
 </script>
