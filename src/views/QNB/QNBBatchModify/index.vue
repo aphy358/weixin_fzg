@@ -2,7 +2,9 @@
   <div class="page qnb-batchmodify-page">
 
     <!-- 头部 -->
-    <mt-header :title="titleText"></mt-header>
+    <mt-header :title="titleText">
+      <mt-button slot="right" @click="resetParams">重置</mt-button>
+    </mt-header>
 
     <!-- 返回上一页 -->
     <GoBack _style="top: 0.02rem" />
@@ -10,7 +12,7 @@
     <div class="page-content" style="background-color: #efeff4;padding-bottom: 0.4rem;">
 
       <!-- 头部 -->
-      <Head :formulaType="formulaType" @switchFormulaType="switchFormulaType" />
+      <!-- <Head :formulaType="formulaType" @switchFormulaType="switchFormulaType" /> -->
       
       <div class="rsp-popup-inner">
 
@@ -52,45 +54,63 @@
         </div>
 
 
-        <div v-if="mtype == 1">
-          <div class="rsp-popup-title">房态</div>
-          <div class="rsp-popup-block">
-            <ul class="rsp-room-status-list">
-              <li class="rsp-room-status-item" :class="{'active': roomStatus == 3}" @click="swithRoomStatus(3)">满房</li>
-              <li class="rsp-room-status-item" :class="{'active': roomStatus == 0}" @click="swithRoomStatus(0)">剩余库存</li>
-              <li class="rsp-room-status-item" :class="{'active': roomStatus == 2}" @click="swithRoomStatus(2)">待查</li>
-              <li class="rsp-room-status-item" :class="{'active': roomStatus == 5}" @click="swithRoomStatus(5)">不可超售</li>
-              <li class="rsp-room-status-item" :class="{'active': roomStatus == 1}" @click="swithRoomStatus(1)">畅订</li>
-            </ul>
-          </div>
+        <!-- 配额类型 -->
+        <div class="rsp-popup-title">配额类型</div>
+        <div class="rsp-popup-block items-float">
+          <div class="rsp-popup-label">配额类型</div>
+          <select v-model="formulaType" style="padding: 0 0.05rem;border: none;margin-right: 0.1rem;height: 100%;width: calc(100% - 0.95rem);">
+            <option value="0,1,2">全部类型</option>
+            <option value="1">合约配额</option>
+            <option value="2">outside</option>
+            <option value="0">包房</option>
+          </select>
+          <i class="iconfont icon-right-thin"></i>
+        </div>
 
-          <div class="rsp-popup-title">房量</div>
-          <div class="rsp-popup-block">
-            <div class="rsp-room-num-wrap">
-              <i class="iconfont icon-minus2" style="color: #ea6868;" @click="minusRoomNum"></i>
-              <input
-                v-if="!roomNumDisable"
-                v-model="showStock" 
-                @input="inputRoomNum" 
-                @keyup="inputRoomNum" />
-              <input v-else type="text" disabled>
-              <i class="iconfont icon-plus2" style="color: #89BFF5;" @click="plusRoomNum"></i>
+
+        <div class="rsp-popup-title">调价方式</div>
+        <div class="rsp-popup-block">
+          <div class="rsp-room-price-wrap">
+            <select v-model="priceAdjustStyle" style="padding: 0 0.05rem;border: 0.01rem solid #ccc;margin-right: 0.1rem;">
+              <option value="2">输入目标值</option>
+              <option value="0">按固定加幅</option>
+              <option value="1">按比例加幅</option>
+            </select>
+            <div>
+              底价 <input type="number" v-model="basePrice" @keyup="basePriceInput" /><span v-if="priceAdjustStyle == 1">%</span>
+            </div>
+            <div>
+              卖价 <input type="number" v-model="salePrice" @keyup="salePriceInput" /><span v-if="priceAdjustStyle == 1">%</span>
             </div>
           </div>
         </div>
-        <div v-else>
-          <div class="rsp-popup-title">底价</div>
-          <div class="rsp-popup-block">
-            <div class="rsp-room-price-wrap">
-              <select v-model="priceAdjustStyle" style="padding: 0 0.05rem;border: 0.01rem solid #ccc;margin-right: 0.1rem;">
-                <option value="2">按固定金额</option>
-                <option value="0">按固定加幅</option>
-              </select>
-              <input type="number" v-model="basePrice" @blur="basePriceBlur" />
-              <span>{{ getSupplierCurrency }}</span>
-            </div>
+
+
+        <div class="rsp-popup-title">房态</div>
+        <div class="rsp-popup-block">
+          <ul class="rsp-room-status-list">
+            <li class="rsp-room-status-item" :class="{'active': roomStatus == 3}" @click="swithRoomStatus(3)">满房</li>
+            <li class="rsp-room-status-item" :class="{'active': roomStatus == 0}" @click="swithRoomStatus(0)">剩余库存</li>
+            <li class="rsp-room-status-item" :class="{'active': roomStatus == 2}" @click="swithRoomStatus(2)">待查</li>
+            <li class="rsp-room-status-item" :class="{'active': roomStatus == 5}" @click="swithRoomStatus(5)">不可超售</li>
+            <li class="rsp-room-status-item" :class="{'active': roomStatus == 1}" @click="swithRoomStatus(1)">畅订</li>
+          </ul>
+        </div>
+
+        <div class="rsp-popup-title">房量</div>
+        <div class="rsp-popup-block">
+          <div class="rsp-room-num-wrap">
+            <i class="iconfont icon-minus2" style="color: #ea6868;" @click="minusRoomNum"></i>
+            <input
+              v-if="!roomNumDisable"
+              v-model="showStock" 
+              @input="inputRoomNum" 
+              @keyup="inputRoomNum" />
+            <input v-else type="text" disabled>
+            <i class="iconfont icon-plus2" style="color: #89BFF5;" @click="plusRoomNum"></i>
           </div>
         </div>
+
       </div>
 
       <!-- 房型选择 popup -->
@@ -138,8 +158,8 @@ export default {
       priceTypes: [],
 
       // 选择的房型、价格类型
-      checkedRoomTypes: '',
-      checkedPriceTypes: '',
+      checkedRoomTypes: [],
+      checkedPriceTypes: [],
 
 
       weekTextArr: ['日', '一', '二', '三', '四', '五', '六'],
@@ -151,7 +171,7 @@ export default {
       mtype: '',
 
       // 1：合约配额    2：outside
-      formulaType: '1',
+      formulaType: '0,1,2',
 
       // 当前酒店 ID
       hotelId: '',
@@ -160,16 +180,19 @@ export default {
       suppId: '',
 
       // 房态，0：剩余库存  1畅订  2：待查  3：满房   5不可超售
-      roomStatus: '0',
+      roomStatus: null,
 
       // 房量的可编辑状态，true：不可编辑   false：可编辑
       roomNumDisable: false,
 
       // 剩余库存
-      showStock: 0,
+      showStock: null,
 
       // 底价
-      basePrice: 0,
+      basePrice: null,
+
+      // 卖价
+      salePrice: null,
 
       // 选中的适用星期
       checkedWeekArr: [1, 2, 3, 4, 5, 6, 7],
@@ -177,7 +200,7 @@ export default {
       // 快速切换星期
       weekQuickSwitch: '全部',
 
-      // 底价加幅方式，2：固定金额   0：固定加幅
+      // 底价加幅方式，0: 按固定加幅 1: 按比例加幅 2: 输入目标值 
       priceAdjustStyle: '2',
 
       // 时段
@@ -212,19 +235,13 @@ export default {
     // 获取 url 参数
     getQueryParams(){
       this.mtype = queryString('mtype')
-      this.formulaType = queryString('formulaType')
+      // this.formulaType = queryString('formulaType')
       this.hotelId = queryString('hotelId')
       this.suppId = queryString('suppId')
 
-      if(this.mtype == 1){
-        this.checkedRoomTypes = []
-        this.checkedPriceTypes = []
-        this.titleText = '房态批量修改'
-      }else{
-        this.checkedRoomTypes = ''
-        this.checkedPriceTypes = ''
-        this.titleText = '房价批量修改'
-      }
+      this.checkedRoomTypes = []
+      this.checkedPriceTypes = []
+      this.titleText = '批量修改'
     },
     // 查询房型、价格类型
     queryAlwaysType(){
@@ -368,10 +385,31 @@ export default {
         return false
       }
 
+      // 如果设置了房态，则视情况而设置房量
+      if((this.roomStatus == 0 || this.roomStatus == 5) && this.showStock == null){
+        Toast('请设置房量')
+        return false
+      }
+
+      // 如果是按照输入目标值的方式设置房价，则卖价不能低于底价
+      if(this.priceAdjustStyle == 2 && this.basePrice != null && this.salePrice != null){
+        if(parseFloat(this.basePrice) > parseFloat(this.salePrice)){
+          Toast('卖价不能低于底价')
+          return false
+        }
+      }
+
+      // 当不上按照输入目标值方式设置房价时，底价卖价不能为负数
+      if( (this.basePrice < 0 || this.salePrice < 0) ){
+        Toast('价格不能为负数')
+        return false
+      }
+
       return true
     },
-    basePriceBlur(){
-      this.basePrice = this.basePrice || 0
+    basePriceInput(){
+    },
+    salePriceInput(){
     },
     // 保存批量修改
     saveAll(){
@@ -403,30 +441,31 @@ export default {
         suppId:         this.suppId
       }
 
-      if(this.mtype == 1){
+      if(this.roomStatus != null){
         params.status = this.roomStatus
         
         if(this.roomStatus == 0 || this.roomStatus == 5){   // 只有在不可超售和剩余库存的时候才才传这个参数
           params.remainStock = this.showStock
         }
-
-        this.$api.qnb.syncQNBBatchSaveRoomStatus(params).then(res => {
-          if(res.returnCode === 1){
-            Toast('批量设置成功')
-            goBackPage(this.$router)
-          }
-        })
-			}else{
-				params.priceAdjustStyle = this.priceAdjustStyle
-        params.basePrice = this.basePrice
-        
-        this.$api.qnb.syncQNBBatchSaveRoomPrice(params).then(res => {
-          if(res.returnCode === 1){
-            Toast('批量设置成功')
-            goBackPage(this.$router)
-          }
-        })
       }
+
+      if(this.salePrice != null || this.basePrice != null){
+        params.priceAdjustStyle = this.priceAdjustStyle
+
+        if(this.basePrice != null)  params.basePrice = this.basePrice
+        if(this.salePrice != null)  params.price = this.salePrice
+      }
+
+      this.$api.qnb.syncQNBBatchSaveRoomStatus(params).then(res => {
+        if(res.returnCode === 1){
+          if(res.data.result == 'fail'){
+            Toast('没有查询结果')
+          }else{
+            Toast('批量设置成功')
+            goBackPage(this.$router)
+          }
+        }
+      })
     },
     // 选择时段日期时触发
     timeZoneChange(i, key){
@@ -451,6 +490,26 @@ export default {
           // this.timeZoneArr[i]['start'] = ''
         }
       }
+    },
+
+    // 重置
+    resetParams(){
+      this.checkedRoomTypes = []
+      this.checkedPriceTypes = []
+
+      this.formulaType = '0,1,2'
+
+      this.roomStatus = null
+      this.roomNumDisable = false
+      this.showStock = null
+      this.basePrice = null
+      this.salePrice = null
+      this.checkedWeekArr = [1, 2, 3, 4, 5, 6, 7]
+      this.weekQuickSwitch = '全部'
+      this.priceAdjustStyle = '2'
+      this.timeZoneArr = [
+        {start: '', end: ''},
+      ]
     }
 
   }

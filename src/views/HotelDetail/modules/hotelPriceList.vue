@@ -235,7 +235,7 @@ export default {
 
         for (let j = 0; j < roomTypeBase.roomTypePrices.length; j++) {
           const p = roomTypeBase.roomTypePrices[j]
-          p.cancellationText = p.cancellationType ? '可取消' : '不可取消'
+          p.cancellationText = p.isCanCancle ? '可取消' : '不可取消'
           this.setRoomStatusText(p)
           this.setOrderClause(p)
         }

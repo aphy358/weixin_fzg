@@ -27,7 +27,7 @@
     <ToTop />
 
   </div>
-</template>cvnbv
+</template>
 
 <script>
 // @ is an alias to /src

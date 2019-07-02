@@ -1,17 +1,22 @@
 import wechatPlugin from '@/plugins/vue-wechat-plugin'
-import { replacePage, queryString } from '@/assets/util'
+import {
+	replacePage,
+	queryString
+} from '@/assets/util'
 
-
+var appid = window.location.host == 'weixin.jlfzg.com'
+	? 'wx8ec829bf21d69731'
+	: 'wx41041c8613e4b4b0'
 
 // 授权登录
 export default function (Vue, router, api) {
-	
-	
+
+
 	// return;
 	// 微信授权插件初始化
 	Vue.use(wechatPlugin, {
 		router, // 路由实例对象
-		appid: 'wx41041c8613e4b4b0', // 测试appid： wxdc97f923fbec8173    趣程appid： wx41041c8613e4b4b0
+		appid: appid, // 趣程appid： wx41041c8613e4b4b0
 		responseType: 'code', // 返回类型，请填写code
 		scope: 'snsapi_userinfo', // 应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
 		// redirectUri: 'http://aphy358.natapp1.cc', //微信回调地址http://aphy358.natapp1.cc
@@ -36,7 +41,7 @@ export default function (Vue, router, api) {
 					let user_eb = data.supCustomerUser
 					let user_qnb = data.qnbUser
 
-					if (openid)	window.sessionStorage.setItem('openid', JSON.stringify(openid))
+					if (openid) window.sessionStorage.setItem('openid', JSON.stringify(openid))
 					if (user_wx) window.sessionStorage.setItem('user_wx', JSON.stringify(user_wx))
 					if (user_eb) window.sessionStorage.setItem('user_eb', JSON.stringify(user_eb))
 					if (user_qnb) window.sessionStorage.setItem('user_qnb', JSON.stringify(user_qnb))
@@ -48,9 +53,9 @@ export default function (Vue, router, api) {
 					} else {
 						// 获取用户类型，ut=corp 则表示是企业用户
 						let ut = queryString('ut')
-						if(ut == 'corp' && user_wx && user_wx.distrbId == 34354){
+						if (ut == 'corp' && user_wx && user_wx.distrbId == 34354) {
 							replacePage(router, 'login')
-						}else{
+						} else {
 							next()
 						}
 					}

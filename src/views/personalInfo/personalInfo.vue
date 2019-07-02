@@ -10,11 +10,11 @@
 				<ul class="per-module-list">
 					<li>
 						<span class="item-txt">登录名</span>
-						<span class="item-con deep-orange">{{customerUser.loginName}}</span>
+						<span class="item-con deep-orange">{{customerUser.distrbId == 34354 ? '散客用户' : customerUser.loginName}}</span>
 					</li>
 					<li>
 						<span class="item-txt">姓名</span>
-						<span class="item-con">{{customerUser.customerUserName}}</span>
+						<span class="item-con">{{customerUser.distrbId == 34354 ? '散客用户' : customerUser.customerUserName}}</span>
 					</li>
 					<li>
 						<span class="item-txt">手机</span>

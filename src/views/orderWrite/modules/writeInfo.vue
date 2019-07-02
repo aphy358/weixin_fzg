@@ -230,7 +230,10 @@
       },
       content() {
         //设置电话号码
-        this.tel = this.$store.state.orderWrite.distributor.phone || '';
+        let distributor = this.$store.state.orderWrite.distributor
+        if(distributor.distributorId != 34354){ // 非散客
+          this.tel = distributor.phone || '';
+        }
         return this.$store.state.orderWrite.content
       },
       taxesAndFeesRMB() {
@@ -303,8 +306,10 @@
       },
       totalPay(){
         let totalPay = +(+this.payTotalMoney*100 + +this.totalBreakfastPrice*100 + +this.totalBedPrice*100 + +this.totalNetworkPrice*100 + this.taxesAndFeesRMB*100)/100;
-        if (this.$store.state.orderWrite.distributor.paymentTerm == 0){
+        if (this.$store.state.orderWrite.distributor.paymentTerm == 0 && this.balanceVisible){
           this.useBalance = this.content.balance >= totalPay ? totalPay : this.content.balance;
+        }else{
+          this.useBalance = 0;
         }
         return totalPay;
       }
@@ -606,8 +611,10 @@
         return flag;
       },
       setWillUsedBalance(){
-        if (this.$store.state.orderWrite.distributor.paymentTerm == 0){
+        if (this.$store.state.orderWrite.distributor.paymentTerm == 0 && this.balanceVisible){
           this.useBalance = this.content.balance >= this.totalPay ? this.totalPay : this.content.balance;
+        }else{
+          this.useBalance = 0;
         }
       }
     }
